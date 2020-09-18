@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, g
 from app import db
+from app.util import fail, succ
 from app.models import User, Student
 
 
