@@ -1,0 +1,12 @@
+flask
+flask-cors
+flask-sqlalchemy
+flask-migrate
+flask-cas
+psycopg2
+beautifulsoup4
+requests
+gunicorn
+redis
+celery
+usaddress
