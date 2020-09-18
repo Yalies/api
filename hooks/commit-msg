@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+if ! head -1 "$1" | grep -q '^[^a-z]'; then
+    # TODO: Evaluate if this is a good idea; some style guides mandate lowercase
+    echo "First letter of commit message must be capitalized!"
+    exit 1
+fi
+
+if head -1 "$1" | grep -q '\.$'; then
+    echo "Commit message may not end with a period!"
+    exit 1
+fi
+
+if head -1 "$1" | grep -q '^[A-Za-z](ed|s|ing)'; then
+    echo "Commit message must use the imperative tense!"
+    echo "- https://github.com/frc1418/guidelines/blob/master/github.md#commiting"
+    exit 1
+fi
