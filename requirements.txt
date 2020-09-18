@@ -10,3 +10,4 @@ gunicorn
 redis
 celery
 usaddress
+pyjwt
