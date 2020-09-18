@@ -44,7 +44,7 @@ def check_token():
         g.json = request.get_json()
 
 
-@api_bp.route('/students')
+@api_bp.route('/students', methods=['POST'])
 def api_students(slug):
     students = Student.query.all()
     return to_json(students)
