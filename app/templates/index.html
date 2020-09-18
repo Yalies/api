@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<button id="submit">Search students</button>
+<div>
+    <textarea style="display: none;" id="output" cols=60 rows=8 readonly placeholder="No matching students. :("></textarea>
+    <p id="warning"></p>
+    <h3>Filters:</h3>
+    {% with name = "college", items = colleges %}{% include "_section.html" %}{% endwith %}
+    {% with name = "year", items = years, default = "Other" %}{% include "_section.html" %}{% endwith %}
+    {% with name = "leave", items = leave, header = "On leave?" %}{% include "_section.html" %}{% endwith %}
+    {% with name = "major", items = majors %}{% include "_section.html" %}{% endwith %}
+    <section id="building_code">
+        <h4>Building</h4>
+        <label>
+            <input type="checkbox" name="building_code-all"> All
+        </label>
+        {% for building_code, building in building_codes.items() %}
+        <label>
+            <input type="checkbox" name="{{ building_code }}"> {{ building }}
+        </label>
+        {% endfor %}
+    </section>
+    {% with name = "entryway", items = entryways %}{% include "_section.html" %}{% endwith %}
+    {% with name = "floor", items = floors %}{% include "_section.html" %}{% endwith %}
+    {% with name = "suite", items = suites %}{% include "_section.html" %}{% endwith %}
+    {% with name = "room", items = rooms %}{% include "_section.html" %}{% endwith %}
+    <section id="state">
+        <h4>State</h4>
+        <label>
+            <input type="checkbox" name="state-all"> All
+        </label>
+        {% for abbreviation, state in states.items() %}
+        <label>
+            <input type="checkbox" name="{{ abbreviation }}"> {{ state or "International" }}
+        </label>
+        {% endfor %}
+    </section>
+</div>
+<a href="/logout">Log out</a>
+<script src="/static/js/index.js"></script>
+{% endblock %}
