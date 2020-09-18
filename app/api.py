@@ -23,6 +23,11 @@ def forbidden(error):
     return fail('You don\'t have permission to do this.', 403)
 
 
+@api_bp.errorhandler(500)
+def internal(error):
+    return fail('Internal server error.', 500)
+
+
 @api_bp.before_request
 def check_token():
     if request.method != 'OPTIONS':
