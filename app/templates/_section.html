@@ -1,0 +1,22 @@
+<section id="{{ name }}">
+    <h4>
+        {% if header %}
+            {{ header }}
+        {% else %}
+            {{ name[0] | upper}}{{name[1:] }}
+        {% endif %}
+    </h4>
+    <label>
+        <input type="checkbox" name="{{ name }}-all"> All
+    </label>
+    {% for item in items %}
+    <label>
+        <input type="checkbox" name="{{ item }}">
+        {% if item == "" %}
+            {{ default or "None" }}
+        {% else %}
+            {{ item }}
+        {% endif %}
+    </label>
+    {% endfor %}
+</section>
