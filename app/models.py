@@ -11,6 +11,8 @@ class User(db.Model):
 
 class Student(db.Model):
     __tablename__ = 'students'
+    _to_expand = ()
+    _to_exclude = ()
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     forename = db.Column(db.String, nullable=False)
@@ -30,3 +32,13 @@ class Student(db.Model):
     address = db.Column(db.String)
     state = db.Column(db.String)
     leave = db.Column(db.Boolean, default=False)
+
+    @staticmethod
+    def search(filters):
+        students_query = Student.query
+        for category in filters:
+            if category not in ('college', 'year', 'major', 'building_code',
+                                'entryway', 'floor', 'suite', 'room', 'state', 'leave'):
+                return None
+            students_query = students_query.filter(getattr(Student, category).in_(filters[category]))
+        students = students_query.all()

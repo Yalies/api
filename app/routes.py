@@ -100,13 +100,7 @@ def index():
 @login_required
 def query():
     filters = request.get_json()
-    students_query = Student.query
-    for category in filters:
-        if category not in ('college', 'year', 'major', 'building_code',
-                            'entryway', 'floor', 'suite', 'room', 'state', 'leave'):
-            abort(403)
-        students_query = students_query.filter(getattr(Student, category).in_(filters[category]))
-    students = students_query.all()
+    students = Student.search(filters)
     return jsonify([student.email for student in students if student.email])
 
 
