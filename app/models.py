@@ -1,4 +1,5 @@
 from app import app, db
+import jwt
 
 
 class User(db.Model):
@@ -7,6 +8,23 @@ class User(db.Model):
     username = db.Column(db.String, primary_key=True)
     registered_on = db.Column(db.Integer)
     last_seen = db.Column(db.Integer)
+
+    def generate_token(self):
+        """
+        Generate auth token.
+        :return: token and expiration timestamp.
+        """
+        now = datetime.datetime.utcnow()
+        payload = {
+            'iat': now,
+            'exp': now + datetime.timedelta(days=365),
+            'sub': self.username,
+        }
+        return jwt.encode(
+            payload,
+            app.config.get('SECRET_KEY'),
+            algorithm='HS256'
+        ).decode(), payload['exp']
 
 
 class Student(db.Model):
