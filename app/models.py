@@ -54,9 +54,10 @@ class Student(db.Model):
     @staticmethod
     def search(filters):
         students_query = Student.query
-        for category in filters:
-            if category not in ('college', 'year', 'major', 'building_code',
-                                'entryway', 'floor', 'suite', 'room', 'state', 'leave'):
-                return None
-            students_query = students_query.filter(getattr(Student, category).in_(filters[category]))
+        if filters:
+            for category in filters:
+                if category not in ('college', 'year', 'major', 'building_code',
+                                    'entryway', 'floor', 'suite', 'room', 'state', 'leave'):
+                    return None
+                students_query = students_query.filter(getattr(Student, category).in_(filters[category]))
         students = students_query.all()
