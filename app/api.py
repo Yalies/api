@@ -31,24 +31,13 @@ def check_token():
         g.me = User.from_token(token)
         if g.me is None:
             abort(401)
-        g.me.last_seen = datetime.datetime.utcnow()
+        g.me.last_seen = int(time.time())
         db.session.commit()
-        print('User: ' + g.me.name)
+        print('User: ' + g.me.username)
         g.json = request.get_json()
 
 
 @api_bp.route('/students')
 def api_students(slug):
-
-
-@api_bp.route('/bot/<slug>/instance/<group_id>')
-def api_instance(slug, group_id):
-    token = request.args.get("token")
-    g.bot = Bot.query.filter_by(slug=slug).first_or_404()
-    if not token or token != g.bot.token:
-        return {"error": "Missing or invalid token."}, 401
-    instance = Instance.query.filter_by(bot_id=g.bot.id, group_id=group_id).first_or_404()
-    json = {"id": instance.id}
-    if g.bot.has_user_token_access:
-        json["token"] = User.query.get(instance.owner_id).token
-    return jsonify(json)
+    students = Student.query.all()
+    return to_json(students)
