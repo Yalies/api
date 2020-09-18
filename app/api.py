@@ -32,6 +32,8 @@ def internal(error):
 def check_token():
     if request.method != 'OPTIONS':
         token = request.headers.get('Authorization')
+        if not token:
+            return fail('No token provided.')
         token = token.split(' ')[-1]
         g.me = User.from_token(token)
         if g.me is None:
