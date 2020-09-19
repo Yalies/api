@@ -18,6 +18,8 @@ with open('app/res/states.txt') as f:
         STATES[abbreviation.strip()] = state.strip()
 RE_ROOM = re.compile(r'^([A-Z]+)-([A-Z]+)(\d+)(\d)([A-Z]+)?$')
 RE_BIRTHDAY = re.compile(r'^[A-Z][a-z]{2} \d{1,2}$')
+RE_ACCESS_CODE = re.compile(r'[0-9]-[0-9]+')
+RE_PHONE = re.compile(r'[0-9]{3}-[0-9]{3}-[0-9]{4}')
 
 
 def get_html(cookie):
@@ -137,10 +139,26 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
                 student.building_code, student.entryway, student.floor, student.suite, student.room = result.groups()
             student.birthday = trivia.pop() if RE_BIRTHDAY.match(trivia[-1]) else None
             student.major = trivia.pop() if trivia[-1] in MAJORS else None
-            student.address = ', '.join(trivia)
-            student.state = parse_address(trivia)
         except IndexError:
             pass
+
+        new_trivia = []
+        for r in range(len(trivia)):
+            row = trivia[r]
+            if row.endswith(' /'):
+                row = row.rstrip(' /')
+                if RE_ACCESS_CODE.match(row):
+                    student.access_code = row
+                if RE_PHONE.match(row):
+                    student.phone = row
+                if len(new_trivia) == 1 and not student.residence:
+                    student.residence = new_trivia.pop(0)
+            else:
+                new_trivia.append(row)
+        trivia = new_trivia
+
+        student.address = '\n'.join(trivia)
+        student.state = parse_address(student.address)
 
         directory_entry = directory.person(first_name=student.forename, last_name=student.surname)
         if directory_entry is not None:
