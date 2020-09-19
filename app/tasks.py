@@ -144,6 +144,12 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         directory_entry = directory.person(name=student.forename + ' ' + student.surname)
         student.netid = directory_entry.netid
         student.upi = directory_entry.upi
+        if not student.email:
+            student.email = directory_entry.email
+            #student.email = guess_email(student)
+        if not student.year:
+            student.year = directory_entry.student_expected_graduation_year
+
 
         db.session.add(student)
 
