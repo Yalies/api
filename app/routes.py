@@ -112,7 +112,7 @@ def scraper():
     if request.method == 'GET':
         return render_template('scraper.html')
     payload = request.get_json()
-    tasks.scrape.apply_async(args=[payload['cookie']])
+    tasks.scrape.apply_async(args=[payload['cookie'], payload['people_search_session_cookie'], payload['csrf_token']])
     return '', 200
 
 

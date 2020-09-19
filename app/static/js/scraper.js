@@ -1,4 +1,6 @@
-let cookie = document.getElementById('cookie'),
+let face_book_cookie = document.getElementById('cookie'),
+    people_search_session_cookie = document.getElementById('people_search_session_cookie'),
+    csrf_token = document.getElementById('csrf_token')
     submit = document.getElementById('submit');
 
 cookie.onchange = function() {
@@ -8,7 +10,9 @@ cookie.onchange = function() {
 submit.onclick = function() {
     console.log('Trying to start scraper.');
     let payload = {
-        'cookie': cookie.value,
+        'face_book_cookie': cookie.value,
+        'people_search_session_cookie': people_search_session_cookie.value,
+        'csrf_token': csrf_token.value,
     };
     fetch('/scraper', {
         method: 'POST',
