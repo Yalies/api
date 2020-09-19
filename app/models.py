@@ -63,6 +63,7 @@ class Student(db.Model):
     college = db.Column(db.String)
     pronoun = db.Column(db.String)
     email = db.Column(db.String, nullable=False)
+    residence = db.Column(db.String)
     building_code = db.Column(db.String)
     entryway = db.Column(db.String)
     floor = db.Column(db.Integer)
