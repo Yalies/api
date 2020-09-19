@@ -86,3 +86,4 @@ class Student(db.Model):
                     return None
                 students_query = students_query.filter(getattr(Student, category).in_(filters[category]))
         students = students_query.all()
+        return students
