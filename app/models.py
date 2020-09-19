@@ -71,6 +71,7 @@ class Student(db.Model):
     birthday = db.Column(db.String)
     major = db.Column(db.String)
     address = db.Column(db.String)
+    phone = db.Column(db.String)
     state = db.Column(db.String)
     leave = db.Column(db.Boolean, default=False)
 
