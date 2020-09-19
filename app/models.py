@@ -54,6 +54,8 @@ class Student(db.Model):
     _to_exclude = ()
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    netid = db.Column(db.String)
+    upi = db.Column(db.Integer)
     forename = db.Column(db.String, nullable=False)
     surname = db.Column(db.String, nullable=False)
     image_id = db.Column(db.Integer)
