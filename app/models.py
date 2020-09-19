@@ -75,6 +75,7 @@ class Student(db.Model):
     phone = db.Column(db.String)
     state = db.Column(db.String)
     leave = db.Column(db.Boolean, default=False)
+    access_code = db.Column(db.String)
 
     @staticmethod
     def search(filters):
