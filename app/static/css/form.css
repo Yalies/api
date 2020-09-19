@@ -9,13 +9,14 @@ label {
 }
 input[type="text"],
 button, .button {
-    padding: 8px 10px;
     font: inherit;
 }
 input[type="text"] {
+    padding: 7px 10px;
     border: solid 1px lightgray;
 }
 button, .button {
+    padding: 8px 10px;
     border: none;
     background: #00356b;
     display: inline-block;
