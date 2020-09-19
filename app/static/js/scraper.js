@@ -1,16 +1,18 @@
-let face_book_cookie = document.getElementById('cookie'),
+let face_book_cookie = document.getElementById('face_book_cookie'),
     people_search_session_cookie = document.getElementById('people_search_session_cookie'),
     csrf_token = document.getElementById('csrf_token')
     submit = document.getElementById('submit');
 
-cookie.onchange = function() {
-    submit.disabled = Boolean(cookie.textContent);
+onchange = function() {
+    submit.disabled = Boolean(face_book_cookie.textContent) &&
+                      Boolean(people_search_session_cookie.textContent) &&
+                      Boolean(csrf_token.textContent);
 }
 
 submit.onclick = function() {
     console.log('Trying to start scraper.');
     let payload = {
-        'face_book_cookie': cookie.value,
+        'face_book_cookie': face_book_cookie.value,
         'people_search_session_cookie': people_search_session_cookie.value,
         'csrf_token': csrf_token.value,
     };
