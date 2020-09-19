@@ -80,5 +80,7 @@ class Student(db.Model):
                 if category not in ('college', 'year', 'major', 'building_code',
                                     'entryway', 'floor', 'suite', 'room', 'state', 'leave'):
                     return None
+                if not isinstance(filters[category], list):
+                    return None
                 students_query = students_query.filter(getattr(Student, category).in_(filters[category]))
         students = students_query.all()
