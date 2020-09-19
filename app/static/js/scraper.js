@@ -4,18 +4,17 @@ let inputs = document.getElementsByTagName('textarea'),
 onchange = function() {
     let completed = true;
     for (let input of inputs) {
-        completed = completed && Boolean(input.textContent);
+        completed = completed && Boolean(input.value);
     }
     submit.disabled = !completed;
 }
 
 submit.onclick = function() {
     console.log('Trying to start scraper.');
-    let payload = {
-        'face_book_cookie': face_book_cookie.value,
-        'people_search_session_cookie': people_search_session_cookie.value,
-        'csrf_token': csrf_token.value,
-    };
+    let payload = {};
+    for (let input of inputs) {
+        payload[input.name] = input.value;
+    }
     fetch('/scraper', {
         method: 'POST',
         headers: {
