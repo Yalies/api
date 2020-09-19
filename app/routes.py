@@ -115,6 +115,14 @@ def scraper():
     tasks.scrape.apply_async(args=[payload['cookie']])
     return '', 200
 
+@app.route('/credentials', methods=['GET', 'POST'])
+@login_required
+def credentials():
+    if request.method == 'GET':
+        return render_template('credentials.html')
+    token, expires_in = g.user.generate_token()
+    return jsonify({'token': token, 'expires_in': expires_in})
+
 
 def untuple(tuples):
     return [t[0] for t in tuples]
