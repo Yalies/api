@@ -6,6 +6,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 import usaddress
+import yaledirectory
 
 
 with open('app/res/majors.txt') as f:
@@ -103,10 +104,12 @@ def parse_address(address):
 
 
 @celery.task
-def scrape(cookie):
-    html = get_html(cookie)
+def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
+    html = get_html(face_book_cookie)
     tree = get_tree(html)
     containers = get_containers(tree)
+
+    directory = yaledirectory.API(people_search_session_cookie, csrf_token)
 
     # Clear all students
     Student.query.delete()
@@ -137,6 +140,8 @@ def scrape(cookie):
             student.state = parse_address(trivia)
         except IndexError:
             pass
+
+
 
         db.session.add(student)
 

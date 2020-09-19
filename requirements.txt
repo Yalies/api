@@ -11,3 +11,4 @@ redis
 celery
 usaddress
 pyjwt
+yaledirectory
