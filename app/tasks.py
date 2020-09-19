@@ -141,7 +141,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         except IndexError:
             pass
 
-        directory_entry = directory.person(fire_name=student.forename, last_name=student.surname)
+        directory_entry = directory.person(first_name=student.forename, last_name=student.surname)
         student.netid = directory_entry.netid
         student.upi = directory_entry.upi
         if not student.email:
