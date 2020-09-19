@@ -127,7 +127,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         try:
             student.email = info[1].find('a').text
         except AttributeError:
-            student.email = guess_email(student)
+            pass
         trivia = info[1].find_all(text=True, recursive=False)
         try:
             room = trivia.pop(0) if RE_ROOM.match(trivia[0]) else None
@@ -141,7 +141,9 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         except IndexError:
             pass
 
-
+        directory_entry = directory.person(name=student.forename + ' ' + student.surname)
+        student.netid = directory_entry.netid
+        student.upi = directory_entry.upi
 
         db.session.add(student)
 
