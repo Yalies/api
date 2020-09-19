@@ -132,6 +132,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         try:
             room = trivia.pop(0) if RE_ROOM.match(trivia[0]) else None
             if room:
+                student.residence = room
                 result = RE_ROOM.search(room)
                 student.building_code, student.entryway, student.floor, student.suite, student.room = result.groups()
             student.birthday = trivia.pop() if RE_BIRTHDAY.match(trivia[-1]) else None
