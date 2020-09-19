@@ -1,12 +1,12 @@
-let face_book_cookie = document.getElementById('face_book_cookie'),
-    people_search_session_cookie = document.getElementById('people_search_session_cookie'),
-    csrf_token = document.getElementById('csrf_token')
+let inputs = document.getElementsByTagName('textarea'),
     submit = document.getElementById('submit');
 
 onchange = function() {
-    submit.disabled = Boolean(face_book_cookie.textContent) &&
-                      Boolean(people_search_session_cookie.textContent) &&
-                      Boolean(csrf_token.textContent);
+    let completed = true;
+    for (let input of inputs) {
+        completed = completed && Boolean(input.textContent);
+    }
+    submit.disabled = !completed;
 }
 
 submit.onclick = function() {

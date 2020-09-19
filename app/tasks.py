@@ -153,7 +153,6 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         else:
             print('Could not find directory entry.')
 
-
         db.session.add(student)
 
     with open('pre2020.html', 'r') as f:

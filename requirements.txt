@@ -11,4 +11,4 @@ redis
 celery
 usaddress
 pyjwt
-yaledirectory>=1.1.2
+yaledirectory>=1.1.3
