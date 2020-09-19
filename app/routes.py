@@ -115,6 +115,7 @@ def scraper():
     tasks.scrape.apply_async(args=[payload['cookie']])
     return '', 200
 
+
 @app.route('/credentials', methods=['GET', 'POST'])
 @login_required
 def credentials():
