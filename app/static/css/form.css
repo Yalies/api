@@ -8,7 +8,8 @@ label {
     display: block;
 }
 input[type="text"],
-button, .button {
+button, .button,
+textarea {
     font: inherit;
 }
 input[type="text"] {
@@ -29,4 +30,13 @@ button.success, .button.success {
 }
 button.fail, .button.fail {
     background: #f20000;
+}
+textarea {
+    max-width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    overflow: visible;
+    border: solid 1px lightgray;
+    resize: none;
+    display: block;
 }
