@@ -7,14 +7,20 @@ section {
 label {
     display: block;
 }
+input[type="text"],
+button, .button {
+    padding: 8px 10px;
+    font: inherit;
+}
+input[type="text"] {
+    border: solid 1px lightgray;
+}
 button, .button {
     border: none;
     background: #00356b;
     display: inline-block;
     color: white;
-    font: inherit;
     text-decoration: none;
-    padding: 8px 10px;
     cursor: pointer;
 }
 button.success, .button.success {
@@ -22,14 +28,4 @@ button.success, .button.success {
 }
 button.fail, .button.fail {
     background: #f20000;
-}
-textarea {
-    max-width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    overflow: visible;
-    font: inherit;
-    border: solid 1px lightgray;
-    resize: none;
-    display: block;
 }
