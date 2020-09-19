@@ -1,5 +1,3 @@
-const MAX_EMAILS_PER_DAY = 2000;
-
 let body = document.body,
     checkboxes = document.querySelectorAll('input[type="checkbox"]'),
     allCheckboxes = document.querySelectorAll('input[type="checkbox"][name$="-all"]'),
@@ -60,12 +58,14 @@ submit.onclick = function() {
         }
     }
     console.log(filters);
-    fetch('/query', {
+    fetch('/api/students', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(filters),
+        body: JSON.stringify({
+            'filters': filters,
+        }),
     })
         .then(response => response.json())
         .then(emails => {

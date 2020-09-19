@@ -78,8 +78,9 @@ class Student(db.Model):
     access_code = db.Column(db.String)
 
     @staticmethod
-    def search(filters):
+    def search(criteria):
         students_query = Student.query
+        filters = criteria.get('filters')
         if filters:
             for category in filters:
                 if category not in ('college', 'year', 'major', 'building_code',
