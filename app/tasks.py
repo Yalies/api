@@ -114,6 +114,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     containers = get_containers(tree)
 
     directory = yaledirectory.API(people_search_session_cookie, csrf_token)
+    watermark_mask = Image.open('res/watermark_mask.png')
 
     # Clear all students
     Student.query.delete()
@@ -127,6 +128,9 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
                                    headers=headers)
             image_r.raw.decode_content = True
             im = Image.open(response.raw)
+
+            # Paste mask over watermark
+            im.paste(watermark_mask, (0, 0), watermark_mask)
 
             output = BytesIO()
             image.save(output, format='JPEG', mode='RGB')
