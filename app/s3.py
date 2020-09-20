@@ -1,4 +1,6 @@
-import boto3, botocore
+import boto3
+import botocore
+import os
 
 S3_BUCKET_NAME = 'yalestudentphotos'
 S3_ACCESS_KEY = os.environ.get('S3_ACCESS_KEY')

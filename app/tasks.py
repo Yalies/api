@@ -1,6 +1,6 @@
 from app import app, db, celery
 from app.models import Student
-from s3 import upload_image
+from .s3 import upload_image
 
 from PIL import Image
 import os
