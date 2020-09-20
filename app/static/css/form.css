@@ -31,13 +31,17 @@ section.collapsed label {
   width: 3in;
   display: inline-block;
   vertical-align: top;
-  margin: 10px;
+  margin: 0 10px 10px 0;
   text-align: left;
 }
 
+#output > div > div > * {
+    display: inline-block;
+}
+
 #output img {
-  width: 100%;
-  background: #333;
+    width: 100px;
+    height: 120px;
 }
 
 label {
