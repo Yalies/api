@@ -73,7 +73,6 @@ def clean_image_id(image_src):
     return image_id
 
 
-
 def clean_name(name):
     print('Parsing ' + name)
     forename, surname = name.strip().split(', ', 1)
@@ -124,7 +123,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         student.image_id = clean_image_id(container.find('img')['src'])
 
         if student.image_id:
-            image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + image_id,
+            image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + student.image_id,
                                    headers=headers)
             image_r.raw.decode_content = True
             im = Image.open(response.raw)
@@ -135,7 +134,8 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             output = BytesIO()
             image.save(output, format='JPEG', mode='RGB')
 
-            upload_image(student.image_id, output)
+            image_url = upload_image(student.image_id, output)
+            print(image_url)
 
         student.surname, student.forename = clean_name(container.find('h5', {'class': 'yalehead'}).text)
         student.year = clean_year(container.find('div', {'class': 'student_year'}).text)
