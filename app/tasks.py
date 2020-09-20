@@ -121,7 +121,8 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         student.image_id = clean_image_id(container.find('img')['src'])
         student.surname, student.forename = clean_name(container.find('h5', {'class': 'yalehead'}).text)
         student.year = clean_year(container.find('div', {'class': 'student_year'}).text)
-        student.pronoun = container.find('div', {'class': 'student_info_pronoun'}).text
+        pronoun = container.find('div', {'class': 'student_info_pronoun'}).text
+        student.pronoun = pronoun if pronoun else None
 
         info = container.find_all('div', {'class': 'student_info'})
 
