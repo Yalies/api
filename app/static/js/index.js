@@ -50,6 +50,8 @@ function addRow(container, slug, name, student) {
         value.classList.add(slug);
         value.textContent = student[slug];
         row.appendChild(value);
+
+        container.appendChild(row);
     }
 }
 
