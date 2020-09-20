@@ -101,8 +101,13 @@ submit.onclick = function() {
                 let name = document.createElement('h3');
                 name.className = 'name';
                 name.textContent = student.surname + ', ' + student.forename;
+                if (student.netid) {
+                    let netid = document.createElement('span');
+                    netid.className = 'netid';
+                    netid.textContent = '[' + student.netid + ']';
+                    name.appendChild(netid);
+                }
                 studentContainer.appendChild(name);
-                addRow(studentContainer, 'netid', '', student);
                 addRow(studentContainer, 'year', 'graduation-cap', student);
                 addRow(studentContainer, 'leave', 'hourglass', student);
                 addRow(studentContainer, 'college', 'school', student);

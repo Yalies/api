@@ -37,6 +37,7 @@ section.collapsed label {
 
 #output > div > div > * {
     display: inline-block;
+    vertical-align: top;
 }
 #output > div > div > i {
     width: 20px;
