@@ -9,6 +9,7 @@
     {% with name = "year", items = years, default = "Other" %}{% include "_section.html" %}{% endwith %}
     {% with name = "leave", items = leave, header = "On leave?" %}{% include "_section.html" %}{% endwith %}
     {% with name = "major", items = majors %}{% include "_section.html" %}{% endwith %}
+    {#
     <section id="building_code" class="collapsed">
         <h4>Building</h4>
         <label>
@@ -35,6 +36,7 @@
         </label>
         {% endfor %}
     </section>
+    #}
 </div>
 <div id="output">
 </div>

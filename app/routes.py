@@ -53,6 +53,7 @@ def index():
         'Timothy Dwight',
         'Trumbull',
     ]
+    """
     building_codes = {
         '': 'Off Campus',
         'BM': 'Bingham Hall',
@@ -77,10 +78,12 @@ def index():
         'TD': 'Timothy Dwight',
         'TC': 'Trumbull',
     }
+    """
     current_year = datetime.date.today().year
     years = list(range(current_year, current_year + 5))
     years.append('')
     leave = ['Yes', 'No']
+    """"
     entryways = db.session.query(distinct(Student.entryway)).order_by(Student.entryway)
     floors = db.session.query(distinct(Student.floor)).order_by(Student.floor)
     suites = db.session.query(distinct(Student.suite)).order_by(Student.suite)
@@ -91,9 +94,10 @@ def index():
     floors = untuple(floors)
     suites = untuple(suites)
     rooms = untuple(rooms)
+    """
     return render_template('index.html', colleges=colleges,
-                           years=years, leave=leave, majors=majors, building_codes=building_codes,
-                           entryways=entryways, floors=floors, suites=suites, rooms=rooms, states=states)
+                           years=years, leave=leave, majors=majors)
+                           #building_codes=building_codes, entryways=entryways, floors=floors, suites=suites, rooms=rooms, states=states
 
 
 @app.route('/query', methods=['POST'])
