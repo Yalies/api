@@ -4,8 +4,6 @@
 <button id="submit">Search students</button>
 <a href="/credentials">Get API token</a>
 <div>
-    <textarea style="display: none;" id="output" cols=60 rows=8 readonly placeholder="No matching students. :("></textarea>
-    <p id="warning"></p>
     <h3>Filters:</h3>
     {% with name = "college", items = colleges %}{% include "_section.html" %}{% endwith %}
     {% with name = "year", items = years, default = "Other" %}{% include "_section.html" %}{% endwith %}
@@ -37,6 +35,8 @@
         </label>
         {% endfor %}
     </section>
+</div>
+<div id="output">
 </div>
 <a href="/logout">Log out</a>
 <script src="/static/js/index.js"></script>
