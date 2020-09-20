@@ -3,7 +3,7 @@ import boto3, botocore
 S3_BUCKET_NAME = 'yalestudentphotos'
 S3_ACCESS_KEY = os.environ.get('S3_ACCESS_KEY')
 S3_SECRET_ACCESS_KEY = os.environ.get('S3_SECRET_ACCESS_KEY')
-S3_LOCATION = 'https://' + S3_BUCKET + '.s3.amazonaws.com/'
+S3_LOCATION = 'https://' + S3_BUCKET_NAME + '.s3.amazonaws.com/'
 
 s3 = boto3.client(
    's3',
