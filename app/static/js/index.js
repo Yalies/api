@@ -147,7 +147,6 @@ submit.onclick = function() {
 }
 
 onclick = function(e) {
-    console.log(e.target);
     let section = null;
     if (e.target.tagName == 'SECTION') section = e.target;
     if (e.target.tagName == 'H4' && e.target.parentElement.tagName == 'SECTION') section = e.target.parentElement;
