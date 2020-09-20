@@ -39,8 +39,9 @@ section.collapsed label {
 
 }
 #output > div h3 .netid {
-    font-size: 80%;
+    font-size: 70%;
     margin-left: 5px;
+    vertical-align: 2px;
 }
 #output > div > div > * {
     display: inline-block;
