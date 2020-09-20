@@ -38,7 +38,7 @@ let submit = document.getElementById('submit'),
     sections = document.getElementsByTagName('section'),
     warning = document.getElementById('warning');
 
-function addRow(container, property, icon, student) {
+function addRow(container, property, icon, student, protocol) {
     let value = student[property];
     if (value) {
         let row = document.createElement('div');
@@ -57,6 +57,11 @@ function addRow(container, property, icon, student) {
                 readout.appendChild(document.createElement('br'));
                 readout.appendChild(document.createTextNode(line));
             }
+        } else if (protocol) {
+            let a = document.createElement('a');
+            a.href = protocol + ':' + value;
+            a.textContent = value;
+            readout.appendChild(a);
         } else {
             readout.textContent = value;
         }
@@ -138,10 +143,10 @@ submit.onclick = function() {
                     studentContainer.appendChild(row);
                 }
                 addRow(studentContainer, 'college', 'graduation-cap', student);
-                addRow(studentContainer, 'email', 'envelope', student);
+                addRow(studentContainer, 'email', 'envelope', student, 'mailto');
                 addRow(studentContainer, 'residence', 'building', student);
                 addRow(studentContainer, 'major', 'book', student);
-                addRow(studentContainer, 'phone', 'phone', student);
+                addRow(studentContainer, 'phone', 'phone', student, 'tel');
                 addRow(studentContainer, 'birthday', 'birthday-cake', student);
                 addRow(studentContainer, 'access_code', 'key', student);
                 addRow(studentContainer, 'address', 'home', student);
