@@ -4,6 +4,7 @@ flask-sqlalchemy
 flask-migrate
 flask-cas
 psycopg2
+boto3
 beautifulsoup4
 requests
 gunicorn
