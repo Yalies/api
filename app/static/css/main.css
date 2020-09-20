@@ -51,3 +51,10 @@ footer {
     font-size: 10px;
     color: lightgray;
 }
+
+section.collapsed {
+
+}
+section.collapsed label {
+    display: none;
+}

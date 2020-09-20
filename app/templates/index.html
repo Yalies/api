@@ -9,7 +9,7 @@
     {% with name = "year", items = years, default = "Other" %}{% include "_section.html" %}{% endwith %}
     {% with name = "leave", items = leave, header = "On leave?" %}{% include "_section.html" %}{% endwith %}
     {% with name = "major", items = majors %}{% include "_section.html" %}{% endwith %}
-    <section id="building_code">
+    <section id="building_code" class="collapsed">
         <h4>Building</h4>
         <label>
             <input type="checkbox" name="building_code-all"> All
@@ -24,7 +24,7 @@
     {% with name = "floor", items = floors %}{% include "_section.html" %}{% endwith %}
     {% with name = "suite", items = suites %}{% include "_section.html" %}{% endwith %}
     {% with name = "room", items = rooms %}{% include "_section.html" %}{% endwith %}
-    <section id="state">
+    <section id="state" class="collapsed">
         <h4>State</h4>
         <label>
             <input type="checkbox" name="state-all"> All
