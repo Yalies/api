@@ -159,6 +159,10 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
                 new_trivia.append(row)
         trivia = new_trivia
 
+        # Handle first row of address being duplicated for residence
+        if len(trivia) >= 2 and trivia[0] == trivia[1] and not student.residence:
+            student.residence = trivia.pop(0)
+
         student.address = '\n'.join(trivia)
         student.state = parse_address(student.address)
 
