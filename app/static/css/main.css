@@ -51,26 +51,3 @@ footer {
     font-size: 10px;
     color: lightgray;
 }
-
-section {
-    padding: 10px;
-    border: solid 1px lightgray;
-}
-section h4::after {
-    content: '';
-    border: solid 4px transparent;
-    border-bottom-width: 2px;
-    border-top: solid 4px currentColor;
-    display: inline-block;
-    transform: rotate(180deg);
-}
-section.collapsed h4::after {
-    transform: rotate(0);
-    transition: transform 0.5s;
-}
-section.collapsed {
-
-}
-section.collapsed label {
-    display: none;
-}
