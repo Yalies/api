@@ -27,6 +27,19 @@ section.collapsed label {
     display: none;
 }
 
+#output > div {
+  width: 3in;
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
+  text-align: left;
+}
+
+#output img {
+  width: 100%;
+  background: #333;
+}
+
 label {
     display: block;
 }
