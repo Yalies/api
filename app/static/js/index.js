@@ -38,6 +38,21 @@ let submit = document.getElementById('submit'),
     sections = document.getElementsByTagName('section'),
     warning = document.getElementById('warning');
 
+function addRow(container, slug, name, student) {
+    if (student[slug]) {
+        let row = document.createElement('div');
+        let key = document.createElement('h4');
+        key.className = 'key';
+        key.textContent = name;
+        row.appendChild(key);
+        let value = document.createElement('p');
+        value.classList.add('value');
+        value.classList.add(slug);
+        value.textContent = student[slug];
+        row.appendChild(value);
+    }
+}
+
 submit.onclick = function() {
     let filters = {};
     for (let section of sections) {
@@ -68,8 +83,29 @@ submit.onclick = function() {
         }),
     })
         .then(response => response.json())
-        .then(emails => {
-            console.log(emails);
+        .then(students => {
+            console.log(students);
+            for (let student of students) {
+                let studentContainer = document.createElement('div');
+                studentContainer.className = 'student';
+                let name = document.createElement('h3');
+                name.className = 'name';
+                name.textContent = student.surname + ', ' + student.forename;
+                studentContainer.appendChild(name);
+                addRow(studentContainer, 'netid', 'NetID', student);
+                addRow(studentContainer, 'year', 'Year', student);
+                addRow(studentContainer, 'college', 'College', student);
+                addRow(studentContainer, 'email', 'email', student);
+                addRow(studentContainer, 'residence', 'Residence', student);
+                addRow(studentContainer, 'birthday', 'Birthday', student);
+                addRow(studentContainer, 'major', 'Major', student);
+                addRow(studentContainer, 'address', 'Address', student);
+                addRow(studentContainer, 'phone', 'Phone', student);
+                addRow(studentContainer, 'leave', 'On Leave', student);
+                addRow(studentContainer, 'access_code', 'Access Code', student);
+
+                output.appendChild(studentContainer);
+            }
             output.value = emails.join(', ');
             output.style.display = 'block';
             output.select();
