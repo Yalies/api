@@ -8,14 +8,16 @@ section {
 }
 section h4::after {
     content: '';
+    vertical-align: middle;
     border: solid 4px transparent;
-    border-bottom-width: 2px;
+    border-bottom-width: 0px;
     border-top: solid 4px currentColor;
     display: inline-block;
-    transform: rotate(180deg);
+    transform: rotateX(180deg);
+    transition: transform 0.5s;
 }
 section.collapsed h4::after {
-    transform: rotate(0);
+    transform: rotateX(0);
     transition: transform 0.5s;
 }
 section.collapsed {
