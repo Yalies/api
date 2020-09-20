@@ -1,6 +1,8 @@
 from app import app, db, celery
 from app.models import Student
+from s3 import upload_image
 
+from PIL import Image
 import os
 import requests
 import re
@@ -119,6 +121,18 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         student = Student()
 
         student.image_id = clean_image_id(container.find('img')['src'])
+
+        if student.image_id:
+            image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + image_id,
+                                   headers=headers)
+            image_r.raw.decode_content = True
+            im = Image.open(response.raw)
+
+            output = BytesIO()
+            image.save(output, format='JPEG', mode='RGB')
+
+            upload_image(student.image_id, output)
+
         student.surname, student.forename = clean_name(container.find('h5', {'class': 'yalehead'}).text)
         student.year = clean_year(container.find('div', {'class': 'student_year'}).text)
         pronoun = container.find('div', {'class': 'student_info_pronoun'}).text
