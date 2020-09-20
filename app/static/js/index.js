@@ -42,6 +42,8 @@ function addRow(container, property, icon, student) {
     let value = student[property];
     if (value) {
         let row = document.createElement('div');
+        row.classList.add('row');
+        row.classList.add(property);
         let i = document.createElement('i');
         i.className = 'fa fa-' + icon;
         row.appendChild(i);
@@ -115,7 +117,21 @@ submit.onclick = function() {
                 }
                 studentContainer.appendChild(name);
                 addRow(studentContainer, 'year', 'calendar', student);
-                addRow(studentContainer, 'leave', 'hourglass', student);
+                if (student.leave) {
+                    let row = document.createElement('div');
+                    row.classList.add('row');
+                    row.classList.add('leave');
+                    let i = document.createElement('i');
+                    i.className = 'fa fa-' + 'hourglass';
+                    row.appendChild(i);
+                    let readout = document.createElement('p');
+                    readout.classList.add('value');
+                    readout.classList.add('leave');
+                    readout.textContent = 'On Leave';
+                    row.appendChild(readout);
+
+                    studentContainer.appendChild(row);
+                }
                 addRow(studentContainer, 'college', 'graduation-cap', student);
                 addRow(studentContainer, 'email', 'envelope', student);
                 addRow(studentContainer, 'residence', 'building', student);

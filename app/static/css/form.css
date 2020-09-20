@@ -58,6 +58,12 @@ section.collapsed label {
     width: 100px;
     height: 120px;
 }
+.row {
+
+}
+.row.leave {
+    color: #00d018;
+}
 
 label {
     display: block;
