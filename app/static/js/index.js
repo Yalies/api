@@ -50,11 +50,16 @@ function addRow(container, property, icon, student) {
         let readout = document.createElement('p');
         readout.classList.add('value');
         readout.classList.add(property);
-        if (typeof(value) == 'string') {
-            value = value.replace('\n', '<br>');
+        if (typeof(value) == 'string' && value.includes('\n')) {
+            let lines = value.split('\n');
+            readout.appendChild(document.createTextNode(lines.shift()));
+            for (let line of lines) {
+                readout.appendChild(document.createElement('br'));
+                readout.appendChild(document.createTextNode(line));
+            }
+        } else {
+            readout.textContent = value;
         }
-        // TODO: don't use innerHTML
-        readout.innerHTML = value;
         row.appendChild(readout);
 
         container.appendChild(row);
