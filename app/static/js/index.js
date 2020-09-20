@@ -47,7 +47,8 @@ function addRow(container, slug, icon, student) {
         let value = document.createElement('p');
         value.classList.add('value');
         value.classList.add(slug);
-        value.textContent = student[slug];
+        // TODO: don't use innerHTML
+        value.innerHTML = student[slug].replace('\n', '<br>');
         row.appendChild(value);
 
         container.appendChild(row);
@@ -86,6 +87,7 @@ submit.onclick = function() {
         .then(response => response.json())
         .then(students => {
             console.log(students);
+            output.innerHTML = '';
             for (let student of students) {
                 let studentContainer = document.createElement('div');
                 studentContainer.className = 'student';
@@ -108,16 +110,16 @@ submit.onclick = function() {
                     name.appendChild(netid);
                 }
                 studentContainer.appendChild(name);
-                addRow(studentContainer, 'year', 'graduation-cap', student);
+                addRow(studentContainer, 'year', 'calendar', student);
                 addRow(studentContainer, 'leave', 'hourglass', student);
-                addRow(studentContainer, 'college', 'school', student);
+                addRow(studentContainer, 'college', 'graduation-cap', student);
                 addRow(studentContainer, 'email', 'envelope', student);
                 addRow(studentContainer, 'residence', 'building', student);
-                addRow(studentContainer, 'birthday', 'birthday-cake', student);
-                addRow(studentContainer, 'major', 'book-open', student);
-                addRow(studentContainer, 'address', 'home', student);
+                addRow(studentContainer, 'major', 'book', student);
                 addRow(studentContainer, 'phone', 'phone', student);
+                addRow(studentContainer, 'birthday', 'birthday-cake', student);
                 addRow(studentContainer, 'access_code', 'key', student);
+                addRow(studentContainer, 'address', 'home', student);
 
                 output.appendChild(studentContainer);
             }
