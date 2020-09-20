@@ -38,18 +38,22 @@ let submit = document.getElementById('submit'),
     sections = document.getElementsByTagName('section'),
     warning = document.getElementById('warning');
 
-function addRow(container, slug, icon, student) {
-    if (student[slug]) {
+function addRow(container, property, icon, student) {
+    let value = student[property];
+    if (value) {
         let row = document.createElement('div');
         let i = document.createElement('i');
         i.className = 'fa fa-' + icon;
         row.appendChild(i);
-        let value = document.createElement('p');
-        value.classList.add('value');
-        value.classList.add(slug);
+        let readout = document.createElement('p');
+        readout.classList.add('value');
+        readout.classList.add(property);
+        if (typeof(value) == 'string') {
+            value = value.replace('\n', '<br>');
+        }
         // TODO: don't use innerHTML
-        value.innerHTML = student[slug].replace('\n', '<br>');
-        row.appendChild(value);
+        readout.innerHTML = value;
+        row.appendChild(readout);
 
         container.appendChild(row);
     }
