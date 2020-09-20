@@ -43,7 +43,7 @@ function addRow(container, slug, icon, student) {
         let row = document.createElement('div');
         let i = document.createElement('i');
         i.className = 'fa fa-' + icon;
-        i.appendChild(key);
+        row.appendChild(i);
         let value = document.createElement('p');
         value.classList.add('value');
         value.classList.add(slug);
@@ -102,17 +102,17 @@ submit.onclick = function() {
                 name.className = 'name';
                 name.textContent = student.surname + ', ' + student.forename;
                 studentContainer.appendChild(name);
-                addRow(studentContainer, 'netid', 'NetID', student);
-                addRow(studentContainer, 'year', 'Year', student);
-                addRow(studentContainer, 'college', 'College', student);
-                addRow(studentContainer, 'email', 'email', student);
-                addRow(studentContainer, 'residence', 'Residence', student);
-                addRow(studentContainer, 'birthday', 'Birthday', student);
-                addRow(studentContainer, 'major', 'Major', student);
-                addRow(studentContainer, 'address', 'Address', student);
-                addRow(studentContainer, 'phone', 'Phone', student);
-                addRow(studentContainer, 'leave', 'On Leave', student);
-                addRow(studentContainer, 'access_code', 'Access Code', student);
+                addRow(studentContainer, 'netid', '', student);
+                addRow(studentContainer, 'year', 'graduation-cap', student);
+                addRow(studentContainer, 'leave', 'hourglass', student);
+                addRow(studentContainer, 'college', 'school', student);
+                addRow(studentContainer, 'email', 'envelope', student);
+                addRow(studentContainer, 'residence', 'building', student);
+                addRow(studentContainer, 'birthday', 'birthday-cake', student);
+                addRow(studentContainer, 'major', 'book-open', student);
+                addRow(studentContainer, 'address', 'home', student);
+                addRow(studentContainer, 'phone', 'phone', student);
+                addRow(studentContainer, 'access_code', 'key', student);
 
                 output.appendChild(studentContainer);
             }

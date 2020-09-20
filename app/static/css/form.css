@@ -38,6 +38,12 @@ section.collapsed label {
 #output > div > div > * {
     display: inline-block;
 }
+#output > div > div > i {
+    width: 20px;
+}
+#output > div > div > p {
+    max-width: 90%;
+}
 
 #output img {
     width: 100px;
