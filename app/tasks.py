@@ -114,7 +114,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     containers = get_containers(tree)
 
     directory = yaledirectory.API(people_search_session_cookie, csrf_token)
-    watermark_mask = Image.open('res/watermark_mask.png')
+    watermark_mask = Image.open('app/res/watermark_mask.png')
 
     # Clear all students
     Student.query.delete()
