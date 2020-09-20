@@ -131,6 +131,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             student.email = info[1].find('a').text
         except AttributeError:
             pass
+            #student.email = guess_email(student)
         trivia = info[1].find_all(text=True, recursive=False)
         try:
             room = trivia.pop(0) if RE_ROOM.match(trivia[0]) else None
@@ -145,7 +146,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
         new_trivia = []
         for r in range(len(trivia)):
-            row = trivia[r]
+            row = trivia[r].strip()
             if row.endswith(' /'):
                 row = row.rstrip(' /')
                 if RE_ACCESS_CODE.match(row):
