@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, g, abort
 import time
-from app import db
+from app import db, cas
 from app.util import to_json, fail, succ
 from app.models import User, Student
 
@@ -31,13 +31,16 @@ def internal(error):
 @api_bp.before_request
 def check_token():
     if request.method != 'OPTIONS':
-        token = request.headers.get('Authorization')
-        if not token:
-            return fail('No token provided.')
-        token = token.split(' ')[-1]
-        g.me = User.from_token(token)
-        if g.me is None:
-            abort(401)
+        if cas.username:
+            g.me = User.query.get(cas.username)
+        else:
+            token = request.headers.get('Authorization')
+            if not token:
+                return fail('No token provided.')
+            token = token.split(' ')[-1]
+            g.me = User.from_token(token)
+            if g.me is None:
+                abort(401)
         g.me.last_seen = int(time.time())
         db.session.commit()
         print('User: ' + g.me.username)
