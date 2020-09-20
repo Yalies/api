@@ -61,7 +61,7 @@ class Student(db.Model):
     year = db.Column(db.Integer)
     college = db.Column(db.String)
     pronoun = db.Column(db.String)
-    email = db.Column(db.String, nullable=False)
+    email = db.Column(db.String)
     residence = db.Column(db.String)
     building_code = db.Column(db.String)
     entryway = db.Column(db.String)
