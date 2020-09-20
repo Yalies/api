@@ -90,6 +90,15 @@ submit.onclick = function() {
             for (let student of students) {
                 let studentContainer = document.createElement('div');
                 studentContainer.className = 'student';
+
+                let img = document.createElement('img');
+                img.className = 'image';
+                if (student.image_id) {
+                    img.src = 'https://students.yale.edu/facebook/Photo?id=' + student.image_id;
+                } else {
+                    img.src = '/static/images/user.png';
+                }
+                studentContainer.appendChild(img);
                 let name = document.createElement('h3');
                 name.className = 'name';
                 name.textContent = student.surname + ', ' + student.forename;
