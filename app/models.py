@@ -50,7 +50,6 @@ class User(db.Model):
 
 class Student(db.Model):
     __tablename__ = 'students'
-    _to_expand = ()
     _to_exclude = ()
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
