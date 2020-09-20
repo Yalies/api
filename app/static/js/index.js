@@ -106,16 +106,5 @@ submit.onclick = function() {
 
                 output.appendChild(studentContainer);
             }
-            output.value = emails.join(', ');
-            output.style.display = 'block';
-            output.select();
-            document.execCommand('copy');
-            submit.textContent = 'Copied ' + emails.length + ' emails to clipboard!';
-            if (emails.length > MAX_EMAILS_PER_DAY) {
-                warning.textContent = 'Warning: Gmail will only allow sending emails to a maximum of ' + MAX_EMAILS_PER_DAY + ' recipients per day. Consider sending your email in batches to smaller groups.';
-            }
-            setTimeout(function() {
-                submit.textContent = 'Generate email list';
-            }, 1500);
         });
 }
