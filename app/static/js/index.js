@@ -38,13 +38,12 @@ let submit = document.getElementById('submit'),
     sections = document.getElementsByTagName('section'),
     warning = document.getElementById('warning');
 
-function addRow(container, slug, name, student) {
+function addRow(container, slug, icon, student) {
     if (student[slug]) {
         let row = document.createElement('div');
-        let key = document.createElement('h4');
-        key.className = 'key';
-        key.textContent = name;
-        row.appendChild(key);
+        let i = document.createElement('i');
+        i.className = 'fa fa-' + icon;
+        i.appendChild(key);
         let value = document.createElement('p');
         value.classList.add('value');
         value.classList.add(slug);
