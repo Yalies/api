@@ -74,7 +74,7 @@ def clean_image_id(image_src):
     # Check if image is not found
     if image_id == 0:
         return None
-    return image_id
+    return int(image_id)
 
 
 def clean_name(name):
