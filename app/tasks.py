@@ -1,6 +1,6 @@
 from app import app, db, celery
 from app.models import Student
-from .s3 import get_image_ids, upload_image
+from .s3 import ImageUploader
 
 from PIL import Image
 from io import BytesIO
@@ -119,7 +119,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     directory = yaledirectory.API(people_search_session_cookie, csrf_token)
     watermark_mask = Image.open('app/res/watermark_mask.png')
 
-    image_ids = get_image_ids()
+    image_uploader = ImageUploader()
 
     # Clear all students
     Student.query.delete()
@@ -129,9 +129,10 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         student.image_id = clean_image_id(container.find('img')['src'])
 
         if student.image_id is not None and student.image_id != 0:
-            if student.image_id in image_ids:
+            if student.image_id in image_uploader.image_ids:
                 print('Student has image, but it has already been downloaded.')
             else:
+                print('Image has not been uploaded yet.')
                 image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + student.image_id,
                                        headers={
                                            'Cookie': face_book_cookie,
@@ -146,7 +147,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
                 output = BytesIO()
                 im.save(output, format='JPEG', mode='RGB')
 
-                student.image = upload_image(student.image_id, output)
+                student.image = image_uploader.upload_image(student.image_id, output)
 
         student.last_name, student.first_name = clean_name(container.find('h5', {'class': 'yalehead'}).text)
         student.year = clean_year(container.find('div', {'class': 'student_year'}).text)

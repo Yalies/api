@@ -14,13 +14,20 @@ class ImageUploader:
            aws_access_key_id=S3_ACCESS_KEY,
            aws_secret_access_key=S3_SECRET_ACCESS_KEY,
         )
+        self.image_ids = self.get_image_ids()
 
-    def get_image_ids():
+    def get_image_ids(self):
         objs = self.s3.list_objects(Bucket=S3_BUCKET_NAME)
         image_ids = {int(obj['Key'].rstrip('.jpg')) for obj in objs['Contents']}
         return image_ids
 
-    def upload_image(image_id, f):
+    def get_file_url(self, filename):
+        return '{}{}'.format(S3_LOCATION, filename)
+
+    def get_image_url(self, image_id):
+        return self.get_url(image_id + '.jpg')
+
+    def upload_image(self, image_id, f):
         filename = f'{image_id}.jpg'
         print('Uploading image %s with size %d bytes.' % (filename, f.getbuffer().nbytes))
         f.seek(0)
@@ -33,4 +40,4 @@ class ImageUploader:
                 'ContentType': 'image/jpeg',
             }
         )
-        return '{}{}'.format(S3_LOCATION, filename)
+        return self.get_file_url(filename)
