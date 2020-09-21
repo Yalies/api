@@ -50,6 +50,7 @@ class User(db.Model):
 
 class Student(db.Model):
     __tablename__ = 'students'
+    __searchable__ = ['forename', 'surname', 'netid', 'college', 'email', 'residence', 'major', 'address']
     _to_exclude = ()
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -79,7 +80,10 @@ class Student(db.Model):
 
     @staticmethod
     def search(criteria):
-        students_query = Student.query
+        student_query = Student.query
+        query = criteria.get('query')
+        if query:
+            student_query = student_query.whoosh_search(query)
         filters = criteria.get('filters')
         if filters:
             for category in filters:
@@ -88,6 +92,6 @@ class Student(db.Model):
                     return None
                 if not isinstance(filters[category], list):
                     return None
-                students_query = students_query.filter(getattr(Student, category).in_(filters[category]))
-        students = students_query.all()
+                student_query = student_query.filter(getattr(Student, category).in_(filters[category]))
+        students = student_query.all()
         return students
