@@ -139,7 +139,6 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             im.save(output, format='JPEG', mode='RGB')
 
             student.image = upload_image(student.image_id, output)
-            return
 
         student.surname, student.forename = clean_name(container.find('h5', {'class': 'yalehead'}).text)
         student.year = clean_year(container.find('div', {'class': 'student_year'}).text)
