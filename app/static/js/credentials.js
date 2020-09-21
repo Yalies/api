@@ -9,16 +9,19 @@ copy_token.onclick = function(e) {
 }
 
 reset_token.onclick = function(e) {
-    var req = new XMLHttpRequest();
-    req.open("POST", "/credentials");
-    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    req.send();
-    req.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var response = JSON.parse(this.responseText);
-            readout_token.value = response.token;
-        }
-    };
+    fetch('/credentials', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'filters': filters,
+        }),
+    })
+        .then(response => response.json())
+        .then(json => {
+            readout_token.value = json.token;
+        });
 };
 
 readout_token.onfocus = function(e) {
