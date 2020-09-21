@@ -58,6 +58,7 @@ class Student(db.Model):
     forename = db.Column(db.String, nullable=False)
     surname = db.Column(db.String, nullable=False)
     image_id = db.Column(db.Integer)
+    image = db.Column(db.String)
     year = db.Column(db.Integer)
     college = db.Column(db.String)
     pronoun = db.Column(db.String)
