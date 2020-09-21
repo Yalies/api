@@ -7,6 +7,7 @@ from io import BytesIO
 import os
 import requests
 import re
+import json
 from bs4 import BeautifulSoup
 import usaddress
 import yaledirectory
@@ -14,6 +15,8 @@ import yaledirectory
 
 with open('app/res/majors.txt') as f:
     MAJORS = f.read().splitlines()
+with open('app/res/major_full_names.json') as f:
+    MAJOR_FULL_NAMES = json.load(f)
 STATES = {}
 with open('app/res/states.txt') as f:
     for line in f.read().splitlines():
@@ -162,6 +165,8 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
                 student.building_code, student.entryway, student.floor, student.suite, student.room = result.groups()
             student.birthday = trivia.pop() if RE_BIRTHDAY.match(trivia[-1]) else None
             student.major = trivia.pop() if trivia[-1] in MAJORS else None
+            if student.major and student.major in MAJOR_FULL_NAMES:
+                student.major = MAJOR_FULL_NAMES[student.major]
         except IndexError:
             pass
 
