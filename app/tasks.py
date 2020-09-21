@@ -142,15 +142,19 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
                                        },
                                        stream=True)
                 image_r.raw.decode_content = True
-                im = Image.open(image_r.raw)
+                try:
+                    im = Image.open(image_r.raw)
 
-                # Paste mask over watermark
-                im.paste(watermark_mask, (0, 0), watermark_mask)
+                    # Paste mask over watermark
+                    im.paste(watermark_mask, (0, 0), watermark_mask)
 
-                output = BytesIO()
-                im.save(output, format='JPEG', mode='RGB')
+                    output = BytesIO()
+                    im.save(output, format='JPEG', mode='RGB')
 
-                student.image = image_uploader.upload_image(student.image_id, output)
+                    student.image = image_uploader.upload_image(student.image_id, output)
+                except OSError:
+                    # "Cannot identify image" error
+                    print('PIL could not identify image.')
 
         student.year = clean_year(container.find('div', {'class': 'student_year'}).text)
         pronoun = container.find('div', {'class': 'student_info_pronoun'}).text
