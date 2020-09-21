@@ -131,6 +131,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         if student.image_id is not None and student.image_id != 0:
             if student.image_id in image_uploader.image_ids:
                 print('Student has image, but it has already been downloaded.')
+                student.image = image_uploader.get_image_url(student.image_id)
             else:
                 print('Image has not been uploaded yet.')
                 image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + student.image_id,
