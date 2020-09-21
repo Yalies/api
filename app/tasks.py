@@ -120,6 +120,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     watermark_mask = Image.open('app/res/watermark_mask.png')
 
     image_uploader = ImageUploader()
+    print('Already hosting {} images.'.format(len(image_uploader.image_ids)))
 
     # Clear all students
     Student.query.delete()
