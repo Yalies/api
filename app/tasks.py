@@ -3,6 +3,7 @@ from app.models import Student
 from .s3 import upload_image
 
 from PIL import Image
+from io import BytesIO
 import os
 import requests
 import re
@@ -124,18 +125,22 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
         if student.image_id:
             image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + student.image_id,
-                                   headers=headers)
+                                   headers={
+                                       'Cookie': face_book_cookie,
+                                   },
+                                   stream=True)
             image_r.raw.decode_content = True
-            im = Image.open(response.raw)
+            im = Image.open(image_r.raw)
 
             # Paste mask over watermark
             im.paste(watermark_mask, (0, 0), watermark_mask)
 
             output = BytesIO()
-            image.save(output, format='JPEG', mode='RGB')
+            im.save(output, format='JPEG', mode='RGB')
 
             image_url = upload_image(student.image_id, output)
             print(image_url)
+            return
 
         student.surname, student.forename = clean_name(container.find('h5', {'class': 'yalehead'}).text)
         student.year = clean_year(container.find('div', {'class': 'student_year'}).text)

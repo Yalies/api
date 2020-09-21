@@ -13,14 +13,17 @@ s3 = boto3.client(
    aws_secret_access_key=S3_SECRET_ACCESS_KEY,
 )
 
-def upload_image(image_id, file):
+def upload_image(image_id, f):
+    filename = f'{image_id}.jpg'
+    print('Uploading image %s with size %d bytes.' % (filename, f.getbuffer().nbytes))
+    f.seek(0)
     s3.upload_fileobj(
-        file,
+        f,
         S3_BUCKET_NAME,
-        f'{image_id}.jpg',
+        filename,
         ExtraArgs={
             'ACL': 'public-read',
-            'ContentType': file.content_type
+            'ContentType': 'image/jpeg',
         }
     )
-    return '{}{}'.format(app.config['S3_LOCATION'], file.filename)
+    return '{}{}'.format(S3_LOCATION, filename)
