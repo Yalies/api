@@ -79,8 +79,8 @@ def clean_image_id(image_src):
 
 def clean_name(name):
     print('Parsing ' + name)
-    forename, surname = name.strip().split(', ', 1)
-    return forename, surname
+    first_name, last_name = name.strip().split(', ', 1)
+    return first_name, last_name
 
 
 def clean_year(year):
@@ -91,7 +91,7 @@ def clean_year(year):
 
 
 def guess_email(student):
-    return (student.forename + '.' + student.surname).replace(' ', '').lower() + '@yale.edu'
+    return (student.first_name + '.' + student.last_name).replace(' ', '').lower() + '@yale.edu'
 
 
 def parse_address(address):
@@ -143,7 +143,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
             student.image = upload_image(student.image_id, output)
 
-        student.surname, student.forename = clean_name(container.find('h5', {'class': 'yalehead'}).text)
+        student.last_name, student.first_name = clean_name(container.find('h5', {'class': 'yalehead'}).text)
         student.year = clean_year(container.find('div', {'class': 'student_year'}).text)
         pronoun = container.find('div', {'class': 'student_info_pronoun'}).text
         student.pronoun = pronoun if pronoun else None
@@ -192,7 +192,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         student.address = '\n'.join(trivia)
         student.state = parse_address(student.address)
 
-        directory_entry = directory.person(first_name=student.forename, last_name=student.surname)
+        directory_entry = directory.person(first_name=student.first_name, last_name=student.last_name)
         if directory_entry is not None:
             student.netid = directory_entry.netid
             student.upi = directory_entry.upi

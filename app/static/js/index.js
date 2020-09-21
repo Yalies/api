@@ -118,7 +118,7 @@ submit.onclick = function() {
                 studentContainer.appendChild(img);
                 let name = document.createElement('h3');
                 name.className = 'name';
-                name.textContent = student.surname + ', ' + student.forename;
+                name.textContent = student.last_name + ', ' + student.first_name;
                 if (student.netid) {
                     let netid = document.createElement('span');
                     netid.className = 'netid';

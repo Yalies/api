@@ -50,14 +50,14 @@ class User(db.Model):
 
 class Student(db.Model):
     __tablename__ = 'students'
-    __searchable__ = ['forename', 'surname', 'netid', 'college', 'email', 'residence', 'major', 'address']
+    __searchable__ = ['first_name', 'last_name', 'netid', 'college', 'email', 'residence', 'major', 'address']
     _to_exclude = ()
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     netid = db.Column(db.String)
     upi = db.Column(db.Integer)
-    forename = db.Column(db.String, nullable=False)
-    surname = db.Column(db.String, nullable=False)
+    first_name = db.Column(db.String, nullable=False)
+    last_name = db.Column(db.String, nullable=False)
     image_id = db.Column(db.Integer)
     image = db.Column(db.String)
     year = db.Column(db.Integer)
