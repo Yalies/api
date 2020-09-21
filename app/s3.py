@@ -13,6 +13,7 @@ s3 = boto3.client(
    aws_secret_access_key=S3_SECRET_ACCESS_KEY,
 )
 
+
 def upload_image(image_id, f):
     filename = f'{image_id}.jpg'
     print('Uploading image %s with size %d bytes.' % (filename, f.getbuffer().nbytes))
@@ -27,3 +28,9 @@ def upload_image(image_id, f):
         }
     )
     return '{}{}'.format(S3_LOCATION, filename)
+
+
+def get_image_ids():
+    objs = s3.list_objects(Bucket=S3_BUCKET_NAME)
+    image_ids = {int(obj['Key'].rstrip('.jpg')) for obj in objs['Contents']}
+    return image_ids
