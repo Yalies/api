@@ -17,8 +17,11 @@ class ImageUploader:
         self.image_ids = self.get_image_ids()
 
     def get_image_ids(self):
-        objs = self.s3.list_objects(Bucket=S3_BUCKET_NAME)
-        image_ids = {int(obj['Key'].rstrip('.jpg')) for obj in objs['Contents']}
+        paginator = self.s3.get_paginator('list_objects')
+        page_iterator = paginator.paginate(Bucket=S3_BUCKET_NAME)
+        image_ids = set()
+        for page in page_iterator:
+            image_ids.update({int(obj['Key'].rstrip('.jpg')) for obj in page['Contents']})
         return image_ids
 
     def get_file_url(self, filename):
