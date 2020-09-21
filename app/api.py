@@ -32,23 +32,23 @@ def internal(error):
 def check_token():
     if request.method != 'OPTIONS':
         if cas.username:
-            g.me = User.query.get(cas.username)
+            g.user = User.query.get(cas.username)
         else:
             token = request.headers.get('Authorization')
             if not token:
                 return fail('No token provided.')
             token = token.split(' ')[-1]
-            g.me = User.from_token(token)
-            if g.me is None:
+            g.user = User.from_token(token)
+            if g.user is None:
                 abort(401)
-        g.me.last_seen = int(time.time())
+        g.user.last_seen = int(time.time())
         db.session.commit()
-        print('User: ' + g.me.username)
+        print('User: ' + g.user.username)
         g.json = request.get_json()
 
 
 @api_bp.route('/students', methods=['POST'])
 def api_students():
-    criteria = request.get_json()
+    criteria = g.json
     students = Student.search(criteria)
     return to_json(students)
