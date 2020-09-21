@@ -1,6 +1,6 @@
-# [👥 YaleStudents]()
+# [👥 Yalies]()
 
-> A web API for fetching data on students in Yale College.
+> A website and API for getting information on students at Yale College.
 
 ## License
 [MIT](LICENSE)
