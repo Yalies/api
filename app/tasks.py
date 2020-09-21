@@ -127,6 +127,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     for container in containers:
         student = Student()
 
+        student.last_name, student.first_name = clean_name(container.find('h5', {'class': 'yalehead'}).text)
         student.image_id = clean_image_id(container.find('img')['src'])
 
         if student.image_id:
@@ -151,7 +152,6 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
                 student.image = image_uploader.upload_image(student.image_id, output)
 
-        student.last_name, student.first_name = clean_name(container.find('h5', {'class': 'yalehead'}).text)
         student.year = clean_year(container.find('div', {'class': 'student_year'}).text)
         pronoun = container.find('div', {'class': 'student_info_pronoun'}).text
         student.pronoun = pronoun if pronoun else None
