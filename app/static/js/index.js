@@ -111,7 +111,7 @@ submit.onclick = function() {
                 let img = document.createElement('img');
                 img.className = 'image';
                 if (student.image_id) {
-                    img.src = 'https://students.yale.edu/facebook/Photo?id=' + student.image_id;
+                    img.src = student.image;
                 } else {
                     img.src = '/static/images/user.png';
                 }
