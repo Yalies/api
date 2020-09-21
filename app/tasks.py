@@ -123,7 +123,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
         student.image_id = clean_image_id(container.find('img')['src'])
 
-        if student.image_id:
+        if student.image_id is not None and student.image_id != 0:
             image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + student.image_id,
                                    headers={
                                        'Cookie': face_book_cookie,
