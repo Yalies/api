@@ -44,11 +44,10 @@ def check_token():
         g.user.last_seen = int(time.time())
         db.session.commit()
         print('User: ' + g.user.username)
-        g.json = request.get_json()
 
 
 @api_bp.route('/students', methods=['POST'])
 def api_students():
-    criteria = g.json
+    criteria = request.get_json()
     students = Student.search(criteria)
     return to_json(students)
