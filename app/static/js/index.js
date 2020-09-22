@@ -39,6 +39,13 @@ let query = document.getElementById('query'),
     sections = document.getElementsByTagName('section'),
     warning = document.getElementById('warning');
 
+query.onkeyup = function(e) {
+    if (e.keyCode === 13) {
+        e.preventDefault();
+        submit.click();
+    }
+};
+
 function addRow(container, property, icon, student, protocol) {
     let value = student[property];
     if (value) {
