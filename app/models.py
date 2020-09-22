@@ -97,5 +97,9 @@ class Student(db.Model):
                 if not isinstance(filters[category], list):
                     return None
                 student_query = student_query.filter(getattr(Student, category).in_(filters[category]))
-        students = student_query.all()
+        page = criteria.get('page')
+        if page:
+            students = student_query.paginate(page, app.config['PAGE_SIZE'], False)
+        else:
+            students = student_query.all()
         return students

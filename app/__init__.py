@@ -15,6 +15,7 @@ celery.conf.update(app.config)
 cors = CORS(app)
 db = SQLAlchemy(app)
 whooshee = Whooshee(app)
+whooshee.reindex()
 migrate = Migrate(app, db)
 cas = CAS(app)
 
