@@ -6,7 +6,6 @@
     <button id="submit"><i class="fa fa-search"></i></button>
     <a href="/credentials">Get API token</a>
     <div>
-        <h3>Filters:</h3>
         {% with name = "college", items = colleges %}{% include "_section.html" %}{% endwith %}
         {% with name = "year", items = years, default = "Other" %}{% include "_section.html" %}{% endwith %}
         {% with name = "leave", items = leave, header = "On leave?" %}{% include "_section.html" %}{% endwith %}
