@@ -8,7 +8,7 @@ import datetime
 import time
 
 
-with open('app/res/majors.txt') as f:
+with open('app/res/majors_clean.txt') as f:
     majors = f.read().splitlines()
 states = {}
 with open('app/res/states.txt') as f:
