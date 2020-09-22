@@ -119,7 +119,7 @@ submit.onclick = function() {
 
                 let img = document.createElement('img');
                 img.className = 'image';
-                if (student.image_id) {
+                if (student.image) {
                     img.src = student.image;
                 } else {
                     img.src = '/static/images/user.png';
@@ -128,13 +128,25 @@ submit.onclick = function() {
                 let name = document.createElement('h3');
                 name.className = 'name';
                 name.textContent = student.last_name + ', ' + student.first_name;
-                if (student.netid) {
-                    let netid = document.createElement('span');
-                    netid.className = 'netid';
-                    netid.textContent = '[' + student.netid + ']';
-                    name.appendChild(netid);
-                }
                 studentContainer.appendChild(name);
+
+                if (student.netid || student.upi) {
+                    let pills = document.createElement('div');
+                    pills.className = 'pills';
+                    if (student.netid) {
+                        let pill = document.createElement('div');
+                        pill.className = 'pill';
+                        pill.textContent = 'NetID ' + student.netid;
+                        pills.appendChild(pill);
+                    }
+                    if (student.upi) {
+                        let pill = document.createElement('div');
+                        pill.className = 'pill';
+                        pill.textContent = 'UPI ' + student.upi;
+                        pills.appendChild(pill);
+                    }
+                    studentContainer.appendChild(pills);
+                }
                 addRow(studentContainer, 'year', 'calendar', student);
                 if (student.leave) {
                     let row = document.createElement('div');
