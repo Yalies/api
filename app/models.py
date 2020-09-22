@@ -1,4 +1,4 @@
-from app import app, db
+from app import app, db, whooshee
 import jwt
 import datetime
 
@@ -83,7 +83,7 @@ class Student(db.Model):
         student_query = Student.query
         query = criteria.get('query')
         if query:
-            student_query = student_query.whoosh_search(query)
+            student_query = student_query.whooshee_search(query)
         filters = criteria.get('filters')
         if filters:
             for category in filters:
