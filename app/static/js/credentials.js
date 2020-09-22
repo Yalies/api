@@ -14,9 +14,6 @@ reset_token.onclick = function(e) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            'filters': filters,
-        }),
     })
         .then(response => response.json())
         .then(json => {
