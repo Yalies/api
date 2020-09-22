@@ -39,6 +39,7 @@ h3 {
 p {
     margin: 5px 0 5px;
     max-width: 6.5in;
+    line-height: 1.5;
 }
 a {
     color: inherit;
