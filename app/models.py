@@ -83,7 +83,11 @@ class Student(db.Model):
         student_query = Student.query
         query = criteria.get('query')
         if query:
-            student_query = student_query.whooshee_search(query)
+            try:
+                student_query = student_query.whooshee_search(query)
+            except ValueError:
+                # String under character limit
+                return []
         filters = criteria.get('filters')
         if filters:
             for category in filters:
