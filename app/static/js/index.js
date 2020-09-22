@@ -34,7 +34,8 @@ onchange = function(e) {
     }
 };
 
-let submit = document.getElementById('submit'),
+let query = document.getElementById('query'),
+    submit = document.getElementById('submit'),
     sections = document.getElementsByTagName('section'),
     warning = document.getElementById('warning');
 
@@ -97,6 +98,7 @@ submit.onclick = function() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+            'query': query.value,
             'filters': filters,
         }),
     })
