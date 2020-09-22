@@ -43,9 +43,112 @@ p {
 a {
     color: inherit;
 }
-#warning {
-    color: #D5202F;
+
+section {
+    margin-top: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+    border: solid 1px lightgray;
 }
+section h4::after {
+    content: '';
+    vertical-align: middle;
+    border: solid 4px transparent;
+    border-bottom-width: 0px;
+    border-top: solid 4px currentColor;
+    display: inline-block;
+    transform: rotateX(180deg);
+    transition: transform 0.5s;
+}
+section.collapsed h4::after {
+    transform: rotateX(0);
+    transition: transform 0.5s;
+}
+section.collapsed {
+
+}
+section.collapsed label {
+    display: none;
+}
+
+#output > div {
+  width: 3in;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 10px 10px 0;
+  text-align: left;
+}
+
+#output > div h3 {
+
+}
+#output > div h3 .netid {
+    font-size: 70%;
+    margin-left: 5px;
+    vertical-align: 2px;
+}
+#output > div > div > * {
+    display: inline-block;
+    vertical-align: top;
+}
+#output > div > div > i {
+    margin-top: 7px;
+    width: 20px;
+}
+#output > div > div > p {
+    max-width: 80%;
+}
+
+#output img {
+    width: 100px;
+    height: 120px;
+}
+.row {
+
+}
+.row.leave {
+    color: #00d018;
+}
+
+label {
+    display: block;
+}
+input[type="text"],
+button, .button,
+textarea {
+    font: inherit;
+}
+input[type="text"] {
+    padding: 7px 10px;
+    border: solid 1px lightgray;
+}
+button, .button {
+    padding: 8px 10px;
+    border: none;
+    background: #00356b;
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+button.success, .button.success {
+    background: #38e128;
+}
+button.fail, .button.fail {
+    background: #f20000;
+}
+textarea {
+    max-width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    overflow: visible;
+    border: solid 1px lightgray;
+    resize: none;
+    display: block;
+}
+
 footer {
     margin-top: 10px;
     font-size: 10px;
