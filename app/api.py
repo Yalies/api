@@ -40,7 +40,7 @@ def check_token():
             token = token.split(' ')[-1]
             g.user = User.from_token(token)
             if g.user is None:
-                abort(401)
+                return fail('Invalid token.', code=401)
         g.user.last_seen = int(time.time())
         db.session.commit()
         print('User: ' + g.user.username)
