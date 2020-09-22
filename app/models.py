@@ -48,9 +48,9 @@ class User(db.Model):
             return None
 
 
+@whooshee.register_model('first_name', 'last_name', 'netid', 'college', 'email', 'residence', 'major', 'address')
 class Student(db.Model):
     __tablename__ = 'students'
-    __searchable__ = ['first_name', 'last_name', 'netid', 'college', 'email', 'residence', 'major', 'address']
     _to_exclude = ()
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
