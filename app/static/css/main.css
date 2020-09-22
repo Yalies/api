@@ -73,16 +73,15 @@ section.collapsed label {
     display: none;
 }
 
-#output > div {
-  width: 3in;
-  display: inline-block;
-  vertical-align: top;
-  margin: 0 10px 10px 0;
-  text-align: left;
+#controls {
+    margin-bottom: 20px;
 }
-
-#output > div h3 {
-
+#output > div {
+    width: 3in;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 10px 10px 0;
+    text-align: left;
 }
 #output > div h3 .netid {
     font-size: 70%;
@@ -104,9 +103,6 @@ section.collapsed label {
 #output img {
     width: 100px;
     height: 120px;
-}
-.row {
-
 }
 .row.leave {
     color: #00d018;
