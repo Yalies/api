@@ -129,6 +129,8 @@ function loadNextPage() {
     }
 }
 
+loadNextPage();
+
 function addRow(container, property, icon, student, protocol) {
     let value = student[property];
     if (value) {
@@ -200,3 +202,9 @@ onclick = function(e) {
         section.classList.toggle('collapsed');
     }
 };
+
+window.onscroll = function(e) {
+    if (2 * window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        loadNextPage();
+    }
+}
