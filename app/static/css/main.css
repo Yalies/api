@@ -45,9 +45,12 @@ a {
     color: inherit;
 }
 
+#submit {
+    margin-left: 4px;
+}
 section {
-    margin-top: 10px;
-    margin-right: 10px;
+    margin-top: 8px;
+    margin-right: 4px;
     display: inline-block;
     vertical-align: top;
     padding: 10px;
