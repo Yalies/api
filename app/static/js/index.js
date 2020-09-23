@@ -207,5 +207,7 @@ onclick = function(e) {
 window.onscroll = function(e) {
     if (2 * window.innerHeight + window.scrollY >= document.body.offsetHeight) {
         loadNextPage();
+        // Temporarily set so that we won't load tons of pages at once
+        pagesFinished = false;
     }
 }
