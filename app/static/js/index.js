@@ -46,6 +46,89 @@ query.onkeyup = function(e) {
     }
 };
 
+let criteria = {};
+let pagesLoaded = 0;
+let pagesFinished = false;
+
+function loadNextPage() {
+    if (!pagesFinished) {
+        criteria['page'] = ++pagesLoaded;
+        fetch('/api/students', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(criteria),
+        })
+            .then(response => response.json())
+            .then(students => {
+                console.log(students);
+                pagesFinished = (students.length < 20);
+                for (let student of students) {
+                    let studentContainer = document.createElement('div');
+                    studentContainer.className = 'student';
+
+                    let img = document.createElement('img');
+                    img.className = 'image';
+                    if (student.image) {
+                        img.src = student.image;
+                    } else {
+                        img.src = '/static/images/user.png';
+                    }
+                    studentContainer.appendChild(img);
+                    let name = document.createElement('h3');
+                    name.className = 'name';
+                    name.textContent = student.last_name + ', ' + student.first_name;
+                    studentContainer.appendChild(name);
+
+                    if (student.netid || student.upi) {
+                        let pills = document.createElement('div');
+                        pills.className = 'pills';
+                        if (student.netid) {
+                            let pill = document.createElement('div');
+                            pill.className = 'pill';
+                            pill.textContent = 'NetID ' + student.netid;
+                            pills.appendChild(pill);
+                        }
+                        if (student.upi) {
+                            let pill = document.createElement('div');
+                            pill.className = 'pill';
+                            pill.textContent = 'UPI ' + student.upi;
+                            pills.appendChild(pill);
+                        }
+                        studentContainer.appendChild(pills);
+                    }
+                    addRow(studentContainer, 'year', 'calendar', student);
+                    if (student.leave) {
+                        let row = document.createElement('div');
+                        row.classList.add('row');
+                        row.classList.add('leave');
+                        let i = document.createElement('i');
+                        i.className = 'fa fa-' + 'hourglass';
+                        row.appendChild(i);
+                        let readout = document.createElement('p');
+                        readout.classList.add('value');
+                        readout.classList.add('leave');
+                        readout.textContent = 'On Leave';
+                        row.appendChild(readout);
+
+                        studentContainer.appendChild(row);
+                    }
+                    addRow(studentContainer, 'college', 'graduation-cap', student);
+                    addRow(studentContainer, 'email', 'envelope', student, 'mailto');
+                    addRow(studentContainer, 'residence', 'building', student);
+                    addRow(studentContainer, 'major', 'book', student);
+                    addRow(studentContainer, 'phone', 'phone', student, 'tel');
+                    addRow(studentContainer, 'birthday', 'birthday-cake', student);
+                    addRow(studentContainer, 'access_code', 'key', student);
+                    addRow(studentContainer, 'address', 'home', student);
+
+                    output.appendChild(studentContainer);
+                }
+            });
+    }
+}
+
 function addRow(container, property, icon, student, protocol) {
     let value = student[property];
     if (value) {
@@ -98,84 +181,15 @@ submit.onclick = function() {
             }
         }
     }
-    console.log(filters);
-    fetch('/api/students', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            'query': query.value,
-            'filters': filters,
-        }),
-    })
-        .then(response => response.json())
-        .then(students => {
-            console.log(students);
-            output.innerHTML = '';
-            for (let student of students) {
-                let studentContainer = document.createElement('div');
-                studentContainer.className = 'student';
-
-                let img = document.createElement('img');
-                img.className = 'image';
-                if (student.image) {
-                    img.src = student.image;
-                } else {
-                    img.src = '/static/images/user.png';
-                }
-                studentContainer.appendChild(img);
-                let name = document.createElement('h3');
-                name.className = 'name';
-                name.textContent = student.last_name + ', ' + student.first_name;
-                studentContainer.appendChild(name);
-
-                if (student.netid || student.upi) {
-                    let pills = document.createElement('div');
-                    pills.className = 'pills';
-                    if (student.netid) {
-                        let pill = document.createElement('div');
-                        pill.className = 'pill';
-                        pill.textContent = 'NetID ' + student.netid;
-                        pills.appendChild(pill);
-                    }
-                    if (student.upi) {
-                        let pill = document.createElement('div');
-                        pill.className = 'pill';
-                        pill.textContent = 'UPI ' + student.upi;
-                        pills.appendChild(pill);
-                    }
-                    studentContainer.appendChild(pills);
-                }
-                addRow(studentContainer, 'year', 'calendar', student);
-                if (student.leave) {
-                    let row = document.createElement('div');
-                    row.classList.add('row');
-                    row.classList.add('leave');
-                    let i = document.createElement('i');
-                    i.className = 'fa fa-' + 'hourglass';
-                    row.appendChild(i);
-                    let readout = document.createElement('p');
-                    readout.classList.add('value');
-                    readout.classList.add('leave');
-                    readout.textContent = 'On Leave';
-                    row.appendChild(readout);
-
-                    studentContainer.appendChild(row);
-                }
-                addRow(studentContainer, 'college', 'graduation-cap', student);
-                addRow(studentContainer, 'email', 'envelope', student, 'mailto');
-                addRow(studentContainer, 'residence', 'building', student);
-                addRow(studentContainer, 'major', 'book', student);
-                addRow(studentContainer, 'phone', 'phone', student, 'tel');
-                addRow(studentContainer, 'birthday', 'birthday-cake', student);
-                addRow(studentContainer, 'access_code', 'key', student);
-                addRow(studentContainer, 'address', 'home', student);
-
-                output.appendChild(studentContainer);
-            }
-        });
-}
+    criteria = {
+        'query': query.value,
+        'filters': filters,
+    };
+    output.innerHTML = '';
+    pagesLoaded = 0;
+    pagesFinished = false;
+    loadNextPage();
+};
 
 onclick = function(e) {
     let section = null;
@@ -185,4 +199,4 @@ onclick = function(e) {
     if (section) {
         section.classList.toggle('collapsed');
     }
-}
+};
