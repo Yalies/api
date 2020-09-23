@@ -6,12 +6,15 @@ let body = document.body,
     sections = document.getElementsByTagName('section'),
     output = document.getElementById('output');
 
-for (let checkbox of checkboxes) {
-    checkbox.checked = false;
+function resetFilters() {
+    for (let checkbox of checkboxes) {
+        checkbox.checked = false;
+    }
+    for (let checkbox of allCheckboxes) {
+        checkbox.checked = true;
+    }
 }
-for (let checkbox of allCheckboxes) {
-    checkbox.checked = true;
-}
+resetFilters();
 
 onchange = function(e) {
     let input = e.target;
