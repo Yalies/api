@@ -1,6 +1,9 @@
 let body = document.body,
     checkboxes = document.querySelectorAll('input[type="checkbox"]'),
     allCheckboxes = document.querySelectorAll('input[type="checkbox"][name$="-all"]'),
+    query = document.getElementById('query'),
+    submit = document.getElementById('submit'),
+    sections = document.getElementsByTagName('section'),
     output = document.getElementById('output');
 
 for (let checkbox of checkboxes) {
@@ -33,11 +36,6 @@ onchange = function(e) {
         }
     }
 };
-
-let query = document.getElementById('query'),
-    submit = document.getElementById('submit'),
-    sections = document.getElementsByTagName('section'),
-    warning = document.getElementById('warning');
 
 query.onkeyup = function(e) {
     if (e.keyCode === 13) {
