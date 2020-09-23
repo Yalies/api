@@ -99,7 +99,7 @@ class Student(db.Model):
                 student_query = student_query.filter(getattr(Student, category).in_(filters[category]))
         page = criteria.get('page')
         if page:
-            students = student_query.paginate(page, app.config['PAGE_SIZE'], False)
+            students = student_query.paginate(page, app.config['PAGE_SIZE'], False).items
         else:
             students = student_query.all()
         return students
