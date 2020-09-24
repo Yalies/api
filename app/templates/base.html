@@ -30,9 +30,13 @@
                 <h2 id="logo">Yalies</h2>
             </a>
             <nav>
-                <a href="/">Students</a>
-                <a href="/about">About</a>
+                <a href="/">Home</a>
+                //
                 <a href="/credentials">API</a>
+                {% if not unauthenticated %}
+                //
+                <a href="/logout">Log out</a>
+                {% endif %}
             </nav>
         </header>
         <main>

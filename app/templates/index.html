@@ -4,7 +4,6 @@
 <div id="controls">
     <input type="text" id="query" placeholder="Search">
     <button id="submit"><i class="fa fa-search"></i></button>
-    <a href="/credentials">Get API token</a>
     <div>
         {% with name = "college", items = colleges %}{% include "_section.html" %}{% endwith %}
         {% with name = "year", items = years, default = "Other" %}{% include "_section.html" %}{% endwith %}
@@ -14,6 +13,5 @@
 </div>
 <div id="output">
 </div>
-<a href="/logout">Log out</a>
 <script src="/static/js/index.js"></script>
 {% endblock %}
