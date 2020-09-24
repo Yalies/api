@@ -1,6 +1,6 @@
-const readout_token = document.getElementById("readout_token"),
-      copy_token = document.getElementById("copy_token"),
-      reset_token = document.getElementById("reset_token");
+const readout_token = document.getElementById('readout_token'),
+      copy_token = document.getElementById('copy_token'),
+      reset_token = document.getElementById('reset_token');
 
 
 copy_token.onclick = function(e) {
