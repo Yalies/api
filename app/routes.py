@@ -100,14 +100,6 @@ def index():
                            #building_codes=building_codes, entryways=entryways, floors=floors, suites=suites, rooms=rooms, states=states
 
 
-@app.route('/query', methods=['POST'])
-@login_required
-def query():
-    filters = request.get_json()
-    students = Student.search(filters)
-    return jsonify([student.email for student in students if student.email])
-
-
 @app.route('/scraper', methods=['GET', 'POST'])
 @login_required
 def scraper():
