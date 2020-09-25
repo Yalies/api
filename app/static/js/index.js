@@ -165,7 +165,14 @@ function addRow(container, property, icon, student, protocol) {
     }
 }
 
+function collapseAllSections() {
+    for (let section of sections) {
+        section.classList.add('collapsed');
+    }
+}
+
 submit.onclick = function() {
+    collapseAllSections();
     let filters = {};
     for (let section of sections) {
         let category = section.id;
