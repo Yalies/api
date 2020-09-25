@@ -25,5 +25,7 @@
 </pre>
 <p>This payload would fetch the first page of students in Grace Hopper or Davenport college, in the classes of 2023 or 2024, who live on floor 3 of their residential building, are on a leave of absence, and have a name, address, or other property that contains the search term "Joe".</p>
 <p>The following filters are supported: <code>college</code>, <code>year</code>, <code>major</code>, <code>building_code</code>, <code>entryway</code>, <code>floor</code>, <code>suite</code>, <code>room</code>, <code>state</code>, and <code>leave</code>.</p>
+<h3>Authentication</h3>
+<p>You must pass in the header <code>Authorization</code>, with a value of <code>Bearer _______</code> (replacing the underscores with the token obtained from the top of this page).</p>
 <script src="/static/js/token.js"></script>
 {% endblock %}
