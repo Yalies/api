@@ -112,11 +112,15 @@ def scraper():
     return '', 200
 
 
-@app.route('/credentials', methods=['GET', 'POST'])
+@app.route('/apidocs')
 @login_required
-def credentials():
-    if request.method == 'GET':
-        return render_template('credentials.html')
+def apidocs():
+    return render_template('apidocs.html')
+
+
+@app.route('/token', methods=['POST'])
+@login_required
+def get_token():
     token, expires_in = g.user.generate_token()
     return jsonify({'token': token, 'expires_in': expires_in})
 
