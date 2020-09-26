@@ -59,9 +59,15 @@ section {
     margin-top: 8px;
     display: inline-block;
     vertical-align: top;
-    padding: 10px;
+    padding: 10px 12px;
     border: solid 1px lightgray;
     border-radius: 20px;
+    font-weight: 100;
+}
+section.active {
+    border-color: #00356b;
+    border-width: 2px;
+    padding: 9px 11px;
 }
 section h4::after {
     content: '';
