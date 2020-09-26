@@ -35,7 +35,10 @@ onchange = function(e) {
             } else {
                 let anyChecked = false;
                 for (let checkbox of otherCheckboxes) {
-                    anyChecked = anyChecked || checkbox.checked;
+                    if (checkbox.checked) {
+                        anyChecked = true;
+                        break;
+                    }
                 }
                 section.classList.toggle('active', anyChecked);
                 allCheckbox.checked = !anyChecked;
