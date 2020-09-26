@@ -48,16 +48,20 @@ a {
     color: inherit;
 }
 
+input[type="text"] {
+    border-radius: 20px;
+    outline: 0;
+}
 #submit {
-    margin-left: 4px;
+    border-radius: 20px;
 }
 section {
     margin-top: 8px;
-    margin-right: 4px;
     display: inline-block;
     vertical-align: top;
     padding: 10px;
     border: solid 1px lightgray;
+    border-radius: 20px;
 }
 section h4::after {
     content: '';
