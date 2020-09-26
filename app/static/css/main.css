@@ -29,6 +29,9 @@ header img {
     vertical-align: top;
     display: inline-block;
 }
+header #logo {
+    text-decoration: none;
+}
 h2 {
     font-size: 40px;
     display: inline-block;
