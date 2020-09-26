@@ -22,18 +22,22 @@ onchange = function(e) {
         let checked = input.checked;
         let otherCheckboxes = Array.from(input.parentElement.parentElement.getElementsByTagName('input'));
         let allCheckbox = otherCheckboxes.shift();
+        let section = input.parentElement.parentElement;
         if (input == allCheckbox) {
+            section.classList.toggle('active', !checked);
             for (let checkbox of otherCheckboxes) {
                 checkbox.checked = !checked;
             }
         } else {
             if (checked) {
+                section.classList.remove('active');
                 allCheckbox.checked = false;
             } else {
                 let anyChecked = false;
                 for (let checkbox of otherCheckboxes) {
                     anyChecked = anyChecked || checkbox.checked;
                 }
+                section.classList.toggle('active', anyChecked);
                 allCheckbox.checked = !anyChecked;
             }
         }
