@@ -215,6 +215,8 @@ submit.onclick = function() {
                 if (checkbox.checked) {
                     if (category === 'leave' || category === 'eli_whitney') {
                         filters[category].push(checkbox.name === 'Yes');
+                    } else if (category == 'year') {
+                        filters[category].push(parseInt(checkbox.name));
                     } else {
                         filters[category].push(checkbox.name);
                     }
