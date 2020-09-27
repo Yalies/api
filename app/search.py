@@ -22,9 +22,9 @@ def query_index(index, query):
     search = elasticsearch.search(
         index=index,
         body={
+            'from': 0,
+            'size': 10_000,
             'query': {
-                'from': 0,
-                'size': 10_000,
                 'multi_match': {
                     'query': query,
                     'type': 'cross_fields',
