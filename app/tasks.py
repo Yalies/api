@@ -84,8 +84,19 @@ def clean_year(year):
     return 2000 + int(year)
 
 
-def guess_email(student):
-    return (student.first_name + '.' + student.last_name).replace(' ', '').lower() + '@yale.edu'
+def get_directory_entry(student):
+    query = {
+        'first_name': student.first_name,
+        'last_name': student.last_name,
+        'school': 'YC'
+    }
+    if student.email:
+        query['email'] = student.email
+    people = directory.people(**query)
+    print('Found %d matching people in directory.' % len(people))
+    if not people:
+        return None
+    return people[0]
 
 
 @celery.task
@@ -181,7 +192,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
         student.address = '\n'.join(trivia)
 
-        directory_entry = directory.person(first_name=student.first_name, last_name=student.last_name)
+        directory_entry = get_directory_entry(student)
         if directory_entry is not None:
             student.netid = directory_entry.netid
             student.upi = directory_entry.upi
