@@ -1,14 +1,8 @@
 const readout_token = document.getElementById('readout_token'),
-      copy_token = document.getElementById('copy_token'),
-      reset_token = document.getElementById('reset_token');
+      get_token = document.getElementById('get_token');
 
 
-copy_token.onclick = function(e) {
-    readout_token.select();
-    document.execCommand('copy');
-}
-
-reset_token.onclick = function(e) {
+get_token.onclick = function(e) {
     fetch('/token', {
         method: 'POST',
         headers: {
@@ -18,6 +12,8 @@ reset_token.onclick = function(e) {
         .then(response => response.json())
         .then(json => {
             readout_token.value = json.token;
+            readout_token.select();
+            document.execCommand('copy');
         });
 };
 

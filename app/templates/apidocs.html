@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="token">
-    <input type="text" id="readout_token" value="{{ token }}" readonly>
-    <button id="copy_token">Copy</button>
-    <button id="reset_token">Get token</button>
-</div>
 <h1>API documentation</h1>
+<div id="token">
+    <button id="get_token">Get token</button>
+    <input type="text" id="readout_token" value="{{ token }}" readonly>
+</div>
 <p>For now, the API has one endpoint: <code>POST https://yalies.io/api/students</code>. The endpoint returns a JSON list of students. It accepts a JSON-formatted body containing the properties <code>query</code>, <code>filters</code>, and <code>page</code>. <code>query</code> represents an arbitrary string to search by, which will search across most fields of student data. <code>filters</code> is a dictionary mapping column names to lists of acceptable values. <code>page</code> represents the number of the page of students to get, which may allow you to improve request efficiency if you do not need to fetch every student at once. For example:</p>
 <pre>
 {
