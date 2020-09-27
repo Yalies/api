@@ -1,7 +1,7 @@
-from app import app, db, whooshee
+from app import app, db
+from app.search import SearchableMixin
 import jwt
 import datetime
-from app.search import SearchableMixin
 
 
 class User(db.Model):
