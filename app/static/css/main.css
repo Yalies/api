@@ -22,7 +22,7 @@ body {
     border-top-color: #00356b;
 }
 header {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 header img {
     height: 52px;
@@ -81,7 +81,7 @@ section.collapsed label {
 }
 
 #controls {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 #output > div {
     width: 3in;
@@ -142,7 +142,7 @@ input[type="text"] {
     border: solid 1px lightgray;
 }
 button, .button {
-    padding: 8px 10px;
+    padding: 8px 12px;
     border: none;
     background: #00356b;
     display: inline-block;
@@ -164,6 +164,9 @@ textarea {
     border: solid 1px lightgray;
     resize: none;
     display: block;
+}
+#submit {
+    padding: 8px 10px;
 }
 #token {
     margin: 10px 0;
