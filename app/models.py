@@ -87,7 +87,7 @@ class Student(SearchableMixin, db.Model):
         filters = criteria.get('filters')
         page = criteria.get('page')
         if query:
-            student_query, count = Student.query_search(query, 1, 10_000)
+            student_query, count = Student.query_search(query)
         if filters:
             for category in filters:
                 if category not in ('college', 'year', 'major', 'building_code',

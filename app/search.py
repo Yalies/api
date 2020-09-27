@@ -16,7 +16,7 @@ def remove_from_index(index, model):
     elasticsearch.delete(index=index, id=model.id)
 
 
-def query_index(index, query, page, per_page):
+def query_index(index, query):
     if not elasticsearch:
         return [], 0
     search = elasticsearch.search(
@@ -30,8 +30,6 @@ def query_index(index, query, page, per_page):
                     'fields': ['*']
                 }
             },
-            'from': (page - 1) * per_page,
-            'size': per_page
         })
     ids = [int(hit['_id']) for hit in search['hits']['hits']]
     return ids, search['hits']['total']['value']
@@ -39,8 +37,8 @@ def query_index(index, query, page, per_page):
 
 class SearchableMixin:
     @classmethod
-    def query_search(cls, expression, page, per_page):
-        ids, total = query_index(cls.__tablename__, expression, page, per_page)
+    def query_search(cls, expression):
+        ids, total = query_index(cls.__tablename__, expression)
         if total == 0:
             return cls.query.filter_by(id=0), 0
         when = []
