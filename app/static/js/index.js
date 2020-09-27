@@ -130,6 +130,21 @@ function loadNextPage() {
 
                         studentContainer.appendChild(row);
                     }
+                    if (student.eli_whitney) {
+                        let row = document.createElement('div');
+                        row.classList.add('row');
+                        row.classList.add('leave');
+                        let i = document.createElement('i');
+                        i.className = 'fa fa-' + 'history';
+                        row.appendChild(i);
+                        let readout = document.createElement('p');
+                        readout.classList.add('value');
+                        readout.classList.add('leave');
+                        readout.textContent = 'Eli Whitney Program';
+                        row.appendChild(readout);
+
+                        studentContainer.appendChild(row);
+                    }
                     addRow(studentContainer, 'college', 'graduation-cap', student);
                     addRow(studentContainer, 'email', 'envelope', student, 'mailto');
                     addRow(studentContainer, 'residence', 'building', student);
