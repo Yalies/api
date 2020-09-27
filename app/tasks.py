@@ -97,7 +97,8 @@ def get_directory_entry(directory, student):
     people = directory.people(**query)
     print('Found %d matching people in directory.' % len(people))
     if not people:
-        return None
+        # If nothing found, do a broader search and return first result
+        return directory.person(first_name=student.first_name, last_name=student.last_name)
     return people[0]
 
 
