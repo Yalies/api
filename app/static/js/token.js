@@ -14,6 +14,10 @@ get_token.onclick = function(e) {
             readout_token.value = json.token;
             readout_token.select();
             document.execCommand('copy');
+            get_token.textContent = 'Copied!';
+            setTimeout(function() {
+                get_token.textContent = 'Get token';
+            }, 1500);
         });
 };
 
