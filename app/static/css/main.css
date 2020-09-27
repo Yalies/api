@@ -52,9 +52,6 @@ input[type="text"] {
     border-radius: 20px;
     outline: 0;
 }
-#submit {
-    border-radius: 20px;
-}
 section {
     margin-top: 8px;
     display: inline-block;
@@ -157,6 +154,7 @@ button, .button {
     color: white;
     text-decoration: none;
     cursor: pointer;
+    border-radius: 20px;
 }
 button.success, .button.success {
     background: #38e128;
