@@ -85,7 +85,7 @@ class Student(SearchableMixin, db.Model):
         student_query = Student.query
         query = criteria.get('query')
         if query:
-            student_query, count = Student.search(query)
+            student_query, count = Student.query_search(query)
         filters = criteria.get('filters')
         if filters:
             for category in filters:
