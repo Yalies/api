@@ -65,6 +65,7 @@ function loadNextPage() {
         empty.style.display = 'none';
         loading.style.display = 'block';
         criteria['page'] = ++pagesLoaded;
+        console.log('Loading page', pagesLoaded);
         fetch('/api/students', {
             method: 'POST',
             headers: {
@@ -76,7 +77,7 @@ function loadNextPage() {
             .then(students => {
                 console.log(students);
                 pagesFinished = (students.length < 20);
-                if (pagesLoaded == 1 && !students) {
+                if (pagesLoaded == 1 && !students.length) {
                     empty.style.display = 'block';
                 }
                 for (let student of students) {
