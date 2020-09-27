@@ -4,7 +4,9 @@ let body = document.body,
     query = document.getElementById('query'),
     submit = document.getElementById('submit'),
     sections = document.getElementsByTagName('section'),
-    output = document.getElementById('output');
+    output = document.getElementById('output'),
+    loading = document.getElementById('loading'),
+    empty = document.getElementById('empty');
 
 function resetFilters() {
     for (let checkbox of checkboxes) {
@@ -30,7 +32,7 @@ onchange = function(e) {
             }
         } else {
             if (checked) {
-                section.classList.remove('active');
+                section.classList.add('active');
                 allCheckbox.checked = false;
             } else {
                 let anyChecked = false;
@@ -60,6 +62,8 @@ let pagesFinished = false;
 
 function loadNextPage() {
     if (!pagesFinished) {
+        empty.style.display = 'none';
+        loading.style.display = 'block';
         criteria['page'] = ++pagesLoaded;
         fetch('/api/students', {
             method: 'POST',
@@ -72,6 +76,9 @@ function loadNextPage() {
             .then(students => {
                 console.log(students);
                 pagesFinished = (students.length < 20);
+                if (pagesLoaded == 1 && !students) {
+                    empty.style.display = 'block';
+                }
                 for (let student of students) {
                     let studentContainer = document.createElement('div');
                     studentContainer.className = 'student';
@@ -133,6 +140,7 @@ function loadNextPage() {
 
                     output.appendChild(studentContainer);
                 }
+                loading.style.display = 'none';
             });
     }
 }
@@ -222,6 +230,6 @@ window.onscroll = function(e) {
     if (2 * window.innerHeight + window.scrollY >= document.body.offsetHeight) {
         loadNextPage();
         // Temporarily set so that we won't load tons of pages at once
-        pagesFinished = false;
+        pagesFinished = true;
     }
 }
