@@ -32,20 +32,20 @@ def query_index(index, query):
             },
         })
     ids = [int(hit['_id']) for hit in search['hits']['hits']]
-    return ids, search['hits']['total']['value']
+    return ids
 
 
 class SearchableMixin:
     @classmethod
     def query_search(cls, expression):
-        ids, total = query_index(cls.__tablename__, expression)
-        if total == 0:
-            return cls.query.filter_by(id=0), 0
+        ids = query_index(cls.__tablename__, expression)
+        if len(ids) == 0:
+            return cls.query.filter_by(id=0)
         when = []
         for i in range(len(ids)):
             when.append((ids[i], i))
         return cls.query.filter(cls.id.in_(ids)).order_by(
-            db.case(when, value=cls.id)), total
+            db.case(when, value=cls.id))
 
     @classmethod
     def before_commit(cls, session):
