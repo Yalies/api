@@ -26,6 +26,7 @@ def query_index(index, query):
                 'multi_match': {
                     'query': query,
                     'type': 'cross_fields',
+                    'fuzziness': 'auto',
                     'operator': 'and',
                     'fields': ['*']
                 }
