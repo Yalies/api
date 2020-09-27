@@ -92,6 +92,8 @@ def get_directory_entry(student):
     }
     if student.email:
         query['email'] = student.email
+    if student.college:
+        query['college'] = student.college + ' College'
     people = directory.people(**query)
     print('Found %d matching people in directory.' % len(people))
     if not people:
