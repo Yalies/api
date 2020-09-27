@@ -1,7 +1,7 @@
 from app import app, db, whooshee
 import jwt
 import datetime
-from whoosh.qparser import AndGroup
+from app.search import SearchableMixin
 
 
 class User(db.Model):
@@ -49,7 +49,7 @@ class User(db.Model):
             return None
 
 
-class Student(db.Model):
+class Student(SearchableMixin, db.Model):
     __tablename__ = 'students'
     __searchable__ = ['first_name', 'last_name', 'netid', 'college', 'email', 'residence', 'major', 'address']
     _to_exclude = ('id')
@@ -84,7 +84,7 @@ class Student(db.Model):
         query = criteria.get('query')
         if query:
             try:
-                student_query = student_query.whooshee_search(query, group=AndGroup)
+                student_query, count = student_query.search(query)
             except ValueError:
                 # String under character limit
                 return []
@@ -103,3 +103,7 @@ class Student(db.Model):
         else:
             students = student_query.all()
         return students
+
+
+# TODO: temporary for debug
+Student.reindex()
