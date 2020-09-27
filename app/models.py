@@ -84,7 +84,7 @@ class Student(SearchableMixin, db.Model):
         query = criteria.get('query')
         if query:
             try:
-                student_query, count = student_query.search(query)
+                student_query, count = Student.search(query)
             except ValueError:
                 # String under character limit
                 return []
