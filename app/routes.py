@@ -83,6 +83,7 @@ def index():
     years = list(range(current_year, current_year + 5))
     years.append('')
     leave = ['Yes', 'No']
+    eli_whitney = ['Yes', 'No']
     """"
     entryways = db.session.query(distinct(Student.entryway)).order_by(Student.entryway)
     floors = db.session.query(distinct(Student.floor)).order_by(Student.floor)
@@ -96,7 +97,7 @@ def index():
     rooms = untuple(rooms)
     """
     return render_template('index.html', colleges=colleges,
-                           years=years, leave=leave, majors=majors)
+                           years=years, leave=leave, eli_whitney=eli_whitney, majors=majors)
                            #building_codes=building_codes, entryways=entryways, floors=floors, suites=suites, rooms=rooms, states=states
 
 
