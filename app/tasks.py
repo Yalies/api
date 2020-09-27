@@ -9,7 +9,6 @@ import requests
 import re
 import json
 from bs4 import BeautifulSoup
-import usaddress
 import yaledirectory
 
 
@@ -17,11 +16,6 @@ with open('app/res/majors.txt') as f:
     MAJORS = f.read().splitlines()
 with open('app/res/major_full_names.json') as f:
     MAJOR_FULL_NAMES = json.load(f)
-STATES = {}
-with open('app/res/states.txt') as f:
-    for line in f.read().splitlines():
-        state, abbreviation = line.split('\t', 1)
-        STATES[abbreviation.strip()] = state.strip()
 RE_ROOM = re.compile(r'^([A-Z]+)-([A-Z]+)(\d+)(\d)([A-Z]+)?$')
 RE_BIRTHDAY = re.compile(r'^[A-Z][a-z]{2} \d{1,2}$')
 RE_ACCESS_CODE = re.compile(r'[0-9]-[0-9]+')
@@ -92,22 +86,6 @@ def clean_year(year):
 
 def guess_email(student):
     return (student.first_name + '.' + student.last_name).replace(' ', '').lower() + '@yale.edu'
-
-
-def parse_address(address):
-    # Remove duplicates
-    address = list(dict.fromkeys(address))
-    address = ', '.join(address)
-    try:
-        components = usaddress.parse(address)
-        options = [
-            component for component, label in components
-            if label == 'StateName' and component in STATES
-        ]
-        if options:
-            return options[0]
-    except usaddress.RepeatedLabelError:
-        pass
 
 
 @celery.task
@@ -202,7 +180,6 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             student.residence = trivia.pop(0)
 
         student.address = '\n'.join(trivia)
-        student.state = parse_address(student.address)
 
         directory_entry = directory.person(first_name=student.first_name, last_name=student.last_name)
         if directory_entry is not None:
