@@ -1,6 +1,7 @@
 from app import app, db, whooshee
 import jwt
 import datetime
+from whoosh.qparser import AndGroup
 
 
 class User(db.Model):
@@ -84,7 +85,7 @@ class Student(db.Model):
         query = criteria.get('query')
         if query:
             try:
-                student_query = student_query.whooshee_search(query)
+                student_query = student_query.whooshee_search(query, group=AndGroup)
             except ValueError:
                 # String under character limit
                 return []
