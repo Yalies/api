@@ -133,13 +133,13 @@ function loadNextPage() {
                     if (student.eli_whitney) {
                         let row = document.createElement('div');
                         row.classList.add('row');
-                        row.classList.add('leave');
+                        row.classList.add('eli-whitney');
                         let i = document.createElement('i');
                         i.className = 'fa fa-' + 'history';
                         row.appendChild(i);
                         let readout = document.createElement('p');
                         readout.classList.add('value');
-                        readout.classList.add('leave');
+                        readout.classList.add('eli-whitney');
                         readout.textContent = 'Eli Whitney Program';
                         row.appendChild(readout);
 

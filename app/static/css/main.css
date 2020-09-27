@@ -126,6 +126,9 @@ section.collapsed label {
 .row.leave {
     color: #00d018;
 }
+.row.eli_whitney {
+    color: #FFC914;
+}
 
 label {
     display: block;
