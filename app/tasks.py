@@ -224,6 +224,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         student = Student.query.filter_by(email=email).first()
         if student is not None and year is not None and student.year is not None:
             student.leave = (year < student.year)
+            print(email + ' is' + (' not' if not student.leave else '') + ' taking a leave.')
 
     db.session.commit()
     print('Done.')
