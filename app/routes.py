@@ -118,6 +118,11 @@ def apidocs():
     return render_template('apidocs.html')
 
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
 @app.route('/token', methods=['POST'])
 @login_required
 def get_token():
