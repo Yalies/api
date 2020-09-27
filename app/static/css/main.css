@@ -49,8 +49,6 @@ a {
 }
 
 input[type="text"] {
-    border-radius: 20px;
-    outline: 0;
 }
 section {
     margin-top: 8px;
@@ -79,9 +77,6 @@ section h4::after {
 section.collapsed h4::after {
     transform: rotateX(0);
     transition: transform 0.5s;
-}
-section.collapsed {
-
 }
 section.collapsed label {
     display: none;
@@ -141,6 +136,8 @@ input[type="text"],
 button, .button,
 textarea {
     font: inherit;
+    border-radius: 20px;
+    outline: 0;
 }
 input[type="text"] {
     padding: 7px 10px;
@@ -154,7 +151,6 @@ button, .button {
     color: white;
     text-decoration: none;
     cursor: pointer;
-    border-radius: 20px;
 }
 button.success, .button.success {
     background: #38e128;
