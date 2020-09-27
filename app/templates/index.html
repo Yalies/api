@@ -10,6 +10,17 @@
         {% with name = "leave", items = leave, header = "On leave?" %}{% include "_section.html" %}{% endwith %}
         {% with name = "eli_whitney", items = eli_whitney, header = "Eli Whitney?" %}{% include "_section.html" %}{% endwith %}
         {% with name = "major", items = majors %}{% include "_section.html" %}{% endwith %}
+        <section id="building_code" class="collapsed">
+            <h4>Building</h4>
+            <label>
+                <input type="checkbox" name="building_code-all"> All
+            </label>
+            {% for building_code, building in building_codes.items() %}
+            <label>
+                <input type="checkbox" name="{{ building_code }}"> {{ building }}
+            </label>
+            {% endfor %}
+        </section>
     </div>
 </div>
 <div id="empty">No matching students found.</div>

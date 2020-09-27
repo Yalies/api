@@ -52,7 +52,6 @@ def index():
         'Timothy Dwight',
         'Trumbull',
     ]
-    """
     building_codes = {
         '': 'Off Campus',
         'BM': 'Bingham Hall',
@@ -77,7 +76,6 @@ def index():
         'TD': 'Timothy Dwight',
         'TC': 'Trumbull',
     }
-    """
     current_year = datetime.date.today().year
     years = list(range(current_year, current_year + 5))
     years.append('')
@@ -96,7 +94,7 @@ def index():
     rooms = untuple(rooms)
     """
     return render_template('index.html', colleges=colleges,
-                           years=years, leave=leave, eli_whitney=eli_whitney, majors=majors)
+                           years=years, leave=leave, eli_whitney=eli_whitney, majors=majors, building_codes=building_codes)
                            #building_codes=building_codes, entryways=entryways, floors=floors, suites=suites, rooms=rooms, states=states
 
 
