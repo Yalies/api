@@ -30,7 +30,6 @@ def store_user():
                 db.session.add(g.user)
             g.user.last_seen = timestamp
             db.session.commit()
-            print('NetID: ' + cas.username)
 
 
 @app.route('/')
