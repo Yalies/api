@@ -204,6 +204,8 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
                 student['email'] = directory_entry.email
             if not student.get('year') and directory_entry.student_expected_graduation_year:
                 student['year'] = int(directory_entry.student_expected_graduation_year)
+                # This may not always be the case. But it's probably a safe bet.
+                student['eli_whitney'] = True
         else:
             print('Could not find directory entry.')
 
