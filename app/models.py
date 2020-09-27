@@ -76,6 +76,7 @@ class Student(SearchableMixin, db.Model):
     address = db.Column(db.String)
     phone = db.Column(db.String)
     leave = db.Column(db.Boolean, default=False)
+    eli_whitney = db.Column(db.Boolean, default=False)
     access_code = db.Column(db.String)
 
     @staticmethod
