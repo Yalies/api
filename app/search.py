@@ -23,12 +23,12 @@ def query_index(index, query):
         index=index,
         body={
             'query': {
-                'multi_match': {
-                    'query': query,
-                    'type': 'phrase',
-                    'operator': 'and',
-                    'fields': ['*']
-                }
+                'bool': {
+                    'must': [
+                        {'term': {'*': word}}
+                        for word in query.split()
+                    ],
+                },
             },
         })
     ids = [int(hit['_id']) for hit in search['hits']['hits']]
