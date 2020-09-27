@@ -9,7 +9,7 @@ copy_token.onclick = function(e) {
 }
 
 reset_token.onclick = function(e) {
-    fetch('/credentials', {
+    fetch('/token', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
