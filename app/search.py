@@ -25,7 +25,8 @@ def query_index(index, query, page, per_page):
             'query': {
                 'multi_match': {
                     'query': query,
-                    'operator': 'AND',
+                    'type': 'phrase',
+                    'operator': 'and',
                     'fuzziness': 'AUTO',
                     'fields': ['*']
                 }
