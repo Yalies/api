@@ -27,7 +27,6 @@ def query_index(index, query, page, per_page):
                     'query': query,
                     'type': 'phrase',
                     'operator': 'and',
-                    'fuzziness': 'AUTO',
                     'fields': ['*']
                 }
             },
