@@ -202,8 +202,8 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             student['upi'] = directory_entry.upi
             if not student.get('email'):
                 student['email'] = directory_entry.email
-            if not student.get('year'):
-                student['year'] = directory_entry.student_expected_graduation_year
+            if not student.get('year') and directory_entry.student_expected_graduation_year:
+                student['year'] = int(directory_entry.student_expected_graduation_year)
         else:
             print('Could not find directory entry.')
 
