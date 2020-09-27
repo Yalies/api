@@ -23,14 +23,14 @@ def query_index(index, query):
         index=index,
         body={
             'query': {
+                'from': 0,
+                'size': 10_000,
                 'multi_match': {
                     'query': query,
                     'type': 'cross_fields',
                     'operator': 'and',
                     'fields': ['*']
                 },
-                'from': 0,
-                'limit': 10_000,
             },
         })
     ids = [int(hit['_id']) for hit in search['hits']['hits']]
