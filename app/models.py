@@ -91,8 +91,8 @@ class Student(SearchableMixin, db.Model):
             student_query = Student.query_search(query)
         if filters:
             for category in filters:
-                if category not in ('college', 'year', 'major', 'building_code',
-                                    'entryway', 'floor', 'suite', 'room', 'state', 'leave'):
+                if category not in ('college', 'year', 'major', 'building_code', 'entryway',
+                                    'floor', 'suite', 'room', 'state', 'leave', 'eli_whitney'):
                     return None
                 if not isinstance(filters[category], list):
                     return None

@@ -213,7 +213,7 @@ submit.onclick = function() {
             filters[category] = []
             for (let checkbox of otherCheckboxes) {
                 if (checkbox.checked) {
-                    if (category === 'leave') {
+                    if (category === 'leave' || category === 'eli_whitney') {
                         filters[category].push(checkbox.name === 'Yes');
                     } else {
                         filters[category].push(checkbox.name);
