@@ -108,10 +108,7 @@ celerybeat.pid
 *.rdb
 
 # Custom
-logs
 *.db
 *.db-journal
 data/
 page.html
-students.csv
-*.pickle
