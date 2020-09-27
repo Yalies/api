@@ -84,7 +84,7 @@ def clean_year(year):
     return 2000 + int(year)
 
 
-def get_directory_entry(student):
+def get_directory_entry(directory, student):
     query = {
         'first_name': student.first_name,
         'last_name': student.last_name,
@@ -194,7 +194,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
         student.address = '\n'.join(trivia)
 
-        directory_entry = get_directory_entry(student)
+        directory_entry = get_directory_entry(directory, student)
         if directory_entry is not None:
             student.netid = directory_entry.netid
             student.upi = directory_entry.upi
