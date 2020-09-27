@@ -103,7 +103,3 @@ class Student(SearchableMixin, db.Model):
         else:
             students = student_query.all()
         return students
-
-
-# TODO: temporary for debug
-Student.reindex()
