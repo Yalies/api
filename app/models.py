@@ -51,7 +51,7 @@ class User(db.Model):
 @whooshee.register_model('first_name', 'last_name', 'netid', 'college', 'email', 'residence', 'major', 'address')
 class Student(db.Model):
     __tablename__ = 'students'
-    _to_exclude = ()
+    _to_exclude = ('id')
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     netid = db.Column(db.String)
