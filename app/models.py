@@ -80,14 +80,12 @@ class Student(SearchableMixin, db.Model):
 
     @staticmethod
     def search(criteria):
+        print('Searching by criteria:')
+        print(criteria)
         student_query = Student.query
         query = criteria.get('query')
         if query:
-            try:
-                student_query, count = Student.search(query)
-            except ValueError:
-                # String under character limit
-                return []
+            student_query, count = Student.search(query)
         filters = criteria.get('filters')
         if filters:
             for category in filters:
