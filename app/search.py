@@ -29,7 +29,8 @@ def query_index(index, query):
                     'operator': 'and',
                     'fields': ['*']
                 },
-                'size': 10_000,
+                'from': 0,
+                'limit': 10_000,
             },
         })
     ids = [int(hit['_id']) for hit in search['hits']['hits']]
