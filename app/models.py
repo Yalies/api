@@ -84,9 +84,10 @@ class Student(SearchableMixin, db.Model):
         print(criteria)
         student_query = Student.query
         query = criteria.get('query')
-        if query:
-            student_query, count = Student.query_search(query)
         filters = criteria.get('filters')
+        page = criteria.get('page')
+        if query:
+            student_query, count = Student.query_search(query, 1, 10_000)
         if filters:
             for category in filters:
                 if category not in ('college', 'year', 'major', 'building_code',
@@ -95,7 +96,6 @@ class Student(SearchableMixin, db.Model):
                 if not isinstance(filters[category], list):
                     return None
                 student_query = student_query.filter(getattr(Student, category).in_(filters[category]))
-        page = criteria.get('page')
         if page:
             students = student_query.paginate(page, app.config['PAGE_SIZE'], False).items
         else:
