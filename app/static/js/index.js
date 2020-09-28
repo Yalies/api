@@ -1,5 +1,4 @@
-let body = document.body,
-    checkboxes = document.querySelectorAll('input[type="checkbox"]'),
+let checkboxes = document.querySelectorAll('input[type="checkbox"]'),
     allCheckboxes = document.querySelectorAll('input[type="checkbox"][name$="-all"]'),
     query = document.getElementById('query'),
     submit = document.getElementById('submit'),
