@@ -27,19 +27,13 @@
     border-width: 2px;
     padding: 9px 11px;
 }
-.filter h4::after {
-    content: '';
-    vertical-align: middle;
-    border: solid 4px transparent;
-    border-bottom-width: 0px;
-    border-top: solid 4px currentColor;
-    display: inline-block;
-    transform: rotateX(180deg);
-    transition: transform 0.5s;
+.filter i {
+    transform: rotate(180deg);
+    transition: transform 0.1s;
 }
-.filter.collapsed h4::after {
-    transform: rotateX(0);
-    transition: transform 0.5s;
+.filter.collapsed i {
+    transform: rotate(0);
+    transition: transform 0.1s;
 }
 .filter.collapsed label {
     display: none;
