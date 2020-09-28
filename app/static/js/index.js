@@ -234,10 +234,11 @@ p.submit.onclick = function() {
             }
         }
     }
-    criteria = {
-        'query': query.value,
-        'filters': filters,
-    };
+    criteria = {}
+    if (p.query.value)
+        criteria['query'] = p.query.value;
+    if (filters)
+        criteria['filters'] = filters;
     output.innerHTML = '';
     pagesLoaded = 0;
     pagesFinished = false;
