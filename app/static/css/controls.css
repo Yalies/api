@@ -6,11 +6,14 @@
     padding: 8px 10px;
 }
 
+#clear_filters {
+    margin-top: 8px;
+}
 .filter {
     margin-top: 8px;
     display: inline-block;
     vertical-align: top;
-    padding: 10px 12px;
+    padding: 8px 12px;
     border: solid 1px lightgray;
     border-radius: 20px;
     user-select: none;
@@ -18,7 +21,7 @@
 .filter.active {
     border-color: #00356b;
     border-width: 2px;
-    padding: 9px 11px;
+    padding: 7px 11px;
 }
 .filter i {
     transform: rotate(180deg);
