@@ -35,8 +35,7 @@ nav {
     float: right;
     position: relative;
     top: 8px;
-    margin-bottom: 8px;
-    display: inline;
+    margin-bottom: 2px;
 }
 nav .button {
     margin-bottom: 8px;
@@ -107,3 +106,9 @@ textarea {
     display: block;
 }
 
+@media (max-width: 700px) {
+    nav {
+        float: none;
+        position: static;
+    }
+}
