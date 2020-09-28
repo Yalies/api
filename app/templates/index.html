@@ -28,9 +28,15 @@
         {% with name = "room", items = rooms %}{% include "_section.html" %}{% endwith %}
     </div>
 </div>
-<div id="empty">No matching students found.</div>
+<div id="empty">
+    <i class="fa fa-exclamation-circle"></i>
+    No matching students found.
+</div>
 <div id="output">
 </div>
-<div id="loading">Loading...</div>
+<div id="loading">
+    <i class="fa fa-hourglass"></i>
+    Loading...
+</div>
 <script src="/static/js/index.js"></script>
 {% endblock %}
