@@ -109,11 +109,13 @@ let pagesFinished = false;
 
 function runSearch() {
     let filters = {};
+    let filtersActive = false;
     for (let filter of p.filters) {
         let category = filter.id;
         let otherCheckboxes = Array.from(filter.getElementsByTagName('input'));
         let allCheckbox = otherCheckboxes.shift();
         if (!allCheckbox.checked) {
+            filtersActive = true;
             filters[category] = [];
             for (let checkbox of otherCheckboxes) {
                 if (checkbox.checked) {
@@ -131,7 +133,7 @@ function runSearch() {
     criteria = {};
     if (p.query.value)
         criteria['query'] = p.query.value;
-    if (filters)
+    if (filtersActive)
         criteria['filters'] = filters;
     p.list.innerHTML = '';
     pagesLoaded = 0;
