@@ -28,23 +28,19 @@
     </head>
     <body>
         <header>
+            <nav>
+                <a class="button outline" href="/">Home</a>
+                <a class="button outline" href="/about">About</a>
+                <a class="button outline" href="/about#remove_your_information">Remove Your Info</a>
+                <a class="button outline" href="/apidocs">API</a>
+                {% if not unauthenticated %}
+                <a class="button outline" href="/logout">Log out</a>
+                {% endif %}
+            </nav>
             <a id="logo" href="/">
                 <img src="/static/images/logo/logo.png" alt="Logo">
                 <h2>Yalies</h2>
             </a>
-            <nav>
-                <a href="/">Home</a>
-                /
-                <a href="/about">About</a>
-                /
-                <a href="/about#remove_your_information">Remove Your Info</a>
-                /
-                <a href="/apidocs">API</a>
-                {% if not unauthenticated %}
-                /
-                <a href="/logout">Log out</a>
-                {% endif %}
-            </nav>
         </header>
         <main>
             {% block content %}

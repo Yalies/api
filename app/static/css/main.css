@@ -76,6 +76,12 @@ button, .button {
     text-decoration: none;
     cursor: pointer;
 }
+button.outline, .button.outline {
+    padding: 8px 12px;
+    border: solid 1px lightgray;
+    background: none;
+    color: #00356b;
+}
 button.success, .button.success {
     background: #38e128;
 }
