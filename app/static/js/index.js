@@ -1,28 +1,30 @@
-let checkboxes = document.querySelectorAll('input[type="checkbox"]'),
-    allCheckboxes = document.querySelectorAll('input[type="checkbox"][name$="-all"]'),
-    query = document.getElementById('query'),
-    submit = document.getElementById('submit'),
-    sections = document.getElementsByTagName('section'),
-    clearFilters = document.getElementById('clear_filters'),
-    output = document.getElementById('output'),
-    loading = document.getElementById('loading'),
-    empty = document.getElementById('empty');
+let p = {
+    checkboxes: document.querySelectorAll('input[type="checkbox"]'),
+    allCheckboxes: document.querySelectorAll('input[type="checkbox"][name$="-all"]'),
+    query: document.getElementById('query'),
+    submit: document.getElementById('submit'),
+    filters: document.getElementsByClassName('filter'),
+    clearFilters: document.getElementById('clear_filters'),
+    output: document.getElementById('output'),
+    loading: document.getElementById('loading'),
+    empty: document.getElementById('empty'),
+};
 
 function resetFilters() {
-    for (let section of sections) {
-        section.classList.add('collapsed');
-        section.classList.remove('active');
+    for (let filter of p.filters) {
+        filter.classList.add('collapsed');
+        filter.classList.remove('active');
     }
-    for (let checkbox of checkboxes) {
+    for (let checkbox of p.checkboxes) {
         checkbox.checked = false;
     }
-    for (let checkbox of allCheckboxes) {
+    for (let checkbox of p.allCheckboxes) {
         checkbox.checked = true;
     }
 }
 resetFilters();
 
-clearFilters.onclick = function() {
+p.clearFilters.onclick = function() {
     resetFilters();
 }
 
@@ -32,15 +34,15 @@ onchange = function(e) {
         let checked = input.checked;
         let otherCheckboxes = Array.from(input.parentElement.parentElement.getElementsByTagName('input'));
         let allCheckbox = otherCheckboxes.shift();
-        let section = input.parentElement.parentElement;
+        let filter = input.parentElement.parentElement;
         if (input == allCheckbox) {
-            section.classList.toggle('active', !checked);
+            filter.classList.toggle('active', !checked);
             for (let checkbox of otherCheckboxes) {
                 checkbox.checked = !checked;
             }
         } else {
             if (checked) {
-                section.classList.add('active');
+                filter.classList.add('active');
                 allCheckbox.checked = false;
             } else {
                 let anyChecked = false;
@@ -50,7 +52,7 @@ onchange = function(e) {
                         break;
                     }
                 }
-                section.classList.toggle('active', anyChecked);
+                filter.classList.toggle('active', anyChecked);
                 allCheckbox.checked = !anyChecked;
             }
         }
@@ -60,7 +62,7 @@ onchange = function(e) {
 query.onkeyup = function(e) {
     if (e.keyCode === 13) {
         e.preventDefault();
-        submit.click();
+        p.submit.click();
     }
 };
 
@@ -70,8 +72,8 @@ let pagesFinished = false;
 
 function loadNextPage() {
     if (!pagesFinished) {
-        empty.style.display = 'none';
-        loading.style.display = 'block';
+        p.empty.style.display = 'none';
+        p.loading.style.display = 'block';
         criteria['page'] = ++pagesLoaded;
         console.log('Loading page', pagesLoaded);
         fetch('/api/students', {
@@ -86,7 +88,7 @@ function loadNextPage() {
                 console.log(students);
                 pagesFinished = (students.length < 20);
                 if (pagesLoaded == 1 && !students.length) {
-                    empty.style.display = 'block';
+                    p.empty.style.display = 'block';
                 }
                 for (let student of students) {
                     let studentContainer = document.createElement('div');
@@ -162,9 +164,9 @@ function loadNextPage() {
                     addRow(studentContainer, 'access_code', 'key', student);
                     addRow(studentContainer, 'address', 'home', student);
 
-                    output.appendChild(studentContainer);
+                    p.output.appendChild(studentContainer);
                 }
-                loading.style.display = 'none';
+                p.loading.style.display = 'none';
             });
     }
 }
@@ -204,21 +206,21 @@ function addRow(container, property, icon, student, protocol) {
     }
 }
 
-function collapseAllSections() {
-    for (let section of sections) {
-        section.classList.add('collapsed');
+function collapseAllFilters() {
+    for (let filter of p.filters) {
+        filter.classList.add('collapsed');
     }
 }
 
-submit.onclick = function() {
-    collapseAllSections();
+p.submit.onclick = function() {
+    collapseAllFilters();
     let filters = {};
-    for (let section of sections) {
-        let category = section.id;
-        let otherCheckboxes = Array.from(section.getElementsByTagName('input'));
+    for (let filter of p.filters) {
+        let category = filter.id;
+        let otherCheckboxes = Array.from(filter.getElementsByTagName('input'));
         let allCheckbox = otherCheckboxes.shift();
         if (!allCheckbox.checked) {
-            filters[category] = []
+            filters[category] = [];
             for (let checkbox of otherCheckboxes) {
                 if (checkbox.checked) {
                     if (category === 'leave' || category === 'eli_whitney') {
@@ -243,12 +245,16 @@ submit.onclick = function() {
 };
 
 onclick = function(e) {
-    let section = null;
-    if (e.target.tagName == 'SECTION') section = e.target;
-    if (e.target.tagName == 'H4' && e.target.parentElement.tagName == 'SECTION') section = e.target.parentElement;
+    let filter = null;
+    if (e.target.tagName == 'DIV' && e.target.classList.contains('filter')) {
+        filter = e.target;
+    } else if (e.target.tagName == 'H4' &&
+               e.target.parentElement.tagName == 'DIV' && e.target.parentElement.classList.contains('filter')) {
+        filter = e.target.parentElement;
+    }
 
-    if (section) {
-        section.classList.toggle('collapsed');
+    if (filter) {
+        filter.classList.toggle('collapsed');
     }
 };
 

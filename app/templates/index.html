@@ -21,7 +21,7 @@
                 <input type="checkbox" name="{{ building_code }}"> {{ building }}
             </label>
             {% endfor %}
-        </section>
+        </div>
         {% with name = "entryway", items = entryways %}{% include "_filter.html" %}{% endwith %}
         {% with name = "floor", items = floors %}{% include "_filter.html" %}{% endwith %}
         {% with name = "suite", items = suites %}{% include "_filter.html" %}{% endwith %}
