@@ -81,7 +81,6 @@ def index():
     years.append('')
     leave = ['Yes', 'No']
     eli_whitney = ['Yes', 'No']
-    """"
     entryways = db.session.query(distinct(Student.entryway)).order_by(Student.entryway)
     floors = db.session.query(distinct(Student.floor)).order_by(Student.floor)
     suites = db.session.query(distinct(Student.suite)).order_by(Student.suite)
@@ -92,10 +91,9 @@ def index():
     floors = untuple(floors)
     suites = untuple(suites)
     rooms = untuple(rooms)
-    """
     return render_template('index.html', colleges=colleges,
-                           years=years, leave=leave, eli_whitney=eli_whitney, majors=majors, building_codes=building_codes)
-                           #building_codes=building_codes, entryways=entryways, floors=floors, suites=suites, rooms=rooms, states=states
+                           years=years, leave=leave, eli_whitney=eli_whitney, majors=majors, building_codes=building_codes,
+                           entryways=entryways, floors=floors, suites=suites, rooms=rooms, states=states)
 
 
 @app.route('/scraper', methods=['GET', 'POST'])

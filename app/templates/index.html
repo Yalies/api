@@ -21,6 +21,10 @@
             </label>
             {% endfor %}
         </section>
+        {% with name = "entryway", items = entryways %}{% include "_section.html" %}{% endwith %}
+        {% with name = "floor", items = floors %}{% include "_section.html" %}{% endwith %}
+        {% with name = "suite", items = suites %}{% include "_section.html" %}{% endwith %}
+        {% with name = "room", items = rooms %}{% include "_section.html" %}{% endwith %}
     </div>
 </div>
 <div id="empty">No matching students found.</div>
