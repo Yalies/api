@@ -1,28 +1,28 @@
-#output > div {
+#list > div {
     width: 3in;
     display: inline-block;
     vertical-align: top;
     margin: 0 10px 10px 0;
     text-align: left;
 }
-#output > div h3 .netid {
+#list > div h3 .netid {
     font-size: 70%;
     margin-left: 5px;
     vertical-align: 2px;
 }
-#output > div > div > * {
+#list > div > div > * {
     display: inline-block;
     vertical-align: top;
 }
-#output > div > div > i {
+#list > div > div > i {
     margin-top: 9px;
     width: 20px;
 }
-#output > div > div > p {
+#list > div > div > p {
     max-width: 80%;
 }
 
-#output img {
+#list img {
     width: 100px;
     height: 120px;
 }

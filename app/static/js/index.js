@@ -8,7 +8,7 @@ let p = {
     submit: document.getElementById('submit'),
     filters: document.getElementsByClassName('filter'),
     clearFilters: document.getElementById('clear_filters'),
-    output: document.getElementById('output'),
+    list: document.getElementById('list'),
     loading: document.getElementById('loading'),
     empty: document.getElementById('empty'),
 };
@@ -132,7 +132,7 @@ p.submit.onclick = function() {
         criteria['query'] = p.query.value;
     if (filters)
         criteria['filters'] = filters;
-    output.innerHTML = '';
+    p.list.innerHTML = '';
     pagesLoaded = 0;
     pagesFinished = false;
     loadNextPage();
@@ -265,7 +265,7 @@ function loadNextPage() {
                     addRow(studentContainer, 'access_code', 'key', student);
                     addRow(studentContainer, 'address', 'home', student);
 
-                    p.output.appendChild(studentContainer);
+                    p.list.appendChild(studentContainer);
                 }
                 p.loading.style.display = 'none';
             });
