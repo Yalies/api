@@ -4,6 +4,7 @@
 <div id="controls">
     <input type="text" id="query" placeholder="Search">
     <button id="submit"><i class="fa fa-search"></i></button>
+    <h4 id="filters_header">Filters <span id="clear_filters">(Clear)</span></h4>
     <div>
         {% with name = "college", items = colleges %}{% include "_section.html" %}{% endwith %}
         {% with name = "year", items = years, default = "Other" %}{% include "_section.html" %}{% endwith %}

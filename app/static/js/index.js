@@ -3,11 +3,16 @@ let checkboxes = document.querySelectorAll('input[type="checkbox"]'),
     query = document.getElementById('query'),
     submit = document.getElementById('submit'),
     sections = document.getElementsByTagName('section'),
+    clearFilters = document.getElementById('clear_filters'),
     output = document.getElementById('output'),
     loading = document.getElementById('loading'),
     empty = document.getElementById('empty');
 
 function resetFilters() {
+    for (let section of sections) {
+        section.classList.add('collapsed');
+        section.classList.remove('active');
+    }
     for (let checkbox of checkboxes) {
         checkbox.checked = false;
     }
@@ -16,6 +21,10 @@ function resetFilters() {
     }
 }
 resetFilters();
+
+clearFilters.onclick = function() {
+    resetFilters();
+}
 
 onchange = function(e) {
     let input = e.target;
@@ -242,6 +251,8 @@ onclick = function(e) {
         section.classList.toggle('collapsed');
     }
 };
+
+
 
 window.onscroll = function(e) {
     if (2 * window.innerHeight + window.scrollY >= document.body.offsetHeight) {

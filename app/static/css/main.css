@@ -48,6 +48,13 @@ a {
     color: inherit;
 }
 
+#filters_header {
+    margin-top: 10px;
+}
+#clear_filters {
+    text-decoration: underline;
+    cursor: pointer;
+}
 section {
     margin-top: 8px;
     display: inline-block;
