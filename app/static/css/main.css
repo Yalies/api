@@ -32,6 +32,11 @@ header img {
 header #logo {
     text-decoration: none;
 }
+footer {
+    margin-top: 10px;
+    font-size: 10px;
+    color: lightgray;
+}
 h2 {
     font-size: 40px;
     display: inline-block;
@@ -46,95 +51,6 @@ p {
 }
 a {
     color: inherit;
-}
-
-#filters_header {
-    margin-top: 10px;
-}
-#clear_filters {
-    text-decoration: underline;
-    cursor: pointer;
-}
-section {
-    margin-top: 8px;
-    display: inline-block;
-    vertical-align: top;
-    padding: 10px 12px;
-    border: solid 1px lightgray;
-    border-radius: 20px;
-    font-weight: 100;
-}
-section.active {
-    border-color: #00356b;
-    border-width: 2px;
-    padding: 9px 11px;
-}
-section h4::after {
-    content: '';
-    vertical-align: middle;
-    border: solid 4px transparent;
-    border-bottom-width: 0px;
-    border-top: solid 4px currentColor;
-    display: inline-block;
-    transform: rotateX(180deg);
-    transition: transform 0.5s;
-}
-section.collapsed h4::after {
-    transform: rotateX(0);
-    transition: transform 0.5s;
-}
-section.collapsed label {
-    display: none;
-}
-
-#controls {
-    margin-bottom: 10px;
-}
-#output > div {
-    width: 3in;
-    display: inline-block;
-    vertical-align: top;
-    margin: 0 10px 10px 0;
-    text-align: left;
-}
-#output > div h3 .netid {
-    font-size: 70%;
-    margin-left: 5px;
-    vertical-align: 2px;
-}
-#output > div > div > * {
-    display: inline-block;
-    vertical-align: top;
-}
-#output > div > div > i {
-    margin-top: 9px;
-    width: 20px;
-}
-#output > div > div > p {
-    max-width: 80%;
-}
-
-#output img {
-    width: 100px;
-    height: 120px;
-}
-.pills {
-    margin-top: 4px;
-}
-.pill {
-    background: #00356b;
-    color: white;
-    padding: 3px 6px;
-    font-size: 10px;
-    border-radius: 12px;
-    margin-top: 2px;
-    margin-right: 4px;
-}
-.row.leave {
-    color: #00d018;
-}
-.row.eli-whitney {
-    color: #E4572E;
 }
 
 label {
@@ -175,15 +91,4 @@ textarea {
     resize: none;
     display: block;
 }
-#submit {
-    padding: 8px 10px;
-}
-#token {
-    margin: 10px 0;
-}
 
-footer {
-    margin-top: 10px;
-    font-size: 10px;
-    color: lightgray;
-}

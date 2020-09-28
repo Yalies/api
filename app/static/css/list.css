@@ -1,0 +1,46 @@
+#output > div {
+    width: 3in;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 10px 10px 0;
+    text-align: left;
+}
+#output > div h3 .netid {
+    font-size: 70%;
+    margin-left: 5px;
+    vertical-align: 2px;
+}
+#output > div > div > * {
+    display: inline-block;
+    vertical-align: top;
+}
+#output > div > div > i {
+    margin-top: 9px;
+    width: 20px;
+}
+#output > div > div > p {
+    max-width: 80%;
+}
+
+#output img {
+    width: 100px;
+    height: 120px;
+}
+.pills {
+    margin-top: 4px;
+}
+.pill {
+    background: #00356b;
+    color: white;
+    padding: 3px 6px;
+    font-size: 10px;
+    border-radius: 12px;
+    margin-top: 2px;
+    margin-right: 4px;
+}
+.row.leave {
+    color: #00d018;
+}
+.row.eli-whitney {
+    color: #E4572E;
+}

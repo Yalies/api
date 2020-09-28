@@ -1,0 +1,46 @@
+#controls {
+    margin-bottom: 10px;
+}
+
+#submit {
+    padding: 8px 10px;
+}
+
+#filters_header {
+    margin-top: 10px;
+}
+#clear_filters {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.filter {
+    margin-top: 8px;
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px 12px;
+    border: solid 1px lightgray;
+    border-radius: 20px;
+    font-weight: 100;
+}
+.filter.active {
+    border-color: #00356b;
+    border-width: 2px;
+    padding: 9px 11px;
+}
+.filter h4::after {
+    content: '';
+    vertical-align: middle;
+    border: solid 4px transparent;
+    border-bottom-width: 0px;
+    border-top: solid 4px currentColor;
+    display: inline-block;
+    transform: rotateX(180deg);
+    transition: transform 0.5s;
+}
+.filter.collapsed h4::after {
+    transform: rotateX(0);
+    transition: transform 0.5s;
+}
+.filter.collapsed label {
+    display: none;
+}
