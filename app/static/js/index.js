@@ -48,15 +48,17 @@ p.clearFilters.onclick = function() {
 }
 
 function isFilter(element) {
-    return e.target.tagName == 'DIV' && e.target.classList.contains('filter');
+    return e.target.tagName === 'DIV' && e.target.classList.contains('filter');
 }
 
 onclick = function(e) {
     let filter = null;
     if (isFilter(e.target)) {
         filter = e.target;
-    } else if (e.target.tagName == 'H4' && isFilter(e.target.parentElement)) {
+    } else if (e.target.tagName === 'H4' && isFilter(e.target.parentElement)) {
         filter = e.target.parentElement;
+    } else if (e.target.tagName === 'I' && isFilter(e.target.parentElement.parentElement)) {
+        filter = e.target.parentElement.parentElement;
     }
 
     if (filter) {
