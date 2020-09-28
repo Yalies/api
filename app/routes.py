@@ -29,6 +29,9 @@ def store_user():
                               registered_on=timestamp)
                 db.session.add(g.user)
             g.user.last_seen = timestamp
+            g.student = Student.query.filter_by(netid=cas.username).first()
+            if not g.student:
+                abort(403)
             db.session.commit()
 
 
