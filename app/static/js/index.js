@@ -47,12 +47,15 @@ p.clearFilters.onclick = function() {
     resetFilters();
 }
 
+function isFilter(element) {
+    return e.target.tagName == 'DIV' && e.target.classList.contains('filter');
+}
+
 onclick = function(e) {
     let filter = null;
-    if (e.target.tagName == 'DIV' && e.target.classList.contains('filter')) {
+    if (isFilter(e.target)) {
         filter = e.target;
-    } else if (e.target.tagName == 'H4' &&
-               e.target.parentElement.tagName == 'DIV' && e.target.parentElement.classList.contains('filter')) {
+    } else if (e.target.tagName == 'H4' && isFilter(e.target.parentElement)) {
         filter = e.target.parentElement;
     }
 
