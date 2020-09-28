@@ -6,14 +6,6 @@
     padding: 8px 10px;
 }
 
-#filters_header {
-    margin-top: 10px;
-    margin-left: 13px;
-}
-#clear_filters {
-    text-decoration: underline;
-    cursor: pointer;
-}
 .filter {
     margin-top: 8px;
     display: inline-block;
