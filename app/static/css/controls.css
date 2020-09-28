@@ -42,6 +42,9 @@
 .filter label {
     cursor: pointer;
 }
+.filter label {
+    margin-bottom: 4px;
+}
 .filter.collapsed label {
     display: none;
 }
