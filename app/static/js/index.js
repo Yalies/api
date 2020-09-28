@@ -131,8 +131,9 @@ function runSearch() {
         }
     }
     criteria = {};
-    if (p.query.value)
-        criteria['query'] = p.query.value;
+    query = p.query.value.trim();
+    if (query)
+        criteria['query'] = query;
     if (filtersActive)
         criteria['filters'] = filters;
     p.list.innerHTML = '';
