@@ -20,7 +20,7 @@
     padding: 10px 12px;
     border: solid 1px lightgray;
     border-radius: 20px;
-    font-weight: 100;
+    user-select: none;
 }
 .filter.active {
     border-color: #00356b;
