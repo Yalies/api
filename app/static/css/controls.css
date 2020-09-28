@@ -17,6 +17,7 @@
     border: solid 1px lightgray;
     border-radius: 20px;
     user-select: none;
+    cursor: pointer;
 }
 .filter.active {
     border-color: #00356b;
@@ -30,6 +31,10 @@
 .filter.collapsed i {
     transform: rotate(0);
     transition: transform 0.1s;
+}
+.filter input,
+.filter label {
+    cursor: pointer;
 }
 .filter.collapsed label {
     display: none;
