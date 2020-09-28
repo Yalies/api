@@ -119,6 +119,11 @@ def about():
     return render_template('about.html')
 
 
+@app.route('/hide_me')
+def hide_me():
+    return render_template('hide_me.html')
+
+
 @app.route('/token', methods=['POST'])
 @login_required
 def get_token():
