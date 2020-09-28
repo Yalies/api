@@ -1,3 +1,6 @@
+///////////////////
+// Page elements //
+///////////////////
 let p = {
     checkboxes: document.querySelectorAll('input[type="checkbox"]'),
     allCheckboxes: document.querySelectorAll('input[type="checkbox"][name$="-all"]'),
@@ -9,6 +12,22 @@ let p = {
     loading: document.getElementById('loading'),
     empty: document.getElementById('empty'),
 };
+
+//////////////
+// Controls //
+//////////////
+query.onkeyup = function(e) {
+    if (e.keyCode === 13) {
+        e.preventDefault();
+        p.submit.click();
+    }
+};
+
+function collapseAllFilters() {
+    for (let filter of p.filters) {
+        filter.classList.add('collapsed');
+    }
+}
 
 function resetFilters() {
     for (let filter of p.filters) {
@@ -27,6 +46,20 @@ resetFilters();
 p.clearFilters.onclick = function() {
     resetFilters();
 }
+
+onclick = function(e) {
+    let filter = null;
+    if (e.target.tagName == 'DIV' && e.target.classList.contains('filter')) {
+        filter = e.target;
+    } else if (e.target.tagName == 'H4' &&
+               e.target.parentElement.tagName == 'DIV' && e.target.parentElement.classList.contains('filter')) {
+        filter = e.target.parentElement;
+    }
+
+    if (filter) {
+        filter.classList.toggle('collapsed');
+    }
+};
 
 onchange = function(e) {
     let input = e.target;
@@ -59,16 +92,79 @@ onchange = function(e) {
     }
 };
 
-query.onkeyup = function(e) {
-    if (e.keyCode === 13) {
-        e.preventDefault();
-        p.submit.click();
-    }
-};
 
+///////////////////
+// List building //
+///////////////////
 let criteria = {};
 let pagesLoaded = 0;
 let pagesFinished = false;
+
+p.submit.onclick = function() {
+    collapseAllFilters();
+    let filters = {};
+    for (let filter of p.filters) {
+        let category = filter.id;
+        let otherCheckboxes = Array.from(filter.getElementsByTagName('input'));
+        let allCheckbox = otherCheckboxes.shift();
+        if (!allCheckbox.checked) {
+            filters[category] = [];
+            for (let checkbox of otherCheckboxes) {
+                if (checkbox.checked) {
+                    if (category === 'leave' || category === 'eli_whitney') {
+                        filters[category].push(checkbox.name === 'Yes');
+                    } else if (category == 'year') {
+                        filters[category].push(checkbox.name ? parseInt(checkbox.name) : null);
+                    } else {
+                        filters[category].push(checkbox.name);
+                    }
+                }
+            }
+        }
+    }
+    criteria = {};
+    if (p.query.value)
+        criteria['query'] = p.query.value;
+    if (filters)
+        criteria['filters'] = filters;
+    output.innerHTML = '';
+    pagesLoaded = 0;
+    pagesFinished = false;
+    loadNextPage();
+};
+
+function addRow(container, property, icon, student, protocol) {
+    let value = student[property];
+    if (value) {
+        let row = document.createElement('div');
+        row.classList.add('row');
+        row.classList.add(property);
+        let i = document.createElement('i');
+        i.className = 'fa fa-' + icon;
+        row.appendChild(i);
+        let readout = document.createElement('p');
+        readout.classList.add('value');
+        readout.classList.add(property);
+        if (typeof(value) == 'string' && value.includes('\n')) {
+            let lines = value.split('\n');
+            readout.appendChild(document.createTextNode(lines.shift()));
+            for (let line of lines) {
+                readout.appendChild(document.createElement('br'));
+                readout.appendChild(document.createTextNode(line));
+            }
+        } else if (protocol) {
+            let a = document.createElement('a');
+            a.href = protocol + ':' + value;
+            a.textContent = value;
+            readout.appendChild(a);
+        } else {
+            readout.textContent = value;
+        }
+        row.appendChild(readout);
+
+        container.appendChild(row);
+    }
+}
 
 function loadNextPage() {
     if (!pagesFinished) {
@@ -172,94 +268,6 @@ function loadNextPage() {
 }
 
 loadNextPage();
-
-function addRow(container, property, icon, student, protocol) {
-    let value = student[property];
-    if (value) {
-        let row = document.createElement('div');
-        row.classList.add('row');
-        row.classList.add(property);
-        let i = document.createElement('i');
-        i.className = 'fa fa-' + icon;
-        row.appendChild(i);
-        let readout = document.createElement('p');
-        readout.classList.add('value');
-        readout.classList.add(property);
-        if (typeof(value) == 'string' && value.includes('\n')) {
-            let lines = value.split('\n');
-            readout.appendChild(document.createTextNode(lines.shift()));
-            for (let line of lines) {
-                readout.appendChild(document.createElement('br'));
-                readout.appendChild(document.createTextNode(line));
-            }
-        } else if (protocol) {
-            let a = document.createElement('a');
-            a.href = protocol + ':' + value;
-            a.textContent = value;
-            readout.appendChild(a);
-        } else {
-            readout.textContent = value;
-        }
-        row.appendChild(readout);
-
-        container.appendChild(row);
-    }
-}
-
-function collapseAllFilters() {
-    for (let filter of p.filters) {
-        filter.classList.add('collapsed');
-    }
-}
-
-p.submit.onclick = function() {
-    collapseAllFilters();
-    let filters = {};
-    for (let filter of p.filters) {
-        let category = filter.id;
-        let otherCheckboxes = Array.from(filter.getElementsByTagName('input'));
-        let allCheckbox = otherCheckboxes.shift();
-        if (!allCheckbox.checked) {
-            filters[category] = [];
-            for (let checkbox of otherCheckboxes) {
-                if (checkbox.checked) {
-                    if (category === 'leave' || category === 'eli_whitney') {
-                        filters[category].push(checkbox.name === 'Yes');
-                    } else if (category == 'year') {
-                        filters[category].push(checkbox.name ? parseInt(checkbox.name) : null);
-                    } else {
-                        filters[category].push(checkbox.name);
-                    }
-                }
-            }
-        }
-    }
-    criteria = {}
-    if (p.query.value)
-        criteria['query'] = p.query.value;
-    if (filters)
-        criteria['filters'] = filters;
-    output.innerHTML = '';
-    pagesLoaded = 0;
-    pagesFinished = false;
-    loadNextPage();
-};
-
-onclick = function(e) {
-    let filter = null;
-    if (e.target.tagName == 'DIV' && e.target.classList.contains('filter')) {
-        filter = e.target;
-    } else if (e.target.tagName == 'H4' &&
-               e.target.parentElement.tagName == 'DIV' && e.target.parentElement.classList.contains('filter')) {
-        filter = e.target.parentElement;
-    }
-
-    if (filter) {
-        filter.classList.toggle('collapsed');
-    }
-};
-
-
 
 window.onscroll = function(e) {
     if (2 * window.innerHeight + window.scrollY >= document.body.offsetHeight) {
