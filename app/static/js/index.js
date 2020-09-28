@@ -121,7 +121,7 @@ function runSearch() {
                 if (checkbox.checked) {
                     if (category === 'leave' || category === 'eli_whitney') {
                         filters[category].push(checkbox.name === 'Yes');
-                    } else if (category == 'year') {
+                    } else if (category === 'year' || category === 'floor' || category === 'room') {
                         filters[category].push(checkbox.name ? parseInt(checkbox.name) : null);
                     } else {
                         filters[category].push(checkbox.name);
