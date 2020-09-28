@@ -24,6 +24,12 @@
     border-width: 2px;
     padding: 7px 11px;
 }
+.filter h4 {
+    margin-bottom: 5px;
+}
+.filter.collapsed h4 {
+    margin-bottom: 0;
+}
 .filter i {
     transform: rotate(180deg);
     transition: transform 0.1s;
