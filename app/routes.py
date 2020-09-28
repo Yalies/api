@@ -31,6 +31,7 @@ def store_user():
             g.user.last_seen = timestamp
             g.student = Student.query.filter_by(netid=cas.username).first()
             if not g.student:
+                # TODO: give a more graceful error than just a 403
                 abort(403)
             db.session.commit()
 
