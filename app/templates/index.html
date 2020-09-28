@@ -4,7 +4,11 @@
 <div id="controls">
     <input type="text" id="query" placeholder="Search">
     <button id="submit"><i class="fa fa-search"></i></button>
-    <h4 id="filters_header">Filters <span id="clear_filters">(Clear)</span></h4>
+    <h4 id="filters_header">
+        <i class="fa fa-filter"></i>
+        Filters
+        <span id="clear_filters">(Clear)</span>
+    </h4>
     <div>
         {% with name = "college", items = colleges %}{% include "_filter.html" %}{% endwith %}
         {% with name = "year", items = years, default = "Other" %}{% include "_filter.html" %}{% endwith %}
@@ -12,7 +16,10 @@
         {% with name = "eli_whitney", items = eli_whitney, header = "Eli Whitney?" %}{% include "_filter.html" %}{% endwith %}
         {% with name = "major", items = majors %}{% include "_filter.html" %}{% endwith %}
         <div class="filter collapsed" id="building_code">
-            <h4>Building</h4>
+            <h4>
+                <i class="fa fa-chevron-circle-down"></i>
+                Building
+            </h4>
             <label>
                 <input type="checkbox" name="building_code-all"> All
             </label>
