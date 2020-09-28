@@ -48,7 +48,7 @@ p.clearFilters.onclick = function() {
 }
 
 function isFilter(element) {
-    return e.target.tagName === 'DIV' && e.target.classList.contains('filter');
+    return element.tagName === 'DIV' && element.classList.contains('filter');
 }
 
 onclick = function(e) {
