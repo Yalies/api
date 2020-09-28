@@ -45,6 +45,7 @@ resetFilters();
 
 p.clearFilters.onclick = function() {
     resetFilters();
+    runSearch();
 }
 
 function isFilter(element) {
@@ -94,6 +95,7 @@ onchange = function(e) {
                 allCheckbox.checked = !anyChecked;
             }
         }
+        runSearch();
     }
 };
 
@@ -105,8 +107,7 @@ let criteria = {};
 let pagesLoaded = 0;
 let pagesFinished = false;
 
-p.submit.onclick = function() {
-    collapseAllFilters();
+function runSearch() {
     let filters = {};
     for (let filter of p.filters) {
         let category = filter.id;
@@ -136,6 +137,11 @@ p.submit.onclick = function() {
     pagesLoaded = 0;
     pagesFinished = false;
     loadNextPage();
+}
+
+p.submit.onclick = function() {
+    collapseAllFilters();
+    runSearch();
 };
 
 function addRow(container, property, icon, student, protocol) {

@@ -230,7 +230,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             print(email + ' is' + (' not' if not students[student_emails[email]]['leave'] else '') + ' taking a leave.')
 
 
-    # Clear all students
+    # Store students into database
     Student.query.delete()
     for student_dict in students:
         db.session.add(Student(**student_dict))
