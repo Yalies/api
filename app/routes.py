@@ -124,6 +124,7 @@ def about():
 
 
 @app.route('/hide_me')
+@login_required
 def hide_me():
     return render_template('hide_me.html')
 
