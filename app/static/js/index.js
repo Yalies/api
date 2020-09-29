@@ -266,7 +266,7 @@ function loadNextPage() {
 
                         studentContainer.appendChild(row);
                     }
-                    addRow(studentContainer, 'college', 'Residential College' 'graduation-cap', student);
+                    addRow(studentContainer, 'college', 'Residential College', 'graduation-cap', student);
                     addRow(studentContainer, 'email', 'Email', 'envelope', student, 'mailto');
                     addRow(studentContainer, 'residence', 'Residence', 'building', student);
                     addRow(studentContainer, 'major', 'Major', 'book', student);
