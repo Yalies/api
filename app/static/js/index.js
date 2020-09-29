@@ -147,10 +147,11 @@ p.submit.onclick = function() {
     runSearch();
 };
 
-function addRow(container, property, icon, student, protocol) {
+function addRow(container, property, title, icon, student, protocol) {
     let value = student[property];
     if (value) {
         let row = document.createElement('div');
+        row.title = title;
         row.classList.add('row');
         row.classList.add(property);
         let i = document.createElement('i');
@@ -234,7 +235,7 @@ function loadNextPage() {
                         }
                         studentContainer.appendChild(pills);
                     }
-                    addRow(studentContainer, 'year', 'calendar', student);
+                    addRow(studentContainer, 'year', 'Graduation Year', 'calendar', student);
                     if (student.leave) {
                         let row = document.createElement('div');
                         row.classList.add('row');
@@ -265,14 +266,14 @@ function loadNextPage() {
 
                         studentContainer.appendChild(row);
                     }
-                    addRow(studentContainer, 'college', 'graduation-cap', student);
-                    addRow(studentContainer, 'email', 'envelope', student, 'mailto');
-                    addRow(studentContainer, 'residence', 'building', student);
-                    addRow(studentContainer, 'major', 'book', student);
-                    addRow(studentContainer, 'phone', 'phone', student, 'tel');
-                    addRow(studentContainer, 'birthday', 'birthday-cake', student);
-                    addRow(studentContainer, 'access_code', 'key', student);
-                    addRow(studentContainer, 'address', 'home', student);
+                    addRow(studentContainer, 'college', 'Residential College' 'graduation-cap', student);
+                    addRow(studentContainer, 'email', 'Email', 'envelope', student, 'mailto');
+                    addRow(studentContainer, 'residence', 'Residence', 'building', student);
+                    addRow(studentContainer, 'major', 'Major', 'book', student);
+                    addRow(studentContainer, 'phone', 'Phone Numbr', 'phone', student, 'tel');
+                    addRow(studentContainer, 'birthday', 'Birthday', 'birthday-cake', student);
+                    addRow(studentContainer, 'access_code', 'Swipe Access Code', 'key', student);
+                    addRow(studentContainer, 'address', 'Address', 'home', student);
 
                     p.list.appendChild(studentContainer);
                 }
