@@ -10,6 +10,7 @@ import re
 import json
 from bs4 import BeautifulSoup
 import yaledirectory
+from cryptography.fernet import Fernet
 
 
 with open('app/res/majors.txt') as f:
@@ -20,6 +21,8 @@ RE_ROOM = re.compile(r'^([A-Z]+)-([A-Z]+)(\d+)(\d)([A-Z]+)?$')
 RE_BIRTHDAY = re.compile(r'^[A-Z][a-z]{2} \d{1,2}$')
 RE_ACCESS_CODE = re.compile(r'[0-9]-[0-9]+')
 RE_PHONE = re.compile(r'[0-9]{3}-[0-9]{3}-[0-9]{4}')
+
+PRE2020_KEY = os.environ.get('PRE2020_KEY')
 
 
 def get_html(cookie):
@@ -213,8 +216,9 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             student_emails[student['email']] = len(students)
         students.append(student)
 
-    with open('pre2020.html', 'r') as f:
-        html = f.read()
+    with open('pre2020.html.fernet', 'rb') as f:
+        fernet = Fernet(PRE2020_KEY)
+        html = fernet.decrypt(f.read())
     tree = get_tree(html)
     containers = get_containers(tree)
 
