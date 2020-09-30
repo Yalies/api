@@ -88,7 +88,7 @@ def index():
     rooms = untuple(db.session.query(distinct(Student.room)).order_by(Student.room))
     return render_template('index.html', colleges=colleges,
                            years=years, leave=leave, eli_whitney=eli_whitney, majors=majors, building_codes=building_codes,
-                           entryways=entryways, floors=floors, suites=suites, rooms=rooms, states=states)
+                           entryways=entryways, floors=floors, suites=suites, rooms=rooms)
 
 
 @app.route('/scraper', methods=['GET', 'POST'])
