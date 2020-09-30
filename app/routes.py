@@ -83,8 +83,8 @@ def index():
     # TODO: is there a SQL-based way to do this?
     entryways = untuple(db.session.query(distinct(Student.entryway)).order_by(Student.entryway))
     floors = untuple(db.session.query(distinct(Student.floor)).order_by(Student.floor))
-    suites = untuple(db.session.query(distinct(Student.suite)).order_by(Student.suite)
-    rooms = untuple(db.session.query(distinct(Student.room)).order_by(Student.room)
+    suites = untuple(db.session.query(distinct(Student.suite)).order_by(Student.suite))
+    rooms = untuple(db.session.query(distinct(Student.room)).order_by(Student.room))
     return render_template('index.html', colleges=colleges,
                            years=years, leave=leave, eli_whitney=eli_whitney, majors=majors, building_codes=building_codes,
                            entryways=entryways, floors=floors, suites=suites, rooms=rooms, states=states)
