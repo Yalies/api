@@ -216,7 +216,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             student_emails[student['email']] = len(students)
         students.append(student)
 
-    with open('pre2020.html.fernet', 'rb') as f:
+    with open('app/res/pre2020.html.fernet', 'rb') as f:
         fernet = Fernet(PRE2020_KEY)
         html = fernet.decrypt(f.read())
     tree = get_tree(html)
