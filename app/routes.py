@@ -1,5 +1,6 @@
 from flask import render_template, request, jsonify, g
 from flask_cas import login_required
+from flask_cas.routing import validate
 from app import app, db, tasks, cas
 from app.models import User, Student
 from sqlalchemy import distinct
@@ -122,6 +123,20 @@ def hide_me():
 @app.route('/token', methods=['POST'])
 @login_required
 def get_token():
+    token, expires_in = g.user.generate_token()
+    return jsonify({'token': token, 'expires_in': expires_in})
+
+
+@app.route('/auth', methods=['POST'])
+def auth():
+    # TODO: merge with above function?
+    payload = request.get_json()
+    jsessionid = payload.get('jsessionid')
+    if not jsessionid:
+        abort(403)
+    valid = validate(jsessionid)
+    if not valid:
+        abort(403)
     token, expires_in = g.user.generate_token()
     return jsonify({'token': token, 'expires_in': expires_in})
 
