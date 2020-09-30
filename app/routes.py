@@ -10,12 +10,6 @@ import time
 
 with open('app/res/majors_clean.txt') as f:
     majors = f.read().splitlines()
-states = {}
-with open('app/res/states.txt') as f:
-    for line in f.read().splitlines():
-        state, abbreviation = line.split('\t', 1)
-        states[abbreviation.strip()] = state.strip()
-states[''] = 'International/Other'
 
 
 @app.before_request
