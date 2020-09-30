@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, g
+from flask import render_template, request, jsonify, abort, g
 from flask_cas import login_required
 from flask_cas.routing import validate
 from app import app, db, tasks, cas
