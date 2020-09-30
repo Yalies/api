@@ -1,6 +1,6 @@
 from flask import render_template, request, jsonify, abort, g
 from flask_cas import login_required
-from flask_cas.routing import validate
+from cas_validate import validate
 from app import app, db, tasks, cas
 from app.models import User, Student
 from sqlalchemy import distinct
@@ -133,10 +133,12 @@ def auth():
     payload = request.get_json()
     jsessionid = payload.get('jsessionid')
     if not jsessionid:
-        abort(403)
+        abort(401)
     valid = validate(jsessionid)
     if not valid:
-        abort(403)
+        abort(401)
+    # Validation sets the user for this session, so we can re-query
+    g.user = User.query.get(cas.username)
     token, expires_in = g.user.generate_token()
     return jsonify({'token': token, 'expires_in': expires_in})
 
