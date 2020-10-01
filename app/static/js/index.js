@@ -269,7 +269,7 @@ function loadNextPage() {
                     }
                     addRow(studentContainer, 'college', 'Residential College', 'graduation-cap', student);
                     addRow(studentContainer, 'email', 'Email', 'envelope', student, 'mailto');
-                    addRow(studentContainer, 'residence', 'Residence', 'building', student);
+                    //addRow(studentContainer, 'residence', 'Residence', 'building', student);
                     addRow(studentContainer, 'major', 'Major', 'book', student);
                     //addRow(studentContainer, 'phone', 'Phone Number', 'phone', student, 'tel');
                     addRow(studentContainer, 'birthday', 'Birthday', 'birthday-cake', student);
