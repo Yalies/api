@@ -11,7 +11,13 @@
 }
 #popup .content {
     max-width: 4in;
-    padding: 10px 20px 20px;
+    max-height: 90%;
+    overflow: scroll;
+    margin: 10px;
+    padding: 15px 20px 20px;
     background: white;
-    border-radius: 20px;
+    border-radius: 30px;
+}
+#popup button {
+    margin-top: 5px;
 }
