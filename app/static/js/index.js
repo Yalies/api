@@ -160,13 +160,14 @@ function addRow(container, property, title, icon, student, protocol) {
         let readout = document.createElement('p');
         readout.classList.add('value');
         readout.classList.add(property);
-        if (typeof(value) == 'string' && value.includes('\n')) {
+        if (typeof(value) === 'string' && value.includes('\n')) {
             let lines = value.split('\n');
-            readout.appendChild(document.createTextNode(lines.shift()));
-            for (let line of lines) {
-                readout.appendChild(document.createElement('br'));
-                readout.appendChild(document.createTextNode(line));
-            }
+            //readout.appendChild(document.createTextNode(lines.shift()));
+            //for (let line of lines) {
+            //    readout.appendChild(document.createElement('br'));
+            //    readout.appendChild(document.createTextNode(line));
+            //}
+            readout.textContent = lines[lines.length - 1];
         } else if (protocol) {
             let a = document.createElement('a');
             a.href = protocol + ':' + value;
