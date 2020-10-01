@@ -4,7 +4,10 @@ let inputs = document.getElementsByTagName('textarea'),
 onchange = function() {
     let completed = true;
     for (let input of inputs) {
-        completed = completed && Boolean(input.value);
+        if (!Boolean(input.value)) {
+            completed = false;
+            break;
+        }
     }
     submit.disabled = !completed;
 }
