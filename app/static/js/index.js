@@ -197,7 +197,6 @@ function loadNextPage() {
         })
             .then(response => response.json())
             .then(students => {
-                console.log(students);
                 pagesFinished = (students.length < 20);
                 if (pagesLoaded == 1 && !students.length) {
                     p.empty.style.display = 'block';
