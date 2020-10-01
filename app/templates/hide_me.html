@@ -1,7 +1,32 @@
 {% extends "base.html" %}
 
+{% block head %}
+<link rel="stylesheet" href="/static/css/hide_me.css">
+{% endblock %}
+
 {% block content %}
 <h1>Remove your information</h3>
 <p>Yalies only uses data that is publicly available to Yale students—no private information is added. NetIDs, UPIs, and emails come from the <a href="https://directory.yale.edu">Yale Directory</a>, and everything else comes from <a href="https://students.yale.edu/facebook">Yale Face Book</a>.</p>
-<p>If you wish to remove any information about yourself from Yalies, you may do so through the <a href="https://students.yale.edu/facebook/PreferencesPage">Yale Face Book "Edit" page</a>. Removed information will promptly disappear from Yalies as well.</p>
+<h3>How to hide your data</h3>
+<ul>
+    <li>
+        <p>If you wish to remove information about yourself from Yalies, you may do so using the <a href="https://students.yale.edu/facebook/PreferencesPage" target="_blank">Yale Face Book "Edit" page</a>.</p>
+    </li>
+    <li>
+        <p>To access the page, first sign in to the Face Book with CAS.</p>
+    </li>
+    <li>
+        <p>The Face Book sometimes redirects users back to the home page upon sign in. If this occurs, click the "Edit" button in the header to return.</p>
+        <img src="/static/images/hide/edit_button.png" alt="Click edit button">
+    </li>
+    <li>
+        <p>On the Edit page, you'll see a number of "Yes" and "No" radio buttons, which each correspond to a data point Yale provides. Select the "No" option for any data point that you don't wish to be publicly accessible.</p>
+        <img src="/static/images/hide/click_no.png" alt="Click No buttons">
+    </li>
+    <li>
+        <p>Click the "Update" button to save changes.</p>
+        <img src="/static/images/hide/click_update.png" alt="Click Update button">
+    </li>
+</ul>
+<p>Removed information will promptly disappear from Yalies as well. Excessively private information such as street address, room numbers, and phone numbers are censored from the Yalies database regardless of presence in the Face Book.</p>
 {% endblock %}
