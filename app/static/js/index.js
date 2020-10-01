@@ -271,7 +271,7 @@ function loadNextPage() {
                     addRow(studentContainer, 'email', 'Email', 'envelope', student, 'mailto');
                     addRow(studentContainer, 'residence', 'Residence', 'building', student);
                     addRow(studentContainer, 'major', 'Major', 'book', student);
-                    //addRow(studentContainer, 'phone', 'Phone Numbr', 'phone', student, 'tel');
+                    //addRow(studentContainer, 'phone', 'Phone Number', 'phone', student, 'tel');
                     addRow(studentContainer, 'birthday', 'Birthday', 'birthday-cake', student);
                     addRow(studentContainer, 'access_code', 'Swipe Access Code', 'key', student);
                     addRow(studentContainer, 'address', 'Address', 'home', student);
