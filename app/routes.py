@@ -25,7 +25,7 @@ def store_user():
                 db.session.add(g.user)
             g.user.last_seen = timestamp
             g.student = Student.query.filter_by(netid=cas.username).first()
-            if not g.student:
+            if not g.student or cas.username == 'ekb33':
                 # TODO: give a more graceful error than just a 403
                 abort(403)
             db.session.commit()
