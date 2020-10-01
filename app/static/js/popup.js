@@ -7,8 +7,8 @@ function showPopup() {
     header.textContent = 'Warning';
     content.appendChild(header);
     paragraphs = [
-        'All data used on Yalies is publicly accessible on the <a href="https://students.yale.edu/facebook">Yale Face Book</a> and the <a href="https://directory.yale.edu">Yale Directory</a>. Certain information provided by Yale is understandably disconcerting to some students, including street addresses, room numbers, and occasionally phone numbers.',
-        'Yalies censors such information, however, we can\'t do anything about what\'s on Yale\'s official sources. Though we believe Yale should ultimately make this sensitive information hidden by default, for now we encourage students to visit the <a href="https://students.yale.edu/facebook/PreferencesPage">Face Book preferences page</a> and remove information that makes them uncomfortable. Extensive documentation on how to remove your data from Yale\'s sources has been compiled <a href="/hide_me">here</a>.',
+        'All data used on Yalies is already publicly accessible on the <a href="https://students.yale.edu/facebook">Yale Face Book</a> and the <a href="https://directory.yale.edu">Yale Directory</a>. Certain information provided by Yale is understandably disconcerting to some students, including street addresses, room numbers, and occasionally phone numbers.',
+        'Yalies censors such information, however, we can\'t do anything about what\'s on Yale\'s official sources. Though Yale ought to ultimately make this sensitive data hidden by default, for now we encourage students to visit the <a href="https://students.yale.edu/facebook/PreferencesPage">Face Book preferences page</a> and remove information that makes them uncomfortable. Extensive documentation on how to remove your data from Yale\'s sources can be found <a href="/hide_me">here</a>.',
     ];
     for (let paragraph of paragraphs) {
         let p = document.createElement('p');
@@ -27,6 +27,9 @@ function showPopup() {
 function closePopup() {
     let popup = document.getElementById('popup');
     popup.parentElement.removeChild(popup);
+    localStorage.popupShown = true;
 }
 
-showPopup();
+if (!localStorage.popupShown) {
+    showPopup();
+}
