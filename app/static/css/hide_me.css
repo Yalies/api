@@ -1,5 +1,6 @@
 main img {
     max-width: 6in;
+    max-height: 4in;
     margin-top: 10px;
 }
 main ul {
