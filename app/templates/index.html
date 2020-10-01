@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block head %}
+<link rel="stylesheet" href="/static/css/popup.css">
+{% endblock %}
+
 {% block content %}
 <div id="controls">
     <input type="text" id="query" placeholder="Search">
@@ -44,4 +48,5 @@
     Loading...
 </div>
 <script src="/static/js/index.js"></script>
+<script src="/static/js/popup.js"></script>
 {% endblock %}
