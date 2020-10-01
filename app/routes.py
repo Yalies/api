@@ -1,8 +1,8 @@
 from flask import render_template, request, jsonify, abort, g
 from flask_cas import login_required
-from cas_validate import validate
 from app import app, db, tasks, cas
 from app.models import User, Student
+from app.cas_validate import validate
 from sqlalchemy import distinct
 
 import datetime
