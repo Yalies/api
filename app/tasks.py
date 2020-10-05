@@ -111,6 +111,10 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     tree = get_tree(html)
     containers = get_containers(tree)
 
+    if len(containers) == 0:
+        print('No students were found on this page. There may be something wrong with authentication, aborting.')
+        return
+
     directory = yaledirectory.API(people_search_session_cookie, csrf_token)
     watermark_mask = Image.open('app/res/watermark_mask.png')
 
