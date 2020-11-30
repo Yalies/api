@@ -87,6 +87,7 @@ class Student(SearchableMixin, db.Model):
         query = criteria.get('query')
         filters = criteria.get('filters')
         page = criteria.get('page')
+        page_size = criteria.get('page_size')
         if query:
             student_query = Student.query_search(query)
         if filters:
@@ -98,7 +99,7 @@ class Student(SearchableMixin, db.Model):
                     return None
                 student_query = student_query.filter(getattr(Student, category).in_(filters[category]))
         if page:
-            students = student_query.paginate(page, app.config['PAGE_SIZE'], False).items
+            students = student_query.paginate(page, page_size or app.config['PAGE_SIZE'], False).items
         else:
             students = student_query.all()
         return students
