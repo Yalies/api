@@ -246,7 +246,7 @@ function loadNextPage() {
                         let readout = document.createElement('p');
                         readout.classList.add('value');
                         readout.classList.add('leave');
-                        readout.textContent = 'On Leave';
+                        readout.textContent = 'Took Leave';
                         row.appendChild(readout);
 
                         studentContainer.appendChild(row);
