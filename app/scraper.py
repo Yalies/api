@@ -106,37 +106,40 @@ def get_directory_entry(directory, person):
 
 
 def add_directory_to_person(person, entry):
-    if not person.netid:
-        person.netid = entry.netid
-        person.first_name = entry.first_name
-        person.last_name = entry.last_name
-        person.college = entry.residential_college_name or None
-        person.upi = entry.upi or None
-        person.email = entry.email or None
-    person.title = entry.directory_title or None
-    person.nickname = entry.known_as or None
-    person.middle_name = entry.middle_name or None
-    person.suffix = entry.suffix or None
-    person.phone = entry.phone_number or None
-    person.college_code = entry.residential_college_code or None
-    person.school = entry.primary_school_name or None
-    person.school_code = entry.primary_school_code or None
-
-    # Review naming:
-    person.primary_organization = entry.primary_organization_name or None
-    person.primary_organization_code = entry.primary_organization_code or None
-    person.primary_organization_id = entry.primary_organization_id or None
-    person.organization = entry.organization_name or None
-    person.organization_unit = entry.organization_unit_name or None
-    person.primary_division = entry.primary_division_name or None
-    person.curriculum = entry.student_curriculum or None
-    person.year = person.year or student_expected_graduation_year or None
-    person.mailbox = entry.mailbox or None
-    person.postal_address = entry.postal_address or None
-    # TODO: do we really want to merge these? Will there ever be both?
-    person.address = person.address or entry.student_address or None
-    person.address = person.address or entry.registered_address or None
-    person.location = entry.internal_location or None
+    if not person.get('netid'):
+        person.update({
+            'netid': entry.netid,
+            'first_name': entry.first_name,
+            'last_name': entry.last_name,
+            'college': entry.residential_college_name,
+            'upi': entry.upi,
+            'email': entry.email,
+        })
+    person.update({
+        'title': entry.directory_title,
+        'nickname': entry.known_as,
+        'middle_name': entry.middle_name,
+        'suffix': entry.suffix,
+        'phone': entry.phone_number,
+        'college_code': entry.residential_college_code,
+        'school': entry.primary_school_name,
+        'school_code': entry.primary_school_code,
+        # Review naming:
+        'primary_organization': entry.primary_organization_name,
+        'primary_organization_code': entry.primary_organization_code,
+        'primary_organization_id': entry.primary_organization_id,
+        'organization': entry.organization_name,
+        'organization_unit': entry.organization_unit_name,
+        'primary_division': entry.primary_division_name,
+        'curriculum': entry.student_curriculum,
+        'year': person['year'] or student_expected_graduation_year,
+        'mailbox': entry.mailbox,
+        'postal_address': entry.postal_address,
+        # TODO: do we really want to merge these? Will there ever be both?
+        'address': person.address or entry.student_address or entry.registered_address,
+        'location': entry.internal_location,
+    })
+    return person
 
 
 @celery.task
