@@ -117,26 +117,26 @@ def add_directory_to_person(person, entry):
     person.nickname = entry.known_as or None
     person.middle_name = entry.middle_name or None
     person.suffix = entry.suffix or None
-    #display_name
-    # Not relevant
-    #matched
     person.phone = entry.phone_number or None
-    person.primary_organization_name = entry.primary_organization_name or None
+    person.college_code = entry.residential_college_code or None
+    person.school = entry.primary_school_name or None
+    person.school_code = entry.primary_school_code or None
+
+    # Review naming:
+    person.primary_organization = entry.primary_organization_name or None
     person.primary_organization_code = entry.primary_organization_code or None
     person.primary_organization_id = entry.primary_organization_id or None
-    person.organization_name = entry.organization_name or None
-    person.organization_unit_name = entry.organization_unit_name or None
-    person.primary_school_code = entry.primary_school_code or None
-    person.primary_school_name = entry.primary_school_name or None
-    person.primary_division_name = entry.primary_division_name or None
-    person.college_code = entry.residential_college_code or None
-    person.address = person.address or entry.student_address or None
+    person.organization = entry.organization_name or None
+    person.organization_unit = entry.organization_unit_name or None
+    person.primary_division = entry.primary_division_name or None
     person.curriculum = entry.student_curriculum or None
     person.year = person.year or student_expected_graduation_year or None
-    person.location = entry.internal_location or None
     person.mailbox = entry.mailbox or None
-    person.address = person.address or entry.registered_address or None
     person.postal_address = entry.postal_address or None
+    # TODO: do we really want to merge these? Will there ever be both?
+    person.address = person.address or entry.student_address or None
+    person.address = person.address or entry.registered_address or None
+    person.location = entry.internal_location or None
 
 
 @celery.task
