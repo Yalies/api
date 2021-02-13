@@ -12,6 +12,6 @@ gunicorn
 redis
 celery
 pyjwt
-yaledirectory>=1.1.3
+yaledirectory>=1.2.0
 Pillow
 cryptography
