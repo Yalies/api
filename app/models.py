@@ -81,6 +81,31 @@ class Person(SearchableMixin, db.Model):
     netid = db.Column(db.String)
     upi = db.Column(db.Integer)
 
+    directory_title = db.Column(db.String)
+    nickname = db.Column(db.String)
+    middle_name = db.Column(db.String)
+    suffix = db.Column(db.String)
+    primary_organization_name = db.Column(db.String)
+    primary_organization_code = db.Column(db.String)
+    primary_organization_id = db.Column(db.String)
+    organization_name = db.Column(db.String)
+    organization_unit_name = db.Column(db.String)
+    primary_school_code = db.Column(db.String)
+    primary_school_name = db.Column(db.String)
+    primary_division_name = db.Column(db.String)
+    college_code = db.Column(db.String)
+    curriculum = db.Column(db.String)
+    #student_expected_graduation_year
+    # TODO: should this be called building? Or is other info included ever?
+    location = db.Column(db.String)  #internal_location
+    mailbox = db.Column(db.String)
+    registered_address = db.Column(db.String)
+    postal_address = db.Column(db.String)
+    #display_name
+    #matched
+    #residential_college_name
+    #student_address
+
 
     @staticmethod
     def search(criteria):
