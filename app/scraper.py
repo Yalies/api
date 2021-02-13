@@ -105,6 +105,40 @@ def get_directory_entry(directory, person):
     return people[0]
 
 
+def add_directory_to_person(person, entry):
+    if not person.netid:
+        person.netid = entry.netid
+        person.first_name = entry.first_name
+        person.last_name = entry.last_name
+        person.college = entry.residential_college_name or None
+        person.upi = entry.upi or None
+        person.email = entry.email or None
+    person.title = entry.directory_title or None
+    person.nickname = entry.known_as or None
+    person.middle_name = entry.middle_name or None
+    person.suffix = entry.suffix or None
+    #display_name
+    # Not relevant
+    #matched
+    person.phone = entry.phone_number or None
+    person.primary_organization_name = entry.primary_organization_name or None
+    person.primary_organization_code = entry.primary_organization_code or None
+    person.primary_organization_id = entry.primary_organization_id or None
+    person.organization_name = entry.organization_name or None
+    person.organization_unit_name = entry.organization_unit_name or None
+    person.primary_school_code = entry.primary_school_code or None
+    person.primary_school_name = entry.primary_school_name or None
+    person.primary_division_name = entry.primary_division_name or None
+    person.college_code = entry.residential_college_code or None
+    person.address = person.address or entry.student_address or None
+    person.curriculum = entry.student_curriculum or None
+    person.year = person.year or student_expected_graduation_year or None
+    person.location = entry.internal_location or None
+    person.mailbox = entry.mailbox or None
+    person.address = person.address or entry.registered_address or None
+    person.postal_address = entry.postal_address or None
+
+
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     html = get_html(face_book_cookie)
