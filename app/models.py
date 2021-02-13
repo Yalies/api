@@ -55,8 +55,6 @@ class Person(SearchableMixin, db.Model):
     _to_exclude = ('id')
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    netid = db.Column(db.String)
-    upi = db.Column(db.Integer)
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
     image_id = db.Column(db.Integer)
@@ -75,9 +73,14 @@ class Person(SearchableMixin, db.Model):
     major = db.Column(db.String)
     address = db.Column(db.String)
     phone = db.Column(db.String)
+    access_code = db.Column(db.String)
     leave = db.Column(db.Boolean, default=False)
     eli_whitney = db.Column(db.Boolean, default=False)
-    access_code = db.Column(db.String)
+
+    # Fields from directory
+    netid = db.Column(db.String)
+    upi = db.Column(db.Integer)
+
 
     @staticmethod
     def search(criteria):
