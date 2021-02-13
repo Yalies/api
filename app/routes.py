@@ -1,7 +1,7 @@
 from flask import render_template, request, jsonify, abort, g
 from flask_cas import login_required
 from app import app, db, scraper, cas
-from app.models import User, Student
+from app.models import User, Person
 from app.cas_validate import validate
 from sqlalchemy import distinct
 
@@ -24,8 +24,8 @@ def store_user():
                               registered_on=timestamp)
                 db.session.add(g.user)
             g.user.last_seen = timestamp
-            g.student = Student.query.filter_by(netid=cas.username).first()
-            if not g.student and not cas.username == 'ekb33':
+            g.person = Person.query.filter_by(netid=cas.username).first()
+            if not g.person and not cas.username == 'ekb33':
                 # TODO: give a more graceful error than just a 403
                 abort(403)
             db.session.commit()
@@ -82,10 +82,10 @@ def index():
     eli_whitney = ['Yes', 'No']
     # SQLAlchemy returns lists of tuples, so we gotta convert to a list of items.
     # TODO: is there a SQL-based way to do this?
-    entryways = untuple(db.session.query(distinct(Student.entryway)).order_by(Student.entryway))
-    floors = untuple(db.session.query(distinct(Student.floor)).order_by(Student.floor))
-    suites = untuple(db.session.query(distinct(Student.suite)).order_by(Student.suite))
-    rooms = untuple(db.session.query(distinct(Student.room)).order_by(Student.room))
+    entryways = untuple(db.session.query(distinct(Person.entryway)).order_by(Person.entryway))
+    floors = untuple(db.session.query(distinct(Person.floor)).order_by(Person.floor))
+    suites = untuple(db.session.query(distinct(Person.suite)).order_by(Person.suite))
+    rooms = untuple(db.session.query(distinct(Person.room)).order_by(Person.room))
     return render_template('index.html', colleges=colleges,
                            years=years, leave=leave, eli_whitney=eli_whitney, majors=majors, building_codes=building_codes,
                            entryways=entryways, floors=floors, suites=suites, rooms=rooms)

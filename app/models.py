@@ -49,8 +49,8 @@ class User(db.Model):
             return None
 
 
-class Student(SearchableMixin, db.Model):
-    __tablename__ = 'students'
+class Person(SearchableMixin, db.Model):
+    __tablename__ = 'person'
     __searchable__ = ['first_name', 'last_name', 'netid', 'college', 'email', 'residence', 'major', 'address']
     _to_exclude = ('id')
 
@@ -83,13 +83,13 @@ class Student(SearchableMixin, db.Model):
     def search(criteria):
         print('Searching by criteria:')
         print(criteria)
-        student_query = Student.query
+        person_query = Person.query
         query = criteria.get('query')
         filters = criteria.get('filters')
         page = criteria.get('page')
         page_size = criteria.get('page_size')
         if query:
-            student_query = Student.query_search(query)
+            person_query = Person.query_search(query)
         if filters:
             for category in filters:
                 if category not in ('college', 'year', 'major', 'building_code', 'entryway',
@@ -97,9 +97,9 @@ class Student(SearchableMixin, db.Model):
                     return None
                 if not isinstance(filters[category], list):
                     return None
-                student_query = student_query.filter(getattr(Student, category).in_(filters[category]))
+                person_query = person_query.filter(getattr(Person, category).in_(filters[category]))
         if page:
-            students = student_query.paginate(page, page_size or app.config['PAGE_SIZE'], False).items
+            students = person_query.paginate(page, page_size or app.config['PAGE_SIZE'], False).items
         else:
-            students = student_query.all()
+            students = person_query.all()
         return students

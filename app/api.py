@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, g, abort
 import time
 from app import db, cas
 from app.util import to_json, fail, succ
-from app.models import User, Student
+from app.models import User, Person
 
 
 api_bp = Blueprint('api', __name__)
@@ -49,5 +49,5 @@ def check_token():
 @api_bp.route('/students', methods=['POST'])
 def api_students():
     criteria = request.get_json() or {}
-    students = Student.search(criteria)
+    students = Person.search(criteria)
     return to_json(students)

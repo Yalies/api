@@ -1,5 +1,5 @@
 from app import app, db, celery
-from app.models import Student
+from app.models import Person
 from .s3 import ImageUploader
 
 from PIL import Image
@@ -87,21 +87,21 @@ def clean_year(year):
     return 2000 + int(year)
 
 
-def get_directory_entry(directory, student):
+def get_directory_entry(directory, person):
     query = {
-        'first_name': student['first_name'],
-        'last_name': student['last_name'],
+        'first_name': person['first_name'],
+        'last_name': person['last_name'],
         'school': 'YC'
     }
-    if student.get('email'):
-        query['email'] = student['email']
-    if student.get('college'):
-        query['college'] = student['college'] + ' College'
+    if person.get('email'):
+        query['email'] = person['email']
+    if person.get('college'):
+        query['college'] = person['college'] + ' College'
     people = directory.people(**query)
     print('Found %d matching people in directory.' % len(people))
     if not people:
         # If nothing found, do a broader search and return first result
-        return directory.person(first_name=student['first_name'], last_name=student['last_name'])
+        return directory.person(first_name=person['first_name'], last_name=person['last_name'])
     return people[0]
 
 
@@ -112,7 +112,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     containers = get_containers(tree)
 
     if len(containers) == 0:
-        print('No students were found on this page. There may be something wrong with authentication, aborting.')
+        print('No people were found on this page. There may be something wrong with authentication, aborting.')
         return
 
     directory = yaledirectory.API(people_search_session_cookie, csrf_token)
@@ -121,22 +121,22 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     image_uploader = ImageUploader()
     print('Already hosting {} images.'.format(len(image_uploader.image_ids)))
 
-    student_emails = {}
-    students = []
+    person_emails = {}
+    people = []
 
     for container in containers:
-        student = {}
+        person = {}
 
-        student['last_name'], student['first_name'] = clean_name(container.find('h5', {'class': 'yalehead'}).text)
-        student['image_id'] = clean_image_id(container.find('img')['src'])
+        person['last_name'], person['first_name'] = clean_name(container.find('h5', {'class': 'yalehead'}).text)
+        person['image_id'] = clean_image_id(container.find('img')['src'])
 
-        if student['image_id']:
-            if student['image_id'] in image_uploader.image_ids:
-                print('Student has image, but it has already been processed.')
-                student['image'] = image_uploader.get_image_url(student['image_id'])
+        if person['image_id']:
+            if person['image_id'] in image_uploader.image_ids:
+                print('Person has image, but it has already been processed.')
+                person['image'] = image_uploader.get_image_url(person['image_id'])
             else:
                 print('Image has not been processed yet.')
-                image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(student['image_id']),
+                image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(person['image_id']),
                                        headers={
                                            'Cookie': face_book_cookie,
                                        },
@@ -151,34 +151,34 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
                     output = BytesIO()
                     im.save(output, format='JPEG', mode='RGB')
 
-                    student['image'] = image_uploader.upload_image(student['image_id'], output)
+                    person['image'] = image_uploader.upload_image(person['image_id'], output)
                 except OSError:
                     # "Cannot identify image" error
                     print('PIL could not identify image.')
 
-        student['year'] = clean_year(container.find('div', {'class': 'student_year'}).text)
+        person['year'] = clean_year(container.find('div', {'class': 'student_year'}).text)
         pronoun = container.find('div', {'class': 'student_info_pronoun'}).text
-        student['pronoun'] = pronoun if pronoun else None
+        person['pronoun'] = pronoun if pronoun else None
 
         info = container.find_all('div', {'class': 'student_info'})
 
-        student['college'] = info[0].text.replace(' College', '')
+        person['college'] = info[0].text.replace(' College', '')
         try:
-            student['email'] = info[1].find('a').text
+            person['email'] = info[1].find('a').text
         except AttributeError:
             pass
-            #student.email = guess_email(student)
+            #person.email = guess_email(person)
         trivia = info[1].find_all(text=True, recursive=False)
         try:
             room = trivia.pop(0) if RE_ROOM.match(trivia[0]) else None
             if room:
-                student['residence'] = room
+                person['residence'] = room
                 result = RE_ROOM.search(room)
-                student['building_code'], student['entryway'], student['floor'], student['suite'], student['room'] = result.groups()
-            student['birthday'] = trivia.pop() if RE_BIRTHDAY.match(trivia[-1]) else None
-            student['major'] = trivia.pop() if trivia[-1] in MAJORS else None
-            if student['major'] and student['major'] in MAJOR_FULL_NAMES:
-                student['major'] = MAJOR_FULL_NAMES[student['major']]
+                person['building_code'], person['entryway'], person['floor'], person['suite'], person['room'] = result.groups()
+            person['birthday'] = trivia.pop() if RE_BIRTHDAY.match(trivia[-1]) else None
+            person['major'] = trivia.pop() if trivia[-1] in MAJORS else None
+            if person['major'] and person['major'] in MAJOR_FULL_NAMES:
+                person['major'] = MAJOR_FULL_NAMES[person['major']]
         except IndexError:
             pass
 
@@ -188,37 +188,37 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             if row.endswith(' /'):
                 row = row.rstrip(' /')
                 if RE_ACCESS_CODE.match(row):
-                    student['access_code'] = row
+                    person['access_code'] = row
                 if RE_PHONE.match(row):
-                    student['phone'] = row
-                if len(new_trivia) == 1 and not student.get('residence'):
-                    student['residence'] = new_trivia.pop(0)
+                    person['phone'] = row
+                if len(new_trivia) == 1 and not person.get('residence'):
+                    person['residence'] = new_trivia.pop(0)
             else:
                 new_trivia.append(row)
         trivia = new_trivia
 
         # Handle first row of address being duplicated for residence
-        if len(trivia) >= 2 and trivia[0] == trivia[1] and not student.get('residence'):
-            student['residence'] = trivia.pop(0)
+        if len(trivia) >= 2 and trivia[0] == trivia[1] and not person.get('residence'):
+            person['residence'] = trivia.pop(0)
 
-        student['address'] = '\n'.join(trivia)
+        person['address'] = '\n'.join(trivia)
 
-        directory_entry = get_directory_entry(directory, student)
+        directory_entry = get_directory_entry(directory, person)
         if directory_entry is not None:
-            student['netid'] = directory_entry.netid
-            student['upi'] = directory_entry.upi
-            if not student.get('email'):
-                student['email'] = directory_entry.email
-            if not student.get('year') and directory_entry.student_expected_graduation_year:
-                student['year'] = int(directory_entry.student_expected_graduation_year)
+            person['netid'] = directory_entry.netid
+            person['upi'] = directory_entry.upi
+            if not person.get('email'):
+                person['email'] = directory_entry.email
+            if not person.get('year') and directory_entry.student_expected_graduation_year:
+                person['year'] = int(directory_entry.student_expected_graduation_year)
                 # This may not always be the case. But it's probably a safe bet.
-                student['eli_whitney'] = True
+                person['eli_whitney'] = True
         else:
             print('Could not find directory entry.')
 
-        if student.get('email'):
-            student_emails[student['email']] = len(students)
-        students.append(student)
+        if person.get('email'):
+            person_emails[person['email']] = len(people)
+        people.append(person)
 
     with open('app/res/pre2020.html.fernet', 'rb') as f:
         fernet = Fernet(PRE2020_KEY)
@@ -233,14 +233,14 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             email = info[1].find('a').text
         except AttributeError:
             continue
-        if email in student_emails and year is not None and students[student_emails[email]]['year'] is not None:
-            students[student_emails[email]]['leave'] = (year < students[student_emails[email]]['year'])
-            print(email + ' is' + (' not' if not students[student_emails[email]]['leave'] else '') + ' taking a leave.')
+        if email in person_emails and year is not None and people[person_emails[email]]['year'] is not None:
+            people[person_emails[email]]['leave'] = (year < people[person_emails[email]]['year'])
+            print(email + ' is' + (' not' if not people[person_emails[email]]['leave'] else '') + ' taking a leave.')
 
 
-    # Store students into database
-    Student.query.delete()
-    for student_dict in students:
-        db.session.add(Student(**student_dict))
+    # Store people into database
+    Person.query.delete()
+    for person_dict in people:
+        db.session.add(Person(**person_dict))
     db.session.commit()
     print('Done.')
