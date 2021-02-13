@@ -142,6 +142,38 @@ def add_directory_to_person(person, entry):
     return person
 
 
+letters = gen_character_range('a', 'z')
+numbers = gen_character_range('0', '9')
+characters = letters + numbers
+
+
+def fetch_prefix(directory, prefix: str):
+    print('Attempting prefix ' + prefix)
+    people, total = directory.people(netid=prefix, include_total=True)
+
+    if total == len(people):
+        print(f'Successfully found {total} people.')
+        return people
+
+    # NetIds have 2-3 characters followed by any amount of numbers.
+    MIN_CHARS_IN_PREFIX = 2
+    MAX_CHARS_IN_PREFIX = 3
+    if len(prefix) < MIN_CHARS_IN_PREFIX:
+        choices = letters
+    elif len(prefix) >= MAX_CHARS_IN_PREFIX or (len(prefix) != 0 and prefix[-1] not in letters):
+        choices = numbers
+    else:
+        choices = characters
+
+    res = []
+    for choice in choices:
+        res += resolve_prefix(prefix + choice)
+    return res
+
+def get_full_directory(directory):
+    return fetch_prefix(directory, '')
+
+
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     html = get_html(face_book_cookie)
@@ -250,6 +282,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
                 person['year'] = int(directory_entry.student_expected_graduation_year)
                 # This may not always be the case. But it's probably a safe bet.
                 person['eli_whitney'] = True
+            person = add_directory_to_person(person, directory_entry)
         else:
             print('Could not find directory entry.')
 
@@ -274,6 +307,10 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             people[person_emails[email]]['leave'] = (year < people[person_emails[email]]['year'])
             print(email + ' is' + (' not' if not people[person_emails[email]]['leave'] else '') + ' taking a leave.')
 
+    # Fetch non-undergrad users by iterating netids
+    # Get set of netids for students we've already processed
+    checked_netids = {person_dict['netid'] for person_dict in people}
+    directory_entries = get_full_directory(directory)
 
     # Store people into database
     Person.query.delete()
