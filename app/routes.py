@@ -1,6 +1,6 @@
 from flask import render_template, request, jsonify, abort, g
 from flask_cas import login_required
-from app import app, db, tasks, cas
+from app import app, db, scraper, cas
 from app.models import User, Student
 from app.cas_validate import validate
 from sqlalchemy import distinct
@@ -93,13 +93,13 @@ def index():
 
 @app.route('/scraper', methods=['GET', 'POST'])
 @login_required
-def scraper():
+def scrape():
     if cas.username != 'ekb33':
         abort(403)
     if request.method == 'GET':
         return render_template('scraper.html')
     payload = request.get_json()
-    tasks.scrape.apply_async(args=[payload['face_book_cookie'], payload['people_search_session_cookie'], payload['csrf_token']])
+    scraper.scrape.apply_async(args=[payload['face_book_cookie'], payload['people_search_session_cookie'], payload['csrf_token']])
     return '', 200
 
 
