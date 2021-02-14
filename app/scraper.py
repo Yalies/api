@@ -22,7 +22,7 @@ RE_BIRTHDAY = re.compile(r'^[A-Z][a-z]{2} \d{1,2}$')
 RE_ACCESS_CODE = re.compile(r'[0-9]-[0-9]+')
 RE_PHONE = re.compile(r'[0-9]{3}-[0-9]{3}-[0-9]{4}')
 
-PRE2020_KEY = os.environ.get('PRE2020_KEY')
+FERNET_KEY = os.environ.get('FERNET_KEY')
 
 
 def get_html(cookie):
@@ -103,6 +103,26 @@ def get_directory_entry(directory, person):
         # If nothing found, do a broader search and return first result
         return directory.person(first_name=person['first_name'], last_name=person['last_name'])
     return people[0]
+
+
+def compare_years(page_key, people, person_emails):
+    with open(f'app/res/{page_key}.html.fernet', 'rb') as f:
+        fernet = Fernet(FERNET_KEY)
+        html = fernet.decrypt(f.read())
+    tree = get_tree(html)
+    containers = get_containers(tree)
+
+    for container in containers:
+        year = clean_year(container.find('div', {'class': 'student_year'}).text)
+        info = container.find_all('div', {'class': 'student_info'})
+        try:
+            email = info[1].find('a').text
+        except AttributeError:
+            continue
+        if email in person_emails and year is not None and people[person_emails[email]]['year'] is not None:
+            people[person_emails[email]]['leave'] = (year < people[person_emails[email]]['year'])
+            print(email + ' is' + (' not' if not people[person_emails[email]]['leave'] else '') + ' taking a leave.')
+    return people
 
 
 def add_directory_to_person(person, entry):
@@ -290,22 +310,8 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             person_emails[person['email']] = len(people)
         people.append(person)
 
-    with open('app/res/pre2020.html.fernet', 'rb') as f:
-        fernet = Fernet(PRE2020_KEY)
-        html = fernet.decrypt(f.read())
-    tree = get_tree(html)
-    containers = get_containers(tree)
-
-    for container in containers:
-        year = clean_year(container.find('div', {'class': 'student_year'}).text)
-        info = container.find_all('div', {'class': 'student_info'})
-        try:
-            email = info[1].find('a').text
-        except AttributeError:
-            continue
-        if email in person_emails and year is not None and people[person_emails[email]]['year'] is not None:
-            people[person_emails[email]]['leave'] = (year < people[person_emails[email]]['year'])
-            print(email + ' is' + (' not' if not people[person_emails[email]]['leave'] else '') + ' taking a leave.')
+    # Check leaves
+    people = compare_years('pre2020', people, person_emails)
 
     # Fetch non-undergrad users by iterating netids
     # Get set of netids for students we've already processed
