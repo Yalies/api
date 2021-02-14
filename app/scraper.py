@@ -102,7 +102,10 @@ def get_directory_entry(directory, person):
     print('Found %d matching people in directory.' % len(people))
     if not people:
         # If nothing found, do a broader search and return first result
-        return directory.person(first_name=person['first_name'], last_name=person['last_name'])
+        person = directory.person(first_name=person['first_name'], last_name=person['last_name'])
+        if person:
+            print('Found matching person searching only by name.')
+        return person
     return people[0]
 
 
