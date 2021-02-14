@@ -1,7 +1,10 @@
-from cryptography.fernet import Fernet
-from argparse import ArgumentParser
+#!/usr/bin/env python3
 
-parser = argparse.ArgumentParser(description='Process some integers.')
+import os
+from argparse import ArgumentParser
+from cryptography.fernet import Fernet
+
+parser = ArgumentParser(description='Process some integers.')
 parser.add_argument('filename', type=str, help='Name of file to encrypt')
 parser.add_argument('--key', type=str, default=os.environ.get('FERNET_KEY', Fernet.generate_key()))
 args = parser.parse_args()
@@ -15,4 +18,4 @@ with open(args.filename + '.fernet', 'wb') as f:
     f.write(encrypted_content)
 
 print('Key:')
-print(key.decode())
+print(args.key)
