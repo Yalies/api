@@ -105,7 +105,7 @@ def get_directory_entry(directory, person):
     return people[0]
 
 
-def compare_years(page_key, people, person_emails):
+def compare_years(page_key, people, emails):
     print(f'Comparing years from {page_key} store.')
     with open(f'app/res/{page_key}.html.fernet', 'rb') as f:
         fernet = Fernet(FERNET_KEY)
@@ -120,9 +120,9 @@ def compare_years(page_key, people, person_emails):
             email = info[1].find('a').text
         except AttributeError:
             continue
-        if email in person_emails and year is not None and people[person_emails[email]]['year'] is not None:
-            people[person_emails[email]]['leave'] = (year < people[person_emails[email]]['year'])
-            print(email + ' is' + (' not' if not people[person_emails[email]]['leave'] else '') + ' taking a leave.')
+        if email in emails and year is not None and people[emails[email]]['year'] is not None:
+            people[emails[email]]['leave'] = (year < people[emails[email]]['year'])
+            print(email + ' is' + (' not' if not people[emails[email]]['leave'] else '') + ' taking a leave.')
     return people
 
 
@@ -215,7 +215,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     image_uploader = ImageUploader()
     print('Already hosting {} images.'.format(len(image_uploader.image_ids)))
 
-    person_emails = {}
+    emails = {}
     people = []
 
     for container in containers:
@@ -312,12 +312,12 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             print('Could not find directory entry.')
 
         if person.get('email'):
-            person_emails[person['email']] = len(people)
+            emails[person['email']] = len(people)
         people.append(person)
 
     # Check leaves
-    people = compare_years('pre2020', people, person_emails)
-    people = compare_years('fall2020', people, person_emails)
+    people = compare_years('pre2020', people, emails)
+    people = compare_years('fall2020', people, emails)
 
     # Fetch non-undergrad users by iterating netids
     # Get set of netids for students we've already processed
