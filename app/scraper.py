@@ -315,8 +315,8 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         if entry['netid'] not in checked_netids:
             print('Parsing directory entry with NetID ' + entry['netid'])
             checked_netids.add(entry['netid'])
-            person = {}
-            add_directory_to_person(person, entry)
+            person = add_directory_to_person({}, entry)
+            people.append(person)
 
     # Store people into database
     Person.query.delete()
