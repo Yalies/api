@@ -193,7 +193,7 @@ def fetch_prefix(directory, prefix: str):
 
     res = []
     for choice in choices:
-        res += resolve_prefix(prefix + choice)
+        res += fetch_prefix(directory, prefix + choice)
     return res
 
 def get_full_directory(directory):
@@ -321,7 +321,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
     # Fetch non-undergrad users by iterating netids
     # Get set of netids for students we've already processed
-    checked_netids = {person_dict['netid'] for person_dict in people}
+    checked_netids = {person_dict.get('netid') for person_dict in people if 'netid' in person_dict}
     directory_entries = get_full_directory(directory)
     for entry in directory_entries:
         if entry['netid'] not in checked_netids:
