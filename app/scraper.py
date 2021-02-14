@@ -106,6 +106,7 @@ def get_directory_entry(directory, person):
 
 
 def compare_years(page_key, people, person_emails):
+    print(f'Comparing years from {page_key} store.')
     with open(f'app/res/{page_key}.html.fernet', 'rb') as f:
         fernet = Fernet(FERNET_KEY)
         html = fernet.decrypt(f.read())
@@ -160,6 +161,10 @@ def add_directory_to_person(person, entry):
         'location': entry.internal_location,
     })
     return person
+
+
+def gen_character_range(start: str, end: str) -> List[str]:
+    return [chr(x) for x in range(ord(start), ord(end)+1)]
 
 
 letters = gen_character_range('a', 'z')
