@@ -124,7 +124,7 @@ class Person(SearchableMixin, db.Model):
                                     'floor', 'suite', 'room', 'state', 'leave', 'eli_whitney'):
                     return None
                 if not isinstance(filters[category], list):
-                    return None
+                    filters[category] = [filters[category]]
                 person_query = person_query.filter(getattr(Person, category).in_(filters[category]))
         if page:
             students = person_query.paginate(page, page_size or app.config['PAGE_SIZE'], False).items
