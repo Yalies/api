@@ -160,10 +160,10 @@ def add_directory_to_person(person, entry):
         'mailbox': entry.mailbox,
         'postal_address': entry.postal_address,
         # TODO: do we really want to merge these? Will there ever be both?
-        'address': person['address'] or entry.student_address or entry.registered_address,
+        'address': person.get('address') or entry.student_address or entry.registered_address,
         'location': entry.internal_location,
     })
-    if not person['year'] and entry.student_expected_graduation_year:
+    if not person.get('year') and entry.student_expected_graduation_year:
         person['year'] = int(entry.student_expected_graduation_year)
     return person
 
@@ -173,7 +173,7 @@ numbers = string.digits
 characters = letters + numbers
 
 
-def fetch_prefix(directory, prefix: str):
+def read_directory(directory, prefix: str = ''):
     print('Attempting prefix ' + prefix)
     people, total = directory.people(netid=prefix, include_total=True)
 
@@ -193,11 +193,8 @@ def fetch_prefix(directory, prefix: str):
 
     res = []
     for choice in choices:
-        res += fetch_prefix(directory, prefix + choice)
+        res += read_directory(directory, prefix + choice)
     return res
-
-def get_full_directory(directory):
-    return fetch_prefix(directory, '')
 
 
 @celery.task
@@ -322,10 +319,10 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     # Fetch non-undergrad users by iterating netids
     # Get set of netids for students we've already processed
     checked_netids = {person_dict.get('netid') for person_dict in people if 'netid' in person_dict}
-    directory_entries = get_full_directory(directory)
+    directory_entries = read_directory(directory)
     for entry in directory_entries:
-        if entry['netid'] not in checked_netids:
-            print('Parsing directory entry with NetID ' + entry['netid'])
+        if entry.netid not in checked_netids:
+            print('Parsing directory entry with NetID ' + entry.netid)
             checked_netids.add(entry['netid'])
             person = add_directory_to_person({}, entry)
             people.append(person)
