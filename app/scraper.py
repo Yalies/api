@@ -312,6 +312,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
     # Check leaves
     people = compare_years('pre2020', people, person_emails)
+    people = compare_years('fall2020', people, person_emails)
 
     # Fetch non-undergrad users by iterating netids
     # Get set of netids for students we've already processed
