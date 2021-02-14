@@ -52,3 +52,10 @@ def api_students():
     criteria.update({'school': 'YC'})
     students = Person.search(criteria)
     return to_json(students)
+
+
+@api_bp.route('/people', methods=['POST'])
+def api_people():
+    criteria = request.get_json() or {}
+    people = Person.search(criteria)
+    return to_json(people)
