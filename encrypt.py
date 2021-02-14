@@ -1,14 +1,18 @@
 from cryptography.fernet import Fernet
+from argparse import ArgumentParser
 
-key = Fernet.generate_key()
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('filename', type=str, help='Name of file to encrypt')
+parser.add_argument('--key', type=str, default=os.environ.get('FERNET_KEY', Fernet.generate_key()))
+args = parser.parse_args()
 
-with open('pre2020.html', 'r') as f:
-    page = f.read()
-encoded_page = page.encode()
-f = Fernet(key)
-encrypted_page = f.encrypt(encoded_page)
-with open('pre2020.html.fernet', 'wb') as f:
-    f.write(encrypted_page)
+with open(args.filename, 'r') as f:
+    content = f.read()
+encoded_content = content.encode()
+f = Fernet(args.key.encode())
+encrypted_content = f.encrypt(encoded_content)
+with open(args.filename + '.fernet', 'wb') as f:
+    f.write(encrypted_content)
 
 print('Key:')
 print(key.decode())
