@@ -227,7 +227,6 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
         if person['image_id']:
             if person['image_id'] in image_uploader.image_ids:
-                print('Person has image, but it has already been processed.')
                 person['image'] = image_uploader.get_image_url(person['image_id'])
             else:
                 print('Image has not been processed yet.')
