@@ -163,7 +163,7 @@ def add_directory_to_person(person, entry):
     return person
 
 
-def gen_character_range(start: str, end: str) -> List[str]:
+def gen_character_range(start: str, end: str):
     return [chr(x) for x in range(ord(start), ord(end)+1)]
 
 
