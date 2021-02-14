@@ -153,13 +153,14 @@ def add_directory_to_person(person, entry):
         'organization_unit': entry.organization_unit_name,
         'primary_division': entry.primary_division_name,
         'curriculum': entry.student_curriculum,
-        'year': person['year'] or entry.student_expected_graduation_year,
         'mailbox': entry.mailbox,
         'postal_address': entry.postal_address,
         # TODO: do we really want to merge these? Will there ever be both?
         'address': person['address'] or entry.student_address or entry.registered_address,
         'location': entry.internal_location,
     })
+    if not person['year'] and entry.student_expected_graduation_year:
+        person['year'] = int(entry.student_expected_graduation_year)
     return person
 
 
