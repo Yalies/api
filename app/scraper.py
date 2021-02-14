@@ -10,6 +10,7 @@ import re
 import json
 from bs4 import BeautifulSoup
 import yaledirectory
+import string
 from cryptography.fernet import Fernet
 
 
@@ -164,12 +165,8 @@ def add_directory_to_person(person, entry):
     return person
 
 
-def gen_character_range(start: str, end: str):
-    return [chr(x) for x in range(ord(start), ord(end)+1)]
-
-
-letters = gen_character_range('a', 'z')
-numbers = gen_character_range('0', '9')
+letters = string.ascii_lowercase
+numbers = string.digits
 characters = letters + numbers
 
 
