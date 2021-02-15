@@ -55,8 +55,17 @@ class Person(SearchableMixin, db.Model):
     _to_exclude = ('id')
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    netid = db.Column(db.String)
+    upi = db.Column(db.Integer)
+
+    title = db.Column(db.String)
     first_name = db.Column(db.String, nullable=False)
+    nickname = db.Column(db.String)
+    middle_name = db.Column(db.String)
     last_name = db.Column(db.String, nullable=False)
+    suffix = db.Column(db.String)
+
     image_id = db.Column(db.Integer)
     image = db.Column(db.String)
     year = db.Column(db.Integer)
@@ -78,26 +87,23 @@ class Person(SearchableMixin, db.Model):
     eli_whitney = db.Column(db.Boolean, default=False)
 
     # Fields from directory
-    netid = db.Column(db.String)
-    upi = db.Column(db.Integer)
 
-    title = db.Column(db.String)
-    nickname = db.Column(db.String)
-    middle_name = db.Column(db.String)
-    suffix = db.Column(db.String)
-    primary_organization = db.Column(db.String)
     primary_organization_code = db.Column(db.String)
-    primary_organization_id = db.Column(db.String)
+    # Always empty
+    #primary_organization_id
     organization = db.Column(db.String)
-    organization_unit = db.Column(db.String)
+    unit = db.Column(db.String) #organization_unit
+    # Always the same as unit
+    #primary_organization
     school = db.Column(db.String)
     school_code = db.Column(db.String)
-    primary_division = db.Column(db.String)
+    # Alwasy the same as organization
+    #primary_division
     college_code = db.Column(db.String)
     curriculum = db.Column(db.String)
     #student_expected_graduation_year
-    # TODO: should this be called building? Or is other info included ever?
-    location = db.Column(db.String)  #internal_location
+    # TODO: should we split the room number into a separate column?
+    office = db.Column(db.String)  #internal_location
     mailbox = db.Column(db.String)
     # We're putting this into address instead since anyone that has registered_address wasn't in the face book
     #registered_address
