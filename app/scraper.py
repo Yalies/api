@@ -238,6 +238,18 @@ def read_directory(directory, prefix: str = ''):
 
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
+    # Uncomment for quick testing
+    """
+    directory = yaledirectory.API(people_search_session_cookie, csrf_token)
+    people = []
+    directory_entries = read_directory(directory, 'aa')
+    for entry in directory_entries:
+        print('Parsing directory entry with NetID ' + entry.netid)
+        person = add_directory_to_person({}, entry)
+        people.append(person)
+    """
+
+
     html = get_html(face_book_cookie)
     tree = get_tree(html)
     containers = get_containers(tree)
