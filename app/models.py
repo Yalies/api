@@ -66,7 +66,7 @@ class Person(SearchableMixin, db.Model):
     # Naming
     title = db.Column(db.String)
     first_name = db.Column(db.String, nullable=False)
-    nickname = db.Column(db.String)
+    preferred_name = db.Column(db.String)
     middle_name = db.Column(db.String)
     last_name = db.Column(db.String, nullable=False)
     suffix = db.Column(db.String)
