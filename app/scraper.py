@@ -270,7 +270,10 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     people = []
 
     for container in containers:
-        person = {}
+        person = {
+            'school': 'Yale College',
+            'school_code': 'YC',
+        }
 
         person['last_name'], person['first_name'] = clean_name(container.find('h5', {'class': 'yalehead'}).text)
         person['image_id'] = clean_image_id(container.find('img')['src'])
