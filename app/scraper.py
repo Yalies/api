@@ -180,6 +180,7 @@ def read_directory(directory, prefix: str = ''):
     if total == len(people):
         print(f'Successfully found {total} people.')
         return people
+    print(f'Found {total} people; trying more specific prefixes.')
 
     # NetIds have 2-3 characters followed by any amount of numbers.
     MIN_CHARS_IN_PREFIX = 2
