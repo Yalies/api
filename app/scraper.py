@@ -142,7 +142,7 @@ def add_directory_to_person(person, entry):
         })
     person.update({
         'title': entry.directory_title,
-        'nickname': entry.known_as,
+        'nickname': entry.known_as if entry.known_as != entry.first_name else None,
         'middle_name': entry.middle_name,
         'suffix': entry.suffix,
         'phone': entry.phone_number,
