@@ -166,10 +166,11 @@ def add_directory_to_person(person, entry):
         'nickname': entry.known_as if entry.known_as != entry.first_name else None,
         'middle_name': entry.middle_name,
         'suffix': entry.suffix,
-        'phone': clean_phone(entry.phone_number),
+        'phone': person.get('phone') or clean_phone(entry.phone_number),
+        # TODO: check if any face book members have a college but not a college code
         'college_code': entry.residential_college_code,
-        'school': entry.primary_school_name,
-        'school_code': entry.primary_school_code,
+        'school': person.get('school') or entry.primary_school_name,
+        'school_code': person.get('school_code') or entry.primary_school_code,
         # Always the same as organization_unit
         #'primary_organization': entry.primary_organization_name,
         # Always empty
