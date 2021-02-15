@@ -195,8 +195,9 @@ def add_directory_to_person(person, entry):
         # residential_college_name, student_expected_graduation_year: useless or from face book
     })
     if person['organization'] and not person['organization_id'] and person['school_code']:
-        # This is a student, but their organization is still listed (though not other staff fields.
-        # Remove their organization for clarity. This information is duplicated in the school field.
+        # This is a student, but their organization is still listed.
+        # Remove their organization field, which is duplicated `school`.
+        # This way, organization and related fields are used only for staff.
         person['organization'] = None
 
     if entry.primary_organization_name != entry.organization_unit_name:
