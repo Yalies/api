@@ -149,13 +149,15 @@ def add_directory_to_person(person, entry):
         'college_code': entry.residential_college_code,
         'school': entry.primary_school_name,
         'school_code': entry.primary_school_code,
-        # Review naming:
-        'primary_organization': entry.primary_organization_name,
-        'primary_organization_code': entry.primary_organization_code,
-        'primary_organization_id': entry.primary_organization_id,
+        # Always the same as organization_unit
+        #'primary_organization': entry.primary_organization_name,
+        # Always empty
+        #'primary_organization_id': entry.primary_organization_id,
         'organization': entry.organization_name,
-        'organization_unit': entry.organization_unit_name,
-        'primary_division': entry.primary_division_name,
+        'unit': entry.organization_unit_name,
+        'unit_code': entry.primary_organization_code,
+        # Always the same as organization
+        #'primary_division': entry.primary_division_name,
         'curriculum': entry.student_curriculum,
         'mailbox': entry.mailbox,
         'postal_address': entry.postal_address,
