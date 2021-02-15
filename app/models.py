@@ -86,33 +86,18 @@ class Person(SearchableMixin, db.Model):
     leave = db.Column(db.Boolean, default=False)
     eli_whitney = db.Column(db.Boolean, default=False)
 
-    # Always empty
-    #primary_organization_id
     organization_id = db.Column(db.String)
     organization = db.Column(db.String)
-    # TODO: seems like this may describe classes of units
+    unit_code = db.Column(db.String)
     unit_id = db.Column(db.String)
-    unit = db.Column(db.String) #organization_unit
-    unit_code = db.Column(db.String) #primary_organization_code
-    # Always the same as unit
-    #primary_organization
-    school = db.Column(db.String)
+    unit = db.Column(db.String)
     school_code = db.Column(db.String)
-    # Alwasy the same as organization
-    #primary_division
+    school = db.Column(db.String)
     college_code = db.Column(db.String)
     curriculum = db.Column(db.String)
-    #student_expected_graduation_year
-    # TODO: should we split the room number into a separate column?
-    office = db.Column(db.String)  #internal_location
+    office = db.Column(db.String)
     mailbox = db.Column(db.String)
-    # We're putting this into address instead since anyone that has registered_address wasn't in the face book
-    #registered_address
     postal_address = db.Column(db.String)
-    #display_name
-    #matched
-    #residential_college_name
-    #student_address
 
 
     @staticmethod

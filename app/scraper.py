@@ -174,23 +174,34 @@ def add_directory_to_person(person, entry):
         'college_code': entry.residential_college_code,
         'school': person.get('school') or entry.primary_school_name,
         'school_code': person.get('school_code') or entry.primary_school_code,
-        # Always the same as organization_unit
-        #'primary_organization': entry.primary_organization_name,
-        # Always empty
-        #'primary_organization_id': entry.primary_organization_id,
         'organization_id': organization_id,
         'organization': organization,
+        # TODO: seems like this describes classes of units, not single units
         'unit_id': unit_id,
         'unit': unit,
         'unit_code': entry.primary_organization_code,
-        # Always the same as organization
-        #'primary_division': entry.primary_division_name,
         'curriculum': entry.student_curriculum,
         'mailbox': entry.mailbox,
         'postal_address': entry.postal_address,
         # TODO: do we really want to merge these? Will there ever be both?
         'address': person.get('address') or entry.student_address or entry.registered_address,
+        # TODO: should we split the room number into a separate column?
         'office': entry.internal_location,
+        # Always the same as organization_unit
+        #'primary_organization': entry.primary_organization_name,
+        # Always empty
+        #'primary_organization_id': entry.primary_organization_id,
+        # Always the same as organization
+        #'primary_division': entry.primary_division_name,
+
+        #display_name
+        #matched
+        #residential_college_name
+        #student_address
+        #student_expected_graduation_year
+
+        # We're putting this into address instead since anyone that has registered_address wasn't in the face book
+        #registered_address
     })
     if person['organization'] and not person['organization_id'] and person['school_code']:
         # This is a student, but their organization is still listed (though not other staff fields.
