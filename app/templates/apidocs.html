@@ -6,17 +6,21 @@
     <button id="get_token">Get token</button>
     <input type="text" id="readout_token" value="{{ token }}" readonly>
 </div>
-<p>Currently, the API has one endpoint: <code>POST https://yalies.io/api/students</code>. The endpoint returns a JSON list of students. It accepts a JSON-formatted body containing the properties <code>query</code>, <code>filters</code>, <code>page</code>, and <code>page_size</code> (which may all be omitted). <code>query</code> represents an arbitrary string to search by, which will search across most fields of student data. <code>filters</code> is a dictionary mapping column names to lists of acceptable values. <code>page</code> represents the number of the page of students to get, which may allow you to improve request efficiency if you do not need to fetch every student at once. <code>page_size</code> allows you to change the size of each page you'd like, and is ignored if <code>page</code> is not provided. For example:</p>
+<h3>Authentication</h3>
+<p>You must pass in the header <code>Authorization</code>, with a value of <code>Bearer _______</code> (replacing the underscores with the token obtained from the top of this page).</p>
+<h3>Endpoints</h3>
+<p>Currently, the API has one endpoint: <code>POST https://yalies.io/api/people</code>. The older endpoint <code>/students</code> is deprecated, and will perform a query limited to Yale College undergraduates. The endpoint returns a JSON list of students. It accepts a JSON-formatted body containing the properties <code>query</code>, <code>filters</code>, <code>page</code>, and <code>page_size</code> (which may all be omitted). <code>query</code> represents an arbitrary string to search by, which will search across most fields of student data. <code>filters</code> is a dictionary mapping column names to lists of acceptable values. <code>page</code> represents the number of the page of students to get, which may allow you to improve request efficiency if you do not need to fetch every student at once. <code>page_size</code> allows you to change the size of each page you'd like, and is ignored if <code>page</code> is not provided. For example:</p>
 <pre>
 {
     "query": "Joe",
     "filters": {
+        "school_code": ["YC"],
         "college": [
             "Grace Hopper",
             "Davenport"
         ],
         "year": [2023, 2024],
-        "floor": [3],
+        "floor": 3,
         "leave": [True]
     },
     "page": 1,
@@ -24,8 +28,9 @@
 }
 </pre>
 <p>This payload would fetch the first page of 10 students in Grace Hopper or Davenport college, in the classes of 2023 or 2024, who live on floor 3 of their residential building, are on a leave of absence, and have a name, address, or other property that contains the search term "Joe".</p>
-<p>The following filters are supported: <code>college</code>, <code>year</code>, <code>major</code>, <code>building_code</code>, <code>entryway</code>, <code>floor</code>, <code>suite</code>, <code>room</code>, <code>state</code>, and <code>leave</code>.</p>
-<h3>Authentication</h3>
-<p>You must pass in the header <code>Authorization</code>, with a value of <code>Bearer _______</code> (replacing the underscores with the token obtained from the top of this page).</p>
+<p>Most properties can be filtered by, including <code>netid</code>, <code>upi</code>, <code>email</code>, <code>mailbox</code>, <code>phone</code>, <code>title</code>, <code>first_name</code>, <code>preferred_name</code>, <code>middle_name</code>, <code>last_name</code>, <code>suffix</code>, <code>pronoun</code>, <code>school_code</code>, <code>school</code>, <code>year</code>, <code>curriculum</code>, <code>college</code>, <code>college_code</code>, <code>leave</code>, <code>eli_whitney</code>, <code>birthday</code>, <code>residence</code>, <code>building_code</code>, <code>entryway</code>, <code>floor</code>, <code>suite</code>, <code>room</code>, <code>major</code>, <code>access_code</code>, <code>organization_id</code>, <code>organization</code>, <code>unit_class</code>, <code>unit_code</code>, <code>unit</code>, and <code>office</code>.</p>
+<p>Values for filters may be passed as lists of acceptable values, or as a single value.</p>
+<h3>Models</h3>
+<p>Only one model is used by the API, <code>Person</code>.</p>
 <script src="/static/js/token.js"></script>
 {% endblock %}
