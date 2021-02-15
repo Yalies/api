@@ -141,6 +141,14 @@ def split_id_name(combined):
     return '', combined
 
 
+def clean_phone(phone):
+    COUNTRY_CODE_RE = re.compile('^\+1? ')
+    phone = COUNTRY_CODE_RE.sub('', phone)
+    DISALLOWED_CHARACTERS_RE = re.compile(r'[\(\) \-]')
+    phone = DISALLOWED_CHARACTERS_RE.sub('', phone)
+    return phone
+
+
 def add_directory_to_person(person, entry):
     if not person.get('netid'):
         person.update({
@@ -158,7 +166,7 @@ def add_directory_to_person(person, entry):
         'nickname': entry.known_as if entry.known_as != entry.first_name else None,
         'middle_name': entry.middle_name,
         'suffix': entry.suffix,
-        'phone': entry.phone_number,
+        'phone': clean_phone(entry.phone_number),
         'college_code': entry.residential_college_code,
         'school': entry.primary_school_name,
         'school_code': entry.primary_school_code,

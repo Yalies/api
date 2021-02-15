@@ -86,8 +86,6 @@ class Person(SearchableMixin, db.Model):
     leave = db.Column(db.Boolean, default=False)
     eli_whitney = db.Column(db.Boolean, default=False)
 
-    # Fields from directory
-
     # Always empty
     #primary_organization_id
     organization_id = db.Column(db.String)
