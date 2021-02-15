@@ -91,7 +91,9 @@ class Person(SearchableMixin, db.Model):
     primary_organization_code = db.Column(db.String)
     # Always empty
     #primary_organization_id
+    organization_id = db.Column(db.String)
     organization = db.Column(db.String)
+    unit_id = db.Column(db.String)
     unit = db.Column(db.String) #organization_unit
     # Always the same as unit
     #primary_organization

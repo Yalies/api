@@ -130,6 +130,14 @@ def compare_years(page_key, people, emails):
     return people
 
 
+def split_id_name(combined):
+    ID_RE = re.compile(r'^[A-Z_]+$')
+    id, name = combined.split(' ', 1)
+    if ID_RE.match(id):
+        return id, name
+    return '', combined
+
+
 def add_directory_to_person(person, entry):
     if not person.get('netid'):
         person.update({
@@ -140,6 +148,8 @@ def add_directory_to_person(person, entry):
             'upi': entry.upi,
             'email': entry.email,
         })
+    organization_id, organization = split_id_name(entry.organization_name)
+    unit_id, unit = split_id_name(entry.organization_unit_name)
     person.update({
         'title': entry.directory_title,
         'nickname': entry.known_as if entry.known_as != entry.first_name else None,
@@ -153,8 +163,10 @@ def add_directory_to_person(person, entry):
         #'primary_organization': entry.primary_organization_name,
         # Always empty
         #'primary_organization_id': entry.primary_organization_id,
-        'organization': entry.organization_name,
-        'unit': entry.organization_unit_name,
+        'organization_id': organization_id,
+        'organization': organization,
+        'unit_id': unit_id,
+        'unit': unit,
         'unit_code': entry.primary_organization_code,
         # Always the same as organization
         #'primary_division': entry.primary_division_name,
