@@ -131,7 +131,6 @@ def compare_years(page_key, people, emails):
 
 
 def split_id_name(combined):
-    print('Splitting ' + combined)
     if not combined:
         return None, None
     ID_RE = re.compile(r'^[A-Z_]+$')
@@ -142,6 +141,10 @@ def split_id_name(combined):
 
 
 def clean_phone(phone):
+    if not phone:
+        return phone
+    if type(phone) == int:
+        phone = str(phone)
     COUNTRY_CODE_RE = re.compile('^\+1? ')
     phone = COUNTRY_CODE_RE.sub('', phone)
     DISALLOWED_CHARACTERS_RE = re.compile(r'[\(\) \-]')
