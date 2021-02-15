@@ -124,7 +124,7 @@ def compare_years(page_key, people, emails):
             email = info[1].find('a').text
         except AttributeError:
             continue
-        if email in emails and year is not None and people[emails[email]]['year'] is not None:
+        if not people[emails[email]].get('leave') email in emails and year is not None and people[emails[email]]['year'] is not None:
             people[emails[email]]['leave'] = (year < people[emails[email]]['year'])
             print(email + ' is' + (' not' if not people[emails[email]]['leave'] else '') + ' taking a leave.')
     return people
