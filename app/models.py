@@ -65,12 +65,12 @@ class Person(SearchableMixin, db.Model):
     middle_name = db.Column(db.String)
     last_name = db.Column(db.String, nullable=False)
     suffix = db.Column(db.String)
+    pronoun = db.Column(db.String)
 
     image_id = db.Column(db.Integer)
     image = db.Column(db.String)
     year = db.Column(db.Integer)
     college = db.Column(db.String)
-    pronoun = db.Column(db.String)
     email = db.Column(db.String)
     residence = db.Column(db.String)
     building_code = db.Column(db.String)
