@@ -26,7 +26,7 @@ class User(db.Model):
             payload,
             app.config.get('SECRET_KEY'),
             algorithm='HS256'
-        ).decode(), payload['exp']
+        ), payload['exp']
 
     @staticmethod
     def from_token(token):
