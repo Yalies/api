@@ -332,7 +332,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
                 if RE_ACCESS_CODE.match(row):
                     person['access_code'] = row
                 if RE_PHONE.match(row):
-                    person['phone'] = row
+                    person['phone'] = clean_phone(row)
                 if len(new_trivia) == 1 and not person.get('residence'):
                     person['residence'] = new_trivia.pop(0)
             else:
