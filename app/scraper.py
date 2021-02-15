@@ -163,7 +163,7 @@ def add_directory_to_person(person, entry):
             'email': entry.email,
         })
     organization_id, organization = split_id_name(entry.organization_name)
-    unit_id, unit = split_id_name(entry.organization_unit_name)
+    unit_class, unit = split_id_name(entry.organization_unit_name)
     person.update({
         'title': entry.directory_title,
         'nickname': entry.known_as if entry.known_as != entry.first_name else None,
@@ -176,8 +176,7 @@ def add_directory_to_person(person, entry):
         'school_code': person.get('school_code') or entry.primary_school_code,
         'organization_id': organization_id,
         'organization': organization,
-        # TODO: seems like this describes classes of units, not single units
-        'unit_id': unit_id,
+        'unit_class': unit_class,
         'unit': unit,
         'unit_code': entry.primary_organization_code,
         'curriculum': entry.student_curriculum,

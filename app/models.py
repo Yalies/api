@@ -86,11 +86,14 @@ class Person(SearchableMixin, db.Model):
     leave = db.Column(db.Boolean, default=False)
     eli_whitney = db.Column(db.Boolean, default=False)
 
+    # Staff fields
     organization_id = db.Column(db.String)
     organization = db.Column(db.String)
+    unit_class = db.Column(db.String)
     unit_code = db.Column(db.String)
-    unit_id = db.Column(db.String)
     unit = db.Column(db.String)
+
+    # Student fields
     school_code = db.Column(db.String)
     school = db.Column(db.String)
     college_code = db.Column(db.String)
