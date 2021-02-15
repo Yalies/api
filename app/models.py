@@ -88,13 +88,14 @@ class Person(SearchableMixin, db.Model):
 
     # Fields from directory
 
-    primary_organization_code = db.Column(db.String)
     # Always empty
     #primary_organization_id
     organization_id = db.Column(db.String)
     organization = db.Column(db.String)
+    # TODO: seems like this may describe classes of units
     unit_id = db.Column(db.String)
     unit = db.Column(db.String) #organization_unit
+    unit_code = db.Column(db.String) #primary_organization_code
     # Always the same as unit
     #primary_organization
     school = db.Column(db.String)
