@@ -187,21 +187,12 @@ def add_directory_to_person(person, entry):
         'address': person.get('address') or entry.student_address or entry.registered_address,
         # TODO: should we split the room number into a separate column?
         'office': entry.internal_location,
-        # Always the same as organization_unit
-        #'primary_organization': entry.primary_organization_name,
-        # Always empty
-        #'primary_organization_id': entry.primary_organization_id,
-        # Always the same as organization
-        #'primary_division': entry.primary_division_name,
-
-        #display_name
-        #matched
-        #residential_college_name
-        #student_address
-        #student_expected_graduation_year
-
-        # We're putting this into address instead since anyone that has registered_address wasn't in the face book
-        #registered_address
+        # Unused properties:
+        # primary_organization_name: always the same as organization_unit
+        # primary_organization_id: always empty
+        # primary_division_name: always the same as organization_name
+        # display_name, matched: useless
+        # residential_college_name, student_expected_graduation_year: useless or from face book
     })
     if person['organization'] and not person['organization_id'] and person['school_code']:
         # This is a student, but their organization is still listed (though not other staff fields.
