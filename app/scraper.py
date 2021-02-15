@@ -165,6 +165,10 @@ def add_directory_to_person(person, entry):
         'address': person.get('address') or entry.student_address or entry.registered_address,
         'office': entry.internal_location,
     })
+    if entry.primary_organizaton_name != entry.organization_unit_name:
+        print('Warning: primary_organization_name and organization_unit_name are different!')
+    if entry.organization_name != entry.primary_division_name:
+        print('Warning: organization_name and primary_division_name are diferent!')
     if not person.get('year') and entry.student_expected_graduation_year:
         person['year'] = int(entry.student_expected_graduation_year)
     return person
