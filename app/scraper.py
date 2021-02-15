@@ -147,7 +147,7 @@ def add_directory_to_person(person, entry):
             'netid': entry.netid,
             'first_name': entry.first_name,
             'last_name': entry.last_name,
-            'college': entry.residential_college_name,
+            'college': entry.residential_college_name.replace(' College', ''),
             'upi': entry.upi,
             'email': entry.email,
         })
