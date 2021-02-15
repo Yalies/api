@@ -163,7 +163,7 @@ def add_directory_to_person(person, entry):
         'postal_address': entry.postal_address,
         # TODO: do we really want to merge these? Will there ever be both?
         'address': person.get('address') or entry.student_address or entry.registered_address,
-        'location': entry.internal_location,
+        'office': entry.internal_location,
     })
     if not person.get('year') and entry.student_expected_graduation_year:
         person['year'] = int(entry.student_expected_graduation_year)
