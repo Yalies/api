@@ -99,7 +99,8 @@ class Person(SearchableMixin, db.Model):
     # TODO: should this be called building? Or is other info included ever?
     location = db.Column(db.String)  #internal_location
     mailbox = db.Column(db.String)
-    registered_address = db.Column(db.String)
+    # We're putting this into address instead since anyone that has registered_address wasn't in the face book
+    #registered_address
     postal_address = db.Column(db.String)
     #display_name
     #matched
