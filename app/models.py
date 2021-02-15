@@ -81,7 +81,7 @@ class Person(SearchableMixin, db.Model):
     netid = db.Column(db.String)
     upi = db.Column(db.Integer)
 
-    directory_title = db.Column(db.String)
+    title = db.Column(db.String)
     nickname = db.Column(db.String)
     middle_name = db.Column(db.String)
     suffix = db.Column(db.String)
