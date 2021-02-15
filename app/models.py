@@ -117,8 +117,13 @@ class Person(SearchableMixin, db.Model):
             person_query = Person.query_search(query)
         if filters:
             for category in filters:
-                if category not in ('college', 'year', 'major', 'building_code', 'entryway',
-                                    'floor', 'suite', 'room', 'state', 'leave', 'eli_whitney'):
+                if category not in (
+                    'netid', 'upi', 'email', 'mailbox', 'phone',
+                    'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronoun',
+                    'school_code', 'school', 'year', 'curriculum', 'college', 'college_code', 'leave', 'eli_whitney',
+                    'birthday', 'residence', 'building_code', 'entryway', 'floor', 'suite', 'room', 'major', 'access_code',
+                    'organization_id', 'organization', 'unit_class', 'unit_code', 'unit', 'office'
+                ):
                     return None
                 if not isinstance(filters[category], list):
                     filters[category] = [filters[category]]
