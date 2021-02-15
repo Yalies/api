@@ -188,6 +188,11 @@ def add_directory_to_person(person, entry):
         'address': person.get('address') or entry.student_address or entry.registered_address,
         'office': entry.internal_location,
     })
+    if person['organization'] and not person['organization_id'] and person['school_code']:
+        # This is a student, but their organization is still listed (though not other staff fields.
+        # Remove their organization for clarity. This information is duplicated in the school field.
+        person['organization'] = None
+
     if entry.primary_organization_name != entry.organization_unit_name:
         print('Warning: primary_organization_name and organization_unit_name are different!')
     if entry.organization_name != entry.primary_division_name:
