@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 5fdc00ed6cf9
+Revision ID: e3106072f8c4
 Revises: 
-Create Date: 2021-02-15 15:38:18.126624
+Create Date: 2021-02-15 17:14:29.426370
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5fdc00ed6cf9'
+revision = 'e3106072f8c4'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,43 +22,43 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('netid', sa.String(), nullable=True),
     sa.Column('upi', sa.Integer(), nullable=True),
+    sa.Column('email', sa.String(), nullable=True),
+    sa.Column('mailbox', sa.String(), nullable=True),
+    sa.Column('phone', sa.String(), nullable=True),
     sa.Column('title', sa.String(), nullable=True),
     sa.Column('first_name', sa.String(), nullable=False),
-    sa.Column('nickname', sa.String(), nullable=True),
+    sa.Column('preferred_name', sa.String(), nullable=True),
     sa.Column('middle_name', sa.String(), nullable=True),
     sa.Column('last_name', sa.String(), nullable=False),
     sa.Column('suffix', sa.String(), nullable=True),
+    sa.Column('pronoun', sa.String(), nullable=True),
+    sa.Column('school_code', sa.String(), nullable=True),
+    sa.Column('school', sa.String(), nullable=True),
+    sa.Column('year', sa.Integer(), nullable=True),
+    sa.Column('curriculum', sa.String(), nullable=True),
+    sa.Column('college', sa.String(), nullable=True),
+    sa.Column('college_code', sa.String(), nullable=True),
+    sa.Column('leave', sa.Boolean(), nullable=True),
+    sa.Column('eli_whitney', sa.Boolean(), nullable=True),
     sa.Column('image_id', sa.Integer(), nullable=True),
     sa.Column('image', sa.String(), nullable=True),
-    sa.Column('year', sa.Integer(), nullable=True),
-    sa.Column('college', sa.String(), nullable=True),
-    sa.Column('pronoun', sa.String(), nullable=True),
-    sa.Column('email', sa.String(), nullable=True),
+    sa.Column('birthday', sa.String(), nullable=True),
     sa.Column('residence', sa.String(), nullable=True),
     sa.Column('building_code', sa.String(), nullable=True),
     sa.Column('entryway', sa.String(), nullable=True),
     sa.Column('floor', sa.Integer(), nullable=True),
     sa.Column('suite', sa.Integer(), nullable=True),
     sa.Column('room', sa.String(), nullable=True),
-    sa.Column('birthday', sa.String(), nullable=True),
     sa.Column('major', sa.String(), nullable=True),
     sa.Column('address', sa.String(), nullable=True),
-    sa.Column('phone', sa.String(), nullable=True),
     sa.Column('access_code', sa.String(), nullable=True),
-    sa.Column('leave', sa.Boolean(), nullable=True),
-    sa.Column('eli_whitney', sa.Boolean(), nullable=True),
     sa.Column('organization_id', sa.String(), nullable=True),
     sa.Column('organization', sa.String(), nullable=True),
-    sa.Column('unit_id', sa.String(), nullable=True),
-    sa.Column('unit', sa.String(), nullable=True),
+    sa.Column('unit_class', sa.String(), nullable=True),
     sa.Column('unit_code', sa.String(), nullable=True),
-    sa.Column('school', sa.String(), nullable=True),
-    sa.Column('school_code', sa.String(), nullable=True),
-    sa.Column('college_code', sa.String(), nullable=True),
-    sa.Column('curriculum', sa.String(), nullable=True),
-    sa.Column('office', sa.String(), nullable=True),
-    sa.Column('mailbox', sa.String(), nullable=True),
+    sa.Column('unit', sa.String(), nullable=True),
     sa.Column('postal_address', sa.String(), nullable=True),
+    sa.Column('office', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('users',
