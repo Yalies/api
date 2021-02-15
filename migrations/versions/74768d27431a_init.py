@@ -1,8 +1,8 @@
 """init
 
-Revision ID: c86711f0b9d7
+Revision ID: 74768d27431a
 Revises: 
-Create Date: 2021-02-13 20:08:30.161704
+Create Date: 2021-02-14 21:35:48.867415
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c86711f0b9d7'
+revision = '74768d27431a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -43,7 +43,7 @@ def upgrade():
     sa.Column('eli_whitney', sa.Boolean(), nullable=True),
     sa.Column('netid', sa.String(), nullable=True),
     sa.Column('upi', sa.Integer(), nullable=True),
-    sa.Column('directory_title', sa.String(), nullable=True),
+    sa.Column('title', sa.String(), nullable=True),
     sa.Column('nickname', sa.String(), nullable=True),
     sa.Column('middle_name', sa.String(), nullable=True),
     sa.Column('suffix', sa.String(), nullable=True),
