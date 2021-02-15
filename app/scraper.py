@@ -131,6 +131,9 @@ def compare_years(page_key, people, emails):
 
 
 def split_id_name(combined):
+    print('Splitting ' + combined)
+    if not combined:
+        return None, None
     ID_RE = re.compile(r'^[A-Z_]+$')
     id, name = combined.split(' ', 1)
     if ID_RE.match(id):
