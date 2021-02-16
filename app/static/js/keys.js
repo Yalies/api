@@ -24,14 +24,16 @@ get_key.onclick = function(e) {
         })
     })
         .then(response => response.json())
-        .then(json => {
-            readout_key.value = json.key;
+        .then(key => {
+            readout_key.value = key.token;
+            readout_key.style.display = 'block';
             readout_key.select();
             document.execCommand('copy');
             get_key.textContent = 'Copied!';
             setTimeout(function() {
                 get_key.textContent = 'Get key';
             }, 1500);
+            load_keys();
         });
 };
 
