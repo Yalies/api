@@ -26,6 +26,8 @@ get_key.onclick = function(e) {
     })
         .then(response => response.json())
         .then(key => {
+            description_key.value = '';
+            refresh_button();
             readout_key.value = key.token;
             readout_key.style.display = 'block';
             readout_key.select();
@@ -55,13 +57,23 @@ function load_keys() {
             keys_list.innerHTML = '';
             for (let key of keys) {
                 let tr = document.createElement('tr');
-                for (let property of ['key', 'description']) {
+
+                let td_token = document.createElement('td');
+                let input = document.createElement('input');
+                input.type = 'text';
+                input.value = key.token;
+                input.readonly = true;
+                td_token.appendChild(input);
+                tr.appendChild(td_token);
+
+                for (let property of ['description']) {
                     let td = document.createElement('td');
                     td.textContent = key[property];
                     tr.appendChild(td);
                 }
+
                 // Create delete button
-                let td = document.createElement('td');
+                let td_delete = document.createElement('td');
                 let button = document.createElement('button');
                 button.className = 'fail';
                 let icon = document.createElement('i');
@@ -71,8 +83,8 @@ function load_keys() {
                 button.onclick = function() {
                     delete_key(key.id);
                 };
-                td.appendChild(button);
-                tr.appendChild(td);
+                td_delete.appendChild(button);
+                tr.appendChild(td_delete);
 
                 keys_list.appendChild(tr);
             }
