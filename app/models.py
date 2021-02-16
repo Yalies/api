@@ -7,7 +7,7 @@ import datetime
 class User(db.Model):
     __tablename__ = 'users'
 
-    id = db.Column(db.String, primary_key=True)
+    username = db.Column(db.String, primary_key=True)
     registered_on = db.Column(db.Integer)
     last_seen = db.Column(db.Integer)
 
@@ -21,7 +21,7 @@ class User(db.Model):
         now = datetime.datetime.utcnow()
         payload = {
             'iat': now,
-            'sub': self.id,
+            'sub': self.username,
         }
         return jwt.encode(
             payload,
@@ -144,7 +144,7 @@ class Person(SearchableMixin, db.Model):
 
 class Key(db.Model):
     __tablename__ = 'key'
-    _to_exclude = ('uses', 'approved', 'deleted', 'user_id')
+    _to_exclude = ('uses', 'approved', 'deleted', 'user_username')
     id = db.Column(db.Integer, primary_key=True)
     token = db.Column(db.String, unique=True, nullable=False)
     uses = db.Column(db.Integer, default=0)
@@ -155,5 +155,5 @@ class Key(db.Model):
     created_at = db.Column(db.Integer)
     last_used = db.Column(db.Integer)
 
-    user_id = db.Column(db.String, db.ForeignKey('user.id'))
+    user_username = db.Column(db.String, db.ForeignKey('users.username'))
     user = db.relationship('User', back_populates='keys')
