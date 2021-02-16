@@ -136,7 +136,7 @@ def create_key():
     key = g.user.create_key(payload['description'])
     db.session.add(key)
     db.session.commit()
-    return jsonify({'token': token})
+    return to_json(key)
 
 
 @app.route('/keys/<key_id>', methods=['POST'])
