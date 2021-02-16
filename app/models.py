@@ -18,7 +18,7 @@ class User(db.Model):
         Generate auth token.
         :return: token and expiration timestamp.
         """
-        now = datetime.datetime.utcnow()
+        now = int(datetime.datetime.utcnow().timestamp())
         payload = {
             'iat': now,
             'sub': self.username,
@@ -31,7 +31,7 @@ class User(db.Model):
 
     def create_key(self, description):
         token = self.generate_token()
-        key = Key(token=token, description=description, created_at=int(datetime.datetime.utcnow()))
+        key = Key(token=token, description=description, created_at=int(datetime.datetime.utcnow().timestamp()))
         key.approved = True
         self.keys.append(key)
         return key
@@ -48,7 +48,7 @@ class User(db.Model):
             if key is None or not key.approved:
                 return None
             key.uses += 1
-            key.last_used = datetime.datetime.utcnow()
+            key.last_used = int(datetime.datetime.utcnow().timestamp())
             payload = jwt.decode(token, app.config.get('SECRET_KEY'), algorithms=['HS256'])
             return User.query.get(payload['sub'])
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
