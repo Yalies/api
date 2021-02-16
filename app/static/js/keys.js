@@ -1,7 +1,17 @@
-const readout_key = document.getElementById('readout_key'),
+const description_key = document.getElementById('description_key'),
+      readout_key = document.getElementById('readout_key'),
       get_key = document.getElementById('get_key'),
+      keys_table = document.getElementById('keys_table');
       keys_list = document.getElementById('keys_list');
 
+
+function submission_ready() {
+    return Boolean(description_key.value);
+}
+
+description_key.onchange = function() {
+    get_key.disabled = !submission_ready();
+}
 
 get_key.onclick = function(e) {
     fetch('/keys', {
@@ -9,6 +19,9 @@ get_key.onclick = function(e) {
         headers: {
             'Content-Type': 'application/json'
         },
+        body: JSON.stringify({
+            description: description_key.value,
+        })
     })
         .then(response => response.json())
         .then(json => {
