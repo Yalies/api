@@ -11,7 +11,7 @@ class User(db.Model):
     registered_on = db.Column(db.Integer)
     last_seen = db.Column(db.Integer)
 
-    api_keys = db.relationship('APIKey', cascade='all,delete', back_populates='user')
+    keys = db.relationship('Key', cascade='all,delete', back_populates='user')
 
     def generate_token(self):
         """
@@ -137,8 +137,8 @@ class Person(SearchableMixin, db.Model):
         return students
 
 
-class APIKey(db.Model):
-    __tablename__ = 'api_key'
+class Key(db.Model):
+    __tablename__ = 'key'
     _to_exclude = ('')
     id = db.Column(db.Integer, primary_key=True)
     key = db.Column(db.String, unique=True, nullable=False)
@@ -150,5 +150,5 @@ class APIKey(db.Model):
     created_at = db.Column(db.Integer)
     last_used = db.Column(db.Integer)
 
-    user_id = db.Column(db.String, db.ForeignKey('user.id'))
-    user = db.relationship('User', back_populates='api_keys')
+    user_username = db.Column(db.String, db.ForeignKey('users.username'))
+    user = db.relationship('User', back_populates='keys')

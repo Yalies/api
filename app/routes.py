@@ -1,7 +1,7 @@
 from flask import render_template, request, jsonify, abort, g
 from flask_cas import login_required
 from app import app, db, scraper, cas
-from app.models import User, Person, APIKey
+from app.models import User, Person, Key
 from app.cas_validate import validate
 from sqlalchemy import distinct
 
