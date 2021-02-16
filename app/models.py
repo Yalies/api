@@ -139,10 +139,13 @@ class Person(SearchableMixin, db.Model):
 
 class APIKey(db.Model):
     __tablename__ = 'api_key'
-    key = db.Column(db.String, nullable=False)
-    uses = db.Column(db.Int, default=0)
+    _to_exclude = ('')
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String, unique=True, nullable=False)
+    uses = db.Column(db.Integer, default=0)
     description = db.Column(db.String, nullable=False)
     approved = db.Collumn(db.Boolean, nullable=False)
+    deleted = db.Boolean(db.Boolean, default=False)
 
     created_at = db.Column(db.Integer)
     last_used = db.Column(db.Integer)
