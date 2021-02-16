@@ -26,39 +26,41 @@ readout_key.onfocus = function(e) {
     this.select();
 }
 
-
 function delete_key(id) {
 
 }
 
-
-fetch('/keys', {
-    method: 'GET',
-})
-    .then(response => response.json())
-    .then(json => {
-        keys_list.innerHTML = '';
-        for (let key of json) {
-            let tr = document.createElement('tr');
-            for (let property of ['key', 'description']) {
+function load_keys() {
+    fetch('/keys', {
+        method: 'GET',
+    })
+        .then(response => response.json())
+        .then(json => {
+            keys_list.innerHTML = '';
+            for (let key of json) {
+                let tr = document.createElement('tr');
+                for (let property of ['key', 'description']) {
+                    let td = document.createElement('td');
+                    td.textContent = key[property];
+                    tr.appendChild(td);
+                }
+                // Create delete button
                 let td = document.createElement('td');
-                td.textContent = key[property];
+                let button = document.createElement('button');
+                button.className = 'delete';
+                let icon = document.createElement('i');
+                icon.className = 'fa fa-trash';
+                button.appendChild(icon);
+                button.appendChild(document.createTextNode('Delete'));
+                button.onclick = function() {
+                    delete_key(key.id);
+                };
+                td.appendChild(button);
                 tr.appendChild(td);
-            }
-            // Create delete button
-            let td = document.createElement('td');
-            let button = document.createElement('button');
-            button.className = 'delete';
-            let icon = document.createElement('i');
-            icon.className = 'fa fa-trash';
-            button.appendChild(icon);
-            button.appendChild(document.createTextNode('Delete'));
-            button.onclick = function() {
-                delete_key(key.id);
-            };
-            td.appendChild(button);
-            tr.appendChild(td);
 
-            keys_list.appendChild(tr);
-        }
-    });
+                keys_list.appendChild(tr);
+            }
+        });
+}
+
+load_keys();
