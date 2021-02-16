@@ -96,6 +96,10 @@ button.success, .button.success {
 button.fail, .button.fail {
     background: #f20000;
 }
+button[disabled] {
+    opacity: 0.6;
+    cursor: default;
+}
 textarea {
     max-width: 100%;
     margin-bottom: 10px;
