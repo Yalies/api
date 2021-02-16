@@ -1,7 +1,7 @@
 from flask import render_template, request, jsonify, abort, g
 from flask_cas import login_required
 from app import app, db, scraper, cas
-from app.models import User, Person
+from app.models import User, Person, APIKey
 from app.cas_validate import validate
 from sqlalchemy import distinct
 
@@ -121,9 +121,16 @@ def hide_me():
     return render_template('hide_me.html')
 
 
-@app.route('/token', methods=['POST'])
+@app.route('/api_keys', methods=['GET'])
 @login_required
-def get_token():
+def get_api_keys():
+    api_keys = g.user.api_keys
+    return to_json(api_keys)
+
+
+@app.route('/api_keys', methods=['POST'])
+@login_required
+def get_api_key():
     token, expires_in = g.user.generate_token()
     return jsonify({'token': token, 'expires_in': expires_in})
 
