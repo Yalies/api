@@ -1,9 +1,15 @@
-#token {
+#key {
     margin: 10px 0;
-}
-#tokens {
-
 }
 #readout_key {
     display: none;
+}
+#keys_table {
+    display: none;
+}
+#keys_table th,
+#keys_table td {
+    max-width: 300px;
+    padding-right: 10px;
+    padding-bottom: 5px;
 }
