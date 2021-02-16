@@ -145,7 +145,7 @@ class Person(SearchableMixin, db.Model):
 
 class Key(db.Model):
     __tablename__ = 'key'
-    _to_exclude = ('')
+    _to_exclude = ('uses', 'approved', 'deleted', 'user_username')
     id = db.Column(db.Integer, primary_key=True)
     key = db.Column(db.String, unique=True, nullable=False)
     uses = db.Column(db.Integer, default=0)
