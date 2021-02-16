@@ -2,7 +2,7 @@ from flask import render_template, request, jsonify, abort, g
 from flask_cas import login_required
 from app import app, db, scraper, cas
 from app.models import User, Person, Key
-from app.util import to_json
+from app.util import to_json, succ, fail
 from app.cas_validate import validate
 from sqlalchemy import distinct
 
@@ -139,16 +139,21 @@ def create_key():
     return to_json(key)
 
 
+"""
 @app.route('/keys/<key_id>', methods=['POST'])
 @login_required
 def update_key(key_id):
     pass
+"""
 
 
 @app.route('/keys/<key_id>', methods=['DELETE'])
 @login_required
 def delete_key(key_id):
-    pass
+    key = Key.query.get(key_id)
+    if key.user_username != g.user.username:
+        return fail('You may not delete this key.', 403)
+    return succ('Key deleted.')
 
 
 @app.route('/auth', methods=['POST'])
