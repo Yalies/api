@@ -12,16 +12,44 @@ get_key.onclick = function(e) {
     })
         .then(response => response.json())
         .then(json => {
-            readout_token.value = json.token;
-            readout_token.select();
+            readout_key.value = json.key;
+            readout_key.select();
             document.execCommand('copy');
-            get_token.textContent = 'Copied!';
+            get_key.textContent = 'Copied!';
             setTimeout(function() {
-                get_token.textContent = 'Get token';
+                get_key.textContent = 'Get key';
             }, 1500);
         });
 };
 
-readout_token.onfocus = function(e) {
+readout_key.onfocus = function(e) {
     this.select();
 }
+
+
+function delete_key(id) {
+
+}
+
+
+fetch('/keys', {
+    method: 'GET',
+})
+    .then(response => response.json())
+    .then(json => {
+        for (let key of json) {
+            let tr = document.createElement('tr');
+            for (let property of ['key', 'description']) {
+                let td = document.createElement('td');
+                td.textContent = key[property];
+                tr.appendChild(td);
+            }
+            let td = document.createElement('td');
+            let button = document.createElement('button');
+            button.className = 'delete';
+
+            button.onclick = function() {
+                delete_key(key.id);
+            };
+        }
+    });
