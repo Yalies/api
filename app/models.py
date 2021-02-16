@@ -27,7 +27,14 @@ class User(db.Model):
             payload,
             app.config.get('SECRET_KEY'),
             algorithm='HS256'
-        ), payload['exp']
+        )
+
+    def create_key(self, description):
+        token = self.generate_token()
+        key = Key(key=token, description=description)
+        key.approved = True
+        self.keys.append(key)
+        return key
 
     @staticmethod
     def from_token(token):
