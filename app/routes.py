@@ -121,29 +121,29 @@ def hide_me():
     return render_template('hide_me.html')
 
 
-@app.route('/api_keys', methods=['GET'])
+@app.route('/keys', methods=['GET'])
 @login_required
-def get_api_keys():
-    api_keys = g.user.api_keys
-    return to_json(api_keys)
+def get_keys():
+    keys = g.user.keys
+    return to_json(keys)
 
 
-@app.route('/api_keys', methods=['POST'])
+@app.route('/keys', methods=['POST'])
 @login_required
-def get_api_key():
+def get_key():
     token, expires_in = g.user.generate_token()
     return jsonify({'token': token, 'expires_in': expires_in})
 
 
-@app.route('/api_keys/<key_id>', methods=['POST'])
+@app.route('/keys/<key_id>', methods=['POST'])
 @login_required
-def update_api_key(key_id):
+def update_key(key_id):
     pass
 
 
-@app.route('/api_keys/<key_id>', methods=['DELETE'])
+@app.route('/keys/<key_id>', methods=['DELETE'])
 @login_required
-def delete_api_key(key_id):
+def delete_key(key_id):
     pass
 
 
