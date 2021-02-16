@@ -44,13 +44,12 @@ class User(db.Model):
         :return: User whose token this is, or None if token invalid/no user associated
         """
         try:
-            payload = jwt.decode(token, app.config.get('SECRET_KEY'), algorithms=['HS256'])
-            """
-            is_blacklisted = BlacklistedToken.check_blacklist(token)
-            if is_blacklisted:
-                # Token was blacklisted following logout
+            key = Key.query.filter_by(token=token).first()
+            if key is None or not key.approved:
                 return None
-            """
+            key.uses += 1
+            key.last_used = datetime.datetime.utcnow()
+            payload = jwt.decode(token, app.config.get('SECRET_KEY'), algorithms=['HS256'])
             return User.query.get(payload['sub'])
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             # Signature expired, or token otherwise invalid
