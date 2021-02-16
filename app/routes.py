@@ -135,6 +135,18 @@ def get_api_key():
     return jsonify({'token': token, 'expires_in': expires_in})
 
 
+@app.route('/api_keys/<key_id>', methods=['POST'])
+@login_required
+def update_api_key(key_id):
+    pass
+
+
+@app.route('/api_keys/<key_id>', methods=['DELETE'])
+@login_required
+def delete_api_key(key_id):
+    pass
+
+
 @app.route('/auth', methods=['POST'])
 def auth():
     # TODO: merge with above function?
