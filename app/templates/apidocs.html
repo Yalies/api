@@ -5,10 +5,11 @@
 <h3>Authentication</h3>
 <p>You must pass in the header <code>Authorization</code>, with a value of <code>Bearer _______</code>, replacing the underscores with a key obtained below.</p>
 <div id="key">
-    <button id="get_key">Create Key</button>
+    <input type="text" id="description_key" placeholder="Key Description" required>
+    <button id="get_key" disabled>Create Key</button>
     <input type="text" id="readout_key" value="{{ key }}" readonly>
 </div>
-<table id="keys">
+<table id="keys_table">
     <thead>
         <th>Key</th>
         <th>Description</th>
