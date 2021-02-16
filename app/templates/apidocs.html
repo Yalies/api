@@ -2,12 +2,21 @@
 
 {% block content %}
 <h1>API documentation</h1>
-<div id="token">
-    <button id="get_token">Get token</button>
-    <input type="text" id="readout_token" value="{{ token }}" readonly>
-</div>
 <h3>Authentication</h3>
-<p>You must pass in the header <code>Authorization</code>, with a value of <code>Bearer _______</code> (replacing the underscores with the token obtained from the top of this page).</p>
+<p>You must pass in the header <code>Authorization</code>, with a value of <code>Bearer _______</code>, replacing the underscores with a key obtained below.</p>
+<div id="key">
+    <button id="get_key">Create Key</button>
+    <input type="text" id="readout_key" value="{{ key }}" readonly>
+</div>
+<table id="keys">
+    <thead>
+        <th>Key</th>
+        <th>Description</th>
+        <th></th>
+    </thead>
+    <tbody id="keys_list">
+    </tbody>
+</table>
 <h3>Endpoints</h3>
 <p>The API has one endpoint: <code>POST https://yalies.io/api/people</code>. The older endpoint <code>/students</code> is deprecated, and will perform a query limited to Yale College undergraduates. The endpoint returns a JSON list of students. It accepts a JSON-formatted body containing the properties <code>query</code>, <code>filters</code>, <code>page</code>, and <code>page_size</code> (which may all be omitted). <code>query</code> represents an arbitrary string to search by, which will search across most fields of student data. <code>filters</code> is a dictionary mapping column names to lists of acceptable values. <code>page</code> represents the number of the page of students to get, which may allow you to improve request efficiency if you do not need to fetch every student at once. <code>page_size</code> allows you to change the size of each page you'd like, and is ignored if <code>page</code> is not provided. For example:</p>
 <pre>
