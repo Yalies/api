@@ -144,8 +144,8 @@ class APIKey(db.Model):
     key = db.Column(db.String, unique=True, nullable=False)
     uses = db.Column(db.Integer, default=0)
     description = db.Column(db.String, nullable=False)
-    approved = db.Collumn(db.Boolean, nullable=False)
-    deleted = db.Boolean(db.Boolean, default=False)
+    approved = db.Column(db.Boolean, nullable=False)
+    deleted = db.Column(db.Boolean, default=False)
 
     created_at = db.Column(db.Integer)
     last_used = db.Column(db.Integer)
