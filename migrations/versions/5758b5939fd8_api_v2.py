@@ -76,12 +76,6 @@ def upgrade():
     sa.UniqueConstraint('token')
     )
     op.drop_table('students')
-    #op.add_column('users', sa.Column('id', sa.String(), nullable=False))
-    #op.drop_column('users', 'username')
-    op.alter_column('users', 'username', nullable=False, new_column_name='id')
-    op.rename_table('users', 'user')
-    op.execute('ALTER SEQUENCE users_id_seq RENAME TO user_id_seq')
-    op.execute('ALTER INDEX users_pkey RENAME TO user_pkey')
     # ### end Alembic commands ###
 
 
