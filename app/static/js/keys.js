@@ -29,7 +29,7 @@ get_key.onclick = function(e) {
             description_key.value = '';
             refresh_button();
             readout_key.value = key.token;
-            readout_key.style.display = 'block';
+            readout_key.style.display = 'inline-block';
             readout_key.select();
             document.execCommand('copy');
             get_key.textContent = 'Copied!';
@@ -42,7 +42,7 @@ get_key.onclick = function(e) {
 
 readout_key.onfocus = function(e) {
     this.select();
-}
+};
 
 function delete_key(id) {
 
