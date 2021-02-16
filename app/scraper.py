@@ -388,6 +388,6 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     # Store people into database
     Person.query.delete()
     for person_dict in people:
-        db.session.add(Person(**{k: v for k, v in person_dict.items() if v}))
+        db.session.add(Person(**{k: v for k, v in person_dict.items() if v or type(v) == bool}))
     db.session.commit()
     print('Done.')
