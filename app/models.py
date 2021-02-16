@@ -21,7 +21,6 @@ class User(db.Model):
         now = datetime.datetime.utcnow()
         payload = {
             'iat': now,
-            'exp': now + datetime.timedelta(days=365),
             'sub': self.username,
         }
         return jwt.encode(
