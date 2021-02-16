@@ -49,7 +49,11 @@ def check_token():
 @api_bp.route('/students', methods=['POST'])
 def api_students():
     criteria = request.get_json() or {}
-    criteria.update({'school_code': ['YC']})
+    if not criteria.get('filters'):
+        criteria['filters'] = {}
+    if not criteria['filters'].get('school_code'):
+        criteria['filters']['school_code'] = []
+    criteria['filters']['school_code'].append('YC')
     students = Person.search(criteria)
     return to_json(students)
 
