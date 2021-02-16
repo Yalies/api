@@ -1,9 +1,10 @@
-const readout_token = document.getElementById('readout_token'),
-      get_token = document.getElementById('get_token');
+const readout_key = document.getElementById('readout_key'),
+      get_key = document.getElementById('get_key'),
+      keys_list = document.getElementById('keys_list');
 
 
-get_token.onclick = function(e) {
-    fetch('/token', {
+get_key.onclick = function(e) {
+    fetch('/keys', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
