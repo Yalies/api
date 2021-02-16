@@ -84,9 +84,6 @@ button, .button {
     text-decoration: none;
     cursor: pointer;
 }
-button i, .button i {
-    margin-right: 5px;
-}
 button.outline, .button.outline {
     padding: 8px 12px;
     border: solid 1px lightgray;

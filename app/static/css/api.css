@@ -7,6 +7,9 @@
 #keys_table {
     display: none;
 }
+#keys_table button i {
+    margin-right: 5px;
+}
 #keys_table th,
 #keys_table td {
     max-width: 300px;
