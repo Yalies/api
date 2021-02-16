@@ -8,10 +8,11 @@ const description_key = document.getElementById('description_key'),
 function submission_ready() {
     return Boolean(description_key.value);
 }
-
-description_key.oninput = function() {
+function refresh_button() {
     get_key.disabled = !submission_ready();
 }
+
+description_key.oninput = refresh_button;
 
 get_key.onclick = function(e) {
     fetch('/keys', {
