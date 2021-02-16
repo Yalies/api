@@ -11,6 +11,8 @@ class User(db.Model):
     registered_on = db.Column(db.Integer)
     last_seen = db.Column(db.Integer)
 
+    api_keys = db.relationship('APIKey', cascade='all,delete', back_populates='user')
+
     def generate_token(self):
         """
         Generate auth token.
@@ -133,3 +135,17 @@ class Person(SearchableMixin, db.Model):
         else:
             students = person_query.all()
         return students
+
+
+class APIKey(db.Model):
+    __tablename__ = 'api_key'
+    key = db.Column(db.String, nullable=False)
+    uses = db.Column(db.Int, default=0)
+    description = db.Column(db.String, nullable=False)
+    approved = db.Collumn(db.Boolean, nullable=False)
+
+    created_at = db.Column(db.Integer)
+    last_used = db.Column(db.Integer)
+
+    user_id = db.Column(db.String, db.ForeignKey('user.id'))
+    user = db.relationship('User', back_populates='api_keys')
