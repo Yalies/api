@@ -48,9 +48,9 @@ function load_keys() {
         method: 'GET',
     })
         .then(response => response.json())
-        .then(json => {
+        .then(keys => {
             keys_list.innerHTML = '';
-            for (let key of json) {
+            for (let key of keys) {
                 let tr = document.createElement('tr');
                 for (let property of ['key', 'description']) {
                     let td = document.createElement('td');
@@ -73,6 +73,7 @@ function load_keys() {
 
                 keys_list.appendChild(tr);
             }
+            keys_table.style.display = Boolean(keys.length) ? 'block' : 'none';
         });
 }
 
