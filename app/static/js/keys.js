@@ -9,7 +9,7 @@ function submission_ready() {
     return Boolean(description_key.value);
 }
 
-description_key.onchange = function() {
+description_key.oninput = function() {
     get_key.disabled = !submission_ready();
 }
 
