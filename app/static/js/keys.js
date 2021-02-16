@@ -37,6 +37,7 @@ fetch('/keys', {
 })
     .then(response => response.json())
     .then(json => {
+        keys_list.innerHTML = '';
         for (let key of json) {
             let tr = document.createElement('tr');
             for (let property of ['key', 'description']) {
