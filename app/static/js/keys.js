@@ -60,7 +60,7 @@ function load_keys() {
                 // Create delete button
                 let td = document.createElement('td');
                 let button = document.createElement('button');
-                button.className = 'delete';
+                button.className = 'fail';
                 let icon = document.createElement('i');
                 icon.className = 'fa fa-trash';
                 button.appendChild(icon);
