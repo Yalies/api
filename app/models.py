@@ -31,7 +31,7 @@ class User(db.Model):
 
     def create_key(self, description):
         token = self.generate_token()
-        key = Key(token=token, description=description, created_at=datetime.datetime.utcnow())
+        key = Key(token=token, description=description, created_at=int(datetime.datetime.utcnow()))
         key.approved = True
         self.keys.append(key)
         return key
