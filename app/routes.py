@@ -2,6 +2,7 @@ from flask import render_template, request, jsonify, abort, g
 from flask_cas import login_required
 from app import app, db, scraper, cas
 from app.models import User, Person, Key
+from app.util import to_json
 from app.cas_validate import validate
 from sqlalchemy import distinct
 
@@ -130,9 +131,12 @@ def get_keys():
 
 @app.route('/keys', methods=['POST'])
 @login_required
-def get_key():
-    token, expires_in = g.user.generate_token()
-    return jsonify({'token': token, 'expires_in': expires_in})
+def create_key():
+    payload = request.get_json()
+    key = g.user.create_key(payload['description'])
+    db.session.add(key)
+    db.session.commit()
+    return jsonify({'token': token})
 
 
 @app.route('/keys/<key_id>', methods=['POST'])
