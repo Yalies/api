@@ -63,6 +63,9 @@ function load_keys() {
                 input.type = 'text';
                 input.value = key.token;
                 input.readonly = true;
+                input.onclick = function(e) {
+                    this.select();
+                };
                 td_token.appendChild(input);
                 tr.appendChild(td_token);
 
