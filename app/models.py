@@ -21,7 +21,7 @@ class User(db.Model):
         now = int(datetime.datetime.utcnow().timestamp())
         payload = {
             'iat': now,
-            'sub': self.username,
+            'sub': self.id,
         }
         return jwt.encode(
             payload,
@@ -149,7 +149,7 @@ class Person(SearchableMixin, db.Model):
 
 class Key(db.Model):
     __tablename__ = 'key'
-    _to_exclude = ('uses', 'approved', 'deleted', 'user_username')
+    _to_exclude = ('uses', 'approved', 'deleted', 'user_id')
     id = db.Column(db.Integer, primary_key=True)
     token = db.Column(db.String, unique=True, nullable=False)
     uses = db.Column(db.Integer, default=0)
