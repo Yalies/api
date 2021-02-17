@@ -60,7 +60,7 @@ function create_time_td(timestamp) {
         return create_td('Never');
     }
     let date = new Date(timestamp * 1000);
-    return create_td(date.toLocaleDateString() + ' ' + date.toLocaleTimeString());
+    return create_td(date.toLocaleDateString());
 }
 
 function insert_key(key) {
