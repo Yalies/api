@@ -70,7 +70,6 @@ function insert_key(key) {
     let icon = document.createElement('i');
     icon.className = 'fa fa-trash';
     button.appendChild(icon);
-    button.appendChild(document.createTextNode('Delete'));
     button.onclick = function() {
         delete_key(key.id);
     };

@@ -8,11 +8,11 @@
     display: none;
 }
 #keys_table button i {
-    margin-right: 5px;
+    /* Correct for trash icon being misshapen */
+    margin: 0 1px;
 }
 #keys_table th,
 #keys_table td {
-    max-width: 300px;
     padding-right: 10px;
     padding-bottom: 5px;
 }
