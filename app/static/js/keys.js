@@ -48,6 +48,45 @@ function delete_key(id) {
 
 }
 
+function insert_key(key) {
+    let tr = document.createElement('tr');
+
+    let td_token = document.createElement('td');
+    let input = document.createElement('input');
+    input.type = 'text';
+    input.value = key.token;
+    input.readonly = true;
+    input.onclick = function(e) {
+        this.select();
+    };
+    td_token.appendChild(input);
+    tr.appendChild(td_token);
+
+    for (let property of ['description']) {
+        let td = document.createElement('td');
+        td.textContent = key[property];
+        tr.appendChild(td);
+    }
+
+    // Create delete button
+    let td_delete = document.createElement('td');
+    let button = document.createElement('button');
+    button.className = 'fail';
+    let icon = document.createElement('i');
+    icon.className = 'fa fa-trash';
+    button.appendChild(icon);
+    button.appendChild(document.createTextNode('Delete'));
+    button.onclick = function() {
+        delete_key(key.id);
+    };
+    td_delete.appendChild(button);
+    tr.appendChild(td_delete);
+
+    keys_list.prepend(tr);
+
+    return input;
+}
+
 function load_keys() {
     fetch('/keys', {
         method: 'GET',
@@ -56,40 +95,7 @@ function load_keys() {
         .then(keys => {
             keys_list.innerHTML = '';
             for (let key of keys) {
-                let tr = document.createElement('tr');
-
-                let td_token = document.createElement('td');
-                let input = document.createElement('input');
-                input.type = 'text';
-                input.value = key.token;
-                input.readonly = true;
-                input.onclick = function(e) {
-                    this.select();
-                };
-                td_token.appendChild(input);
-                tr.appendChild(td_token);
-
-                for (let property of ['description']) {
-                    let td = document.createElement('td');
-                    td.textContent = key[property];
-                    tr.appendChild(td);
-                }
-
-                // Create delete button
-                let td_delete = document.createElement('td');
-                let button = document.createElement('button');
-                button.className = 'fail';
-                let icon = document.createElement('i');
-                icon.className = 'fa fa-trash';
-                button.appendChild(icon);
-                button.appendChild(document.createTextNode('Delete'));
-                button.onclick = function() {
-                    delete_key(key.id);
-                };
-                td_delete.appendChild(button);
-                tr.appendChild(td_delete);
-
-                keys_list.appendChild(tr);
+                insert_key(key);
             }
             keys_table.style.display = Boolean(keys.length) ? 'block' : 'none';
         });
