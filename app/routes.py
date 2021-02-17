@@ -21,7 +21,7 @@ def store_user():
             g.user = User.query.get(cas.username)
             timestamp = int(time.time())
             if not g.user:
-                g.user = User(username=cas.username,
+                g.user = User(id=cas.username,
                               registered_on=timestamp)
                 db.session.add(g.user)
             g.user.last_seen = timestamp
@@ -151,7 +151,7 @@ def update_key(key_id):
 @login_required
 def delete_key(key_id):
     key = Key.query.get(key_id)
-    if key.user_username != g.user.username:
+    if key.user_id != g.user.id:
         return fail('You may not delete this key.', 403)
     return succ('Key deleted.')
 

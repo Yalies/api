@@ -7,7 +7,7 @@ import datetime
 class User(db.Model):
     __tablename__ = 'users'
 
-    username = db.Column(db.String, primary_key=True)
+    id = db.Column(db.String, primary_key=True)
     registered_on = db.Column(db.Integer)
     last_seen = db.Column(db.Integer)
 
@@ -160,5 +160,5 @@ class Key(db.Model):
     created_at = db.Column(db.Integer)
     last_used = db.Column(db.Integer)
 
-    user_username = db.Column(db.String, db.ForeignKey('users.username'))
+    user_id = db.Column(db.String, db.ForeignKey('users.id'))
     user = db.relationship('User', back_populates='keys')
