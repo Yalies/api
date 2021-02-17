@@ -34,7 +34,7 @@ get_key.onclick = function(e) {
             document.execCommand('copy');
             get_key.textContent = 'Copied!';
             setTimeout(function() {
-                get_key.textContent = 'Get key';
+                get_key.textContent = 'Create key';
             }, 1500);
         });
 };
@@ -82,7 +82,7 @@ function insert_key(key) {
     td_delete.appendChild(button);
     tr.appendChild(td_delete);
 
-    keys_list.prepend(tr);
+    keys_list.appendChild(tr);
 
     return input;
 }
