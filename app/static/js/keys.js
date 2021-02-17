@@ -40,7 +40,13 @@ get_key.onclick = function(e) {
 };
 
 function delete_key(id) {
-
+    fetch('/keys/' + id, {
+        method: 'DELETE',
+    })
+        .then(response => response.json())
+        .then(json => {
+            load_keys();
+        });
 }
 
 function insert_key(key) {
