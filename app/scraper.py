@@ -351,6 +351,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
         person['address'] = '\n'.join(trivia)
 
+        person['leave'] = False
         person['eli_whitney'] = False
 
         directory_entry = get_directory_entry(directory, person)

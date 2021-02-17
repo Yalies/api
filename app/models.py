@@ -30,6 +30,11 @@ class User(db.Model):
         )
 
     def create_key(self, description):
+        """
+        Generate new API key object.
+        :param description: description to add to the key.
+        :return: newly created key object associated with this user.
+        """
         token = self.generate_token()
         key = Key(token=token, description=description, created_at=int(datetime.datetime.utcnow().timestamp()))
         key.approved = True
