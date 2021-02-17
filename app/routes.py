@@ -158,6 +158,8 @@ def delete_key(key_id):
     key = Key.query.get(key_id)
     if key.user_id != g.user.id:
         return fail('You may not delete this key.', 403)
+    key.deleted = True
+    db.session.commit()
     return succ('Key deleted.')
 
 
