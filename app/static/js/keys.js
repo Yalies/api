@@ -49,6 +49,12 @@ function delete_key(id) {
         });
 }
 
+function create_td(content) {
+    let td = document.createElement('td');
+    td.textContent = content;
+    return td;
+}
+
 function insert_key(key) {
     let tr = document.createElement('tr');
 
@@ -63,11 +69,10 @@ function insert_key(key) {
     td_token.appendChild(input);
     tr.appendChild(td_token);
 
-    for (let property of ['description', 'created_at', 'last_used', 'uses']) {
-        let td = document.createElement('td');
-        td.textContent = key[property];
-        tr.appendChild(td);
-    }
+    tr.appendChild(create_td(key.description));
+    tr.appendChild(create_time_td(key.created_at));
+    tr.appendChild(create_time_td(key.last_used));
+    tr.appendChild(create_td(key.uses));
 
     // Create delete button
     let td_delete = document.createElement('td');
