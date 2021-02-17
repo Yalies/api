@@ -129,7 +129,8 @@ def hide_me():
 @app.route('/keys', methods=['GET'])
 @login_required
 def get_keys():
-    keys = g.user.keys
+    keys = Key.query.filter_by(user_id=g.user.id,
+                               deleted=False).all()
     return to_json(keys)
 
 
