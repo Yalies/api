@@ -63,7 +63,7 @@ function insert_key(key) {
     td_token.appendChild(input);
     tr.appendChild(td_token);
 
-    for (let property of ['description']) {
+    for (let property of ['description', 'created_at', 'last_used', 'uses']) {
         let td = document.createElement('td');
         td.textContent = key[property];
         tr.appendChild(td);
