@@ -55,6 +55,14 @@ function create_td(content) {
     return td;
 }
 
+function create_time_td(timestamp) {
+    if (!timestamp) {
+        return create_td('Never');
+    }
+    let date = new Date(timestamp);
+    return create_td(date.toLocaleDateString() + ' ' + date.toLocaleTimeString());
+}
+
 function insert_key(key) {
     let tr = document.createElement('tr');
 
