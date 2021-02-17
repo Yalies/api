@@ -1,7 +1,7 @@
 let inputs = document.getElementsByTagName('textarea'),
     submit = document.getElementById('submit');
 
-onchange = function() {
+oninput = function() {
     let completed = true;
     for (let input of inputs) {
         if (!Boolean(input.value)) {
