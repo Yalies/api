@@ -27,8 +27,9 @@ get_key.onclick = function(e) {
         .then(key => {
             description_key.value = '';
             refresh_button();
-            let readout_key = insert_key(key);
-            readout_key.select();
+            insert_key(key);
+            let key_readout = keys_list.querySelector('tr:first-child td:first-child input');
+            key_readout.select();
             document.execCommand('copy');
             get_key.textContent = 'Copied!';
             setTimeout(function() {
