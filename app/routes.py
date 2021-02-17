@@ -29,7 +29,10 @@ def store_user():
             if not g.person and not cas.username == 'ekb33':
                 # TODO: give a more graceful error than just a 403
                 abort(403)
-            print(g.person.first_name + ' ' + g.person.last_name)
+            try:
+                print(g.person.first_name + ' ' + g.person.last_name)
+            except AttributeError:
+                print('Could not render name.')
             db.session.commit()
 
 
