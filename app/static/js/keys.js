@@ -1,5 +1,4 @@
 const description_key = document.getElementById('description_key'),
-      readout_key = document.getElementById('readout_key'),
       get_key = document.getElementById('get_key'),
       keys_table = document.getElementById('keys_table');
       keys_list = document.getElementById('keys_list');
@@ -28,8 +27,7 @@ get_key.onclick = function(e) {
         .then(key => {
             description_key.value = '';
             refresh_button();
-            readout_key.value = key.token;
-            readout_key.style.display = 'inline-block';
+            let readout_key = insert_key(key);
             readout_key.select();
             document.execCommand('copy');
             get_key.textContent = 'Copied!';
@@ -38,10 +36,6 @@ get_key.onclick = function(e) {
             }, 1500);
             load_keys();
         });
-};
-
-readout_key.onfocus = function(e) {
-    this.select();
 };
 
 function delete_key(id) {
