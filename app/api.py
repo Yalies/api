@@ -43,7 +43,7 @@ def check_token():
                 return fail('Invalid token.', code=401)
         g.user.last_seen = int(time.time())
         db.session.commit()
-        print('User: ' + g.user.username)
+        print('User: ' + g.user.id)
 
 
 @api_bp.route('/students', methods=['POST'])
