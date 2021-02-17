@@ -156,8 +156,6 @@ def add_directory_to_person(person, entry):
     if not person.get('netid'):
         person.update({
             'netid': entry.netid,
-            'first_name': entry.first_name,
-            'last_name': entry.last_name,
             'college': entry.residential_college_name.replace(' College', ''),
             'upi': entry.upi,
             'email': entry.email,
@@ -165,6 +163,10 @@ def add_directory_to_person(person, entry):
     organization_id, organization = split_id_name(entry.organization_name)
     unit_class, unit = split_id_name(entry.organization_unit_name)
     person.update({
+        # Overwrite even names from the face book, which sometimes are capitalized improperly
+        # For example "Del Carpio gomez, Victor"
+        'first_name': entry.first_name,
+        'last_name': entry.last_name,
         'title': entry.directory_title,
         'preferred_name': entry.known_as if entry.known_as != entry.first_name else None,
         'middle_name': entry.middle_name,
