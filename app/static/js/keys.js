@@ -29,7 +29,7 @@ get_key.onclick = function(e) {
             refresh_button();
             insert_key(key);
             keys_table.style.display = 'block';
-            let key_readout = keys_list.querySelector('tr:first-child td:first-child input');
+            let key_readout = keys_list.querySelector('tr:last-child td:first-child input');
             key_readout.select();
             document.execCommand('copy');
             get_key.textContent = 'Copied!';
