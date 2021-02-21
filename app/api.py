@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request, g, abort
+from sqlalchemy import distinct
 import time
 from app import db, cas
 from app.util import to_json, fail, succ
@@ -46,6 +47,15 @@ def check_token():
         print('User: ' + g.user.id)
 
 
+@api_bp.route('/filters')
+def api_filters():
+    filters = {
+    }
+    for category in Person.__filterable__:
+        filters[category] = untuple(db.session.query(distinct(getattr(Person, category))).order_by(getattr(Person, category)))
+    return to_json(filters)
+
+
 @api_bp.route('/students', methods=['POST'])
 def api_students():
     criteria = request.get_json() or {}
@@ -63,3 +73,7 @@ def api_people():
     criteria = request.get_json() or {}
     people = Person.search(criteria)
     return to_json(people)
+
+
+def untuple(tuples):
+    return [t[0] for t in tuples]
