@@ -64,11 +64,11 @@ class User(db.Model):
 class Person(SearchableMixin, db.Model):
     __tablename__ = 'person'
     __searchable__ = ['first_name', 'last_name', 'netid', 'college', 'email', 'residence', 'major', 'address']
-    __filterable_unique__ = [
+    __filterable_identifiable__ = [
         'netid', 'upi', 'email', 'mailbox', 'phone',
+        'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronoun',
     ]
     __filterable__ = [
-        'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronoun',
         'school_code', 'school', 'year', 'curriculum', 'college', 'college_code', 'leave', 'eli_whitney',
         'birthday', 'residence', 'building_code', 'entryway', 'floor', 'suite', 'room', 'major', 'access_code',
         'organization_id', 'organization', 'unit_class', 'unit_code', 'unit', 'office'
@@ -138,7 +138,7 @@ class Person(SearchableMixin, db.Model):
             person_query = Person.query_search(query)
         if filters:
             for category in filters:
-                if category not in (Person.__filterable_unique__ + Person.__filterable__):
+                if category not in (Person.__filterable_identifiable__ + Person.__filterable__):
                     return None
                 if not isinstance(filters[category], list):
                     filters[category] = [filters[category]]
