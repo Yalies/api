@@ -66,12 +66,12 @@ class Person(SearchableMixin, db.Model):
     __searchable__ = ['first_name', 'last_name', 'netid', 'college', 'email', 'residence', 'major', 'address']
     __filterable_identifiable__ = [
         'netid', 'upi', 'email', 'mailbox', 'phone',
-        'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronoun',
+        'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronoun', 'access_code', 'birthday', 'residence',
     ]
     __filterable__ = [
         'school_code', 'school', 'year', 'curriculum', 'college', 'college_code', 'leave', 'eli_whitney',
-        'birthday', 'residence', 'building_code', 'entryway', 'floor', 'suite', 'room', 'major', 'access_code',
-        'organization_id', 'organization', 'unit_class', 'unit_code', 'unit', 'office'
+        'building_code', 'entryway', 'floor', 'suite', 'room', 'major',
+        'organization_id', 'organization', 'unit_class', 'unit_code', 'unit', 'office',
     ]
     _to_exclude = ('id')
 
