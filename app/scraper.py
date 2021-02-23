@@ -328,7 +328,6 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             person['major'] = trivia.pop() if trivia[-1] in MAJORS else None
             if person['major'] and person['major'] in MAJOR_FULL_NAMES:
                 person['major'] = MAJOR_FULL_NAMES[person['major']]
-            person['curriculum'] = person['major']
         except IndexError:
             pass
 
