@@ -27,11 +27,18 @@ with open('app/res/major_full_names.json') as f:
     MAJOR_FULL_NAMES = json.load(f)
 
 SCHOOL_OVERRIDES = {
-    # For some reason this is duplicated. TODO: are these actually the same thing?
     'School of Law': 'Law School',
+    'Graduate School of Arts & Sci': 'Graduate School of Arts & Sciences',
+}
+SCHOOL_CODES = {
+    'Divinity School': 'DI',
+    'Graduate School of Arts & Sciences': 'GS',
+    'School of Management': 'MG',
+    'School of Medicine': 'MD',
+    'School of Nursing': 'NR',
+    'School of the Environment': 'FS',
 }
 ORGANIZATION_OVERRIDES = {
-    # For some reason this is duplicated. TODO: are these actually the same thing?
     'School of Law': 'Law School',
     'School of Divinity': 'Divinity School',
     'Yale School of the Environment': 'School of the Environment',
@@ -193,10 +200,18 @@ def add_directory_to_person(person, entry):
             'upi': entry.upi,
             'email': entry.email,
         })
+
+    school = person.get('school') or entry.primary_school_name
+    school = SCHOOL_OVERRIDES.get(school, school)
+    school_code = person.get('school_code') or entry.primary_school_code
+    if not school_code:
+        school_code = SCHOOL_CODES.get(school)
+
     organization_code, organization = split_code_name(entry.organization_name)
     organization = ORGANIZATION_OVERRIDES.get(organization, organization)
     if not organization_code:
         organization_code = ORGANIZATION_CODES.get(organization)
+
     unit_class, unit = split_code_name(entry.organization_unit_name)
     office_building, office_room = split_office(entry.internal_location)
     person.update({
@@ -211,8 +226,8 @@ def add_directory_to_person(person, entry):
         'phone': person.get('phone') or clean_phone(entry.phone_number),
         # TODO: check if any face book members have a college but not a college code
         'college_code': entry.residential_college_code,
-        'school': person.get('school') or entry.primary_school_name,
-        'school_code': person.get('school_code') or entry.primary_school_code,
+        'school': school,
+        'school_code': school_code,
         'organization_code': organization_code,
         'organization': organization,
         'unit_class': unit_class,
