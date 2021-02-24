@@ -155,7 +155,7 @@ def compare_years(page_key, people, emails):
     return people
 
 
-def split_id_name(combined):
+def split_code_name(combined):
     if not combined:
         return None, None
     ID_RE = re.compile(r'^[A-Z_]+$')
@@ -193,11 +193,11 @@ def add_directory_to_person(person, entry):
             'upi': entry.upi,
             'email': entry.email,
         })
-    organization_code, organization = split_id_name(entry.organization_name)
+    organization_code, organization = split_code_name(entry.organization_name)
     organization = ORGANIZATION_OVERRIDES.get(organization, organization)
     if not organization_code:
         organization_code = ORGANIZATION_CODES.get(organization)
-    unit_class, unit = split_id_name(entry.organization_unit_name)
+    unit_class, unit = split_code_name(entry.organization_unit_name)
     office_building, office_room = split_office(entry.internal_location)
     person.update({
         # Overwrite even names from the face book, which sometimes are capitalized improperly
