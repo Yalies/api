@@ -72,7 +72,7 @@ class Person(SearchableMixin, db.Model):
     __filterable__ = [
         'school_code', 'school', 'year', 'curriculum', 'college', 'college_code', 'leave', 'eli_whitney',
         'building_code', 'entryway', 'floor', 'suite', 'room', 'major',
-        'organization_id', 'organization', 'unit_class', 'unit_code', 'unit', 'office_building',
+        'organization_code', 'organization', 'unit_class', 'unit_code', 'unit', 'office_building',
     ]
     _to_exclude = ('id')
 
@@ -118,7 +118,7 @@ class Person(SearchableMixin, db.Model):
     access_code = db.Column(db.String)
 
     # Staff
-    organization_id = db.Column(db.String)
+    organization_code = db.Column(db.String)
     organization = db.Column(db.String)
     unit_class = db.Column(db.String)
     unit_code = db.Column(db.String)

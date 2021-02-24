@@ -38,7 +38,7 @@ ORGANIZATION_OVERRIDES = {
     'Graduate School': 'Graduate School of Arts & Sciences',
     'Graduate School of Arts & Sci': 'Graduate School of Arts & Sciences',
 }
-ORGANIZATION_IDS = {
+ORGANIZATION_CODES = {
     'School of Management': 'SOM',
     'Divinity School': 'DIV',
     'Law School': 'LAW',
@@ -193,10 +193,10 @@ def add_directory_to_person(person, entry):
             'upi': entry.upi,
             'email': entry.email,
         })
-    organization_id, organization = split_id_name(entry.organization_name)
+    organization_code, organization = split_id_name(entry.organization_name)
     organization = ORGANIZATION_OVERRIDES.get(organization, organization)
-    if not organization_id:
-        organization_id = ORGANIZATION_IDS.get(organization)
+    if not organization_code:
+        organization_code = ORGANIZATION_CODES.get(organization)
     unit_class, unit = split_id_name(entry.organization_unit_name)
     office_building, office_room = split_office(entry.internal_location)
     person.update({
@@ -213,7 +213,7 @@ def add_directory_to_person(person, entry):
         'college_code': entry.residential_college_code,
         'school': person.get('school') or entry.primary_school_name,
         'school_code': person.get('school_code') or entry.primary_school_code,
-        'organization_id': organization_id,
+        'organization_code': organization_code,
         'organization': organization,
         'unit_class': unit_class,
         'unit': unit,
@@ -233,7 +233,7 @@ def add_directory_to_person(person, entry):
         # display_name, matched: useless
         # residential_college_name, student_expected_graduation_year: useless or from face book
     })
-    if person['organization'] and not person['organization_id'] and person['school_code']:
+    if person['organization'] and not person['organization_code'] and person['school_code']:
         # This is a student, but their organization is still listed.
         # Remove their organization field, which is duplicated `school`.
         # This way, organization and related fields are used only for staff.
