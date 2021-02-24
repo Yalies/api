@@ -14,16 +14,41 @@ import string
 from cryptography.fernet import Fernet
 
 
-with open('app/res/majors.txt') as f:
-    MAJORS = f.read().splitlines()
-with open('app/res/major_full_names.json') as f:
-    MAJOR_FULL_NAMES = json.load(f)
 RE_ROOM = re.compile(r'^([A-Z]+)-([A-Z]+)(\d+)(\d)([A-Z]+)?$')
 RE_BIRTHDAY = re.compile(r'^[A-Z][a-z]{2} \d{1,2}$')
 RE_ACCESS_CODE = re.compile(r'[0-9]-[0-9]+')
 RE_PHONE = re.compile(r'[0-9]{3}-[0-9]{3}-[0-9]{4}')
 
 FERNET_KEY = os.environ.get('FERNET_KEY')
+
+with open('app/res/majors.txt') as f:
+    MAJORS = f.read().splitlines()
+with open('app/res/major_full_names.json') as f:
+    MAJOR_FULL_NAMES = json.load(f)
+
+SCHOOL_OVERRIDES = {
+    # For some reason this is duplicated. TODO: are these actually the same thing?
+    'School of Law': 'Law School',
+}
+ORGANIZATION_OVERRIDES = {
+    # For some reason this is duplicated. TODO: are these actually the same thing?
+    'School of Law': 'Law School',
+    'School of Divinity': 'Divinity School',
+    'Yale School of the Environment': 'School of the Environment',
+    'Graduate School': 'Graduate School of Arts & Sciences',
+    'Graduate School of Arts & Sci': 'Graduate School of Arts & Sciences',
+}
+ORGANIZATION_IDS = {
+    'School of Management': 'SOM',
+    'Divinity School': 'DIV',
+    'Law School': 'LAW',
+    'School of Medicine': 'MED',
+    'School of Nursing': 'NUR',
+
+    # Not in directory, but used in YDN articles
+    'School of Public Health': 'SPH',
+    'School of the Environment': 'ENV',
+}
 
 
 def get_html(cookie):
@@ -169,6 +194,9 @@ def add_directory_to_person(person, entry):
             'email': entry.email,
         })
     organization_id, organization = split_id_name(entry.organization_name)
+    organization = ORGANIZATION_OVERRIDES.get(organization, organization)
+    if not organization_id:
+        organization_id = ORGANIZATION_IDS.get(organization)
     unit_class, unit = split_id_name(entry.organization_unit_name)
     office_building, office_room = split_office(entry.internal_location)
     person.update({
