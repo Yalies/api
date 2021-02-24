@@ -151,6 +151,14 @@ def clean_phone(phone):
     phone = DISALLOWED_CHARACTERS_RE.sub('', phone)
     return phone
 
+def split_office(office):
+    components = office.split(' > ')
+    office_building = components[0]
+    office_room = None
+    if len(components) > 1:
+        office_room = components[1]
+    return office_building, office_room
+
 
 def add_directory_to_person(person, entry):
     if not person.get('netid'):
@@ -162,6 +170,7 @@ def add_directory_to_person(person, entry):
         })
     organization_id, organization = split_id_name(entry.organization_name)
     unit_class, unit = split_id_name(entry.organization_unit_name)
+    office_building, office_room = split_office(entry.internal_location)
     person.update({
         # Overwrite even names from the face book, which sometimes are capitalized improperly
         # For example "Del Carpio gomez, Victor"
@@ -187,7 +196,8 @@ def add_directory_to_person(person, entry):
         # TODO: do we really want to merge these? Will there ever be both?
         'address': person.get('address') or entry.student_address or entry.registered_address,
         # TODO: should we split the room number into a separate column?
-        'office': entry.internal_location,
+        'office_building': office_building,
+        'office_room': office_room,
         # Unused properties:
         # primary_organization_name: always the same as organization_unit
         # primary_organization_id: always empty

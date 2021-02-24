@@ -123,7 +123,8 @@ class Person(SearchableMixin, db.Model):
     unit_code = db.Column(db.String)
     unit = db.Column(db.String)
     postal_address = db.Column(db.String)
-    office = db.Column(db.String)
+    office_building = db.Column(db.String)
+    office_room = db.Column(db.String)
 
     @staticmethod
     def search(criteria):
