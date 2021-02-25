@@ -16,15 +16,15 @@ class ImageUploader:
            aws_access_key_id=S3_ACCESS_KEY,
            aws_secret_access_key=S3_SECRET_ACCESS_KEY,
         )
-        self.image_ids = self.get_image_ids()
+        self.files = self.get_files()
 
-    def get_image_ids(self):
+    def get_files(self):
         paginator = self.s3.get_paginator('list_objects')
         page_iterator = paginator.paginate(Bucket=S3_BUCKET_NAME)
-        image_ids = set()
+        files = set()
         for page in page_iterator:
-            image_ids.update({int(obj['Key'].rstrip('.jpg')) for obj in page['Contents']})
-        return image_ids
+            files.update({obj['Key'] for obj in page['Contents']})
+        return files
 
     def get_image_filename(self, image_id, person):
         unique_identifier = '-'.join([
@@ -38,11 +38,12 @@ class ImageUploader:
     def get_file_url(self, filename):
         return '{}{}'.format(S3_LOCATION, filename)
 
-    def get_image_url(self, image_id, person):
-        return self.get_file_url(self.get_image_filename(image_id, person))
+    def get_image_url(self, image_id=None, person=None, image_filename=None):
+        if image_filename is None:
+            image_filename = self.get_image_filename(image_id, person)
+        return self.get_file_url(image_filename)
 
-    def upload_image(self, image_id, f):
-        filename = self.get_image_filename(image_id)
+    def upload_image(self, f, filename):
         print('Uploading image %s with size %d bytes.' % (filename, f.getbuffer().nbytes))
         f.seek(0)
         self.s3.upload_fileobj(
