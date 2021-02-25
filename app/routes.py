@@ -26,7 +26,7 @@ def store_user():
                 db.session.add(g.user)
             g.user.last_seen = timestamp
             g.person = Person.query.filter_by(netid=cas.username, school_code='YC').first()
-            if not g.person and not g.user.admin:
+            if g.user.banned or (not g.person and not g.user.admin):
                 # TODO: give a more graceful error than just a 403
                 abort(403)
             try:
