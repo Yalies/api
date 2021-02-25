@@ -108,7 +108,9 @@ let pagesLoaded = 0;
 let pagesFinished = false;
 
 function runSearch() {
-    let filters = {};
+    let filters = {
+        'school_code': ['YC'],
+    };
     let filtersActive = false;
     for (let filter of p.filters) {
         let category = filter.id;
@@ -188,7 +190,7 @@ function loadNextPage() {
         p.loading.style.display = 'block';
         criteria['page'] = ++pagesLoaded;
         console.log('Loading page', pagesLoaded);
-        fetch('/api/students', {
+        fetch('/api/people', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
