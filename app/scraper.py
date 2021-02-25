@@ -401,7 +401,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         if image_id:
             image_filename = image_uploader.get_image_filename(image_id, person)
             if image_filename in image_uploader.files:
-                person['image'] = image_uploader.get_image_url(image_filename)
+                person['image'] = image_uploader.get_file_url(image_filename)
             else:
                 print('Image has not been processed yet.')
                 image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id),

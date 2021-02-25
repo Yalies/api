@@ -38,11 +38,6 @@ class ImageUploader:
     def get_file_url(self, filename):
         return S3_LOCATION + filename
 
-    def get_image_url(self, image_id=None, person=None, image_filename=None):
-        if image_filename is None:
-            image_filename = self.get_image_filename(image_id, person)
-        return self.get_file_url(image_filename)
-
     def upload_image(self, f, filename):
         print('Uploading image %s with size %d bytes.' % (filename, f.getbuffer().nbytes))
         f.seek(0)
