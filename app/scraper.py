@@ -33,10 +33,12 @@ SCHOOL_OVERRIDES = {
 SCHOOL_CODES = {
     'Divinity School': 'DI',
     'Graduate School of Arts & Sciences': 'GS',
+    'Law School': 'LW',
     'School of Management': 'MG',
     'School of Medicine': 'MD',
     'School of Nursing': 'NR',
     'School of the Environment': 'FS',
+    'School of Public Health': 'PH',
 }
 ORGANIZATION_OVERRIDES = {
     'School of Law': 'Law School',
