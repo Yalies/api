@@ -33,10 +33,10 @@ class ImageUploader:
             str(person.get('upi', '')),
         ])
         image_name = hashlib.md5(unique_identifier.encode()).hexdigest()
-        return f'{image_name}.jpg'
+        return image_name + '.jpg'
 
     def get_file_url(self, filename):
-        return '{}{}'.format(S3_LOCATION, filename)
+        return S3_LOCATION + filename
 
     def get_image_url(self, image_id=None, person=None, image_filename=None):
         if image_filename is None:
