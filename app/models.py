@@ -10,6 +10,8 @@ class User(db.Model):
     id = db.Column(db.String, primary_key=True)
     registered_on = db.Column(db.Integer)
     last_seen = db.Column(db.Integer)
+    admin = db.Column(db.Boolean, default=False)
+    banned = db.Column(db.Boolean, default=False)
 
     keys = db.relationship('Key', cascade='all,delete', back_populates='user')
 
