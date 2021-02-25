@@ -26,7 +26,7 @@ def store_user():
                 db.session.add(g.user)
             g.user.last_seen = timestamp
             g.person = Person.query.filter_by(netid=cas.username, school_code='YC').first()
-            if not g.person and not cas.username == 'ekb33':
+            if not g.person and not g.user.admin:
                 # TODO: give a more graceful error than just a 403
                 abort(403)
             try:
@@ -99,7 +99,7 @@ def index():
 @app.route('/scraper', methods=['GET', 'POST'])
 @login_required
 def scrape():
-    if cas.username != 'ekb33':
+    if not g.user.admin:
         abort(403)
     if request.method == 'GET':
         return render_template('scraper.html')
