@@ -32,7 +32,7 @@ class ImageUploader:
             person.get('netid', ''),
             str(person.get('upi', '')),
         ])
-        image_name = hashlib.sha512(unique_identifier.encode()).hexdigest()
+        image_name = hashlib.md5(unique_identifier.encode()).hexdigest()
         return f'{image_name}.jpg'
 
     def get_file_url(self, filename):
