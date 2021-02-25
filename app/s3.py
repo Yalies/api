@@ -1,6 +1,8 @@
 import boto3
 import botocore
 import os
+import hashlib
+
 
 S3_BUCKET_NAME = 'yalestudentphotos'
 S3_ACCESS_KEY = os.environ.get('S3_ACCESS_KEY')
@@ -24,14 +26,20 @@ class ImageUploader:
             image_ids.update({int(obj['Key'].rstrip('.jpg')) for obj in page['Contents']})
         return image_ids
 
-    def get_image_filename(self, image_id):
-        return f'{image_id}.jpg'
+    def get_image_filename(self, image_id, person):
+        unique_identifier = '-'.join([
+            str(image_id),
+            person.get('netid', ''),
+            str(person.get('upi', '')),
+        ])
+        image_name = hashlib.sha512(unique_identifier.encode()).hexdigest()
+        return f'{image_name}.jpg'
 
     def get_file_url(self, filename):
         return '{}{}'.format(S3_LOCATION, filename)
 
-    def get_image_url(self, image_id):
-        return self.get_file_url(self.get_image_filename(image_id))
+    def get_image_url(self, image_id, person):
+        return self.get_file_url(self.get_image_filename(image_id, person))
 
     def upload_image(self, image_id, f):
         filename = self.get_image_filename(image_id)

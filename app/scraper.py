@@ -400,7 +400,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         image_id = clean_image_id(container.find('img')['src'])
         if image_id:
             if image_id in image_uploader.image_ids:
-                person['image'] = image_uploader.get_image_url(image_id)
+                person['image'] = image_uploader.get_image_url(image_id, person)
             else:
                 print('Image has not been processed yet.')
                 image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id),
@@ -418,7 +418,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
                     output = BytesIO()
                     im.save(output, format='JPEG', mode='RGB')
 
-                    person['image'] = image_uploader.upload_image(output, image_id)
+                    person['image'] = image_uploader.upload_image(output, image_id, person)
                 except OSError:
                     # "Cannot identify image" error
                     print('PIL could not identify image.')
