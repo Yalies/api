@@ -333,33 +333,6 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         }
 
         person['last_name'], person['first_name'] = clean_name(container.find('h5', {'class': 'yalehead'}).text)
-        image_id = clean_image_id(container.find('img')['src'])
-
-        if image_id:
-            if image_id in image_uploader.image_ids:
-                person['image'] = image_uploader.get_image_url(image_id)
-            else:
-                print('Image has not been processed yet.')
-                image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id),
-                                       headers={
-                                           'Cookie': face_book_cookie,
-                                       },
-                                       stream=True)
-                image_r.raw.decode_content = True
-                try:
-                    im = Image.open(image_r.raw)
-
-                    # Paste mask over watermark
-                    im.paste(watermark_mask, (0, 0), watermark_mask)
-
-                    output = BytesIO()
-                    im.save(output, format='JPEG', mode='RGB')
-
-                    person['image'] = image_uploader.upload_image(image_id, output)
-                except OSError:
-                    # "Cannot identify image" error
-                    print('PIL could not identify image.')
-
         person['year'] = clean_year(container.find('div', {'class': 'student_year'}).text)
         pronoun = container.find('div', {'class': 'student_info_pronoun'}).text
         person['pronoun'] = pronoun if pronoun else None
@@ -423,6 +396,32 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             person = add_directory_to_person(person, directory_entry)
         else:
             print('Could not find directory entry.')
+
+        image_id = clean_image_id(container.find('img')['src'])
+        if image_id:
+            if image_id in image_uploader.image_ids:
+                person['image'] = image_uploader.get_image_url(image_id)
+            else:
+                print('Image has not been processed yet.')
+                image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id),
+                                       headers={
+                                           'Cookie': face_book_cookie,
+                                       },
+                                       stream=True)
+                image_r.raw.decode_content = True
+                try:
+                    im = Image.open(image_r.raw)
+
+                    # Paste mask over watermark
+                    im.paste(watermark_mask, (0, 0), watermark_mask)
+
+                    output = BytesIO()
+                    im.save(output, format='JPEG', mode='RGB')
+
+                    person['image'] = image_uploader.upload_image(output, image_id)
+                except OSError:
+                    # "Cannot identify image" error
+                    print('PIL could not identify image.')
 
         if person.get('email'):
             emails[person['email']] = len(people)
