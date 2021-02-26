@@ -111,13 +111,11 @@ function runSearch() {
     let filters = {
         'school_code': ['YC'],
     };
-    let filtersActive = false;
     for (let filter of p.filters) {
         let category = filter.id;
         let otherCheckboxes = Array.from(filter.getElementsByTagName('input'));
         let allCheckbox = otherCheckboxes.shift();
         if (!allCheckbox.checked) {
-            filtersActive = true;
             filters[category] = [];
             for (let checkbox of otherCheckboxes) {
                 if (checkbox.checked) {
@@ -136,8 +134,7 @@ function runSearch() {
     query = p.query.value.trim();
     if (query)
         criteria['query'] = query;
-    if (filtersActive)
-        criteria['filters'] = filters;
+    criteria['filters'] = filters;
     p.list.innerHTML = '';
     pagesLoaded = 0;
     pagesFinished = false;
