@@ -103,7 +103,11 @@ onchange = function(e) {
 ///////////////////
 // List building //
 ///////////////////
-let criteria = {};
+let criteria = {
+    'filters': {
+        'school_code': ['YC'],
+    },
+};
 let pagesLoaded = 0;
 let pagesFinished = false;
 
