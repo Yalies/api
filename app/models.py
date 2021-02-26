@@ -140,6 +140,8 @@ class Person(SearchableMixin, db.Model):
         page_size = criteria.get('page_size')
         if query:
             person_query = Person.query_search(query)
+        else:
+            person_query = person_query.order_by(Person.last_name, Person.first_name)
         if filters:
             for category in filters:
                 if category not in (Person.__filterable_identifiable__ + Person.__filterable__):
