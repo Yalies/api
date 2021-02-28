@@ -65,18 +65,27 @@ class User(db.Model):
 
 class Person(SearchableMixin, db.Model):
     __tablename__ = 'person'
-    __searchable__ = ['first_name', 'last_name', 'netid', 'college', 'email', 'residence', 'major', 'address']
-    __filterable_identifiable__ = [
+    __searchable__ = ('first_name', 'last_name', 'netid', 'college', 'email', 'residence', 'major', 'address')
+    __filterable_identifiable__ = (
         'netid', 'upi', 'email', 'mailbox', 'phone',
         'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronoun',
         'access_code', 'birthday', 'residence', 'office_room',
-    ]
-    __filterable__ = [
+    )
+    __filterable__ = (
         'school_code', 'school', 'year', 'curriculum', 'college', 'college_code', 'leave', 'eli_whitney',
         'building_code', 'entryway', 'floor', 'suite', 'room', 'major',
         'organization_code', 'organization', 'unit_class', 'unit_code', 'unit', 'office_building',
-    ]
-    _to_exclude = ('id')
+    )
+    __serializable__ = (
+        'netid', 'upi', 'email', 'mailbox', 'phone',
+        'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronoun',
+        'school_code', 'school', 'year', 'curriculum',
+        'college', 'college_code', 'leave', 'eli_whitney', 'image', 'birthday',
+        'residence', 'building_code', 'entryway', 'floor', 'suite', 'room',
+        'major', 'address', 'access_code',
+        'organization_code', 'organization', 'unit_class', 'unit_code', 'unit',
+        'postal_address', 'office_building', 'office_room',
+    )
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 

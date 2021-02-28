@@ -29,7 +29,7 @@ class ModelEncoder(json.JSONEncoder):
         if isinstance(obj.__class__, DeclarativeMeta):
             # go through each field in this SQLalchemy class
             fields = {}
-            for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata' and not x.startswith('query') and x not in obj.__class__._to_exclude]:
+            for field in obj.__class__.__serializable__:
                 val = obj.__getattribute__(field)
 
                 # is this field another SQLalchemy object, or a list of SQLalchemy objects, or a function?

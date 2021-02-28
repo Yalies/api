@@ -49,8 +49,7 @@ def check_token():
 
 @api_bp.route('/filters')
 def api_filters():
-    filters = {
-    }
+    filters = {}
     for category in Person.__filterable__:
         filters[category] = untuple(db.session.query(distinct(getattr(Person, category))).order_by(getattr(Person, category)))
     return to_json(filters)
