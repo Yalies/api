@@ -166,7 +166,7 @@ class Person(SearchableMixin, db.Model):
 
 class Key(db.Model):
     __tablename__ = 'key'
-    __serializable__ = ('id', 'token', 'uses', 'description')
+    __serializable__ = ('id', 'token', 'uses', 'description', 'created_at', 'last_used')
     id = db.Column(db.Integer, primary_key=True)
     token = db.Column(db.String, unique=True, nullable=False)
     uses = db.Column(db.Integer, default=0)
