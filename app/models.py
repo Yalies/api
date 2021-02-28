@@ -115,7 +115,6 @@ class Person(SearchableMixin, db.Model):
     college_code = db.Column(db.String)
     leave = db.Column(db.Boolean)
     eli_whitney = db.Column(db.Boolean)
-    image_id = db.Column(db.Integer)
     image = db.Column(db.String)
     birthday = db.Column(db.String)
     residence = db.Column(db.String)
