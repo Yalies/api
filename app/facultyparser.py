@@ -134,9 +134,8 @@ def parse_path_default(path, department):
                 'profile_url': department['url'] + username['href']
             }
             person_soup = get_soup(person['profile_url'])
-
-            body = person_soup.find('main', {'id': 'section-content'})
-            name_suffix = body.find('h1', {'class': 'title'}).text
+            body = person_soup.select_one('#section-content')
+            name_suffix = body.find('h1', {'class': ['title', 'page-title']}).text
             if ' - In Memoriam' in name_suffix:
                 continue
             person['name'], person['suffix'] = split_name_suffix(name_suffix)
