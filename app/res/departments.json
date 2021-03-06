@@ -59,7 +59,12 @@
     },
     {
         "name": "Applied Mathematics",
-        "url": "https://applied.math.yale.edu"
+        "url": "https://applied.math.yale.edu",
+        "paths": [
+            "/people/faculty",
+            "/people/postdocs",
+            "/people/current-graduate-students"
+        ]
     },
     {
         "name": "Applied Physics",
