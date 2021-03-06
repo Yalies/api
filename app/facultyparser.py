@@ -104,11 +104,9 @@ def parse_path_default(path, department):
             'image': extract_image(body),
             'title': extract_field(body, 'title'),
             'status': extract_field(body, 'status'),
-            'phone': None,
             'email': extract_field(body, 'email'),
             'education': extract_field(body, 'education'),
             'website': extract_field_url(body, 'website'),
-            'bio': None,
         })
         phone = extract_field(body, 'phone')
         if phone is not None:
@@ -121,9 +119,33 @@ def parse_path_default(path, department):
         people.append(person)
     return people
 
+def get_url_root(url):
+    return '/'.join(url.split('/')[:3])
+
+def medicine_extract_links(parent, department_url):
+    department_url_root = get_url_root(department_url)
+    generic_list = parent.find('section', {'class': 'generic-anchored-list'})
+    if generic_list is not None:
+        links = generic_list.find_all('a', {'class': 'hyperlink'})
+    else:
+        member_listing = parent.find('section', {'class': 'organization-member-listing'})
+        if member_listing is not None:
+            links = member_listing.find_all('a', {'class': 'profile-grid-item__link-details'})
+    return [department_url_root + link['href'] for link in links]
+
 
 def parse_path_medicine(path, department):
-    return []
+    people = []
+    people_html = requests.get(department['url'] + path).text
+    people_soup = BeautifulSoup(people_html, 'html.parser')
+
+    profile_urls = medicine_extract_links(people_soup, department['url'])
+    for profile_url in profile_urls:
+        person = {
+            'profile_url': profile_url,
+        }
+        person_html = requests.get(profile_url)
+        person_soup = BeautifulSoup(person_html, 'html.parser')
 
 
 def parse_path(path, department):

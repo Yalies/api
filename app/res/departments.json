@@ -38,7 +38,8 @@
         "url": "https://medicine.yale.edu/anesthesiology",
         "website_type": "medicine",
         "paths": [
-
+            "/people/a-z",
+            "/people/fellows"
         ]
     },
     {
