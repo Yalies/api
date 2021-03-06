@@ -33,10 +33,18 @@ def extract_image(parent):
     src = src.replace('/thumbnail/', '/people_thumbnail/')
     return src
 
+def get_field(parent, field_name):
+    return parent.find('div', {'class': 'field-name-field-' + field_name})
+
 def extract_field(parent, field_name):
-    elem = parent.find('div', {'class': 'field-name-field-' + field_name})
+    elem = get_field(parent, field_name)
     if elem is not None:
         return elem.text.strip().replace('\xa0', ' ')
+
+def extract_field_url(parent, field_name):
+    elem = get_field(parent, field_name)
+    if elem is not None:
+        return elem['href'].rstrip('/')
 
 # TODO: deduplicate
 def clean_phone(phone):
