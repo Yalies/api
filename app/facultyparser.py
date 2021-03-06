@@ -120,8 +120,13 @@ def parse_path_default(path, department):
             person['image'] = extract_image(card, department.get('image_replacements'), department.get('ignored_images'))
             title = card.find('td', {'class': 'views-field-field-title'})
             if title is not None:
-                title = title.encode_contents.decode().replace('<br/>', ', ')
+                title = title.encode_contents().decode()
+                #division = None
+                #if '<br/>' in title:
+                #    title, division = title.split('<br/>')
+                title = title.replace('<br/>', ', ')
                 person['title'] = title.strip()
+                #person['division'] = division.strip()
         else:
             person = {
                 'profile_url': department['url'] + username['href']
