@@ -5,10 +5,6 @@ import re
 import hashlib
 
 
-with open('res/departments.json', 'r') as f:
-    departments = json.load(f)
-
-
 def get_soup(url, **kwargs):
     #print('Souping URL: ' + url)
     html = requests.get(url, **kwargs).text
@@ -250,6 +246,12 @@ def parse_path(path, department):
 
 def scrape():
     people = []
+    with open('res/departments.json', 'r') as f:
+        departments = json.load(f)
+    enabled_departments = [department for department in departments if department.get('enabled')]
+    # If any departments have been marked enabled, filter to just them
+    if enabled_departments:
+        departments = enabled_departments
     for department in departments:
         print('Department: ' + department['name'])
         if department.get('paths') is None:
