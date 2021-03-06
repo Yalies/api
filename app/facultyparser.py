@@ -66,10 +66,30 @@ for department in departments:
         continue
 
     for path in department['paths']:
-        people_page = requests.get(department['url'] + path).text
-        people_soup = BeautifulSoup(people_page, 'html.parser')
+        print('Path: ' + path)
+        if department.get('paginated'):
+            print('Paginating...')
+            cards = []
+            page = 0
+            while True:
+                people_page_html = requests.get(
+                    department['url'] + path,
+                    params = {'page': page}
+                ).text
+                people_page_soup = BeautifulSoup(people_page_html, 'html.parser')
 
-        cards = people_soup.find_all('div', {'class': 'views-row'})
+                cards_page = people_page_soup.find_all('div', {'class': 'views-row'})
+                if len(cards_page) == 0:
+                    break
+                cards += cards_page
+
+                print(f'Page {page} had {len(cards_page)} people.')
+                page += 1
+        else:
+            people_html = requests.get(department['url'] + path).text
+            people_soup = BeautifulSoup(people_html, 'html.parser')
+            cards = people_soup.find_all('div', {'class': 'views-row'})
+
         for card in cards:
             person = {
                 'profile_url': department['url'] + card.find('a', {'class': 'username'})['href']
@@ -87,6 +107,7 @@ for department in departments:
                 'phone': None,
                 'email': extract_field(body, 'email'),
                 'education': extract_field(body, 'education'),
+                'website': extract_field_url(body, 'website'),
                 'bio': None,
             })
             phone = extract_field(body, 'phone')
