@@ -144,6 +144,7 @@ def parse_path_medicine(path, department):
     people_soup = get_soup(department['url'] + path)
 
     profile_urls = medicine_extract_links(people_soup, department['url'])
+    print(f'Found {len(profile_urls)} profile URLs.')
     for profile_url in profile_urls:
         person = {
             'profile_url': profile_url,
@@ -186,7 +187,9 @@ def parse_path_medicine(path, department):
         if bio is not None:
             person['bio'] = bio.text.strip()
 
+        print('Parsed ' + person['name'])
         people.append(person)
+    return people
 
 
 def parse_path(path, department):
@@ -206,6 +209,7 @@ def scrape():
         for path in department['paths']:
             print('Path: ' + path)
             people += parse_path(path, department)
+    return people
 
 if __name__ == '__main__':
     scrape()
