@@ -21,6 +21,16 @@ with open('res/departments.json', 'r') as f:
 
 people = []
 
+def extract_image(parent):
+    container = person_soup.find('div', {'class': 'user-picture'})
+    if container is None:
+        return None
+    img = container.find('img')
+    if img is None:
+        return None
+    src = img['src']
+    return src
+
 def extract_field(parent, field_name):
     elem = parent.find('div', {'class': 'field-name-field-' + field_name})
     if elem is not None:
@@ -28,7 +38,9 @@ def extract_field(parent, field_name):
 
 
 for department in departments:
+    print('Department: ' + department['name'])
     if department.get('paths') is None:
+        print('Skipping department.')
         continue
 
     for path in department['paths']:
@@ -47,6 +59,8 @@ for department in departments:
             name = body.find('h1', {'class': 'title'})
             person.update({
                 'name': name.text.strip(),
+                'image': extract_image(body),
+                'title': extract_field(body, 'title'),
                 'status': extract_field(body, 'status'),
                 'email': extract_field(body, 'email'),
                 'education': extract_field(body, 'education'),
