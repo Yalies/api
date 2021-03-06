@@ -43,7 +43,16 @@
     },
     {
         "name": "Anthropology",
-        "url": "https://anthropology.yale.edu"
+        "url": "https://anthropology.yale.edu",
+        "paths": [
+            "/people"
+        ],
+        "image_replacements": [
+            ["/medium/", "/people_page/"]
+        ],
+        "ignored_images": [
+            "17ed637056939c4b0b49ae85914955d0"
+        ]
     },
     {
         "name": "Applied Mathematics",

@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import re
+import hashlib
 
 
 with open('res/departments.json', 'r') as f:
@@ -19,7 +20,7 @@ def get_cards(parent, department):
     return parent.select(selector)
 
 
-def extract_image(parent):
+def extract_image(parent, ignored_images):
     container = parent.find('div', {'class': 'user-picture'})
     if container is None:
         return None
@@ -29,6 +30,12 @@ def extract_image(parent):
     src = img['src']
     # TODO: is this always the best option? It seems we can also use /medium/ and get a larger image, but only for some departments
     src = src.replace('/thumbnail/', '/people_thumbnail/')
+    if ignored_images is not None:
+        image_r = requests.get(src, stream=True)
+        image_r.raw.decode_content = True
+        image_hash = hashlib.md5(r.content)
+        if image_hash in ignored_images:
+            return None
     return src
 
 
@@ -105,7 +112,7 @@ def parse_path_default(path, department):
             continue
         person['name'], person['suffix'] = split_name_suffix(name_suffix)
         person.update({
-            'image': extract_image(body),
+            'image': extract_image(body, department.get('ignored_images')),
             'title': extract_field(body, 'title'),
             'status': extract_field(body, 'status'),
             'email': extract_field(body, 'email'),
