@@ -38,7 +38,6 @@
         "url": "https://medicine.yale.edu/anesthesiology",
         "website_type": "medicine",
         "paths": [
-            "/people/a-z",
             "/people/fellows"
         ]
     },
@@ -435,6 +434,16 @@
         "url": "https://wgss.yale.edu"
     },
 
+    {
+        "name": "Medicine",
+        "url": "https://medicine.yale.edu",
+        "website_type": "medicine",
+        "paths": [
+            "/about/findpeople/leadership",
+            "/about/findpeople/facultylist",
+            "/about/findpeople/stafflist/"
+        ]
+    },
     {
         "name": "Divinity School",
         "url": "https://divinity.yale.edu"
