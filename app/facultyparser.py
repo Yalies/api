@@ -110,8 +110,9 @@ def parse_path_default(path, department):
 
     for card in cards:
         username = card.find('a', {'class': 'username'})
-        print(card)
-        print(username)
+        if username is None:
+            # TODO: make sure there aren't any cards that have no link but do have emails
+            username = card.find('a')
         if username is None:
             # There's no profile link; just get what we can from the card
             person = {}
