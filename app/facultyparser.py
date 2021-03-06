@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
+import re
 
 
 """
@@ -43,8 +44,12 @@ def extract_field(parent, field_name):
 
 def extract_field_url(parent, field_name):
     elem = get_field(parent, field_name)
-    if elem is not None:
-        return elem['href'].rstrip('/')
+    if elem is None:
+        return None
+    link = elem.find('a')
+    if link is None:
+        return None
+    return link['href'].rstrip('/')
 
 # TODO: deduplicate
 def clean_phone(phone):
@@ -119,5 +124,3 @@ for department in departments:
 
             print('Parsed ' + person['name'])
             people.append(person)
-
-print(people)
