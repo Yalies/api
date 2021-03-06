@@ -29,6 +29,8 @@ def extract_image(parent):
     if img is None:
         return None
     src = img['src']
+    # TODO: is this always the best option? It seems we can also use /medium/ and get a larger image, but only for some departments
+    src = src.replace('/thumbnail/', '/people_thumbnail/')
     return src
 
 def extract_field(parent, field_name):
