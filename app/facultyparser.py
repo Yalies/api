@@ -185,6 +185,10 @@ def parse_path_medicine(path, department):
         if mailing_address is not None:
             person['mailing_address'] = '\n'.join([p.text for p in mailing_address.find_all('p')])
 
+        bio = person_soup.find('div', {'class': 'profile-details-biography-tab__biography'})
+        if bio is not None:
+            person['bio'] = bio.text.strip()
+
         people.append(person)
 
 
