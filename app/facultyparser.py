@@ -148,10 +148,17 @@ def parse_path_default(path, department):
                 'website': extract_field_url(body, 'website') or extract_field_url(body, 'faculty-links'),
                 'address': extract_field(body, 'address'),
                 'physical_address': extract_field(body, 'office-address'),
+                # Only on astronomy website, apparently
+                'research': extract_field(body, 'research'),
+                # TODO: this could conflict with office_*
+                'room_number': extract_field(body, 'room-number'),
             })
             phone = extract_field(body, 'phone')
             if phone is not None:
                 person['phone'] = clean_phone(phone)
+            fax = extract_field(body, 'fax-number')
+            if fax is not None:
+                person['fax'] = clean_phone(fax)
             bio = extract_field(body, 'bio')
             if bio is not None:
                 person['bio'] = bio.lstrip('_').lstrip()
