@@ -280,6 +280,7 @@ def read_directory(directory, prefix: str = ''):
     print(f'Found {total} people; trying more specific prefixes.')
 
     # NetIds have 2-3 characters followed by any amount of numbers.
+    # Some emeritus professors have longer strings of letters without numbers, such as 'frhole'
     MIN_CHARS_IN_PREFIX = 2
     MAX_CHARS_IN_PREFIX = 3
     if len(prefix) < MIN_CHARS_IN_PREFIX:

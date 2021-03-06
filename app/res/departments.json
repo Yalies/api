@@ -21,6 +21,9 @@
             "/people/graduate-affiliate",
             "/people/world-fellow",
             "/people/staff"
+        ],
+        "image_replacements": [
+            ["/thumbnail/", "/people_thumbnail/"]
         ]
     },
     {

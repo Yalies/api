@@ -20,7 +20,7 @@ def get_cards(parent, department):
     return parent.select(selector)
 
 
-def extract_image(parent, ignored_images):
+def extract_image(parent, image_replacements, ignored_images):
     container = parent.find('div', {'class': 'user-picture'})
     if container is None:
         return None
@@ -28,8 +28,9 @@ def extract_image(parent, ignored_images):
     if img is None:
         return None
     src = img['src']
-    # TODO: is this always the best option? It seems we can also use /medium/ and get a larger image, but only for some departments
-    src = src.replace('/thumbnail/', '/people_thumbnail/')
+    if image_replacements is not None:
+        for pair in image_replacements:
+            src = src.replace(*pair)
     if ignored_images is not None:
         image_r = requests.get(src, stream=True)
         image_r.raw.decode_content = True
@@ -112,7 +113,7 @@ def parse_path_default(path, department):
             continue
         person['name'], person['suffix'] = split_name_suffix(name_suffix)
         person.update({
-            'image': extract_image(body, department.get('ignored_images')),
+            'image': extract_image(body, department.get('image_replacements'), department.get('ignored_images')),
             'title': extract_field(body, 'title'),
             'status': extract_field(body, 'status'),
             'email': extract_field(body, 'email'),
