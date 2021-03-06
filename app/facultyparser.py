@@ -148,17 +148,13 @@ def parse_path_default(path, department):
                 'website': extract_field_url(body, 'website') or extract_field_url(body, 'faculty-links'),
                 'address': extract_field(body, 'address'),
                 'physical_address': extract_field(body, 'office-address'),
+                'phone': clean_phone(extract_field(body, 'phone')),
                 # Only on astronomy website, apparently
                 'research': extract_field(body, 'research'),
                 # TODO: this could conflict with office_*
                 'room_number': extract_field(body, 'room-number'),
+                'fax': clean_phone(extract_field(body, 'fax-number')),
             })
-            phone = extract_field(body, 'phone')
-            if phone is not None:
-                person['phone'] = clean_phone(phone)
-            fax = extract_field(body, 'fax-number')
-            if fax is not None:
-                person['fax'] = clean_phone(fax)
             bio = extract_field(body, 'bio')
             if bio is not None:
                 person['bio'] = bio.lstrip('_').lstrip()
@@ -217,15 +213,13 @@ def parse_path_medicine(path, department):
                 content = row.find('div', {'class': 'contact-info__content'}).text.strip()
                 contacts[label] = content
             person.update({
-                'phone': contacts.get('Office'),
-                'fax': contacts.get('Fax'),
+                'phone': clean_phone(contacts.get('Office')),
+                'fax': clean_phone(contacts.get('Fax')),
                 # TODO: these are really specific and seem to usually be the same as Office and Fax
-                #'appointment_phone': contacts.get('Appt'),
-                #'clinic_fax': contacts.get('Clinic Fax'),
+                #'appointment_phone': clean_phone(contacts.get('Appt')),
+                #'clinic_fax': clean_phone(contacts.get('Clinic Fax')),
                 'email': contacts.get('Email'),
             })
-            if person['fax']:
-                person['fax'] = clean_phone(person['fax'])
 
         mailing_address = person_soup.find('div', {'class': 'profile-mailing-address'})
         if mailing_address is not None:
