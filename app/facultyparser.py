@@ -20,6 +20,11 @@ print(json.dumps(departments))
 with open('res/departments.json', 'r') as f:
     departments = json.load(f)
 
+def get_soup(url, **kwargs):
+    html = requests.get(url, **kwargs).text
+    return BeautifulSoup(html, 'html.parser')
+
+
 def get_cards(parent, department):
     selector = department.get('cards_selector', 'div.view-people tr')
     return parent.select(selector)
@@ -72,11 +77,7 @@ def parse_path_default(path, department):
         cards = []
         page = 0
         while True:
-            people_page_html = requests.get(
-                department['url'] + path,
-                params = {'page': page}
-            ).text
-            people_page_soup = BeautifulSoup(people_page_html, 'html.parser')
+            people_page_soup = get_soup(department['url'] + path, params={'page': page})
 
             cards_page = get_cards(people_page_soup, department)
             if len(cards_page) == 0:
@@ -86,16 +87,14 @@ def parse_path_default(path, department):
             print(f'Page {page} had {len(cards_page)} people.')
             page += 1
     else:
-        people_html = requests.get(department['url'] + path).text
-        people_soup = BeautifulSoup(people_html, 'html.parser')
+        people_soup = get_soup(department['url'] + path)
         cards = get_cards(people_soup, department)
 
     for card in cards:
         person = {
             'profile_url': department['url'] + card.find('a', {'class': 'username'})['href']
         }
-        person_page = requests.get(person['profile_url']).text
-        person_soup = BeautifulSoup(person_page, 'html.parser')
+        person_soup = get_soup(person['profile_url'])
 
         body = person_soup.find('main', {'id': 'section-content'})
         name = body.find('h1', {'class': 'title'})
@@ -142,23 +141,21 @@ def split_name_suffix(name_suffix):
 
 def parse_path_medicine(path, department):
     people = []
-    people_html = requests.get(department['url'] + path).text
-    people_soup = BeautifulSoup(people_html, 'html.parser')
+    people_soup = get_soup(department['url'] + path)
 
     profile_urls = medicine_extract_links(people_soup, department['url'])
     for profile_url in profile_urls:
         person = {
             'profile_url': profile_url,
         }
-        person_html = requests.get(profile_url)
-        person_soup = BeautifulSoup(person_html, 'html.parser')
+        person_soup = get_soup(profile_url)
 
         name_suffix = person_soup.find('h1', {'class': 'profile-details-header__name'}).text
         person['name'], person['suffix'] = split_name_suffix(name_suffix)
         position = person_soup.find('div', {'class': 'profile-details-header__title'})
         if person is not None:
             person['title'] = position.text
-        image = person_soup.find('img', {'class': 'profile-details-thumbnail__image'))
+        image = person_soup.find('img', {'class': 'profile-details-thumbnail__image'})
         if image is not None:
             image_uuid = image['src'].split('/')[-1]
             # TODO: consider using smaller images
