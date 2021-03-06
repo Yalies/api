@@ -175,6 +175,9 @@ def medicine_extract_links(parent, department_url):
         member_listing = parent.find('section', {'class': 'organization-member-listing'})
         if member_listing is not None:
             links = member_listing.select('div.profile-grid-item__content-container a.profile-grid-item__link-details')
+        else:
+            # A list like https://medicine.yale.edu/bbs/people/plantmolbio
+            links = parent.select('.generic-content__table-wrapper a')
     return [department_url_root + link['href'] for link in links]
 
 
