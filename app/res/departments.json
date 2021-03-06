@@ -85,7 +85,11 @@
     },
     {
         "name": "Architecture",
-        "url": "https://www.architecture.yale.edu"
+        "url": "https://www.architecture.yale.edu",
+        "website_type": "architecture",
+        "paths": [
+            "/faculty"
+        ]
     },
     {
         "name": "Astronomy",
