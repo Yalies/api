@@ -16,8 +16,13 @@ def get_soup(url, **kwargs):
 
 
 def get_cards(parent, department):
-    selector = department.get('cards_selector', 'div.view-people tbody tr')
-    return parent.select(selector)
+    cards = []
+    selector = department.get('cards_selector')
+    if selector is not None:
+        cards = parent.select(selector)
+        if cards is not None:
+            return cards
+    return parent.select('.view-people tbody tr, .view-people .views-row')
 
 
 def extract_image(parent, image_replacements, ignored_images):
