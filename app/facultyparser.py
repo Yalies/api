@@ -129,7 +129,7 @@ def medicine_extract_links(parent, department_url):
     else:
         member_listing = parent.find('section', {'class': 'organization-member-listing'})
         if member_listing is not None:
-            links = member_listing.find_all('a', {'class': 'profile-grid-item__link-details'})
+            links = member_listing.select('div.profile-grid-item__content-container a.profile-grid-item__link-details')
     return [department_url_root + link['href'] for link in links]
 
 def split_name_suffix(name_suffix):
