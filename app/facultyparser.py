@@ -152,9 +152,9 @@ def parse_path_medicine(path, department):
 
         name_suffix = person_soup.find('h1', {'class': 'profile-details-header__name'}).text
         person['name'], person['suffix'] = split_name_suffix(name_suffix)
-        position = person_soup.find('div', {'class': 'profile-details-header__title'})
-        if person is not None:
-            person['title'] = position.text
+        title = person_soup.find('div', {'class': 'profile-details-header__title'})
+        if title is not None:
+            person['title'] = title.text
         image = person_soup.find('img', {'class': 'profile-details-thumbnail__image'})
         if image is not None:
             image_uuid = image['src'].split('/')[-1]
