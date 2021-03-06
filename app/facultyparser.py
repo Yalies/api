@@ -41,7 +41,10 @@ def extract_image(parent, image_replacements, ignored_images):
 
 
 def get_field(parent, field_name):
-    return parent.find('div', {'class': 'field-name-field-' + field_name})
+    container = parent.find('div', {'class': 'field-name-field-' + field_name})
+    if not container:
+        return None
+    return container.find('div', {'class': 'field-item'})
 
 
 def extract_field(parent, field_name):
@@ -118,7 +121,9 @@ def parse_path_default(path, department):
             'status': extract_field(body, 'status'),
             'email': extract_field(body, 'email'),
             'education': extract_field(body, 'education'),
-            'website': extract_field_url(body, 'website'),
+            'website': extract_field_url(body, 'website') or extract_field_url(body, 'faculty-links'),
+            'address': extract_field(body, 'address'),
+            'physical_address': extract_field(body, 'office-address'),
         })
         phone = extract_field(body, 'phone')
         if phone is not None:
