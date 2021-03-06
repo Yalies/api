@@ -212,4 +212,6 @@ def scrape():
     return people
 
 if __name__ == '__main__':
-    scrape()
+    people = scrape()
+    with open('/tmp/people.json', 'w') as f:
+        json.dump(people, f)
