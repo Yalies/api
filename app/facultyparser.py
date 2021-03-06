@@ -164,6 +164,23 @@ def parse_path_medicine(path, department):
             # TODO: consider using smaller images
             person['image'] = 'https://files-profile.medicine.yale.edu/images/' + image_uuid
 
+        contact_list = person_soup.find('ul', {'class': 'profile-general-contact-list'})
+        if contact_list is not None:
+            rows = contact_list.find_all('div', {'class': 'contact_info'})
+            contacts = {}
+            for row in rows:
+                label = row.find('span', {'class': 'contact-info__label'}).text
+                content = row.find('div', {'class': 'contact-info__content'}).text.strip()
+                contacts[label] = content
+            person.update({
+                'phone': contacts.get('Office'),
+                'fax': contacts.get('Fax'),
+                # TODO: these are really specific and seem to usually be the same as Office and Fax
+                #'appointment_phone': contacts.get('Appt'),
+                #'clinic_fax': contacts.get('Clinic Fax'),
+                'email': contacts.get('Email'),
+            })
+
 
 
         people.append(person)
