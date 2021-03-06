@@ -180,7 +180,7 @@ def parse_path_medicine(path, department):
 
         contact_list = person_soup.find('ul', {'class': 'profile-general-contact-list'})
         if contact_list is not None:
-            rows = contact_list.find_all('div', {'class': 'contact_info'})
+            rows = contact_list.find_all('div', {'class': 'contact-info'})
             contacts = {}
             for row in rows:
                 label = row.find('span', {'class': 'contact-info__label'}).text
