@@ -1,7 +1,12 @@
 [
     {
         "name": "African American Studies",
-        "url": "https://afamstudies.yale.edu/"
+        "url": "https://afamstudies.yale.edu",
+        "paths": [
+            "people",
+            "people/graduate-students",
+            "people/emeritus-faculty"
+        ]
     },
     {
         "name": "African Studies",
