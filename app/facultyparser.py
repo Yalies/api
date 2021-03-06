@@ -38,6 +38,18 @@ def extract_field(parent, field_name):
     if elem is not None:
         return elem.text.strip().replace('\xa0', ' ')
 
+# TODO: deduplicate
+def clean_phone(phone):
+    if not phone:
+        return phone
+    if type(phone) == int:
+        phone = str(phone)
+    COUNTRY_CODE_RE = re.compile('^\+1? ')
+    phone = COUNTRY_CODE_RE.sub('', phone)
+    DISALLOWED_CHARACTERS_RE = re.compile(r'[\(\) \-]')
+    phone = DISALLOWED_CHARACTERS_RE.sub('', phone)
+    return phone
+
 
 for department in departments:
     print('Department: ' + department['name'])
@@ -64,10 +76,14 @@ for department in departments:
                 'image': extract_image(body),
                 'title': extract_field(body, 'title'),
                 'status': extract_field(body, 'status'),
+                'phone': None,
                 'email': extract_field(body, 'email'),
                 'education': extract_field(body, 'education'),
                 'bio': None,
             })
+            phone = extract_field(body, 'phone')
+            if phone is not None:
+                person['phone'] = clean_phone(phone)
             bio = extract_field(body, 'bio')
             if bio is not None:
                 person['bio'] = bio.lstrip('_').lstrip()
