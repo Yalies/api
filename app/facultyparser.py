@@ -10,7 +10,7 @@ with open('res/departments.json', 'r') as f:
 
 
 def get_soup(url, **kwargs):
-    print('Souping URL: ' + url)
+    #print('Souping URL: ' + url)
     html = requests.get(url, **kwargs).text
     return BeautifulSoup(html, 'html.parser')
 
@@ -121,9 +121,16 @@ def parse_path_default(path, department):
         if username is None:
             # There's no profile link; just get what we can from the card
             person = {}
-            person['name'] = card.find('td', {'class': 'views-field-name-1'}).text.strip()
+            person['name'] = card.select_one('.views-field-name-1').text.strip()
             person['image'] = extract_image(card, department.get('image_replacements'), department.get('ignored_images'))
-            title = card.find('td', {'class': 'views-field-field-title'})
+            title = card.select_one('.views-field-field-title')
+
+            # Sometimes there's an additional wrapping div, which needs to be
+            # removed to avoid the markup working its way in
+            title_field_content = title.select_one('.field-content')
+            if title_field_content is not None:
+                title = title_field_content
+
             if title is not None:
                 title = title.encode_contents().decode()
                 #division = None
