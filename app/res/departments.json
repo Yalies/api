@@ -93,7 +93,14 @@
     },
     {
         "name": "Astronomy",
-        "url": "https://astronomy.yale.edu"
+        "url": "https://astronomy.yale.edu",
+        "paths": [
+            "/people"
+        ],
+        "ignored_images": [
+            "d4c584e00a18f11b046f012e8fb4a688",
+            "7226a127cfc7e84cd951d80887c46e69"
+        ]
     },
     {
         "name": "Biological & Biomedical Sciences",

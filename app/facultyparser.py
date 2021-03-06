@@ -33,7 +33,7 @@ def extract_image(parent, image_replacements, ignored_images):
     if ignored_images is not None:
         image_r = requests.get(src, stream=True)
         image_r.raw.decode_content = True
-        image_hash = hashlib.md5(r.content)
+        image_hash = hashlib.md5(image_r.content)
         if image_hash in ignored_images:
             return None
     return src
