@@ -22,6 +22,10 @@ with open('res/departments.json', 'r') as f:
 
 people = []
 
+def get_cards(parent, department):
+    selector = department.get('cards_selector', 'div.view-people tr')
+    return parent.find_all(selector)
+
 def extract_image(parent):
     container = person_soup.find('div', {'class': 'user-picture'})
     if container is None:
@@ -83,7 +87,7 @@ for department in departments:
                 ).text
                 people_page_soup = BeautifulSoup(people_page_html, 'html.parser')
 
-                cards_page = people_page_soup.find_all('div', {'class': 'views-row'})
+                cards_page = get_cards(people_page_soup, department)
                 if len(cards_page) == 0:
                     break
                 cards += cards_page
@@ -93,7 +97,7 @@ for department in departments:
         else:
             people_html = requests.get(department['url'] + path).text
             people_soup = BeautifulSoup(people_html, 'html.parser')
-            cards = people_soup.find_all('div', {'class': 'views-row'})
+            cards = get_cards(people_soup, department)
 
         for card in cards:
             person = {

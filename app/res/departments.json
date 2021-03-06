@@ -6,7 +6,8 @@
             "/people",
             "/people/graduate-students",
             "/people/emeritus-faculty"
-        ]
+        ],
+        "cards_selector": "div.views-row"
     },
     {
         "name": "African Studies",
