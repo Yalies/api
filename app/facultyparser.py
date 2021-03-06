@@ -16,14 +16,17 @@ def get_soup(url, **kwargs):
 
 
 def get_cards(parent, department):
-    selector = department.get('cards_selector', 'div.view-people tr')
+    selector = department.get('cards_selector', 'div.view-people tbody tr')
     return parent.select(selector)
 
 
 def extract_image(parent, image_replacements, ignored_images):
     container = parent.find('div', {'class': 'user-picture'})
     if container is None:
-        return None
+        # If we're just parsing a card
+        container = parent.find('td', {'class': 'views-field-field-user-profile-picture'})
+        if container is None:
+            return None
     img = container.find('img')
     if img is None:
         return None
@@ -106,32 +109,43 @@ def parse_path_default(path, department):
         cards = get_cards(people_soup, department)
 
     for card in cards:
-        person = {
-            'profile_url': department['url'] + card.find('a', {'class': 'username'})['href']
-        }
-        person_soup = get_soup(person['profile_url'])
+        username = card.find('a', {'class': 'username'})
+        print(card)
+        print(username)
+        if username is None:
+            # There's no profile link; just get what we can from the card
+            person = {}
+            person['name'] = card.find('td', {'class': 'views-field-name-1'}).text
+            person['image'] = extract_image(card, department.get('image_replacements'), department.get('ignored_images'))
+            title = card.find('td', {'class': 'views-field-field-title'})
+            person['title'] = title.text
+        else:
+            person = {
+                'profile_url': department['url'] + username['href']
+            }
+            person_soup = get_soup(person['profile_url'])
 
-        body = person_soup.find('main', {'id': 'section-content'})
-        name_suffix = body.find('h1', {'class': 'title'}).text
-        if ' - In Memoriam' in name_suffix:
-            continue
-        person['name'], person['suffix'] = split_name_suffix(name_suffix)
-        person.update({
-            'image': extract_image(body, department.get('image_replacements'), department.get('ignored_images')),
-            'title': extract_field(body, 'title'),
-            'status': extract_field(body, 'status'),
-            'email': extract_field(body, 'email'),
-            'education': extract_field(body, 'education'),
-            'website': extract_field_url(body, 'website') or extract_field_url(body, 'faculty-links'),
-            'address': extract_field(body, 'address'),
-            'physical_address': extract_field(body, 'office-address'),
-        })
-        phone = extract_field(body, 'phone')
-        if phone is not None:
-            person['phone'] = clean_phone(phone)
-        bio = extract_field(body, 'bio')
-        if bio is not None:
-            person['bio'] = bio.lstrip('_').lstrip()
+            body = person_soup.find('main', {'id': 'section-content'})
+            name_suffix = body.find('h1', {'class': 'title'}).text
+            if ' - In Memoriam' in name_suffix:
+                continue
+            person['name'], person['suffix'] = split_name_suffix(name_suffix)
+            person.update({
+                'image': extract_image(body, department.get('image_replacements'), department.get('ignored_images')),
+                'title': extract_field(body, 'title'),
+                'status': extract_field(body, 'status'),
+                'email': extract_field(body, 'email'),
+                'education': extract_field(body, 'education'),
+                'website': extract_field_url(body, 'website') or extract_field_url(body, 'faculty-links'),
+                'address': extract_field(body, 'address'),
+                'physical_address': extract_field(body, 'office-address'),
+            })
+            phone = extract_field(body, 'phone')
+            if phone is not None:
+                person['phone'] = clean_phone(phone)
+            bio = extract_field(body, 'bio')
+            if bio is not None:
+                person['bio'] = bio.lstrip('_').lstrip()
 
         print('Parsed ' + person['name'])
         people.append(person)
