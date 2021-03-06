@@ -10,7 +10,17 @@
     },
     {
         "name": "African Studies",
-        "url": "https://african.macmillan.yale.edu"
+        "url": "https://african.macmillan.yale.edu",
+        "paths": [
+            "/people/faculty",
+            "/people/council-affiliates",
+            "/people/language-faculty",
+            "/people/visiting-faculty-and-scholars",
+            "/people/current-students",
+            "/people/graduate-affiliate",
+            "/people/world-fellow",
+            "/people/staff"
+        ]
     },
     {
         "name": "American Studies",
