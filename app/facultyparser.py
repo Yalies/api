@@ -147,6 +147,21 @@ def parse_path_medicine(path, department):
         person_html = requests.get(profile_url)
         person_soup = BeautifulSoup(person_html, 'html.parser')
 
+        name = person_soup.find('h1', {'class': 'profile-details-header__name'})
+        person['name'] = name.text
+        position = person_soup.find('div', {'class': 'profile-details-header__title'})
+        if person is not None:
+            person['title'] = position.text
+        image = person_soup.find('img', {'class': 'profile-details-thumbnail__image'))
+        if image is not None:
+            image_uuid = image['src'].split('/')[-1]
+            # TODO: consider using smaller images
+            person['image'] = 'https://files-profile.medicine.yale.edu/images/' + image_uuid
+
+
+
+        people.append(person)
+
 
 def parse_path(path, department):
     website_type = department.get('website_type')
