@@ -78,7 +78,10 @@
     },
     {
         "name": "Archaeological Studies",
-        "url": "https://archaeology.yale.edu"
+        "url": "https://archaeology.yale.edu",
+        "paths": [
+            "/people"
+        ]
     },
     {
         "name": "Architecture",
