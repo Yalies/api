@@ -68,7 +68,14 @@
     },
     {
         "name": "Applied Physics",
-        "url": "https://appliedphysics.yale.edu"
+        "url": "https://appliedphysics.yale.edu",
+        "paths": [
+            "/faculty",
+            "/staff/research_scientists",
+            "/staff/postdoc_associates",
+            "/staff/graduate_students",
+            "/staff/business_administration"
+        ]
     },
     {
         "name": "Archaeological Studies",
