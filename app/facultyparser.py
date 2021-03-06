@@ -116,10 +116,12 @@ def parse_path_default(path, department):
         if username is None:
             # There's no profile link; just get what we can from the card
             person = {}
-            person['name'] = card.find('td', {'class': 'views-field-name-1'}).text
+            person['name'] = card.find('td', {'class': 'views-field-name-1'}).text.strip()
             person['image'] = extract_image(card, department.get('image_replacements'), department.get('ignored_images'))
             title = card.find('td', {'class': 'views-field-field-title'})
-            person['title'] = title.text
+            if title is not None:
+                title = title.encode_contents.decode().replace('<br/>', ', ')
+                person['title'] = title.strip()
         else:
             person = {
                 'profile_url': department['url'] + username['href']
