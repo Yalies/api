@@ -21,6 +21,12 @@ with open('res/departments.json', 'r') as f:
 
 people = []
 
+def extract_field(parent, field_name):
+    elem = parent.find('div', {'class': 'field-name-field-' + field_name})
+    if elem is not None:
+        return elem.text
+
+
 for department in departments:
     if department.get('paths') is None:
         continue
@@ -39,16 +45,10 @@ for department in departments:
 
             body = person_soup.find('div', {'id': 'section-content'})
             name = body.find('h1', {'class': 'title'})
-            person['name'] = name.text
-
-            status = body.find('div', {'class': 'field-name-field-status'})
-            if status is not None:
-                person['status'] = status.text
-            education = body.find('div', {'class': 'field-name-field-education'})
-            if education is not None:
-                person['education'] = education.text
-            bio = body.find('div', {'class': 'field-name-field-bio'})
-            if bio is not None:
-                person['bio'] = bio.text
-
+            person.update({
+                'name': name.text,
+                'status': extract_field(body, 'status'),
+                'education': extract_field(body, 'education'),
+                'bio': extract_field(body, 'bio'),
+            })
 
