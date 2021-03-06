@@ -28,6 +28,7 @@ def extract_image(parent, image_replacements, ignored_images):
     if img is None:
         return None
     src = img['src']
+    src = src.split('?')[0]
     if image_replacements is not None:
         for pair in image_replacements:
             src = src.replace(*pair)
