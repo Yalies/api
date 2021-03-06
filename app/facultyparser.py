@@ -22,13 +22,7 @@ def get_cards(parent, department):
 
 
 def extract_image(parent, image_replacements, ignored_images):
-    container = parent.find('div', {'class': 'user-picture'})
-    if container is None:
-        # If we're just parsing a card
-        container = parent.find('td', {'class': 'views-field-field-user-profile-picture'})
-        if container is None:
-            return None
-    img = container.find('img')
+    img = parent.select_one('.user-picture img, .views-field-field-user-profile-picture img, .field-name-field-user-profile-picture img')
     if img is None:
         return None
     src = img['src']
