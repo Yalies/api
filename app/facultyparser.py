@@ -133,6 +133,12 @@ def medicine_extract_links(parent, department_url):
             links = member_listing.find_all('a', {'class': 'profile-grid-item__link-details'})
     return [department_url_root + link['href'] for link in links]
 
+def split_name_suffix(name_suffix):
+    chunks = name_suffix.split(', ', 1)
+    if len(chunks) == 1:
+        chunks.append(None)
+    return chunks
+
 
 def parse_path_medicine(path, department):
     people = []
@@ -147,8 +153,8 @@ def parse_path_medicine(path, department):
         person_html = requests.get(profile_url)
         person_soup = BeautifulSoup(person_html, 'html.parser')
 
-        name = person_soup.find('h1', {'class': 'profile-details-header__name'})
-        person['name'] = name.text
+        name_suffix = person_soup.find('h1', {'class': 'profile-details-header__name'}).text
+        person['name'], person['suffix'] = split_name_suffix(name_suffix)
         position = person_soup.find('div', {'class': 'profile-details-header__title'})
         if person is not None:
             person['title'] = position.text
