@@ -7,6 +7,7 @@ import re
 with open('res/departments.json', 'r') as f:
     departments = json.load(f)
 
+
 def get_soup(url, **kwargs):
     print('Souping URL: ' + url)
     html = requests.get(url, **kwargs).text
@@ -16,6 +17,7 @@ def get_soup(url, **kwargs):
 def get_cards(parent, department):
     selector = department.get('cards_selector', 'div.view-people tr')
     return parent.select(selector)
+
 
 def extract_image(parent):
     container = parent.find('div', {'class': 'user-picture'})
@@ -29,13 +31,16 @@ def extract_image(parent):
     src = src.replace('/thumbnail/', '/people_thumbnail/')
     return src
 
+
 def get_field(parent, field_name):
     return parent.find('div', {'class': 'field-name-field-' + field_name})
+
 
 def extract_field(parent, field_name):
     elem = get_field(parent, field_name)
     if elem is not None:
         return elem.text.strip().replace('\xa0', ' ')
+
 
 def extract_field_url(parent, field_name):
     elem = get_field(parent, field_name)
@@ -45,6 +50,15 @@ def extract_field_url(parent, field_name):
     if link is None:
         return None
     return link['href'].rstrip('/')
+
+
+def split_name_suffix(name_suffix):
+    chunks = name_suffix.split(',', 1)
+    chunks = [chunk.strip() for chunk in chunks]
+    if len(chunks) == 1:
+        chunks.append(None)
+    return chunks
+
 
 # TODO: deduplicate
 def clean_phone(phone):
@@ -57,6 +71,7 @@ def clean_phone(phone):
     DISALLOWED_CHARACTERS_RE = re.compile(r'[\(\) \-]')
     phone = DISALLOWED_CHARACTERS_RE.sub('', phone)
     return phone
+
 
 def parse_path_default(path, department):
     people = []
@@ -85,9 +100,9 @@ def parse_path_default(path, department):
         person_soup = get_soup(person['profile_url'])
 
         body = person_soup.find('main', {'id': 'section-content'})
-        name = body.find('h1', {'class': 'title'})
+        name_suffix = body.find('h1', {'class': 'title'}).text
+        person['name'], person['suffix'] = split_name_suffix(name_suffix)
         person.update({
-            'name': name.text.strip().strip(','),
             'image': extract_image(body),
             'title': extract_field(body, 'title'),
             'status': extract_field(body, 'status'),
@@ -119,12 +134,6 @@ def medicine_extract_links(parent, department_url):
         if member_listing is not None:
             links = member_listing.select('div.profile-grid-item__content-container a.profile-grid-item__link-details')
     return [department_url_root + link['href'] for link in links]
-
-def split_name_suffix(name_suffix):
-    chunks = name_suffix.split(', ', 1)
-    if len(chunks) == 1:
-        chunks.append(None)
-    return chunks
 
 
 def parse_path_medicine(path, department):
