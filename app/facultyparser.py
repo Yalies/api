@@ -231,10 +231,29 @@ def parse_path_medicine(path, department):
     return people
 
 
+def parse_path_architecture(path, department):
+    people = []
+
+    page = 1
+    profile_urls = []
+    while True:
+        people_page_soup = get_soup(department['url'] + path, params={'page': page})
+        links_page = people_page_soup.select('div.faculty-member-thumbnail a')
+        if len(links_page) == 0:
+            break
+        profile_urls_page = [department['url'] + link['href'] for link in links_page]
+        profile_urls += profile_urls_page
+        page += 1
+    print(profile_urls)
+    return people
+
+
 def parse_path(path, department):
     website_type = department.get('website_type')
     if website_type == 'medicine':
         return parse_path_medicine(path, department)
+    if website_type == 'architecture':
+        return parse_path_architecture(path, department)
     return parse_path_default(path, department)
 
 def scrape():
