@@ -224,6 +224,8 @@ def parse_path_medicine(path, department):
                 #'clinic_fax': contacts.get('Clinic Fax'),
                 'email': contacts.get('Email'),
             })
+            if person['fax']:
+                person['fax'] = clean_phone(person['fax'])
 
         mailing_address = person_soup.find('div', {'class': 'profile-mailing-address'})
         if mailing_address is not None:
