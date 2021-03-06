@@ -8,6 +8,7 @@ with open('res/departments.json', 'r') as f:
     departments = json.load(f)
 
 def get_soup(url, **kwargs):
+    print('Souping URL: ' + url)
     html = requests.get(url, **kwargs).text
     return BeautifulSoup(html, 'html.parser')
 
@@ -86,7 +87,7 @@ def parse_path_default(path, department):
         body = person_soup.find('main', {'id': 'section-content'})
         name = body.find('h1', {'class': 'title'})
         person.update({
-            'name': name.text.strip(),
+            'name': name.text.strip().strip(','),
             'image': extract_image(body),
             'title': extract_field(body, 'title'),
             'status': extract_field(body, 'status'),
@@ -138,8 +139,11 @@ def parse_path_medicine(path, department):
         }
         person_soup = get_soup(profile_url)
 
-        name_suffix = person_soup.find('h1', {'class': 'profile-details-header__name'}).text
-        person['name'], person['suffix'] = split_name_suffix(name_suffix)
+        name_suffix = person_soup.find('h1', {'class': 'profile-details-header__name'})
+        if name_suffix is None:
+            print('Empty page, skipping.')
+            continue
+        person['name'], person['suffix'] = split_name_suffix(name_suffix.text)
         title = person_soup.find('div', {'class': 'profile-details-header__title'})
         if title is not None:
             person['title'] = title.text
