@@ -104,19 +104,40 @@
     },
     {
         "name": "Biological & Biomedical Sciences",
-        "url": "https://medicine.yale.edu/bbs"
+        "url": "https://medicine.yale.edu/bbs",
+        "website_type": "medicine",
+        "paths": [
+            "/people/bbsb/",
+            "/people/cbb/",
+            "/people/immunology/",
+            "/bbs/people/microbiology/",
+            "/people/mcbgd/",
+            "/people/m2p2/",
+            "/people/neuroscience/",
+            "/people/plantmolbio/"
+        ]
     },
     {
         "name": "Biomedical Engineering",
-        "url": "https://seas.yale.edu/departments/biomedical-engineering"
+        "url": "https://seas.yale.edu/departments/biomedical-engineering",
+        "website_type": "seas",
+        "paths": []
     },
     {
         "name": "Biostatistics",
-        "url": "https://publichealth.yale.edu/biostat"
+        "url": "https://publichealth.yale.edu/biostat",
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Cell Biology",
-        "url": "https://medicine.yale.edu/cellbio"
+        "url": "https://medicine.yale.edu/cellbio",
+        "website_type": "medicine",
+        "paths": [
+            "/people/gradstudents/",
+            "/people/postdocsandras/"
+        ],
+        "enabled": true
     },
     {
         "name": "Cellular & Molecular Physiology",
