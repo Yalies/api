@@ -101,6 +101,8 @@ def parse_path_default(path, department):
 
         body = person_soup.find('main', {'id': 'section-content'})
         name_suffix = body.find('h1', {'class': 'title'}).text
+        if ' - In Memoriam' in name_suffix:
+            continue
         person['name'], person['suffix'] = split_name_suffix(name_suffix)
         person.update({
             'image': extract_image(body),
