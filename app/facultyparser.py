@@ -20,14 +20,12 @@ print(json.dumps(departments))
 with open('res/departments.json', 'r') as f:
     departments = json.load(f)
 
-people = []
-
 def get_cards(parent, department):
     selector = department.get('cards_selector', 'div.view-people tr')
-    return parent.find_all(selector)
+    return parent.select(selector)
 
 def extract_image(parent):
-    container = person_soup.find('div', {'class': 'user-picture'})
+    container = parent.find('div', {'class': 'user-picture'})
     if container is None:
         return None
     img = container.find('img')
@@ -67,64 +65,84 @@ def clean_phone(phone):
     phone = DISALLOWED_CHARACTERS_RE.sub('', phone)
     return phone
 
+def parse_path_default(path, department):
+    people = []
+    if department.get('paginated'):
+        print('Paginating...')
+        cards = []
+        page = 0
+        while True:
+            people_page_html = requests.get(
+                department['url'] + path,
+                params = {'page': page}
+            ).text
+            people_page_soup = BeautifulSoup(people_page_html, 'html.parser')
 
-for department in departments:
-    print('Department: ' + department['name'])
-    if department.get('paths') is None:
-        print('Skipping department.')
-        continue
+            cards_page = get_cards(people_page_soup, department)
+            if len(cards_page) == 0:
+                break
+            cards += cards_page
 
-    for path in department['paths']:
-        print('Path: ' + path)
-        if department.get('paginated'):
-            print('Paginating...')
-            cards = []
-            page = 0
-            while True:
-                people_page_html = requests.get(
-                    department['url'] + path,
-                    params = {'page': page}
-                ).text
-                people_page_soup = BeautifulSoup(people_page_html, 'html.parser')
+            print(f'Page {page} had {len(cards_page)} people.')
+            page += 1
+    else:
+        people_html = requests.get(department['url'] + path).text
+        people_soup = BeautifulSoup(people_html, 'html.parser')
+        cards = get_cards(people_soup, department)
 
-                cards_page = get_cards(people_page_soup, department)
-                if len(cards_page) == 0:
-                    break
-                cards += cards_page
+    for card in cards:
+        person = {
+            'profile_url': department['url'] + card.find('a', {'class': 'username'})['href']
+        }
+        person_page = requests.get(person['profile_url']).text
+        person_soup = BeautifulSoup(person_page, 'html.parser')
 
-                print(f'Page {page} had {len(cards_page)} people.')
-                page += 1
-        else:
-            people_html = requests.get(department['url'] + path).text
-            people_soup = BeautifulSoup(people_html, 'html.parser')
-            cards = get_cards(people_soup, department)
+        body = person_soup.find('main', {'id': 'section-content'})
+        name = body.find('h1', {'class': 'title'})
+        person.update({
+            'name': name.text.strip(),
+            'image': extract_image(body),
+            'title': extract_field(body, 'title'),
+            'status': extract_field(body, 'status'),
+            'phone': None,
+            'email': extract_field(body, 'email'),
+            'education': extract_field(body, 'education'),
+            'website': extract_field_url(body, 'website'),
+            'bio': None,
+        })
+        phone = extract_field(body, 'phone')
+        if phone is not None:
+            person['phone'] = clean_phone(phone)
+        bio = extract_field(body, 'bio')
+        if bio is not None:
+            person['bio'] = bio.lstrip('_').lstrip()
 
-        for card in cards:
-            person = {
-                'profile_url': department['url'] + card.find('a', {'class': 'username'})['href']
-            }
-            person_page = requests.get(person['profile_url']).text
-            person_soup = BeautifulSoup(person_page, 'html.parser')
+        print('Parsed ' + person['name'])
+        people.append(person)
+    return people
 
-            body = person_soup.find('main', {'id': 'section-content'})
-            name = body.find('h1', {'class': 'title'})
-            person.update({
-                'name': name.text.strip(),
-                'image': extract_image(body),
-                'title': extract_field(body, 'title'),
-                'status': extract_field(body, 'status'),
-                'phone': None,
-                'email': extract_field(body, 'email'),
-                'education': extract_field(body, 'education'),
-                'website': extract_field_url(body, 'website'),
-                'bio': None,
-            })
-            phone = extract_field(body, 'phone')
-            if phone is not None:
-                person['phone'] = clean_phone(phone)
-            bio = extract_field(body, 'bio')
-            if bio is not None:
-                person['bio'] = bio.lstrip('_').lstrip()
 
-            print('Parsed ' + person['name'])
-            people.append(person)
+def parse_path_medicine(path, department):
+    return []
+
+
+def parse_path(path, department):
+    website_type = department.get('website_type')
+    if website_type == 'medicine':
+        return parse_path_medicine(path, department)
+    return parse_path_default(path, department)
+
+def scrape():
+    people = []
+    for department in departments:
+        print('Department: ' + department['name'])
+        if department.get('paths') is None:
+            print('Skipping department.')
+            continue
+
+        for path in department['paths']:
+            print('Path: ' + path)
+            people += parse_path(path, department)
+
+if __name__ == '__main__':
+    scrape()

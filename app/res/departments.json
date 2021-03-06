@@ -35,7 +35,11 @@
     },
     {
         "name": "Anesthesiology",
-        "url": "https://medicine.yale.edu/anesthesiology"
+        "url": "https://medicine.yale.edu/anesthesiology",
+        "website_type": "medicine",
+        "paths": [
+
+        ]
     },
     {
         "name": "Anthropology",
