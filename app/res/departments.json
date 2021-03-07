@@ -248,7 +248,10 @@
     {
         "name": "Dermatology",
         "url": "https://medicine.yale.edu/dermatology",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/people/"
+        ]
     },
     {
         "name": "Earth & Planetary Sciences",
