@@ -184,13 +184,28 @@
     },
     {
         "name": "Chronic Disease Epidemiology",
-        "url": "https://publichealth.yale.edu/cde"
+        "url": "https://publichealth.yale.edu/cde",
         "website_type": "medicine",
         "paths": []
     },
     {
         "name": "Classics",
-        "url": "https://classics.yale.edu"
+        "url": "https://classics.yale.edu",
+        "paths": [
+            "/people/faculty",
+            "/people/graduate-students",
+            "/people/secondary-faculty-appointments",
+            "/people/affiliated-scholars",
+            "/people/emeritus-faculty",
+            "/people/staff"
+        ],
+        "ignored_images": [
+            "5403de8c900e3168f3b2a8584e863e69",
+            "6f9db79a76222edb642b7047db73b3e6",
+            "8c2baa159333f8fca48cf51eaada05a6",
+            "4be946f6e1369f56b92f9ed9d884b489",
+            "5be9cac979c737a418b7045c82eba5a5"
+        ]
     },
     {
         "name": "Comparative Literature",
