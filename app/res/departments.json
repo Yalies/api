@@ -136,12 +136,16 @@
         "paths": [
             "/people/gradstudents/",
             "/people/postdocsandras/"
-        ],
-        "enabled": true
+        ]
     },
     {
         "name": "Cellular & Molecular Physiology",
-        "url": "https://medicine.yale.edu/physiology"
+        "url": "https://medicine.yale.edu/physiology",
+        "website_type": "medicine",
+        "paths": [
+            "/faculty/?tab=Postdoctoral+Associate",
+            "/faculty/?tab=Administrative+Staff"
+        ]
     },
     {
         "name": "Chemical & Environmental Engineering",
@@ -153,7 +157,8 @@
     },
     {
         "name": "Child Study Center",
-        "url": "https://medicine.yale.edu/childstudy"
+        "url": "https://medicine.yale.edu/childstudy",
+        "website_type": "medicine"
     },
     {
         "name": "Chronic Disease Epidemiology",
@@ -169,7 +174,8 @@
     },
     {
         "name": "Comparative Medicine",
-        "url": "https://medicine.yale.edu/compmed"
+        "url": "https://medicine.yale.edu/compmed",
+        "website_type": "medicine"
     },
     {
         "name": "Computational Biology & Bioinformatics",
@@ -181,7 +187,8 @@
     },
     {
         "name": "Dermatology",
-        "url": "https://medicine.yale.edu/dermatology"
+        "url": "https://medicine.yale.edu/dermatology",
+        "website_type": "medicine"
     },
     {
         "name": "Earth & Planetary Sciences",
@@ -233,7 +240,8 @@
     },
     {
         "name": "Experimental Pathology",
-        "url": "https://medicine.yale.edu/pathology/training/graduateprogram"
+        "url": "https://medicine.yale.edu/pathology/training/graduateprogram",
+        "website_type": "medicine"
     },
     {
         "name": "Film & Media Studies",
@@ -249,7 +257,8 @@
     },
     {
         "name": "Genetics",
-        "url": "https://medicine.yale.edu/genetics"
+        "url": "https://medicine.yale.edu/genetics",
+        "website_type": "medicine"
     },
     {
         "name": "German",
@@ -277,7 +286,8 @@
     },
     {
         "name": "History of Medicine",
-        "url": "https://medicine.yale.edu/histmed"
+        "url": "https://medicine.yale.edu/histmed",
+        "website_type": "medicine"
     },
     {
         "name": "History of Science & Medicine",
@@ -289,11 +299,13 @@
     },
     {
         "name": "Immunobiology",
-        "url": "https://medicine.yale.edu/immuno"
+        "url": "https://medicine.yale.edu/immuno",
+        "website_type": "medicine"
     },
     {
         "name": "Internal Medicine",
-        "url": "https://medicine.yale.edu/intmed"
+        "url": "https://medicine.yale.edu/intmed",
+        "website_type": "medicine"
     },
     {
         "name": "International & Development Economics",
@@ -301,7 +313,8 @@
     },
     {
         "name": "Investigative Medicine",
-        "url": "https://medicine.yale.edu/investigativemedicine"
+        "url": "https://medicine.yale.edu/investigativemedicine",
+        "website_type": "medicine"
     },
     {
         "name": "Italian Studies",
@@ -313,7 +326,8 @@
     },
     {
         "name": "Laboratory Medicine",
-        "url": "https://medicine.yale.edu/labmed"
+        "url": "https://medicine.yale.edu/labmed",
+        "website_type": "medicine"
     },
     {
         "name": "Latin American Studies",
@@ -373,19 +387,23 @@
     },
     {
         "name": "Neurology",
-        "url": "https://medicine.yale.edu/neurology"
+        "url": "https://medicine.yale.edu/neurology",
+        "website_type": "medicine"
     },
     {
         "name": "Neuroscience",
-        "url": "https://medicine.yale.edu/neuroscience"
+        "url": "https://medicine.yale.edu/neuroscience",
+        "website_type": "medicine"
     },
     {
         "name": "Neuroscience, Interdepartmental Program",
-        "url": "https://medicine.yale.edu/inp"
+        "url": "https://medicine.yale.edu/inp",
+        "website_type": "medicine"
     },
     {
         "name": "Neurosurgery",
-        "url": "https://medicine.yale.edu/neurosurgery"
+        "url": "https://medicine.yale.edu/neurosurgery",
+        "website_type": "medicine"
     },
     {
         "name": "Nursing",
@@ -393,27 +411,33 @@
     },
     {
         "name": "Obstetrics, Gynecology & Reproductive Sciences",
-        "url": "https://medicine.yale.edu/obgyn"
+        "url": "https://medicine.yale.edu/obgyn",
+        "website_type": "medicine"
     },
     {
         "name": "Ophthalmology & Visual Science",
-        "url": "https://medicine.yale.edu/eyes"
+        "url": "https://medicine.yale.edu/eyes",
+        "website_type": "medicine"
     },
     {
         "name": "Orthopaedics & Rehabilitation",
-        "url": "https://medicine.yale.edu/ortho"
+        "url": "https://medicine.yale.edu/ortho",
+        "website_type": "medicine"
     },
     {
         "name": "Pathology",
-        "url": "https://medicine.yale.edu/pathology"
+        "url": "https://medicine.yale.edu/pathology",
+        "website_type": "medicine"
     },
     {
         "name": "Pediatrics",
-        "url": "https://medicine.yale.edu/pediatrics"
+        "url": "https://medicine.yale.edu/pediatrics",
+        "website_type": "medicine"
     },
     {
         "name": "Pharmacology",
-        "url": "https://medicine.yale.edu/pharm"
+        "url": "https://medicine.yale.edu/pharm",
+        "website_type": "medicine"
     },
     {
         "name": "Philosophy",
@@ -429,7 +453,8 @@
     },
     {
         "name": "Psychiatry",
-        "url": "https://medicine.yale.edu/psychiatry"
+        "url": "https://medicine.yale.edu/psychiatry",
+        "website_type": "medicine"
     },
     {
         "name": "Psychology",
@@ -441,7 +466,8 @@
     },
     {
         "name": "Radiology & Biomedical Imaging",
-        "url": "https://medicine.yale.edu/diagnosticradiology"
+        "url": "https://medicine.yale.edu/diagnosticradiology",
+        "website_type": "medicine"
     },
     {
         "name": "Religious Studies",
@@ -473,7 +499,8 @@
     },
     {
         "name": "Surgery",
-        "url": "https://medicine.yale.edu/surgery"
+        "url": "https://medicine.yale.edu/surgery",
+        "website_type": "medicine"
     },
     {
         "name": "Theater & Performance Studies",
@@ -481,11 +508,13 @@
     },
     {
         "name": "Therapeutic Radiology/Radiation Oncology",
-        "url": "https://medicine.yale.edu/therapeuticradiology"
+        "url": "https://medicine.yale.edu/therapeuticradiology",
+        "website_type": "medicine"
     },
     {
         "name": "Urology",
-        "url": "https://medicine.yale.edu/urology"
+        "url": "https://medicine.yale.edu/urology",
+        "website_type": "medicine"
     },
     {
         "name": "Women\u2019s, Gender, & Sexuality Studies",
