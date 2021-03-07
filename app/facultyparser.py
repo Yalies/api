@@ -306,8 +306,7 @@ def parse_path_architecture(path, department):
         if len(links_page) == 0:
             break
         print(f'Found {len(links_page)} people on page {page}.')
-        profile_urls_page = [department['url'] + link['href'] for link in links_page]
-        profile_urls += profile_urls_page
+        profile_urls += [department['url'] + link['href'] for link in links_page]
         page += 1
 
     for profile_url in profile_urls:
@@ -329,12 +328,34 @@ def parse_path_architecture(path, department):
     return people
 
 
+def parse_path_seas(path, department):
+    people = []
+
+    page = 0
+    profile_urls = []
+    while True:
+        people_page_soup = get_soup(department['url'] + path, params={'page': page})
+        links_page = people_page_soup.select('.view-faculty-directory .view-content > div .views-field-title .viewmore a:not([title])')
+        print(f'Found {len(links_page)} people on page {page}.')
+        profile_urls += [department['url'] + link['href'] for link in links_page]
+        next_button = people_page_soup.select_one('li.pager-next a')
+        if next_button is None:
+            break
+        page += 1
+
+    print(profile_urls)
+
+    return people
+
+
 def parse_path(path, department):
     website_type = department.get('website_type')
     if website_type == 'medicine':
         return parse_path_medicine(path, department)
     if website_type == 'architecture':
         return parse_path_architecture(path, department)
+    if website_type == 'seas':
+        return parse_path_seas(path, department)
     return parse_path_default(path, department)
 
 def scrape():
