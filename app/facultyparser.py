@@ -145,6 +145,9 @@ def parse_path_default(path, department):
             }
             person_soup = get_soup(person['profile_url'])
             body = person_soup.select_one('#section-content')
+            if not body:
+                print('Could not find profile page body, skipping this person.')
+                continue
             name_suffix = body.find('h1', {'class': ['title', 'page-title']}).text
             if ' - In Memoriam' in name_suffix:
                 continue
