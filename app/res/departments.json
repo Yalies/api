@@ -177,11 +177,16 @@
     {
         "name": "Child Study Center",
         "url": "https://medicine.yale.edu/childstudy",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/faculty/?tab=Community+Faculty"
+        ]
     },
     {
         "name": "Chronic Disease Epidemiology",
         "url": "https://publichealth.yale.edu/cde"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Classics",
