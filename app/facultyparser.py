@@ -40,10 +40,13 @@ def extract_image(parent, image_replacements, ignored_images):
 
 
 def get_field(parent, field_name):
-    container = parent.find('div', {'class': 'field-name-field-' + field_name})
+    container = (
+        parent.select_one('.field-name-field-' + field_name) or
+        parent.select_one('.views-field-field-' + field_name)
+    )
     if not container:
         return None
-    return container.find('div', {'class': 'field-item'})
+    return container.select_one('.field-item') or container
 
 
 def extract_field(parent, field_name):
@@ -67,7 +70,7 @@ def split_name_suffix(name_suffix):
     chunks = [chunk.strip() for chunk in chunks]
     if len(chunks) == 1:
         chunks.append(None)
-    else if chunks[1].startswith('\u2018'):
+    elif chunks[1].startswith('\u2018'):
         # If the suffix appears to be a graduation year
         chunks[1] = None
     return chunks
@@ -107,24 +110,24 @@ def parse_path_default(path, department):
         cards = get_cards(people_soup, department)
 
     for card in cards:
-        username = card.find('a', {'class': 'username'})
-        if username is None:
+        username = (
+            card.find('a', {'class': 'username'}) or
+            card.select_one('.user-picture a') or
             # TODO: make sure there aren't any cards that have no link but do have emails
-            username = card.find('a')
+            card.find('a:not(.views-field-field-lab-enter-year a, .views-field-field-orcid a)')
+        )
         if username is None:
             # There's no profile link; just get what we can from the card
             person = {}
-            person['name'] = card.select_one('.views-field-name-1').text.strip()
+            person['name'] = card.select_one('.views-field-name-1, .views-field-name').text.strip().rstrip(' -')
             person['image'] = extract_image(card, department.get('image_replacements'), department.get('ignored_images'))
             title = card.select_one('.views-field-field-title')
-
-            # Sometimes there's an additional wrapping div, which needs to be
-            # removed to avoid the markup working its way in
-            title_field_content = title.select_one('.field-content')
-            if title_field_content is not None:
-                title = title_field_content
-
             if title is not None:
+                # Sometimes there's an additional wrapping div, which needs to be
+                # removed to avoid the markup working its way in
+                title_field_content = title.select_one('.field-content')
+                if title_field_content is not None:
+                    title = title_field_content
                 title = title.encode_contents().decode()
                 #division = None
                 #if '<br/>' in title:
