@@ -149,11 +149,30 @@
     },
     {
         "name": "Chemical & Environmental Engineering",
-        "url": "https://seas.yale.edu/departments/chemical-and-environmental-engineering"
+        "url": "https://seas.yale.edu/departments/chemical-and-environmental-engineering",
+        "website_type": "seas",
+        "paths": []
     },
     {
         "name": "Chemistry",
-        "url": "https://chem.yale.edu"
+        "url": "https://chem.yale.edu",
+        "paths": [
+            "/people/academics-and-research",
+            "/people/administrative-staff"
+        ],
+        "paginated": true,
+        "ignored_images": [
+            "2cfbdc0c88996f0e2a0a97080cfdb5c9",
+            "a0aed7a27804049f09356f2cb0e63f66",
+            "62a605e667acc321a85ef07bff6a99b0",
+            "ff9e12b73d5d6388b3f7190f139eafab",
+            "62de82b36ea25b96eeb51077ef2e3a39",
+            "9595f41648ae1e757867d7bd56b6277b",
+            "991870c92473333d974b321a455b3b4b",
+            "b515460fd4f5db31a4cd71fdc0a5132f",
+            "5a889080284da763ef6a6d21fb04fab1",
+            "317e160deddcbd92b292824c16d0c12f"
+        ]
     },
     {
         "name": "Child Study Center",
