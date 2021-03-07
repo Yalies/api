@@ -255,15 +255,24 @@
     },
     {
         "name": "Earth & Planetary Sciences",
-        "url": "https://earth.yale.edu"
+        "url": "https://people.earth.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "East Asian Languages & Literatures",
-        "url": "https://eall.yale.edu"
+        "url": "https://eall.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "East Asian Studies ",
-        "url": "https://ceas.yale.edu"
+        "url": "https://ceas.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Ecology & Evolutionary Biology",
