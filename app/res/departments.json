@@ -276,19 +276,32 @@
     },
     {
         "name": "Ecology & Evolutionary Biology",
-        "url": "https://eeb.yale.edu"
+        "url": "https://eeb.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Economics",
-        "url": "https://economics.yale.edu"
+        "url": "https://economics.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
+        ,"enabled": true
     },
     {
         "name": "Electrical Engineering",
-        "url": "https://seas.yale.edu/departments/electrical-engineering"
+        "url": "https://seas.yale.edu/departments/electrical-engineering",
+        "website_type": "seas",
+        "paths": []
     },
     {
         "name": "Emergency Medicine",
-        "url": "https://medicine.yale.edu/emergencymed"
+        "url": "https://medicine.yale.edu/emergencymed",
+        "paths": [
+            "/people/staff/",
+            "/people/fellows/"
+        ]
     },
     {
         "name": "Engineering & Applied Science",
