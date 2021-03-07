@@ -67,6 +67,9 @@ def split_name_suffix(name_suffix):
     chunks = [chunk.strip() for chunk in chunks]
     if len(chunks) == 1:
         chunks.append(None)
+    else if chunks[1].startswith('\u2018'):
+        # If the suffix appears to be a graduation year
+        chunks[1] = None
     return chunks
 
 
