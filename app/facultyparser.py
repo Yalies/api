@@ -135,6 +135,9 @@ def parse_path_default(path, department):
                 title = title.replace('<br/>', ', ')
                 person['title'] = title.strip()
                 #person['division'] = division.strip()
+            orcid = extract_field_url(card, 'orcid')
+            if orcid is not None:
+                person['orcid'] = orcid.replace('http://orcid.org/', '').replace('https://orcid.org/', '')
         else:
             person = {
                 'profile_url': department['url'] + username['href']
@@ -160,6 +163,7 @@ def parse_path_default(path, department):
                 # TODO: this could conflict with office_*
                 'room_number': extract_field(body, 'room-number'),
                 'fax': clean_phone(extract_field(body, 'fax-number')),
+                'orcid': extract_field(body, 'orcid'),
             })
             bio = extract_field(body, 'bio')
             if bio is not None:
