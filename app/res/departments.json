@@ -287,7 +287,6 @@
         "paths": [
             "/people/all"
         ]
-        ,"enabled": true
     },
     {
         "name": "Electrical Engineering",
@@ -298,6 +297,7 @@
     {
         "name": "Emergency Medicine",
         "url": "https://medicine.yale.edu/emergencymed",
+        "website_type": "medicine",
         "paths": [
             "/people/staff/",
             "/people/fellows/"
@@ -305,28 +305,41 @@
     },
     {
         "name": "Engineering & Applied Science",
-        "url": "https://seas.yale.edu"
+        "url": "https://seas.yale.edu",
+        "website_type": "seas",
+        "paths": [
+            "/faculty-research/faculty-directory"
+        ]
     },
     {
         "name": "English Language & Literature",
-        "url": "https://english.yale.edu"
+        "url": "https://english.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Environmental Health Sciences",
-        "url": "https://publichealth.yale.edu/ehs"
+        "url": "https://publichealth.yale.edu/ehs",
+        "paths": []
     },
     {
         "name": "Epidemiology of Microbial Diseases",
-        "url": "https://publichealth.yale.edu/emd"
+        "url": "https://publichealth.yale.edu/emd",
+        "paths": []
     },
     {
         "name": "European & Russian Studies",
-        "url": "https://europeanstudies.macmillan.yale.edu"
+        "url": "https://europeanstudies.macmillan.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Experimental Pathology",
         "url": "https://medicine.yale.edu/pathology/training/graduateprogram",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Film & Media Studies",
