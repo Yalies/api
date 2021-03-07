@@ -156,7 +156,6 @@ def parse_path_default(path, department):
                 continue
             person['name'], person['suffix'] = split_name_suffix(name_suffix)
             email_elem = get_field(body, 'email')
-            print(email_elem)
             if email_elem and len(email_elem.select('strong')) > 1:
                 # On Econ page, everything is in email row for some reason
                 children = [
@@ -168,11 +167,29 @@ def parse_path_default(path, department):
                 current_key = None
                 for child in children:
                     tag = child.name
-                    print('%s - %s' % (child, child.name))
-                    if tag == 'strong' and child.text:
+                    if tag in ('strong', 'b') and child.text:
                         link = child.find('a')
                         if link is None:
                             current_key = child.text.rstrip(':')
+                        else:
+                            pairs[child.text] = link['href']
+                    elif tag == 'a':
+                        pairs[current_key] = child['href'].replace('mailto:', '')
+                        current_key = None
+                    elif tag is None:
+                        # Plain text
+                        pairs[current_key] = child.encode('utf-8').decode().strip()
+                        current_key = None
+                person.update({
+                    'email': pairs.get('Email'),
+                    'website': pairs.get('Personal Website'),
+                    'cv': pairs.get('Curriculum Vitae'),
+                    'address': pairs.get('Office Address'),
+                })
+                title = body.select_one('.group-header h2')
+                if title is not None:
+                    person['title'] = title.text
+                print(person)
             else:
                 person.update({
                     'image': extract_image(body, department.get('image_replacements'), department.get('ignored_images')),
