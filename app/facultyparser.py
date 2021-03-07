@@ -330,6 +330,8 @@ def parse_path_architecture(path, department):
 
 def seas_extract_field(parent, field_name):
     field = parent.select_one('.info-div.person-' + field_name)
+    if not field:
+        return None
     label = field.find('strong')
     if label:
         label.extract()
@@ -365,16 +367,27 @@ def parse_path_seas(path, department):
         person_soup = get_soup(profile_url)
         body = person_soup.find('article')
         person['name'] = body.find('h1', {'class': 'title'}).text
+        # RIP Stan
+        if 'In Memoriam' in person['name']:
+            continue
         image = body.select_one('.person-image img')
         if image is not None:
             person['image'] = image['src']
         person.update({
             'title': seas_extract_field(body, 'dpttext'),
             'room_number': seas_extract_field(body, 'office'),
+            'address': seas_extract_field(body, 'officeadd'),
+            'postal_address': seas_extract_field(body, 'mailadd'),
+            'phone': clean_phone(seas_extract_field(body, 'phone')),
+            'fax': clean_phone(seas_extract_field(body, 'fax')),
+            #'education': seas_extract_field(body, 'degrees'),
         })
-        print(person)
-    print(profile_urls)
+        website = person_soup.select_one('.person-image .website a')
+        if website is not None:
+            person['website'] = website['href']
 
+        people.append(person)
+        print('Parsed ' + person['name'])
     return people
 
 
