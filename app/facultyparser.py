@@ -358,6 +358,21 @@ def parse_path_seas(path, department):
             break
         page += 1
 
+    for profile_url in profile_urls:
+        person = {
+            'profile_url': profile_url,
+        }
+        person_soup = get_soup(profile_url)
+        body = person_soup.find('article')
+        person['name'] = body.find('h1', {'class': 'title'}).text
+        image = body.select_one('.person-image img')
+        if image is not None:
+            person['image'] = image['src']
+        person.update({
+            'title': seas_extract_field(body, 'dpttext'),
+            'room_number': seas_extract_field(body, 'office'),
+        })
+        print(person)
     print(profile_urls)
 
     return people
