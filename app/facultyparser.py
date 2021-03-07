@@ -392,11 +392,26 @@ def parse_path_seas(path, department):
     return people
 
 
-def environment_extract_field(parent, field_name):
+def environment_get_field(parent, field_name):
     field = parent.find('.' + field_name)
+
+def environment_extract_field(parent, field_name):
+    field = environment_get_field(parent, field_name):
     if field is None:
         return None
+    for br in field.find_all('br'):
+        br.replace_with('\n')
     return field.text
+
+
+def environment_extract_field_url(parent, field_name):
+    field = environment_get_field(parent, field_name)
+    if field is None:
+        return None
+    link = field.find('a')
+    if link is None:
+        return None
+    return field['href']
 
 
 def parse_path_environment(path, department):
