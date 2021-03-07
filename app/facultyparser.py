@@ -440,6 +440,7 @@ def parse_path_environment(path, department):
         person.update({
             'email': environment_extract_field(sidebar, 'email'),
             'phone': clean_phone(environment_extract_field(sidebar, 'tel')),
+            'address': environment_extract_field(sidebar, 'profile_contact'),
         })
         website = sidebar.select_one('.cell_link a')
         if website is not None:
