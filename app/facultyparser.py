@@ -392,6 +392,51 @@ def parse_path_seas(path, department):
     return people
 
 
+def environment_extract_field(parent, field_name):
+    field = parent.find('.' + field_name)
+    if field is None:
+        return None
+    return field.text
+
+
+def parse_path_environment(path, department):
+    people = []
+
+    people_soup = get_soup(department['url'] + path, params={'page': page})
+    # Handle both table styles
+    links = people_soup.select('.row_wrap.listing > a, .primary_body tr a[title]')
+    print(f'Found {len(links)} people.')
+    profile_urls = [department['url'] + link['href'] for link in links]
+
+    for profile_url in profile_urls:
+        person = {
+            'profile_url': profile_url,
+        }
+        person_soup = get_soup(profile_url)
+        body = person_soup.select_one('.primary.column')
+        person['name'] = body.find('h1'}).text
+        title = body.select_one('h4 em')
+        if title is not None:
+            person['title'] = title.text
+        image = body.select_one('.person-image img')
+        if image is not None:
+            person['image'] = department['url'] + image['src']
+        sidebar = body.select_one('.cell.box_it')
+        person.update({
+            'email': environment_extract_field(sidebar, 'email'),
+            'phone': clean_phone(environment_extract_field(sidebar, 'tel')),
+        })
+        website = sidebar.select_one('.cell_link a')
+        if website is not None:
+            person['website'] = website['href']
+
+        people.append(person)
+        print('Parsed ' + person['name'])
+    return people
+
+
+
+
 def parse_path(path, department):
     website_type = department.get('website_type')
     if website_type == 'medicine':
@@ -400,6 +445,8 @@ def parse_path(path, department):
         return parse_path_architecture(path, department)
     if website_type == 'seas':
         return parse_path_seas(path, department)
+    if website_type == 'environment':
+        return parse_path_environment(path, department)
     return parse_path_default(path, department)
 
 def scrape():
