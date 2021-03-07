@@ -235,7 +235,15 @@
     },
     {
         "name": "Computer Science",
-        "url": "https://cpsc.yale.edu"
+        "url": "https://cpsc.yale.edu",
+        "paths": [
+            "/people/all"
+        ],
+        "ignored_images": [
+            "b110d88c3c0b80a2985a98ff0eac9ad3",
+            "c3348ac011d9ba4dd6d358b333cb9f5e",
+            "c3db4bd5280b2045379523e29c1dca3b"
+        ]
     },
     {
         "name": "Dermatology",
