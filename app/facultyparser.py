@@ -168,16 +168,12 @@ def get_url_root(url):
 
 def medicine_extract_links(parent, department_url):
     department_url_root = get_url_root(department_url)
-    generic_list = parent.find('section', {'class': 'generic-anchored-list'})
-    if generic_list is not None:
-        links = generic_list.find_all('a', {'class': 'hyperlink'})
-    else:
-        member_listing = parent.find('section', {'class': 'organization-member-listing'})
-        if member_listing is not None:
-            links = member_listing.select('div.profile-grid-item__content-container a.profile-grid-item__link-details')
-        else:
-            # A list like https://medicine.yale.edu/bbs/people/plantmolbio
-            links = parent.select('.generic-content__table-wrapper a')
+    links = (
+        parent.select('section.generic-anchored-list a.hyperlink') or
+        parent.select('div.profile-grid div.profile-grid-item__name-container a.profile-grid-item__link-details') or
+        # A list like https://medicine.yale.edu/bbs/people/plantmolbio
+        parent.select('.generic-content__table-wrapper a')
+    )
     return [department_url_root + link['href'] for link in links]
 
 
