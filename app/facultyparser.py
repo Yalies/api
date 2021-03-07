@@ -189,7 +189,12 @@ def parse_path_default(path, department):
                 title = body.select_one('.group-header h2')
                 if title is not None:
                     person['title'] = title.text
-                print(person)
+                image = body.select_one('.content img')
+                if image is not None:
+                    TRAILING_ZEROS_RE = re.compile(r'(_0)*\.')
+                    image = TRAILING_ZEROS_RE.sub('.', image['src'])
+                    if 'placeholder' not in image:
+                        person['image'] = image
             else:
                 person.update({
                     'image': extract_image(body, department.get('image_replacements'), department.get('ignored_images')),
