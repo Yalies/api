@@ -209,16 +209,29 @@
     },
     {
         "name": "Comparative Literature",
-        "url": "https://complit.yale.edu"
+        "url": "https://complit.yale.edu",
+        "paths": [
+            "/people/faculty",
+            "/people/lecturers",
+            "/people/emeritus",
+            "/people/graduate-students",
+            "/people/staff",
+            "/people/affiliates"
+        ],
+        "cards_selector": ".view-people table.views-view-grid td:not(:empty)"
     },
     {
         "name": "Comparative Medicine",
         "url": "https://medicine.yale.edu/compmed",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Computational Biology & Bioinformatics",
-        "url": "https://cbb.yale.edu"
+        "url": "https://cbb.yale.edu",
+        "paths": [
+            "/students"
+        ]
     },
     {
         "name": "Computer Science",
