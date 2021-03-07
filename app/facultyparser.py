@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from bs4.element import Tag, NavigableString
 import requests
 import json
 import re
@@ -158,9 +159,20 @@ def parse_path_default(path, department):
             print(email_elem)
             if email_elem and len(email_elem.select('strong')) > 1:
                 # On Econ page, everything is in email row for some reason
-                children = list(email_elem.children)
-
-                import sys;sys.exit(0)
+                children = [
+                    child for child in email_elem.children
+                    if child and (type(child) is Tag and child.text and child.text.strip())
+                        or (type(child) is NavigableString and child.encode('utf-8').strip())
+                ]
+                pairs = {}
+                current_key = None
+                for child in children:
+                    tag = child.name
+                    print('%s - %s' % (child, child.name))
+                    if tag == 'strong' and child.text:
+                        link = child.find('a')
+                        if link is None:
+                            current_key = child.text.rstrip(':')
             else:
                 person.update({
                     'image': extract_image(body, department.get('image_replacements'), department.get('ignored_images')),
