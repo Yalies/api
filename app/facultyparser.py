@@ -328,6 +328,21 @@ def parse_path_architecture(path, department):
     return people
 
 
+def seas_extract_field(parent, field_name):
+    field = parent.select_one('.info-div.person-' + field_name)
+    label = field.find('strong')
+    if label:
+        label.extract()
+    for br in field.find_all('br'):
+        br.replace_with('\n')
+    # TODO: clean up address cleaning
+    SPACE_RE = re.compile(r' {2,}')
+    text = field.text
+    text = SPACE_RE.sub(' ', text.strip())
+    text = '\n'.join([component.strip() for component in text.split('\n')])
+    return text
+
+
 def parse_path_seas(path, department):
     people = []
 
