@@ -408,16 +408,17 @@ def environment_extract_field_url(parent, field_name):
     field = environment_get_field(parent, field_name)
     if field is None:
         return None
-    link = field.find('a')
-    if link is None:
-        return None
+    if field.name != 'a':
+        field = field.find('a')
+        if field is None:
+            return None
     return field['href']
 
 
 def parse_path_environment(path, department):
     people = []
 
-    people_soup = get_soup(department['url'] + path, params={'page': page})
+    people_soup = get_soup(department['url'] + path)
     # Handle both table styles
     links = people_soup.select('.row_wrap.listing > a, .primary_body tr a[title]')
     print(f'Found {len(links)} people.')
@@ -428,11 +429,15 @@ def parse_path_environment(path, department):
             'profile_url': profile_url,
         }
         person_soup = get_soup(profile_url)
-        body = person_soup.select_one('.primary.column')
-        person['name'] = body.find('h1'}).text
+        body = person_soup.find('div', {'class': 'content_wrapper'})
+        name = body.find('h1').text.strip()
+        # TODO: don't declare this every loop
+        NICKNAME_RE = re.compile(r'  "[A-Za-z\. ]+"')
+        name = NICKNAME_RE.sub('', name)
+        person['name'] = name
         title = body.select_one('h4 em')
         if title is not None:
-            person['title'] = title.text
+            person['title'] = title.text.strip()
         image = body.select_one('.person-image img')
         if image is not None:
             person['image'] = department['url'] + image['src']
