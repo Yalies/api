@@ -441,10 +441,10 @@ def parse_path_environment(path, department):
         title = body.select_one('h4 em')
         if title is not None:
             person['title'] = title.text.strip()
-        image = body.select_one('.person-image img')
-        if image is not None:
-            person['image'] = department['url'] + image['src']
         sidebar = body.select_one('.cell.box_it')
+        image = sidebar.find('img')
+        if image is not None:
+            person['image'] = department['url'] + image['src'].split('?')[0]
         person.update({
             'email': environment_extract_field(sidebar, 'email'),
             'phone': clean_phone(environment_extract_field(sidebar, 'tel')),
