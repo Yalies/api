@@ -393,15 +393,15 @@ def parse_path_seas(path, department):
 
 
 def environment_get_field(parent, field_name):
-    field = parent.find('.' + field_name)
+    return parent.select_one('.' + field_name)
 
 def environment_extract_field(parent, field_name):
-    field = environment_get_field(parent, field_name):
+    field = environment_get_field(parent, field_name)
     if field is None:
         return None
     for br in field.find_all('br'):
         br.replace_with('\n')
-    return field.text
+    return field.text.strip().replace('\n\r\n', '\n')
 
 
 def environment_extract_field_url(parent, field_name):
