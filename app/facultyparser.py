@@ -404,7 +404,7 @@ def environment_extract_field(parent, field_name):
     return field.text.strip().replace('\n\r\n', '\n')
 
 
-def environment_extract_field_url(parent, field_name):
+def environment_extract_field_url(parent, field_name, root=None):
     field = environment_get_field(parent, field_name)
     if field is None:
         return None
@@ -412,7 +412,10 @@ def environment_extract_field_url(parent, field_name):
         field = field.find('a')
         if field is None:
             return None
-    return field['href']
+    url = field['href']
+    if url is not None and url.startswith('/') and root is not None:
+        url = root + url
+    return url
 
 
 def parse_path_environment(path, department):
@@ -446,7 +449,7 @@ def parse_path_environment(path, department):
             'email': environment_extract_field(sidebar, 'email'),
             'phone': clean_phone(environment_extract_field(sidebar, 'tel')),
             'address': environment_extract_field(sidebar, 'profile_contact'),
-            'cv': environment_extract_field_url(body, 'cv'),
+            'cv': environment_extract_field_url(body, 'cv', root=department['url']),
         })
         website = sidebar.select_one('.cell_link a')
         if website is not None:
