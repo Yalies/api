@@ -446,6 +446,7 @@ def parse_path_environment(path, department):
             'email': environment_extract_field(sidebar, 'email'),
             'phone': clean_phone(environment_extract_field(sidebar, 'tel')),
             'address': environment_extract_field(sidebar, 'profile_contact'),
+            'cv': environment_extract_field_url(body, 'cv'),
         })
         website = sidebar.select_one('.cell_link a')
         if website is not None:
@@ -454,8 +455,6 @@ def parse_path_environment(path, department):
         people.append(person)
         print('Parsed ' + person['name'])
     return people
-
-
 
 
 def parse_path(path, department):
