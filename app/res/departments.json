@@ -341,20 +341,33 @@
     },
     {
         "name": "Film & Media Studies",
-        "url": "https://filmstudies.yale.edu"
+        "url": "https://filmstudies.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Forestry & Environmental Studies",
-        "url": "https://environment.yale.edu"
+        "url": "https://environment.yale.edu",
+        "website_type": "environment",
+        "paths": [
+            "/directory/allfaculty/",
+            "/directory/staff/",
+            "/directory/doctoral/"
+        ]
     },
     {
         "name": "French",
-        "url": "https://french.yale.edu"
+        "url": "https://french.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Genetics",
         "url": "https://medicine.yale.edu/genetics",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "German",
