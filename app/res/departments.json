@@ -371,11 +371,20 @@
     },
     {
         "name": "German",
-        "url": "https://german.yale.edu"
+        "url": "https://german.yale.edu",
+        "paths": [
+            "/people/all"
+        ],
+        "ignored_images": [
+            "e2a5beccf7063c510dddae342af71c9d",
+            "ac54b2e945d67f107534f4018259758b"
+        ]
     },
     {
         "name": "Global Affairs",
-        "url": "https://jackson.yale.edu"
+        "url": "https://jackson.yale.edu",
+        "website_type": "jackson",
+        ,"enabled": true
     },
     {
         "name": "Health Care Management",

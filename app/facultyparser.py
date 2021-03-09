@@ -470,6 +470,8 @@ def parse_path(path, department):
         return parse_path_seas(path, department)
     if website_type == 'environment':
         return parse_path_environment(path, department)
+    if website_type == 'jackson':
+        return parse_path_jackson(path, department)
     return parse_path_default(path, department)
 
 def scrape():
