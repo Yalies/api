@@ -513,9 +513,21 @@
             "/people/all"
         ]
     },
+
     {
         "name": "Linguistics",
-        "url": "https://ling.yale.edu"
+        "url": "https://ling.yale.edu",
+        "paths": [
+            "/people",
+            "/people/postdocs-and-lecturers",
+            "/people/graduate-students",
+            "/people/undergraduate-students",
+            "/people/associated-faculty",
+            "/people/emeritus-faculty"
+        ],
+        "ignored_images": [
+            "0b1dab8e6e1e678fb6fb03908ce05d77"
+        ]
     },
     {
         "name": "Management",
