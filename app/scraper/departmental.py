@@ -11,11 +11,12 @@ class Departmental(Scraper):
 
     ADAPTERS = {
         None: adapters.Default(),
-        'medicine': adapters.Medicine(),
         'architecture': adapters.Architecture(),
-        'seas': adapters.Seas(),
         'environment': adapters.Environment(),
         'jackson': adapters.Jackson(),
+        'law': adapters.Law(),
+        'medicine': adapters.Medicine(),
+        'seas': adapters.Seas(),
     }
 
     def scrape_department(self, department):
