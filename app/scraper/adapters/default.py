@@ -185,9 +185,9 @@ class Default(Adapter):
                         'cv': self.extract_field_url(body, 'cv'),
                         'orcid': self.extract_field(body, 'orcid'),
                     })
-                    bio = self.extract_field(body, 'bio')
-                    if bio is not None:
-                        person['bio'] = bio.lstrip('_').lstrip()
+                    #bio = self.extract_field(body, 'bio')
+                    #if bio is not None:
+                    #    person['bio'] = bio.lstrip('_').lstrip()
 
             print('Parsed ' + person['name'])
             people.append(person)
