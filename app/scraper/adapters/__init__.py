@@ -1,4 +1,4 @@
-from .department_scraper import DepartmentScraper
+from .adapter import Adapter
 from .default import Default
 from .architecture import Architecture
 from .seas import Seas
