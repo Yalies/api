@@ -1,7 +1,8 @@
-from .department_scraper import DepartmentScraper
+from .adapter import Adapter
 
 
-class Seas(DepartmentScraper):
+class Seas(Adapter):
+
     def extract_field(self, parent, field_name):
         field = parent.select_one('.info-div.person-' + field_name)
         if not field:
@@ -18,8 +19,7 @@ class Seas(DepartmentScraper):
         text = '\n'.join([component.strip() for component in text.split('\n')])
         return text
 
-
-    def parse_path(self, path, department):
+    def scrape_path(self, department, path):
         people = []
 
         page = 0
@@ -38,7 +38,7 @@ class Seas(DepartmentScraper):
             person = {
                 'profile_url': profile_url,
             }
-            person_soup = get_soup(profile_url)
+            person_soup = self.get_soup(profile_url)
             body = person_soup.find('article')
             person['name'] = body.find('h1', {'class': 'title'}).text
             # RIP Stan
@@ -48,12 +48,12 @@ class Seas(DepartmentScraper):
             if image is not None:
                 person['image'] = image['src']
             person.update({
-                'title': extract_field(body, 'dpttext'),
-                'room_number': extract_field(body, 'office'),
-                'address': extract_field(body, 'officeadd'),
-                'postal_address': extract_field(body, 'mailadd'),
-                'phone': clean_phone(extract_field(body, 'phone')),
-                'fax': clean_phone(extract_field(body, 'fax')),
+                'title': self.extract_field(body, 'dpttext'),
+                'room_number': self.extract_field(body, 'office'),
+                'address': self.extract_field(body, 'officeadd'),
+                'postal_address': self.extract_field(body, 'mailadd'),
+                'phone': self.clean_phone(self.extract_field(body, 'phone')),
+                'fax': self.clean_phone(self.extract_field(body, 'fax')),
                 #'education': extract_field(body, 'degrees'),
             })
             website = person_soup.select_one('.person-image .website a')

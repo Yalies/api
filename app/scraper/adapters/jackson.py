@@ -1,4 +1,6 @@
-from .department_scraper import DepartmentScraper
+from .adapter import Adapter
 
 
-class Jackson(DepartmentScraper):
+class Jackson(Adapter):
+
+    pass

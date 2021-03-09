@@ -379,12 +379,21 @@
             "e2a5beccf7063c510dddae342af71c9d",
             "ac54b2e945d67f107534f4018259758b"
         ]
+        ,"enabled": true
     },
     {
         "name": "Global Affairs",
         "url": "https://jackson.yale.edu",
         "website_type": "jackson",
-        ,"enabled": true
+        "paths": [
+            "/meet-us/faculty/professors-of-global-affairs/",
+            "/meet-us/faculty/affiliated-faculty/",
+            "/meet-us/faculty/post-doctoral-associates/",
+            "/meet-us/senior-fellows/overview/",
+            "/meet-us/grad-students/overview/",
+            "/the-future-of-jackson/governing-senior-faculty/",
+            "/meet-us/staff/"
+        ]
     },
     {
         "name": "Health Care Management",

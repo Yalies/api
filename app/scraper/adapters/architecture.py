@@ -1,9 +1,9 @@
+from .adapter import Adapter
 
-from .department_scraper import DepartmentScraper
 
+class Architecture(Adapter):
 
-class Architecture(DepartmentScraper):
-    def parse_path(path, department):
+    def scrape_path(department, path):
         people = []
 
         page = 1

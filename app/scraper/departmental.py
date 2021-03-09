@@ -18,15 +18,14 @@ class Departmental(Scraper):
         'jackson': adapters.Jackson(),
     }
 
-    def scrape_department(department):
+    def scrape_department(self, department):
         print('Scraping department: ' + department['name'])
         website_type = department.get('website_type')
         adapter = self.ADAPTERS.get(website_type)
         return adapter.scrape(department)
 
     def scrape(self):
-
-        with open('res/departments.json', 'r') as f:
+        with open('../res/departments.json', 'r') as f:
             departments = json.load(f)
         # If any departments have been marked enabled, filter to just them
         enabled_departments = [department for department in departments if department.get('enabled')]
@@ -35,11 +34,11 @@ class Departmental(Scraper):
 
         people = []
         for department in departments:
-            people += scrape_department(department)
+            people += self.scrape_department(department)
         return people
 
 if __name__ == '__main__':
     departmental = Departmental()
-    departmental.scrape()
+    people = departmental.scrape()
     with open('/tmp/people.json', 'w') as f:
         json.dump(people, f)

@@ -1,10 +1,10 @@
-from .department_scraper import DepartmentScraper
+from .adapter import Adapter
 
 
-class Medicine(DepartmentScraper):
+class Medicine(Adapter):
 
     def extract_links(self, parent, department_url):
-        department_url_root = get_url_root(department_url)
+        department_url_root = self.get_url_root(department_url)
         links = (
             parent.select('section.generic-anchored-list a.hyperlink') or
             parent.select('div.profile-grid div.profile-grid-item__name-container a.profile-grid-item__link-details') or
@@ -14,11 +14,11 @@ class Medicine(DepartmentScraper):
         return [department_url_root + link['href'] for link in links]
 
 
-    def parse_path(self, path, department):
+    def scrape_path(self, department, path):
         people = []
-        people_soup = get_soup(department['url'] + path)
+        people_soup = self.get_soup(department['url'] + path)
 
-        profile_urls = extract_links(people_soup, department['url'])
+        profile_urls = self.extract_links(people_soup, department['url'])
         print(f'Found {len(profile_urls)} profile URLs.')
         for profile_url in profile_urls:
             person = {
@@ -30,7 +30,7 @@ class Medicine(DepartmentScraper):
             if name_suffix is None:
                 print('Empty page, skipping.')
                 continue
-            person['name'], person['suffix'] = split_name_suffix(name_suffix.text)
+            person['name'], person['suffix'] = self.split_name_suffix(name_suffix.text)
             title = person_soup.find('div', {'class': 'profile-details-header__title'})
             if title is not None:
                 person['title'] = title.text
@@ -49,8 +49,8 @@ class Medicine(DepartmentScraper):
                     content = row.find('div', {'class': 'contact-info__content'}).text.strip()
                     contacts[label] = content
                 person.update({
-                    'phone': clean_phone(contacts.get('Office')),
-                    'fax': clean_phone(contacts.get('Fax')),
+                    'phone': self.clean_phone(contacts.get('Office')),
+                    'fax': self.clean_phone(contacts.get('Fax')),
                     # TODO: these are really specific and seem to usually be the same as Office and Fax
                     #'appointment_phone': clean_phone(contacts.get('Appt')),
                     #'clinic_fax': clean_phone(contacts.get('Clinic Fax')),

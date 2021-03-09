@@ -1,9 +1,11 @@
-from .department_scraper import DepartmentScraper
+from .adapter import Adapter
+import requests
 import hashlib
+from bs4.element import Tag, NavigableString
+import re
 
 
-
-class Default(DepartmentScraper):
+class Default(Adapter):
     def get_cards(self, parent, department):
         cards = []
         selector = department.get('cards_selector')
@@ -102,14 +104,14 @@ class Default(DepartmentScraper):
                     title = title.replace('<br/>', ', ')
                     person['title'] = title.strip()
                     #person['division'] = division.strip()
-                orcid = extract_field_url(card, 'orcid')
+                orcid = self.extract_field_url(card, 'orcid')
                 if orcid is not None:
                     person['orcid'] = orcid.replace('http://orcid.org/', '').replace('https://orcid.org/', '')
             else:
                 person = {
                     'profile_url': department['url'] + username['href']
                 }
-                person_soup = get_soup(person['profile_url'])
+                person_soup = self.get_soup(person['profile_url'])
                 body = person_soup.select_one('#section-content')
                 if not body:
                     print('Could not find profile page body, skipping this person.')
@@ -119,8 +121,8 @@ class Default(DepartmentScraper):
                     continue
                 if name_suffix == 'Access denied':
                     continue
-                person['name'], person['suffix'] = split_name_suffix(name_suffix)
-                email_elem = get_field(body, 'email')
+                person['name'], person['suffix'] = self.split_name_suffix(name_suffix)
+                email_elem = self.get_field(body, 'email')
                 if email_elem and len(email_elem.select('strong')) > 1:
                     # On Econ page, everything is in email row for some reason
                     children = [
@@ -162,24 +164,24 @@ class Default(DepartmentScraper):
                             person['image'] = image
                 else:
                     person.update({
-                        'image': extract_image(body, department.get('image_replacements'), department.get('ignored_images')),
-                        'title': extract_field(body, 'title'),
-                        'status': extract_field(body, 'status'),
-                        'email': extract_field(body, 'email'),
-                        'education': extract_field(body, 'education'),
-                        'website': extract_field_url(body, 'website') or extract_field_url(body, 'faculty-links'),
-                        'address': extract_field(body, 'address'),
-                        'physical_address': extract_field(body, 'office-address'),
-                        'phone': clean_phone(extract_field(body, 'phone')),
+                        'image': self.extract_image(body, department.get('image_replacements'), department.get('ignored_images')),
+                        'title': self.extract_field(body, 'title'),
+                        'status': self.extract_field(body, 'status'),
+                        'email': self.extract_field(body, 'email'),
+                        'education': self.extract_field(body, 'education'),
+                        'website': self.extract_field_url(body, 'website') or self.extract_field_url(body, 'faculty-links'),
+                        'address': self.extract_field(body, 'address'),
+                        'physical_address': self.extract_field(body, 'office-address'),
+                        'phone': self.clean_phone(self.extract_field(body, 'phone')),
                         # Only on astronomy website, apparently
-                        'research': extract_field(body, 'research'),
+                        'research': self.extract_field(body, 'research'),
                         # TODO: this could conflict with office_*
-                        'room_number': extract_field(body, 'room-number'),
-                        'fax': clean_phone(extract_field(body, 'fax-number')),
-                        'cv': extract_field_url(body, 'cv'),
-                        'orcid': extract_field(body, 'orcid'),
+                        'room_number': self.extract_field(body, 'room-number'),
+                        'fax': self.clean_phone(self.extract_field(body, 'fax-number')),
+                        'cv': self.extract_field_url(body, 'cv'),
+                        'orcid': self.extract_field(body, 'orcid'),
                     })
-                    bio = extract_field(body, 'bio')
+                    bio = self.extract_field(body, 'bio')
                     if bio is not None:
                         person['bio'] = bio.lstrip('_').lstrip()
 

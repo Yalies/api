@@ -1,11 +1,12 @@
-from .department_scraper import DepartmentScraper
+from .adapter import Adapter
 
 
-class Environment(DepartmentScraper):
-    def get_field(self.parent, field_name):
+class Environment(Adapter):
+
+    def get_field(self, parent, field_name):
         return parent.select_one('.' + field_name)
 
-    def extract_field(self.parent, field_name):
+    def extract_field(self, parent, field_name):
         field = self.get_field(parent, field_name)
         if field is None:
             return None
@@ -28,7 +29,7 @@ class Environment(DepartmentScraper):
         return url
 
 
-    def parse_path_environment(path, department):
+    def scrape_path(department, path):
         people = []
 
         people_soup = get_soup(department['url'] + path)
