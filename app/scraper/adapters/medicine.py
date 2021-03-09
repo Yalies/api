@@ -24,7 +24,7 @@ class Medicine(Adapter):
             person = {
                 'profile_url': profile_url,
             }
-            person_soup = get_soup(profile_url)
+            person_soup = self.get_soup(profile_url)
 
             name_suffix = person_soup.find('h1', {'class': 'profile-details-header__name'})
             if name_suffix is None:
