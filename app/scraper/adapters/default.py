@@ -121,6 +121,8 @@ class Default(Adapter):
                     print('Could not find profile page body, skipping this person.')
                     continue
                 name_suffix = body.find('h1', {'class': ['title', 'page-title']}).text
+                # Clean up duplicate spaces, such as on https://clais.macmillan.yale.edu/people/all
+                name_suffix = name_suffix.replace('  ', ' ')
                 if ' - In Memoriam' in name_suffix:
                     continue
                 if name_suffix == 'Access denied':
@@ -169,7 +171,8 @@ class Default(Adapter):
                 else:
                     person.update({
                         'image': self.extract_image(body, department.get('image_replacements'), department.get('ignored_images')),
-                        'title': self.extract_field(body, 'title'),
+                        # department-position used here https://clais.macmillan.yale.edu/people/all
+                        'title': self.extract_field(body, 'title') or self.extract_field(body, 'department-position'),
                         'status': self.extract_field(body, 'status'),
                         'email': self.extract_field(body, 'email'),
                         'education': self.extract_field(body, 'education'),
