@@ -33,7 +33,7 @@ class Adapter:
             phone = str(phone)
         COUNTRY_CODE_RE = re.compile('^\+1? ')
         phone = COUNTRY_CODE_RE.sub('', phone)
-        DISALLOWED_CHARACTERS_RE = re.compile(r'[A-Za-z\(\) \-\.]')
+        DISALLOWED_CHARACTERS_RE = re.compile('[A-Za-z\(\) \-\.\u00a0]')
         phone = DISALLOWED_CHARACTERS_RE.sub('', phone)
         return phone
 
