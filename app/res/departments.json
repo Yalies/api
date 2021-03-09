@@ -428,16 +428,26 @@
     },
     {
         "name": "History of Art",
-        "url": "https://arthistory.yale.edu"
+        "url": "https://arthistory.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "History of Medicine",
         "url": "https://medicine.yale.edu/histmed",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/people/?tab=Faculty+%26+Affiliates",
+            "/people/?tab=Graduate+Students"
+        ]
     },
     {
         "name": "History of Science & Medicine",
-        "url": "https://hshm.yale.edu"
+        "url": "https://hshm.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Humanities",
