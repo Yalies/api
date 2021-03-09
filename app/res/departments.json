@@ -529,59 +529,75 @@
             "0b1dab8e6e1e678fb6fb03908ce05d77"
         ]
     },
-    {
-        "name": "Management",
-        "url": "https://som.yale.edu"
-    },
+
     {
         "name": "Mathematics",
-        "url": "https://math.yale.edu"
+        "url": "https://math.yale.edu",
+        "paths": [
+            "/people"
+        ]
     },
     {
         "name": "Mechanical Engineering & Materials Science",
-        "url": "https://seas.yale.edu/departments/mechanical-engineering-and-materials-science"
+        "url": "https://seas.yale.edu/departments/mechanical-engineering-and-materials-science",
+        "website_type": "seas",
+        "paths": []
     },
     {
         "name": "Medieval Studies",
-        "url": "https://medieval.yale.edu"
+        "url": "https://medieval.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Microbial Pathogenesis",
-        "url": "https://medicine.yale.edu/micropath"
+        "url": "https://medicine.yale.edu/micropath",
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Microbiology",
-        "url": "https://medicine.yale.edu/bbs/microbiology"
+        "url": "https://medicine.yale.edu/bbs/microbiology",
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Modern Middle East Studies",
-        "url": "https://cmes.macmillan.yale.edu"
-    },
-    {
-        "name": "Molecular Biophysics & Biochemistry",
-        "url": "https://mbb.yale.edu"
-    },
-    {
-        "name": "Molecular, Cellular & Developmental Biology",
-        "url": "https://mcdb.yale.edu"
+        "url": "https://cmes.macmillan.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Music",
-        "url": "https://yalemusic.yale.edu"
+        "url": "https://yalemusic.yale.edu",
+        "paths": [
+            "/people/all"
+        ],
+        "paginated": true
     },
     {
         "name": "Near Eastern Languages & Civilizations",
-        "url": "https://nelc.yale.edu"
+        "url": "https://nelc.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Neurology",
         "url": "https://medicine.yale.edu/neurology",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/neurology/people/",
+            "/people/vol_fac/"
+        ]
     },
     {
         "name": "Neuroscience",
         "url": "https://medicine.yale.edu/neuroscience",
         "website_type": "medicine"
+
     },
     {
         "name": "Neuroscience, Interdepartmental Program",
