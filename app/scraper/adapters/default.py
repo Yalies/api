@@ -15,6 +15,10 @@ class Default(Adapter):
                 return cards
         return parent.select('.view-people tbody tr, .view-people .views-row')
 
+    def get_body(self, parent):
+        # Latter is used only on Art History website
+        return parent.select_one('#section-content') or parent.select_one('main div.main.columns')
+
     def extract_image(self, parent, image_replacements, ignored_images):
         img = parent.select_one('.user-picture img, .views-field-field-user-profile-picture img, .field-name-field-user-profile-picture img')
         if img is None:
@@ -112,7 +116,7 @@ class Default(Adapter):
                     'profile_url': department['url'] + username['href']
                 }
                 person_soup = self.get_soup(person['profile_url'])
-                body = person_soup.select_one('#section-content')
+                body = self.get_body(person_soup)
                 if not body:
                     print('Could not find profile page body, skipping this person.')
                     continue
