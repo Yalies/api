@@ -29,9 +29,7 @@
         "name": "American Studies",
         "url": "https://americanstudies.yale.edu",
         "paths": [
-            "/people/faculty",
-            "/people/emeritus",
-            "/people/graduate-students"
+            "/people/all"
         ],
         "paginated": true
     },
