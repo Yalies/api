@@ -31,9 +31,9 @@ class Adapter:
             return phone
         if type(phone) == int:
             phone = str(phone)
-        COUNTRY_CODE_RE = re.compile('^\+1? ')
+        COUNTRY_CODE_RE = re.compile('^\+1?[ \u00a0]')
         phone = COUNTRY_CODE_RE.sub('', phone)
-        DISALLOWED_CHARACTERS_RE = re.compile('[A-Za-z\(\) \-\.\u00a0]')
+        DISALLOWED_CHARACTERS_RE = re.compile(r'[A-Za-z\(\) \-\.]')
         phone = DISALLOWED_CHARACTERS_RE.sub('', phone)
         return phone
 
