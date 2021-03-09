@@ -1,4 +1,5 @@
 from .adapter import Adapter
+import re
 
 
 class Environment(Adapter):
@@ -14,9 +15,8 @@ class Environment(Adapter):
             br.replace_with('\n')
         return field.text.strip().replace('\n\r\n', '\n')
 
-
     def extract_field_url(self, parent, field_name, root=None):
-        field = self, get_field(parent, field_name)
+        field = self.get_field(parent, field_name)
         if field is None:
             return None
         if field.name != 'a':
@@ -28,11 +28,10 @@ class Environment(Adapter):
             url = root + url
         return url
 
-
-    def scrape_path(department, path):
+    def scrape_path(self, department, path):
         people = []
 
-        people_soup = get_soup(department['url'] + path)
+        people_soup = self.get_soup(department['url'] + path)
         # Handle both table styles
         links = people_soup.select('.row_wrap.listing > a, .primary_body tr a[title]')
         print(f'Found {len(links)} people.')
@@ -42,7 +41,7 @@ class Environment(Adapter):
             person = {
                 'profile_url': profile_url,
             }
-            person_soup = get_soup(profile_url)
+            person_soup = self.get_soup(profile_url)
             body = person_soup.find('div', {'class': 'content_wrapper'})
             name = body.find('h1').text.strip()
             # TODO: don't declare this every loop
@@ -58,7 +57,7 @@ class Environment(Adapter):
                 person['image'] = department['url'] + image['src'].split('?')[0]
             person.update({
                 'email': self.extract_field(sidebar, 'email'),
-                'phone': clean_phone(self.extract_field(sidebar, 'tel')),
+                'phone': self.clean_phone(self.extract_field(sidebar, 'tel')),
                 'address': self.extract_field(sidebar, 'profile_contact'),
                 'cv': self.extract_field_url(body, 'cv', root=department['url']),
             })
