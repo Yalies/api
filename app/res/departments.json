@@ -514,10 +514,6 @@
         ]
     },
     {
-        "name": "Law",
-        "url": "https://law.yale.edu"
-    },
-    {
         "name": "Linguistics",
         "url": "https://ling.yale.edu"
     },
@@ -714,5 +710,16 @@
     {
         "name": "Divinity School",
         "url": "https://divinity.yale.edu"
+    },
+
+    {
+        "name": "Law",
+        "url": "https://law.yale.edu",
+        "website_type": "law",
+        "paths": [
+            "/faculty",
+            "/faculty?combine=&field_type_value=Lecturers-Affiliates"
+        ]
+        ,"enabled": false
     }
 ]
