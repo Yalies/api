@@ -396,15 +396,35 @@
     },
     {
         "name": "Health Care Management",
-        "url": "https://publichealth.yale.edu/hpm"
+        "url": "https://publichealth.yale.edu/hpm",
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Health Policy & Management",
-        "url": "https://publichealth.yale.edu/hpm"
+        "url": "https://publichealth.yale.edu/hpm",
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "History",
-        "url": "https://history.yale.edu"
+        "url": "https://history.yale.edu",
+        "paths": [
+            "/people/all"
+        ],
+        "paginated": true,
+        "ignored_images": [
+            "2db00a1500c3366c6b456936dcdbb39f",
+            "cae4560735d25e43d63cba850681f565",
+            "aec833f4288fa5bc12ee675f48f2f3dd",
+            "db1f86100ab27b9f3f5886a3005c7720",
+            "addcce3064ab929bbaba7896ecd8e9b8",
+            "1dab762a696cf6e4448fa437d16bdc7a",
+            "3eb92505520ce638427d9108f5dbe8a6",
+            "e7e56ff43824f53d8f6703c27f26054c",
+            "7b6d11b01be4ef3f9517968bd18577d5",
+            "4cdfe4bd99eb840e56577bd54ebd879c"
+        ]
     },
     {
         "name": "History of Art",
