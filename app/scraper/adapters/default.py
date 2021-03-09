@@ -20,7 +20,7 @@ class Default(Adapter):
         return parent.select_one('#section-content') or parent.select_one('main div.main.columns')
 
     def extract_image(self, parent, image_replacements, ignored_images):
-        img = parent.select_one('.user-picture img, .views-field-field-user-profile-picture img, .field-name-field-user-profile-picture img')
+        img = parent.select_one('.user-picture img, .views-field-field-user-profile-picture img, .field-name-field-user-profile-picture img, .field-name-field-user-image img')
         if img is None:
             return None
         src = img['src']
@@ -187,6 +187,7 @@ class Default(Adapter):
                         'fax': self.clean_phone(self.extract_field(body, 'fax-number')),
                         'cv': self.extract_field_url(body, 'cv'),
                         'orcid': self.extract_field(body, 'orcid'),
+                        # On Linguistics website
                         'academia_url': self.extract_field_url(body, 'academia-edu'),
                     })
                     #bio = self.extract_field(body, 'bio')
