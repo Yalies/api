@@ -1,4 +1,5 @@
 from .adapter import Adapter
+import re
 
 
 class Seas(Adapter):
@@ -25,7 +26,7 @@ class Seas(Adapter):
         page = 0
         profile_urls = []
         while True:
-            people_page_soup = get_soup(department['url'] + path, params={'page': page})
+            people_page_soup = self.get_soup(department['url'] + path, params={'page': page})
             links_page = people_page_soup.select('.view-faculty-directory .view-content > div .views-field-title .viewmore a:not([title])')
             print(f'Found {len(links_page)} people on page {page}.')
             profile_urls += [department['url'] + link['href'] for link in links_page]
