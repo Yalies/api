@@ -176,7 +176,7 @@ class Default(Adapter):
                         # Only on astronomy website, apparently
                         'research': self.extract_field(body, 'research'),
                         # TODO: this could conflict with office_*
-                        'room_number': self.extract_field(body, 'room-number'),
+                        'room_number': self.extract_field(body, 'room-number') or self.extract_field(body, 'office'),
                         'fax': self.clean_phone(self.extract_field(body, 'fax-number')),
                         'cv': self.extract_field_url(body, 'cv'),
                         'orcid': self.extract_field(body, 'orcid'),
