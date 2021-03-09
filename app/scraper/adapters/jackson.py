@@ -36,7 +36,7 @@ class Jackson(Adapter):
                 person['email'] = email['href'].replace('mailto:', '')
             phone = card.select_one('.page-item-bio-link a[href^="tel:"]')
             if phone:
-                person['phone'] = self.clean_phone(phone['href'].replace('tel:', ''))
+                person['phone'] = self.clean_phone(phone['href'].replace('tel:', '').replace('+1', ''))
 
             profile_link = card.select_one('.page-item-person-bio-link a.more')
             if profile_link:
