@@ -187,6 +187,7 @@ class Default(Adapter):
                         'fax': self.clean_phone(self.extract_field(body, 'fax-number')),
                         'cv': self.extract_field_url(body, 'cv'),
                         'orcid': self.extract_field(body, 'orcid'),
+                        'academia_url': self.extract_field_url(body, 'academia-edu'),
                     })
                     #bio = self.extract_field(body, 'bio')
                     #if bio is not None:
