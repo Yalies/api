@@ -451,43 +451,67 @@
     },
     {
         "name": "Humanities",
-        "url": "https://humanities.yale.edu"
+        "url": "https://humanities.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Immunobiology",
         "url": "https://medicine.yale.edu/immuno",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Internal Medicine",
         "url": "https://medicine.yale.edu/intmed",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/people/"
+        ]
     },
     {
         "name": "International & Development Economics",
-        "url": "https://ide.yale.edu"
+        "url": "https://ide.yale.edu",
+        "paths": []
     },
     {
         "name": "Investigative Medicine",
         "url": "https://medicine.yale.edu/investigativemedicine",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Italian Studies",
-        "url": "https://italian.yale.edu"
+        "url": "https://italian.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Judaic Studies",
-        "url": "https://judaicstudies.yale.edu"
+        "url": "https://judaicstudies.yale.edu",
+        "paths": [
+            "/people/all"
+        ],
+        "ignored_images": [
+            "35843e96ffca44b072c4be591164479e",
+            "8c9564a0ac1e2b605fbb43307cee7f3b",
+            "cecd12245e7da307be3c07399a6fb42b"
+        ]
     },
     {
         "name": "Laboratory Medicine",
         "url": "https://medicine.yale.edu/labmed",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Latin American Studies",
-        "url": "https://clais.macmillan.yale.edu"
+        "url": "https://clais.macmillan.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Law",

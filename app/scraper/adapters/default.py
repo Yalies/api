@@ -187,7 +187,7 @@ class Default(Adapter):
                     })
                     #bio = self.extract_field(body, 'bio')
                     #if bio is not None:
-                    #    person['bio'] = bio.lstrip('_').lstrip()
+                    #    person['bio'] = bio.lstrip('_').strip()
 
             print('Parsed ' + person['name'])
             people.append(person)
