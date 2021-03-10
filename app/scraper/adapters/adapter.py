@@ -5,7 +5,15 @@ import re
 
 
 class Adapter:
+
+    #########################
+    # Regex for cleaning data
+    #########################
+
     NICKNAME_RE = re.compile(r' "[A-Za-z\. ]+"')
+
+    PHONE_COUNTRY_CODE_RE = re.compile('^\+1?[ \u00a0]')
+    PHONE_DISALLOWED_CHARACTERS_RE = re.compile(r'[A-Za-z\(\) \-\.]')
 
     ##############
     # Util methods
@@ -32,10 +40,8 @@ class Adapter:
             return phone
         if type(phone) == int:
             phone = str(phone)
-        COUNTRY_CODE_RE = re.compile('^\+1?[ \u00a0]')
-        phone = COUNTRY_CODE_RE.sub('', phone)
-        DISALLOWED_CHARACTERS_RE = re.compile(r'[A-Za-z\(\) \-\.]')
-        phone = DISALLOWED_CHARACTERS_RE.sub('', phone)
+        phone = self.PHONE_COUNTRY_CODE_RE.sub('', phone)
+        phone = self.PHONE_DISALLOWED_CHARACTERS_RE.sub('', phone)
         return phone
 
     def get_url_root(self, url):
