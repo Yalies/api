@@ -16,6 +16,7 @@ class Departmental(Scraper):
         'jackson': adapters.Jackson(),
         'law': adapters.Law(),
         'medicine': adapters.Medicine(),
+        'nursing': adapters.Nursing(),
         'seas': adapters.Seas(),
     }
 
