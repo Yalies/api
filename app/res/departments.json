@@ -757,23 +757,47 @@
     },
     {
         "name": "Renaissance Studies",
-        "url": "https://renaissance.yale.edu"
+        "url": "https://renaissance.yale.edu",
+        "paths": []
     },
     {
         "name": "Slavic Languages & Literatures",
-        "url": "https://slavic.yale.edu"
+        "url": "https://slavic.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Sociology",
-        "url": "https://sociology.yale.edu"
+        "url": "https://sociology.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "South Asian Studies",
-        "url": "https://southasia.macmillan.yale.edu"
+        "url": "https://southasia.macmillan.yale.edu",
+        "paths": [
+            "/people",
+            "/people/council-associates",
+            "/people/visiting-faculty-and-scholars",
+            "/people/emeritus",
+            "/people/past-visiting-scholars",
+            "/people/yale-world-fellows",
+            "/people/fox-international-fellows",
+            "/people/graduate-students",
+            "/people/staff"
+        ]
     },
     {
         "name": "Spanish & Portuguese",
-        "url": "https://span-port.yale.edu"
+        "url": "https://span-port.yale.edu",
+        "paths": [
+            "/people"
+        ],
+        "field_substitutions": {
+            "fax": "education"
+        }
     },
     {
         "name": "Statistics & Data Science",
