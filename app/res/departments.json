@@ -513,7 +513,11 @@
             "/people/all"
         ]
     },
-
+    {
+        "name": "Molecular Biophysics & Biochemistry",
+        "url": "https://mbb.yale.edu",
+        "paths": []
+    },
     {
         "name": "Linguistics",
         "url": "https://ling.yale.edu",
@@ -529,7 +533,11 @@
             "0b1dab8e6e1e678fb6fb03908ce05d77"
         ]
     },
-
+    {
+        "name": "Molecular, Cellular & Developmental Biology",
+        "url": "https://mcdb.yale.edu",
+        "paths": []
+    },
     {
         "name": "Mathematics",
         "url": "https://math.yale.edu",
@@ -801,30 +809,45 @@
     },
     {
         "name": "Statistics & Data Science",
-        "url": "https://statistics.yale.edu"
+        "url": "https://statistics.yale.edu",
+        "paths": [
+            "/people"
+        ]
     },
     {
         "name": "Surgery",
         "url": "https://medicine.yale.edu/surgery",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Theater & Performance Studies",
-        "url": "https://theaterstudies.yale.edu"
+        "url": "https://theaterstudies.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Therapeutic Radiology/Radiation Oncology",
         "url": "https://medicine.yale.edu/therapeuticradiology",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/people/other/resident",
+            "/people/other/fellow"
+        ]
     },
     {
         "name": "Urology",
         "url": "https://medicine.yale.edu/urology",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Women\u2019s, Gender, & Sexuality Studies",
-        "url": "https://wgss.yale.edu"
+        "url": "https://wgss.yale.edu",
+        "paths": [
+            "/people"
+        ]
     },
 
     {
@@ -858,13 +881,5 @@
     {
         "name": "Management",
         "url": "https://som.yale.edu"
-    },
-    {
-        "name": "Molecular Biophysics & Biochemistry",
-        "url": "https://mbb.yale.edu"
-    },
-    {
-        "name": "Molecular, Cellular & Developmental Biology",
-        "url": "https://mcdb.yale.edu"
     }
 ]
