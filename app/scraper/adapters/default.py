@@ -6,6 +6,11 @@ import re
 
 
 class Default(Adapter):
+    def get_url(self, path, department_url):
+        if path.startswith('/'):
+            return department_url + path
+        return path
+
     def get_cards(self, parent, department):
         cards = []
         selector = department.get('cards_selector')
@@ -113,7 +118,7 @@ class Default(Adapter):
                     person['orcid'] = orcid.replace('http://orcid.org/', '').replace('https://orcid.org/', '')
             else:
                 person = {
-                    'profile_url': department['url'] + username['href']
+                    'profile_url': self.get_url(username['href'], department['url'])
                 }
                 person_soup = self.get_soup(person['profile_url'])
                 body = self.get_body(person_soup)
