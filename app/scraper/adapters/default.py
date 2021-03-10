@@ -43,6 +43,17 @@ class Default(Adapter):
         return src
 
     def get_field(self, parent, field_name):
+        """
+        Find field with a given name, or one of a list of names.
+        :param parent: BeautifulSoup element to search within.
+        :param field_name: name to find, or a list of possible names to search for.
+        """
+        if isinstance(field_name, list):
+            for option in field_name:
+                field = self.get_field(parent, option)
+                if field:
+                    return field
+            return None
         container = (
             parent.select_one('.field-name-field-' + field_name) or
             parent.select_one('.views-field-field-' + field_name)
@@ -177,20 +188,20 @@ class Default(Adapter):
                     person.update({
                         'image': self.extract_image(body, department.get('image_replacements'), department.get('ignored_images')),
                         # department-position used here https://clais.macmillan.yale.edu/people/all
-                        'title': self.extract_field(body, 'title') or self.extract_field(body, 'department-position'),
+                        'title': self.extract_field(body, ['title', 'department-position']),
                         'status': self.extract_field(body, 'status'),
                         'email': self.extract_field(body, 'email'),
                         'education': self.extract_field(body, 'education'),
-                        'website': self.extract_field_url(body, 'website') or self.extract_field_url(body, 'faculty-links'),
+                        'website': self.extract_field_url(body, ['website', 'faculty-links']),
                         'address': self.extract_field(body, 'address'),
                         'physical_address': self.extract_field(body, 'office-address'),
                         'phone': self.clean_phone(self.extract_field(body, 'phone')),
                         # Only on astronomy website, apparently
-                        'research': self.extract_field(body, 'research') or self.extract_field(body, 'field-of-study') or self.extract_field(body, 'field-of-interest'),
+                        'research': self.extract_field(body, ['research', 'field-of-study', 'field-of-interest']),
                         # TODO: this could conflict with office_*
-                        'room_number': self.extract_field(body, 'room-number') or self.extract_field(body, 'office'),
+                        'room_number': self.extract_field(body, ['room-number', 'office']),
                         'fax': self.clean_phone(self.extract_field(body, 'fax-number')),
-                        'cv': self.extract_field_url(body, 'cv') or self.extract_field_url(body, 'curriculum-vitae'),
+                        'cv': self.extract_field_url(body, ['cv', 'curriculum-vitae']),
                         'publications': self.extract_field_url(body, 'publications'),
                         'orcid': self.extract_field(body, 'orcid'),
                         # On Linguistics website
