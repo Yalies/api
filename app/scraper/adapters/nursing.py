@@ -38,7 +38,10 @@ class Nursing(Adapter):
                     print(contacts)
                     for contact in contacts.split('\n'):
                         label, value = contact.split(':')
-                        person[label] = value.strip()
+                        value = value.strip()
+                        if label in ('phone', 'fax'):
+                            value = self.clean_phone(value)
+                        person[label] = value
 
                 if len(contact_elems):
                     strong = contact_elems[-1].find('strong')
