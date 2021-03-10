@@ -596,22 +596,35 @@
     {
         "name": "Neuroscience",
         "url": "https://medicine.yale.edu/neuroscience",
-        "website_type": "medicine"
-
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Neuroscience, Interdepartmental Program",
         "url": "https://medicine.yale.edu/inp",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/students/",
+            "/people/"
+        ]
     },
     {
         "name": "Neurosurgery",
         "url": "https://medicine.yale.edu/neurosurgery",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/faculty/",
+            "/surgeons/",
+            "/faculty/operations/"
+        ]
     },
     {
         "name": "Nursing",
-        "url": "https://nursing.yale.edu"
+        "url": "https://nursing.yale.edu",
+        "website_type": "nursing",
+        "paths": [
+            "/faculty-research/faculty-directory"
+        ]
     },
     {
         "name": "Obstetrics, Gynecology & Reproductive Sciences",
