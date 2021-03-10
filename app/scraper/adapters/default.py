@@ -6,7 +6,7 @@ import re
 
 
 class Default(Adapter):
-    FUSED_ADDRESS_ROOM_NUMBER_RE = re.compile(r' +Room [0-9]{2,4}$')
+    FUSED_ADDRESS_ROOM_NUMBER_RE = re.compile(r' +Rooms? ([a-zA-Z0-9]{2,}( & )?)+$')
 
     def get_url(self, path, department_url):
         if path.startswith('/'):
@@ -221,11 +221,11 @@ class Default(Adapter):
 
                     # Sometimes, particularly in the S&DS department, the room number will simply be stuck onto the end of the address
                     if person['address'] and not person['room_number']:
-                        search = FUSED_ADDRESS_ROOM_NUMBER_RE.search(person['address'])
+                        search = self.FUSED_ADDRESS_ROOM_NUMBER_RE.search(person['address'])
                         if search:
-                            person['room_number'] = search.group().strip().replace('Room ', '')
+                            person['room_number'] = search.group().strip()
                             start, end = search.span()
-                            person['address'] = addr[:start].strip(',').strip()
+                            person['address'] = person['address'][:start].strip(',').strip()
 
                     # There is no elegance here. Only sleep deprivation and regret.
                     if department['name'] == 'Spanish & Portuguese':
