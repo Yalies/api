@@ -21,6 +21,9 @@ class Management(Adapter):
             title = person_soup.find('h2', {'class': 'sub-title'})
             if title:
                 person['title'] = title.text.strip()
+            image = person_soup.select_one('div.faculty--image img')
+            if image:
+                person['image'] = image['src'].split('?')[0]
 
             card = person_soup.find('div', {'class': 'content-layout__aside'})
             info_list = card.find('ul', {'class': 'faculty--info-list'})
