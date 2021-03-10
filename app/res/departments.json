@@ -629,36 +629,54 @@
     {
         "name": "Obstetrics, Gynecology & Reproductive Sciences",
         "url": "https://medicine.yale.edu/obgyn",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/people/mfm/",
+            "/people/obmidwifery/",
+            "/people/urogyn/",
+            "/people/secondary/"
+        ]
     },
     {
         "name": "Ophthalmology & Visual Science",
         "url": "https://medicine.yale.edu/eyes",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/people/?tab=Residents"
+        ]
     },
     {
         "name": "Orthopaedics & Rehabilitation",
         "url": "https://medicine.yale.edu/ortho",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Pathology",
         "url": "https://medicine.yale.edu/pathology",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Pediatrics",
         "url": "https://medicine.yale.edu/pediatrics",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Pharmacology",
         "url": "https://medicine.yale.edu/pharm",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": []
     },
     {
         "name": "Philosophy",
-        "url": "https://philosophy.yale.edu"
+        "url": "https://philosophy.yale.edu",
+        "paths": [
+            "/people/faculty",
+            "/people/graduate-students",
+            "/people/staff"
+        ]
     },
     {
         "name": "Physics",
