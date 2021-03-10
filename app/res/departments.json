@@ -721,26 +721,39 @@
         "url": "https://medicine.yale.edu/psychiatry",
         "website_type": "medicine",
         "paths": [
-            "/psychiatry/psychology/faculty/voluntary/",
-            "/psychiatry/people/voluntary/"
+            "/psychiatry/psychology/faculty/voluntary",
+            "/psychiatry/people/voluntary"
         ]
     },
     {
         "name": "Psychology",
-        "url": "https://psychology.yale.edu"
+        "url": "https://psychology.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Public Health",
-        "url": "https://publichealth.yale.edu"
+        "url": "https://publichealth.yale.edu",
+        "website_type": "medicine",
+        "paths": [
+            "/people"
+        ]
     },
     {
         "name": "Radiology & Biomedical Imaging",
         "url": "https://medicine.yale.edu/diagnosticradiology",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/people"
+        ]
     },
     {
         "name": "Religious Studies",
-        "url": "https://religiousstudies.yale.edu"
+        "url": "https://religiousstudies.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
     {
         "name": "Renaissance Studies",
@@ -797,7 +810,7 @@
         "paths": [
             "/about/findpeople/leadership",
             "/about/findpeople/facultylist",
-            "/about/findpeople/stafflist/"
+            "/about/findpeople/stafflist"
         ]
     },
     {
