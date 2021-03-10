@@ -111,7 +111,7 @@ class Default(Adapter):
                 # There's no profile link; just get what we can from the card
                 person = {}
                 person['name'] = card.select_one('.views-field-name-1, .views-field-name').text.strip().rstrip(' -')
-                person['image'] = extract_image(card, department.get('image_replacements'), department.get('ignored_images'))
+                person['image'] = self.extract_image(card, department.get('image_replacements'), department.get('ignored_images'))
                 title = card.select_one('.views-field-field-title')
                 if title is not None:
                     # Sometimes there's an additional wrapping div, which needs to be

@@ -15,6 +15,7 @@ class Departmental(Scraper):
         'environment': adapters.Environment(),
         'jackson': adapters.Jackson(),
         'law': adapters.Law(),
+        'management': adapters.Management(),
         'medicine': adapters.Medicine(),
         'nursing': adapters.Nursing(),
         'seas': adapters.Seas(),

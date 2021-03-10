@@ -880,6 +880,10 @@
     },
     {
         "name": "Management",
-        "url": "https://som.yale.edu"
+        "url": "https://som.yale.edu",
+        "website_type": "management",
+        "paths": [
+
+        ]
     }
 ]
