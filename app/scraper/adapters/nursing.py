@@ -23,7 +23,7 @@ class Nursing(Adapter):
             banner = person_soup.find('div', {'class': 'row-1-banner'})
             image = banner.select_one('div.field-name-field-photo img')
             if image and 'facultyblank.jpg' not in image['src']:
-                person['image'] = image['src']
+                person['image'] = image['src'].split('?')[0]
 
             contact_container = banner.select_one('.field-name-field-person-contact-information .field-item')
             if contact_container:
