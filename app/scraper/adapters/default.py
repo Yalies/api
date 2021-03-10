@@ -181,7 +181,7 @@ class Default(Adapter):
                         'physical_address': self.extract_field(body, 'office-address'),
                         'phone': self.clean_phone(self.extract_field(body, 'phone')),
                         # Only on astronomy website, apparently
-                        'research': self.extract_field(body, 'research'),
+                        'research': self.extract_field(body, 'research') or self.extract_field(body, 'field-of-study'),
                         # TODO: this could conflict with office_*
                         'room_number': self.extract_field(body, 'room-number') or self.extract_field(body, 'office'),
                         'fax': self.clean_phone(self.extract_field(body, 'fax-number')),
@@ -190,6 +190,14 @@ class Default(Adapter):
                         # On Linguistics website
                         'academia_url': self.extract_field_url(body, 'academia-edu'),
                     })
+                    if not person['email']:
+                        # Useful on Political Science department:
+                        # https://politicalscience.yale.edu/people/bruce-ackerman
+                        # TODO: parse that
+                        # https://github.com/Yalies/api/issues/70
+                        email = body.select_one('a[href^="mailto:"]')
+                        if email:
+                            person['email'] = email.text
                     #bio = self.extract_field(body, 'bio')
                     #if bio is not None:
                     #    person['bio'] = bio.lstrip('_').strip()
