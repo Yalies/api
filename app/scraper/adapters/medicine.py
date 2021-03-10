@@ -32,16 +32,16 @@ class Medicine(Adapter):
                 continue
             person['name'], person['suffix'] = self.split_name_suffix(name_suffix.text)
             title = person_soup.find('div', {'class': 'profile-details-header__title'})
-            if title is not None:
+            if title:
                 person['title'] = title.text
             image = person_soup.find('img', {'class': 'profile-details-thumbnail__image'})
-            if image is not None:
+            if image:
                 image_uuid = image['src'].split('/')[-1]
                 # TODO: consider using smaller images
                 person['image'] = 'https://files-profile.medicine.yale.edu/images/' + image_uuid
 
             contact_list = person_soup.find('ul', {'class': 'profile-general-contact-list'})
-            if contact_list is not None:
+            if contact_list:
                 rows = contact_list.find_all('div', {'class': 'contact-info'})
                 contacts = {}
                 for row in rows:
@@ -58,15 +58,19 @@ class Medicine(Adapter):
                 })
 
             mailing_address = person_soup.find('div', {'class': 'profile-mailing-address'})
-            if mailing_address is not None:
+            if mailing_address:
                 person['mailing_address'] = '\n'.join([p.text for p in mailing_address.find_all('p')])
 
             website = person_soup.select_one('.profile-details-sidebar__lab-website-container a.button')
-            if website is not None:
+            if website:
                 person['website'] = website['href']
 
+            cv = person_soup.select_one('.profile-details-sidebar__cv-container a.button')
+            if cv:
+                person['cv'] = cv['href']
+
             bio = person_soup.find('div', {'class': 'profile-details-biography-tab__biography'})
-            if bio is not None:
+            if bio:
                 person['bio'] = bio.text.strip()
 
             print('Parsed ' + person['name'])
