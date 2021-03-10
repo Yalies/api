@@ -6,6 +6,8 @@ import re
 
 
 class Default(Adapter):
+    FUSED_ADDRESS_ROOM_NUMBER_RE = re.compile(r' +Room [0-9]{2,4}$')
+
     def get_url(self, path, department_url):
         if path.startswith('/'):
             return department_url + path
@@ -18,7 +20,7 @@ class Default(Adapter):
             cards = parent.select(selector)
             if cards is not None:
                 return cards
-        return parent.select('.view-people tbody tr, .view-people .views-row')
+        return parent.select('.view-people tbody tr, .view-people .views-row, .view-people-type tr')
 
     def get_body(self, parent):
         # Latter is used only on Art History website
@@ -207,6 +209,7 @@ class Default(Adapter):
                         # On Linguistics website
                         'academia_url': self.extract_field_url(body, 'academia-edu'),
                     })
+
                     if not person['email']:
                         # Useful on Political Science department:
                         # https://politicalscience.yale.edu/people/bruce-ackerman
@@ -215,12 +218,22 @@ class Default(Adapter):
                         email = body.select_one('a[href^="mailto:"]')
                         if email:
                             person['email'] = email.text
+
+                    # Sometimes, particularly in the S&DS department, the room number will simply be stuck onto the end of the address
+                    if person['address'] and not person['room_number']:
+                        search = FUSED_ADDRESS_ROOM_NUMBER_RE.search(person['address'])
+                        if search:
+                            person['room_number'] = search.group().strip().replace('Room ', '')
+                            start, end = search.span()
+                            person['address'] = addr[:start].strip(',').strip()
+
                     # There is no elegance here. Only sleep deprivation and regret.
                     if department['name'] == 'Spanish & Portuguese':
                         # The Spanish and Portuguese website puts educational history in the fax number slot
                         # No I don't know why. Gotta do what we gotta do.
                         person.pop('fax')
                         person['education'] = self.extract_field(body, 'fax-number')
+
                     #bio = self.extract_field(body, 'bio')
                     #if bio is not None:
                     #    person['bio'] = bio.lstrip('_').strip()
