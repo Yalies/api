@@ -45,8 +45,7 @@ class Environment(Adapter):
             body = person_soup.find('div', {'class': 'content_wrapper'})
             name = body.find('h1').text.strip()
             # TODO: don't declare this every loop
-            NICKNAME_RE = re.compile(r'  "[A-Za-z\. ]+"')
-            name = NICKNAME_RE.sub('', name)
+            name = self.NICKNAME_RE.sub('', name.replace('  ', ' '))
             person['name'] = name
             title = body.select_one('h4 em')
             if title is not None:

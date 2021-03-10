@@ -5,6 +5,7 @@ import re
 
 
 class Adapter:
+    NICKNAME_RE = re.compile(r' "[A-Za-z\. ]+"')
 
     ##############
     # Util methods
