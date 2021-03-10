@@ -215,6 +215,12 @@ class Default(Adapter):
                         email = body.select_one('a[href^="mailto:"]')
                         if email:
                             person['email'] = email.text
+                    # There is no elegance here. Only sleep deprivation and regret.
+                    if department['name'] == 'Spanish & Portuguese':
+                        # The Spanish and Portuguese website puts educational history in the fax number slot
+                        # No I don't know why. Gotta do what we gotta do.
+                        person.pop('fax')
+                        person['education'] = self.extract_field(body, 'fax-number')
                     #bio = self.extract_field(body, 'bio')
                     #if bio is not None:
                     #    person['bio'] = bio.lstrip('_').strip()
