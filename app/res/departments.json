@@ -680,11 +680,41 @@
     },
     {
         "name": "Physics",
-        "url": "https://physics.yale.edu"
+        "url": "https://physics.yale.edu",
+        "paths": [
+            "/people",
+            "/people/research-staff",
+            "/people/postdoctoral-researchers",
+            "/people/graduate-students",
+            "/people/administrative-staff"
+        ]
     },
     {
         "name": "Political Science",
-        "url": "https://politicalscience.yale.edu"
+        "url": "https://politicalscience.yale.edu",
+        "paths": [
+            "/people/faculty",
+            "/people/senior-lecturer",
+            "/people/lecturers",
+            "/people/postdoctoral-associates",
+            "/people/postdoctoral-fellows",
+            "/people/postgraduate-associates",
+            "/people/emeriti",
+            "/people/staff",
+            "/people/graduate-students-began-phd-program-fall-2020",
+            "/people/graduate-students-began-phd-program-fall-2019",
+            "/people/graduate-students-began-phd-program-fall-2018",
+            "/people/graduate-students-began-phd-program-fall-2017",
+            "/people/graduate-students-began-phd-program-fall-2016",
+            "/people/graduate-students-began-phd-program-fall-2015",
+            "/people/graduate-students-began-phD-program-fall-2014-or-earlier"
+        ],
+        "paginated": true,
+        "ignored_images": [
+            "c6ab3e385ae7208b7eeddc2aae4c75de",
+            "81b61f6400d6387a32963aa95ac70904",
+            "6cd8cc8fe20fca391854d6fc905ea297"
+        ]
     },
     {
         "name": "Psychiatry",
