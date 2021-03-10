@@ -7,6 +7,10 @@ class Nursing(Adapter):
         links = parent.select('.view-faculty-directory li.views-row a')
         return [department_url + link['href'] for link in links]
 
+    def clean_string(self, string):
+        if string is None:
+            return None
+        return string.strip().replace('\u200b', '')
 
     def scrape_path(self, department, path):
         people = []
@@ -34,22 +38,22 @@ class Nursing(Adapter):
                 while len(contact_elems):
                     if ':' not in contact_elems[-1].text:
                         break
-                    contacts = contact_elems.pop().text.strip()
-                    print(contacts)
+                    contacts = self.clean_string(contact_elems.pop().text)
                     for contact in contacts.split('\n'):
                         label, value = contact.split(':')
-                        value = value.strip()
+                        label = self.clean_string(label)
+                        value = self.clean_string(value)
                         if label in ('phone', 'fax'):
                             value = self.clean_phone(value)
                         person[label] = value
 
                 if len(contact_elems):
                     strong = contact_elems[-1].find('strong')
-                    if not strong or not strong.text.strip():
-                        person['room_number'] = contact_elems.pop().text.strip()
+                    if not strong or not self.clean_string(strong.text):
+                        person['room_number'] = self.clean_string(contact_elems.pop().text)
 
                 if len(contact_elems):
-                    person['title'] = '; '.join([elem.text.strip() for elem in contact_elems])
+                    person['title'] = '; '.join([self.clean_string(elem.text) for elem in contact_elems])
 
             people.append(person)
             print('Parsed ' + person['name'])
