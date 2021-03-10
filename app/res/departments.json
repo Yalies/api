@@ -719,7 +719,11 @@
     {
         "name": "Psychiatry",
         "url": "https://medicine.yale.edu/psychiatry",
-        "website_type": "medicine"
+        "website_type": "medicine",
+        "paths": [
+            "/psychiatry/psychology/faculty/voluntary/",
+            "/psychiatry/people/voluntary/"
+        ]
     },
     {
         "name": "Psychology",
