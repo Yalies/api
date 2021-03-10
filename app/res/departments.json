@@ -737,7 +737,10 @@
     },
     {
         "name": "Divinity School",
-        "url": "https://divinity.yale.edu"
+        "url": "https://divinity.yale.edu",
+        "paths": [
+            "/people/all"
+        ]
     },
 
     {
