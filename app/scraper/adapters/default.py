@@ -181,7 +181,7 @@ class Default(Adapter):
                         'physical_address': self.extract_field(body, 'office-address'),
                         'phone': self.clean_phone(self.extract_field(body, 'phone')),
                         # Only on astronomy website, apparently
-                        'research': self.extract_field(body, 'research') or self.extract_field(body, 'field-of-study'),
+                        'research': self.extract_field(body, 'research') or self.extract_field(body, 'field-of-study') or self.extract_field(body, 'field-of-interest'),
                         # TODO: this could conflict with office_*
                         'room_number': self.extract_field(body, 'room-number') or self.extract_field(body, 'office'),
                         'fax': self.clean_phone(self.extract_field(body, 'fax-number')),
