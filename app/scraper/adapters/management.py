@@ -28,7 +28,6 @@ class Management(Adapter):
                     person['image'] = self.clean_image(image['src'])
 
                 card = person_soup.select_one('section.content-layout--grid div.content-layout__aside')
-                print(card)
                 info_list = card.find('ul', {'class': 'faculty--info-list'})
                 if info_list:
                     email = info_list.find('li', {'class': 'email'})
