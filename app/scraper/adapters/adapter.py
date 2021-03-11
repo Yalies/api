@@ -34,6 +34,11 @@ class Adapter:
             chunks[1] = None
         return chunks
 
+    def clean_image(self, image):
+        if image is None:
+            return None
+        return image.split('?')[0]
+
     # TODO: deduplicate
     def clean_phone(self, phone):
         if not phone:
