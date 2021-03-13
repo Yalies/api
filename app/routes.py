@@ -175,8 +175,13 @@ def auth():
         abort(401)
     # Validation sets the user for this session, so we can re-query
     g.user = User.query.get(cas.username)
-    token, expires_in = g.user.generate_token()
-    return jsonify({'token': token, 'expires_in': expires_in})
+    description = 'Mobile login'
+    key = Key.query.filter_by(id=g.user.id, description=description, internal=True)
+    if key is None:
+        key = g.user.create_key(description, internal=True)
+        db.session.add(key)
+        db.session.commit()
+    return jsonify({'token': key.token, 'expires_in': expires_in})
 
 
 def untuple(tuples):

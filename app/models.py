@@ -31,14 +31,19 @@ class User(db.Model):
             algorithm='HS256'
         )
 
-    def create_key(self, description):
+    def create_key(self, description, internal=False):
         """
         Generate new API key object.
         :param description: description to add to the key.
         :return: newly created key object associated with this user.
         """
         token = self.generate_token()
-        key = Key(token=token, description=description, created_at=int(datetime.datetime.utcnow().timestamp()))
+        key = Key(
+            token=token,
+            description=description,
+            internal=internal,
+            created_at=int(datetime.datetime.utcnow().timestamp())
+        )
         key.approved = True
         self.keys.append(key)
         return key
@@ -171,6 +176,7 @@ class Key(db.Model):
     token = db.Column(db.String, unique=True, nullable=False)
     uses = db.Column(db.Integer, default=0)
     description = db.Column(db.String, nullable=False)
+    internal = db.Column(db.Boolean, default=False)
     approved = db.Column(db.Boolean, nullable=False)
     deleted = db.Column(db.Boolean, default=False)
 
