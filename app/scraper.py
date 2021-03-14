@@ -307,6 +307,24 @@ def name_matches(person, name):
     return False
 
 
+def add_departmental_to_person(person, entry):
+    new_fields = (
+        'cv', 'address', 'email', 'website'
+        'title', 'suffix', 'education',
+    )
+    for field in new_fields:
+        if entry.get(field) and (not person.get(field) or len(person[field]) < len(entry[field])):
+            person[field] = entry[field]
+    # Fields that we should use if they're found, but not override existing,
+    # as departmental data may be lower quality
+    fallback_fields = (
+        'phone',
+    )
+    for field in fallback_fields:
+        if entry.get(field) and not person.get(field):
+            person[field] = entry[field]
+
+
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     # Uncomment for quick testing
