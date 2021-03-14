@@ -307,10 +307,37 @@ def name_matches(person, name):
     return False
 
 
+def classify_image(image_url):
+    if image_url is None:
+        return 0
+    substrings = (
+        '/styles/thumbnail',
+        '/styles/people_thumbnail',
+        '/styles/medium',
+        '/styles/people_page',
+        'som.yale.edu',
+        'medicine.yale.edu',
+    )
+    for i, substring in enumerate(substrings):
+        if substring in image_url:
+            return i + 2
+    return 1
+
+
 def add_departmental_to_person(person, entry):
+    if entry.get('image'):
+        if person.get('image'):
+            # If we have an image already, we should only replace it if the new one is higher quality.
+            current_class = classify_image(person['image'])
+            new_class = classify_image(person['image'])
+            if new_class > current_class:
+                person['image'] = entry['image']
+        else:
+            person['image'] = entry['image']
+
     new_fields = (
-        'cv', 'address', 'email', 'website'
-        'title', 'suffix', 'education',
+        'cv', 'address', 'email', 'website',
+        'title', 'suffix', 'education', 'fax',
     )
     for field in new_fields:
         if entry.get(field) and (not person.get(field) or len(person[field]) < len(entry[field])):
