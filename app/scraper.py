@@ -1,6 +1,7 @@
 from app import app, db, celery
 from app.models import Person
 from .s3 import ImageUploader
+from scraper import Departmental
 
 from PIL import Image
 from io import BytesIO
@@ -296,6 +297,16 @@ def read_directory(directory, prefix: str = ''):
     return res
 
 
+def name_matches(person, name):
+    names = name.split()
+    for divider in range(1, len(names)):
+        first_name = ' '.join(names[:divider])
+        last_name = ' '.join(names[divider:])
+        if person['first_name'] == first_name and person['last_name'] == last_name:
+            return True
+    return False
+
+
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     # Uncomment for quick testing
@@ -443,6 +454,24 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             checked_netids.add(entry.netid)
             person = add_directory_to_person({}, entry)
             people.append(person)
+            emails.append(person['email'])
+
+    # Add data from departmental scraper
+    departmental = Departmental()
+    department_people = departmental.scrape()
+    for record in department_people:
+        person_i = None
+        if record.get('email'):
+            person_i = emails.index(record['email'])
+        if not person_i:
+            for i, person in enumerate(people):
+                if name_matches(person, record['name']):
+                    person_i = i
+                    break
+
+        # Add in data if we found a match
+        if person_i:
+            person = add_departmental_to_person(person, record)
 
     # Store people into database
     Person.query.delete()

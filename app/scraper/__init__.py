@@ -1,1 +1,1 @@
-from .util import *
+from .departmental import Departmental
