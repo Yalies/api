@@ -1,6 +1,6 @@
 import json
 import hashlib
-import adapters
+from app.scraper import adapters
 
 
 class Scraper:
