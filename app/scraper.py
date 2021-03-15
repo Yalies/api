@@ -354,18 +354,6 @@ def add_departmental_to_person(person, entry):
 
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
-    # Uncomment for quick testing
-    """
-    directory = yaledirectory.API(people_search_session_cookie, csrf_token)
-    people = []
-    directory_entries = read_directory(directory, 'aa')
-    for entry in directory_entries:
-        print('Parsing directory entry with NetID ' + entry.netid)
-        person = add_directory_to_person({}, entry)
-        people.append(person)
-    """
-
-
     html = get_html(face_book_cookie)
     tree = get_tree(html)
     containers = get_containers(tree)
@@ -440,20 +428,6 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         person['leave'] = False
         person['eli_whitney'] = False
 
-        directory_entry = get_directory_entry(directory, person)
-        if directory_entry is not None:
-            person['netid'] = directory_entry.netid
-            person['upi'] = directory_entry.upi
-            if not person.get('email'):
-                person['email'] = directory_entry.email
-            if not person.get('year') and directory_entry.student_expected_graduation_year:
-                person['year'] = int(directory_entry.student_expected_graduation_year)
-                # This may not always be the case. But it's probably a safe bet.
-                person['eli_whitney'] = True
-            person = add_directory_to_person(person, directory_entry)
-        else:
-            print('Could not find directory entry.')
-
         image_id = clean_image_id(container.find('img')['src'])
         if image_id:
             image_filename = image_uploader.get_image_filename(image_id, person)
@@ -489,6 +463,21 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     people = compare_years('pre2020', people, emails)
     people = compare_years('fall2020', people, emails)
 
+    for i, person in enumerate(people):
+        directory_entry = get_directory_entry(directory, person)
+        if directory_entry is not None:
+            person['netid'] = directory_entry.netid
+            person['upi'] = directory_entry.upi
+            if not person.get('email'):
+                person['email'] = directory_entry.email
+            if not person.get('year') and directory_entry.student_expected_graduation_year:
+                person['year'] = int(directory_entry.student_expected_graduation_year)
+                # This may not always be the case. But it's probably a safe bet.
+                person['eli_whitney'] = True
+            people[i] = add_directory_to_person(person, directory_entry)
+        else:
+            print('Could not find directory entry.')
+
     # Fetch non-undergrad users by iterating netids
     # Get set of netids for students we've already processed
     checked_netids = {person_dict.get('netid') for person_dict in people if 'netid' in person_dict}
@@ -516,7 +505,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
 
         # Add in data if we found a match
         if person_i:
-            person = add_departmental_to_person(person, record)
+            people[person_i] = add_departmental_to_person(people[person_i], record)
 
     # Store people into database
     Person.query.delete()
