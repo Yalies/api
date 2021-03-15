@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
+
 html = requests.get('https://www.yale.edu/academics/departments-programs').text
 soup = BeautifulSoup(html, 'html.parser')
 links = soup.find_all('a', {'class': 'department_item_link'})
@@ -12,4 +13,3 @@ departments = [
     } for link in links
 ]
 print(json.dumps(departments))
-

@@ -9,12 +9,13 @@ S3_ACCESS_KEY = os.environ.get('S3_ACCESS_KEY')
 S3_SECRET_ACCESS_KEY = os.environ.get('S3_SECRET_ACCESS_KEY')
 S3_LOCATION = 'https://' + S3_BUCKET_NAME + '.s3.amazonaws.com/'
 
+
 class ImageUploader:
     def __init__(self):
         self.s3 = boto3.client(
-           's3',
-           aws_access_key_id=S3_ACCESS_KEY,
-           aws_secret_access_key=S3_SECRET_ACCESS_KEY,
+            's3',
+            aws_access_key_id=S3_ACCESS_KEY,
+            aws_secret_access_key=S3_SECRET_ACCESS_KEY,
         )
         self.files = self.get_files()
 

@@ -67,7 +67,7 @@ def get_html(cookie):
         print('Page not cached, fetching.')
         requests.get('https://students.yale.edu/facebook/ChangeCollege',
                      params={
-                        'newOrg': 'Yale College'
+                         'newOrg': 'Yale College'
                      },
                      headers={
                          'Cookie': cookie,
@@ -180,11 +180,12 @@ def clean_phone(phone):
         return phone
     if type(phone) == int:
         phone = str(phone)
-    COUNTRY_CODE_RE = re.compile('^\+1? ')
+    COUNTRY_CODE_RE = re.compile(r'^\+1? ')
     phone = COUNTRY_CODE_RE.sub('', phone)
     DISALLOWED_CHARACTERS_RE = re.compile(r'[A-Za-z\(\) \-\.]')
     phone = DISALLOWED_CHARACTERS_RE.sub('', phone)
     return phone
+
 
 def split_office(office):
     components = office.split(' > ')
@@ -436,9 +437,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             else:
                 print('Image has not been processed yet.')
                 image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id),
-                                       headers={
-                                           'Cookie': face_book_cookie,
-                                       },
+                                       headers={'Cookie': face_book_cookie},
                                        stream=True)
                 image_r.raw.decode_content = True
                 try:

@@ -7,6 +7,7 @@ try:
 except ImportError:
     from urllib.request import urlopen
 
+
 def validate(ticket):
     """
     Will attempt to validate the ticket. If validation fails, then False
