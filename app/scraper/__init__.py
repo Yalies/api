@@ -12,15 +12,16 @@ from app.scraper import sources
 
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
-    people = []
-
-    sources = (
-
+    # TODO: think of a better name
+    scraper_sources = (
+        sources.FaceBook(face_book_cookie),
+        sources.Directory(people_search_session_cookie, csrf_token),
+        sources.Departmental(),
     )
 
-
-    departmental = Departmental()
-    department_people = departmental.scrape()
+    people = []
+    for source in scraper_sources:
+        people = source.integrate(people)
 
     # Store people into database
     Person.query.delete()
