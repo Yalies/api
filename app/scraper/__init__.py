@@ -1,6 +1,5 @@
 from app import app, db, celery
 from app.models import Person
-from scraper import Departmental
 
 from app.scraper import sources
 
