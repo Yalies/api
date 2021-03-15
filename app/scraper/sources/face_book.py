@@ -14,9 +14,9 @@ from PIL import Image
 from io import BytesIO
 
 
-with open('app/res/majors.txt') as f:
+with open('app/scraper/res/majors.txt') as f:
     MAJORS = f.read().splitlines()
-with open('app/res/major_full_names.json') as f:
+with open('app/scraper/res/major_full_names.json') as f:
     MAJOR_FULL_NAMES = json.load(f)
 
 
@@ -95,7 +95,7 @@ class FaceBook(Source):
 
     def compare_years(self, page_key, people, emails):
         print(f'Comparing years from {page_key} store.')
-        with open(f'app/res/{page_key}.html.fernet', 'rb') as f:
+        with open(f'app/scraper/res/{page_key}.html.fernet', 'rb') as f:
             html = self.fernet.decrypt(f.read())
         tree = self.get_tree(html)
         containers = self.get_containers(tree)
@@ -121,7 +121,7 @@ class FaceBook(Source):
             print('No people were found on this page. There may be something wrong with authentication, aborting.')
             return []
 
-        watermark_mask = Image.open('app/res/watermark_mask.png')
+        watermark_mask = Image.open('app/scraper/res/watermark_mask.png')
 
         people = []
         for container in containers:
@@ -213,3 +213,9 @@ class FaceBook(Source):
         people = compare_years('pre2020', people, emails)
         people = compare_years('fall2020', people, emails)
 
+        return people
+
+    def merge(self, current_people, new_people):
+        # There shouldn't be any people yet, as this is the first source
+        # So just concatenate the lists
+        return current_people + new_people
