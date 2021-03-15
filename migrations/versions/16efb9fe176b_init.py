@@ -1,8 +1,8 @@
 """init
 
-Revision ID: c2aca77d5c96
+Revision ID: 16efb9fe176b
 Revises: 
-Create Date: 2021-02-24 22:07:14.237112
+Create Date: 2021-03-14 21:56:06.457425
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c2aca77d5c96'
+revision = '16efb9fe176b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -40,7 +40,6 @@ def upgrade():
     sa.Column('college_code', sa.String(), nullable=True),
     sa.Column('leave', sa.Boolean(), nullable=True),
     sa.Column('eli_whitney', sa.Boolean(), nullable=True),
-    sa.Column('image_id', sa.Integer(), nullable=True),
     sa.Column('image', sa.String(), nullable=True),
     sa.Column('birthday', sa.String(), nullable=True),
     sa.Column('residence', sa.String(), nullable=True),
@@ -66,6 +65,8 @@ def upgrade():
     sa.Column('id', sa.String(), nullable=False),
     sa.Column('registered_on', sa.Integer(), nullable=True),
     sa.Column('last_seen', sa.Integer(), nullable=True),
+    sa.Column('admin', sa.Boolean(), nullable=True),
+    sa.Column('banned', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('key',
@@ -73,6 +74,7 @@ def upgrade():
     sa.Column('token', sa.String(), nullable=False),
     sa.Column('uses', sa.Integer(), nullable=True),
     sa.Column('description', sa.String(), nullable=False),
+    sa.Column('internal', sa.Boolean(), nullable=True),
     sa.Column('approved', sa.Boolean(), nullable=False),
     sa.Column('deleted', sa.Boolean(), nullable=True),
     sa.Column('created_at', sa.Integer(), nullable=True),
