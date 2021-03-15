@@ -3,9 +3,6 @@ from app.models import Person
 from scraper import Departmental
 
 from PIL import Image
-from io import BytesIO
-import json
-import string
 
 from app.scraper import sources
 

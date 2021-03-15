@@ -3,6 +3,7 @@ from .source import Source
 import yaledirectory
 import requests
 import re
+import string
 
 
 class Directory(Source):

@@ -2,11 +2,16 @@ from .source import Source
 
 from .s3 import ImageUploader
 
+from bs4 import BeautifulSoup
+import json
 import requests
 import os
 import re
-from bs4 import BeautifulSoup
 from cryptography.fernet import Fernet
+
+# Image processing
+from PIL import Image
+from io import BytesIO
 
 
 with open('app/res/majors.txt') as f:
@@ -16,8 +21,11 @@ with open('app/res/major_full_names.json') as f:
 
 
 class FaceBook(Source):
+    FERNET_KEY = os.environ.get('FERNET_KEY')
+
     def __init__(self, cookie):
         self.image_uploader = ImageUploader()
+        self.fernet = Fernet(self.FERNET_KEY)
         print('Already hosting {} images.'.format(len(image_uploader.files)))
 
     ##########
@@ -28,8 +36,6 @@ class FaceBook(Source):
     RE_BIRTHDAY = re.compile(r'^[A-Z][a-z]{2} \d{1,2}$')
     RE_ACCESS_CODE = re.compile(r'[0-9]-[0-9]+')
     RE_PHONE = re.compile(r'[0-9]{3}-[0-9]{3}-[0-9]{4}')
-
-    FERNET_KEY = os.environ.get('FERNET_KEY')
 
     def get_html(self, cookie):
         filename = 'page.html'
@@ -87,17 +93,15 @@ class FaceBook(Source):
             return None
         return 2000 + int(year)
 
-
     def compare_years(self, page_key, people, emails):
         print(f'Comparing years from {page_key} store.')
         with open(f'app/res/{page_key}.html.fernet', 'rb') as f:
-            fernet = Fernet(FERNET_KEY)
-            html = fernet.decrypt(f.read())
-        tree = get_tree(html)
-        containers = get_containers(tree)
+            html = self.fernet.decrypt(f.read())
+        tree = self.get_tree(html)
+        containers = self.get_containers(tree)
 
         for container in containers:
-            year = clean_year(container.find('div', {'class': 'student_year'}).text)
+            year = self.clean_year(container.find('div', {'class': 'student_year'}).text)
             info = container.find_all('div', {'class': 'student_info'})
             try:
                 email = info[1].find('a').text
@@ -109,9 +113,9 @@ class FaceBook(Source):
         return people
 
     def scrape(self):
-        html = get_html(face_book_cookie)
-        tree = get_tree(html)
-        containers = get_containers(tree)
+        html = self.get_html(face_book_cookie)
+        tree = self.get_tree(html)
+        containers = self.get_containers(tree)
 
         if len(containers) == 0:
             print('No people were found on this page. There may be something wrong with authentication, aborting.')
@@ -119,14 +123,15 @@ class FaceBook(Source):
 
         watermark_mask = Image.open('app/res/watermark_mask.png')
 
+        people = []
         for container in containers:
             person = {
                 'school': 'Yale College',
                 'school_code': 'YC',
             }
 
-            person['last_name'], person['first_name'] = clean_name(container.find('h5', {'class': 'yalehead'}).text)
-            person['year'] = clean_year(container.find('div', {'class': 'student_year'}).text)
+            person['last_name'], person['first_name'] = self.clean_name(container.find('h5', {'class': 'yalehead'}).text)
+            person['year'] = self.clean_year(container.find('div', {'class': 'student_year'}).text)
             pronoun = container.find('div', {'class': 'student_info_pronoun'}).text
             person['pronoun'] = pronoun if pronoun else None
 
@@ -137,15 +142,14 @@ class FaceBook(Source):
                 person['email'] = info[1].find('a').text
             except AttributeError:
                 pass
-                #person.email = guess_email(person)
             trivia = info[1].find_all(text=True, recursive=False)
             try:
-                room = trivia.pop(0) if RE_ROOM.match(trivia[0]) else None
+                room = trivia.pop(0) if self.RE_ROOM.match(trivia[0]) else None
                 if room:
                     person['residence'] = room
                     result = RE_ROOM.search(room)
                     person['building_code'], person['entryway'], person['floor'], person['suite'], person['room'] = result.groups()
-                person['birthday'] = trivia.pop() if RE_BIRTHDAY.match(trivia[-1]) else None
+                person['birthday'] = trivia.pop() if self.RE_BIRTHDAY.match(trivia[-1]) else None
                 person['major'] = trivia.pop() if trivia[-1] in MAJORS else None
                 if person['major'] and person['major'] in MAJOR_FULL_NAMES:
                     person['major'] = MAJOR_FULL_NAMES[person['major']]
@@ -157,10 +161,10 @@ class FaceBook(Source):
                 row = trivia[r].strip()
                 if row.endswith(' /'):
                     row = row.rstrip(' /')
-                    if RE_ACCESS_CODE.match(row):
+                    if self.RE_ACCESS_CODE.match(row):
                         person['access_code'] = row
-                    if RE_PHONE.match(row):
-                        person['phone'] = clean_phone(row)
+                    if self.RE_PHONE.match(row):
+                        person['phone'] = self.clean_phone(row)
                     if len(new_trivia) == 1 and not person.get('residence'):
                         person['residence'] = new_trivia.pop(0)
                 else:
@@ -196,7 +200,7 @@ class FaceBook(Source):
                         output = BytesIO()
                         im.save(output, format='JPEG', mode='RGB')
 
-                        person['image'] = image_uploader.upload_image(output, image_filename)
+                        person['image'] = self.image_uploader.upload_image(output, image_filename)
                     except OSError:
                         # "Cannot identify image" error
                         print('PIL could not identify image.')
