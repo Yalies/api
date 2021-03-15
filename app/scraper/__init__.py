@@ -2,8 +2,6 @@ from app import app, db, celery
 from app.models import Person
 from scraper import Departmental
 
-from PIL import Image
-
 from app.scraper import sources
 
 
