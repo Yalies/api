@@ -329,7 +329,7 @@ def add_departmental_to_person(person, entry):
         if person.get('image'):
             # If we have an image already, we should only replace it if the new one is higher quality.
             current_class = classify_image(person['image'])
-            new_class = classify_image(person['image'])
+            new_class = classify_image(entry['image'])
             if new_class > current_class:
                 person['image'] = entry['image']
         else:

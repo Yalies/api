@@ -47,6 +47,10 @@ class Adapter:
             phone = str(phone)
         phone = self.PHONE_COUNTRY_CODE_RE.sub('', phone)
         phone = self.PHONE_DISALLOWED_CHARACTERS_RE.sub('', phone)
+        if ',' in phone:
+            phone = phone.split(',')[0]
+        if len(phone) == 7:
+            phone = '203' + phone
         return phone
 
     def get_url_root(self, url):
