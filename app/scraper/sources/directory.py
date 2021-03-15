@@ -113,34 +113,6 @@ class Directory(Source):
             res += self.read_directory(directory, prefix + choice)
         return res
 
-    def scrape(self):
-        for i, person in enumerate(people):
-            directory_entry = self.get_directory_entry(directory, person)
-            if directory_entry is not None:
-                person['netid'] = directory_entry.netid
-                person['upi'] = directory_entry.upi
-                if not person.get('email'):
-                    person['email'] = directory_entry.email
-                if not person.get('year') and directory_entry.student_expected_graduation_year:
-                    person['year'] = int(directory_entry.student_expected_graduation_year)
-                    # This may not always be the case. But it's probably a safe bet.
-                    person['eli_whitney'] = True
-                people[i] = add_directory_to_person(person, directory_entry)
-            else:
-                print('Could not find directory entry.')
-
-    # Fetch non-undergrad users by iterating netids
-    # Get set of netids for students we've already processed
-    checked_netids = {person_dict.get('netid') for person_dict in people if 'netid' in person_dict}
-    directory_entries = read_directory(directory)
-    for entry in directory_entries:
-        if entry.netid not in checked_netids:
-            print('Parsing directory entry with NetID ' + entry.netid)
-            checked_netids.add(entry.netid)
-            person = add_directory_to_person({}, entry)
-            people.append(person)
-            emails.append(person['email'])
-
     #########
     # Merging
     #########
@@ -215,4 +187,37 @@ class Directory(Source):
             person['year'] = int(entry.student_expected_graduation_year)
         return person
 
+    def integrate(self, current_people):
+        """
+        Fetch new records and integrate.
+        Overridden from normal scraping flow because we need to access existing records during scraping process.
+        """
+        people = current_people
+        for i, person in enumerate(people):
+            directory_entry = self.get_directory_entry(directory, person)
+            if directory_entry is not None:
+                person['netid'] = directory_entry.netid
+                person['upi'] = directory_entry.upi
+                if not person.get('email'):
+                    person['email'] = directory_entry.email
+                if not person.get('year') and directory_entry.student_expected_graduation_year:
+                    person['year'] = int(directory_entry.student_expected_graduation_year)
+                    # This may not always be the case. But it's probably a safe bet.
+                    person['eli_whitney'] = True
+                people[i] = self.merge_one(person, directory_entry)
+            else:
+                print('Could not find directory entry.')
+
+        # Fetch non-undergrad users by iterating netids
+        # Get set of netids for students we've already processed
+        checked_netids = {person_dict.get('netid') for person_dict in people if 'netid' in person_dict}
+        directory_entries = read_directory(directory)
+        for entry in directory_entries:
+            if entry.netid not in checked_netids:
+                print('Parsing directory entry with NetID ' + entry.netid)
+                checked_netids.add(entry.netid)
+                person = self.merge_one({}, entry)
+                people.append(person)
+
+        return people
 
