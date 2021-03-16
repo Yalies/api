@@ -10,7 +10,7 @@ import datetime
 import time
 
 
-with open('app/res/majors_clean.txt') as f:
+with open('app/scraper/res/majors_clean.txt') as f:
     majors = f.read().splitlines()
 
 
@@ -56,6 +56,7 @@ def index():
         'Timothy Dwight',
         'Trumbull',
     ]
+    """
     building_codes = {
         '': 'Off Campus',
         'BM': 'Bingham Hall',
@@ -80,6 +81,7 @@ def index():
         'TD': 'Timothy Dwight',
         'TC': 'Trumbull',
     }
+    """
     current_year = datetime.date.today().year
     years = list(range(current_year, current_year + 5))
     years.append('')
@@ -87,13 +89,16 @@ def index():
     eli_whitney = ['Yes', 'No']
     # SQLAlchemy returns lists of tuples, so we gotta convert to a list of items.
     # TODO: is there a SQL-based way to do this?
+    """
     entryways = untuple(db.session.query(distinct(Person.entryway)).order_by(Person.entryway))
     floors = untuple(db.session.query(distinct(Person.floor)).order_by(Person.floor))
     suites = untuple(db.session.query(distinct(Person.suite)).order_by(Person.suite))
     rooms = untuple(db.session.query(distinct(Person.room)).order_by(Person.room))
+    """
     return render_template('index.html', colleges=colleges,
-                           years=years, leave=leave, eli_whitney=eli_whitney, majors=majors, building_codes=building_codes,
-                           entryways=entryways, floors=floors, suites=suites, rooms=rooms)
+                           years=years, leave=leave, eli_whitney=eli_whitney, majors=majors)
+                           #building_codes=building_codes,
+                           #entryways=entryways, floors=floors, suites=suites, rooms=rooms)
 
 
 @app.route('/scraper', methods=['GET', 'POST'])
@@ -184,5 +189,7 @@ def auth():
     return jsonify({'token': key.token, 'expires_in': expires_in})
 
 
+"""
 def untuple(tuples):
     return [t[0] for t in tuples]
+"""
