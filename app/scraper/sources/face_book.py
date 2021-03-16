@@ -1,4 +1,5 @@
 from .source import Source
+from .directory import Directory
 
 from .s3 import ImageUploader
 
@@ -23,10 +24,10 @@ with open('app/scraper/res/major_full_names.json') as f:
 class FaceBook(Source):
     FERNET_KEY = os.environ.get('FERNET_KEY')
 
-    def __init__(self, cookie):
+    def __init__(self, cookie, directory):
+        self.cookie = cookie
         self.image_uploader = ImageUploader()
         self.fernet = Fernet(self.FERNET_KEY)
-        print('Already hosting {} images.'.format(len(image_uploader.files)))
 
     ##########
     # Scraping
@@ -113,7 +114,7 @@ class FaceBook(Source):
         return people
 
     def scrape(self):
-        html = self.get_html(face_book_cookie)
+        html = self.get_html(self.cookie)
         tree = self.get_tree(html)
         containers = self.get_containers(tree)
 
@@ -122,8 +123,10 @@ class FaceBook(Source):
             return []
 
         watermark_mask = Image.open('app/scraper/res/watermark_mask.png')
+        print('Already hosting {} images.'.format(len(self.image_uploader.files)))
 
         people = []
+        emails = {}
         for container in containers:
             person = {
                 'school': 'Yale College',
@@ -188,7 +191,7 @@ class FaceBook(Source):
                 else:
                     print('Image has not been processed yet.')
                     image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id),
-                                           headers={'Cookie': face_book_cookie},
+                                           headers={'Cookie': self.cookie},
                                            stream=True)
                     image_r.raw.decode_content = True
                     try:
