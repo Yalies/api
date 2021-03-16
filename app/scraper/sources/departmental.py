@@ -2,11 +2,11 @@ from .source import Source
 
 import json
 import hashlib
-from app.scraper import adapters
+from app.scraper.sources import adapters
 #import adapters
 
 
-class Departmental(Scraper):
+class Departmental(Source):
 
     ##########
     # Scraping
@@ -37,7 +37,7 @@ class Departmental(Scraper):
         #    people = json.load(f)
         #return people
 
-        with open('../res/departments.json', 'r') as f:
+        with open('app/scraper/res/departments.json', 'r') as f:
             departments = json.load(f)
         # If any departments have been marked enabled, filter to just them
         enabled_departments = [department for department in departments if department.get('enabled')]

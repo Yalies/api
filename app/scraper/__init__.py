@@ -7,14 +7,19 @@ from app.scraper import sources
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     # TODO: think of a better name
+    print('Initializing sources.')
+    directory = sources.Directory(people_search_session_cookie, csrf_token)
+    face_book = sources.FaceBook(face_book_cookie, directory)
     scraper_sources = (
-        sources.FaceBook(face_book_cookie),
-        sources.Directory(people_search_session_cookie, csrf_token),
+        face_book,
+        directory,
         sources.Departmental(),
     )
 
+    print('Beginning scrape.')
     people = []
     for source in scraper_sources:
+        print('Scraping source ' + source.__class__.__name__ + '...')
         people = source.integrate(people)
 
     # Store people into database
