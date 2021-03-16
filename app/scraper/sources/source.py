@@ -8,7 +8,7 @@ class Source:
     RE_PHONE_COUNTRY_CODE = re.compile(r'^\+1? ')
     RE_PHONE_DISALLOWED_CHARACTERS = re.compile(r'[A-Za-z\(\) \-\.]')
 
-    def clean_phone(phone):
+    def clean_phone(self, phone):
         if not phone:
             return phone
         if type(phone) == int:

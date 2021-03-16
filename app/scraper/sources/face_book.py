@@ -26,6 +26,7 @@ class FaceBook(Source):
 
     def __init__(self, cookie, directory):
         self.cookie = cookie
+        self.directory = directory
         self.image_uploader = ImageUploader()
         self.fernet = Fernet(self.FERNET_KEY)
 
@@ -183,11 +184,28 @@ class FaceBook(Source):
             person['leave'] = False
             person['eli_whitney'] = False
 
-            image_id = clean_image_id(container.find('img')['src'])
+            directory_entry = self.directory.get_directory_entry(person)
+            if directory_entry is not None:
+                person['netid'] = directory_entry.netid
+                person['upi'] = directory_entry.upi
+                if not person.get('email'):
+                    person['email'] = directory_entry.email
+                if not person.get('year') and directory_entry.student_expected_graduation_year:
+                    person['year'] = int(directory_entry.student_expected_graduation_year)
+                    # This may not always be the case. But it's probably a safe bet.
+                    person['eli_whitney'] = True
+                    # If they're an Eli Whitney student, we won't be able to tell whether
+                    # they're on leave because there's no year in the face book.
+                    person['leave'] = None
+                person = self.directory.merge_one(person, directory_entry)
+            else:
+                print('Could not find directory entry.')
+
+            image_id = self.clean_image_id(container.find('img')['src'])
             if image_id:
-                image_filename = image_uploader.get_image_filename(image_id, person)
-                if image_filename in image_uploader.files:
-                    person['image'] = image_uploader.get_file_url(image_filename)
+                image_filename = self.image_uploader.get_image_filename(image_id, person)
+                if image_filename in self.image_uploader.files:
+                    person['image'] = self.image_uploader.get_file_url(image_filename)
                 else:
                     print('Image has not been processed yet.')
                     image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id),

@@ -8,7 +8,7 @@ import string
 
 class Directory(Source):
     def __init__(self, people_search_session_cookie, csrf_token):
-        directory = yaledirectory.API(people_search_session_cookie, csrf_token)
+        self.directory = yaledirectory.API(people_search_session_cookie, csrf_token)
 
     ##########
     # Scraping
@@ -51,7 +51,7 @@ class Directory(Source):
     numbers = string.digits
     characters = letters + numbers
 
-    def get_directory_entry(self, directory, person):
+    def get_directory_entry(self, person):
         query = {
             'first_name': person['first_name'],
             'last_name': person['last_name'],
@@ -61,11 +61,11 @@ class Directory(Source):
             query['email'] = person['email']
         if person.get('college'):
             query['college'] = person['college'] + ' College'
-        people = directory.people(**query)
+        people = self.directory.people(**query)
         print('Found %d matching people in directory.' % len(people))
         if not people:
             # If nothing found, do a broader search and return first result
-            person = directory.person(first_name=person['first_name'], last_name=person['last_name'])
+            person = self.directory.person(first_name=person['first_name'], last_name=person['last_name'])
             if person:
                 print('Found matching person searching only by name.')
             return person
@@ -193,20 +193,6 @@ class Directory(Source):
         Overridden from normal scraping flow because we need to access existing records during scraping process.
         """
         people = current_people
-        for i, person in enumerate(people):
-            directory_entry = self.get_directory_entry(directory, person)
-            if directory_entry is not None:
-                person['netid'] = directory_entry.netid
-                person['upi'] = directory_entry.upi
-                if not person.get('email'):
-                    person['email'] = directory_entry.email
-                if not person.get('year') and directory_entry.student_expected_graduation_year:
-                    person['year'] = int(directory_entry.student_expected_graduation_year)
-                    # This may not always be the case. But it's probably a safe bet.
-                    person['eli_whitney'] = True
-                people[i] = self.merge_one(person, directory_entry)
-            else:
-                print('Could not find directory entry.')
 
         # Fetch non-undergrad users by iterating netids
         # Get set of netids for students we've already processed
