@@ -186,10 +186,6 @@ class FaceBook(Source):
 
             directory_entry = self.directory.get_directory_entry(person)
             if directory_entry is not None:
-                person['netid'] = directory_entry.netid
-                person['upi'] = directory_entry.upi
-                if not person.get('email'):
-                    person['email'] = directory_entry.email
                 if not person.get('year') and directory_entry.student_expected_graduation_year:
                     person['year'] = int(directory_entry.student_expected_graduation_year)
                     # This may not always be the case. But it's probably a safe bet.
