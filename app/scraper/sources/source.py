@@ -33,7 +33,7 @@ class Source:
         :param current_people: list of people scraped from previous sources.
         :param new_people: list of new people scraped from this source.
         """
-        raise NotImplementedError
+        return current_people + new_people
 
     def integrate(self, current_people):
         """

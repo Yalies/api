@@ -113,6 +113,25 @@ class Directory(Source):
             res += self.read_directory(directory, prefix + choice)
         return res
 
+    def scrape(self, current_people):
+        """
+        Fetch new records and integrate.
+        Overridden from normal scraping flow because we need to access existing records during scraping process.
+        """
+        people = current_people
+        # Fetch non-undergrad users by iterating netids
+        # Get set of netids for students we've already processed
+        checked_netids = {person_dict.get('netid') for person_dict in people if 'netid' in person_dict}
+        directory_entries = self.read_directory(directory)
+        for entry in directory_entries:
+            if entry.netid not in checked_netids:
+                print('Parsing directory entry with NetID ' + entry.netid)
+                checked_netids.add(entry.netid)
+                person = self.merge_one({}, entry)
+                people.append(person)
+
+        return people
+
     #########
     # Merging
     #########
@@ -186,24 +205,3 @@ class Directory(Source):
         if not person.get('year') and entry.student_expected_graduation_year:
             person['year'] = int(entry.student_expected_graduation_year)
         return person
-
-    def integrate(self, current_people):
-        """
-        Fetch new records and integrate.
-        Overridden from normal scraping flow because we need to access existing records during scraping process.
-        """
-        people = current_people
-
-        # Fetch non-undergrad users by iterating netids
-        # Get set of netids for students we've already processed
-        checked_netids = {person_dict.get('netid') for person_dict in people if 'netid' in person_dict}
-        directory_entries = read_directory(directory)
-        for entry in directory_entries:
-            if entry.netid not in checked_netids:
-                print('Parsing directory entry with NetID ' + entry.netid)
-                checked_netids.add(entry.netid)
-                person = self.merge_one({}, entry)
-                people.append(person)
-
-        return people
-
