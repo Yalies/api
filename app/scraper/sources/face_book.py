@@ -231,12 +231,7 @@ class FaceBook(Source):
             people.append(person)
 
         # Check leaves
-        people = compare_years('pre2020', people, emails)
-        people = compare_years('fall2020', people, emails)
+        people = self.compare_years('pre2020', people, emails)
+        people = self.compare_years('fall2020', people, emails)
 
         return people
-
-    def merge(self, current_people, new_people):
-        # There shouldn't be any people yet, as this is the first source
-        # So just concatenate the lists
-        return current_people + new_people
