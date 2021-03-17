@@ -137,28 +137,23 @@ class Directory(Source):
     #########
 
     def merge_one(self, person, entry):
-        if not person.get('netid'):
-            person.update({
-                'netid': entry.netid,
-                'college': entry.residential_college_name.replace(' College', ''),
-                'upi': entry.upi,
-                'email': entry.email,
-            })
-
         school = person.get('school') or entry.primary_school_name
-        school = SCHOOL_OVERRIDES.get(school, school)
+        school = self.SCHOOL_OVERRIDES.get(school, school)
         school_code = person.get('school_code') or entry.primary_school_code
         if not school_code:
-            school_code = SCHOOL_CODES.get(school)
+            school_code = self.SCHOOL_CODES.get(school)
 
-        organization_code, organization = split_code_name(entry.organization_name)
-        organization = ORGANIZATION_OVERRIDES.get(organization, organization)
+        organization_code, organization = self.split_code_name(entry.organization_name)
+        organization = self.ORGANIZATION_OVERRIDES.get(organization, organization)
         if not organization_code:
-            organization_code = ORGANIZATION_CODES.get(organization)
+            organization_code = self.ORGANIZATION_CODES.get(organization)
 
-        unit_class, unit = split_code_name(entry.organization_unit_name)
-        office_building, office_room = split_office(entry.internal_location)
+        unit_class, unit = self.split_code_name(entry.organization_unit_name)
+        office_building, office_room = self.split_office(entry.internal_location)
         person.update({
+            'netid': entry.netid,
+            'upi': entry.upi,
+            'email': person.get('email') or entry.email,
             # Overwrite even names from the face book, which sometimes are capitalized improperly
             # For example "Del Carpio gomez, Victor"
             'first_name': entry.first_name,
@@ -167,8 +162,9 @@ class Directory(Source):
             'preferred_name': entry.known_as if entry.known_as != entry.first_name else None,
             'middle_name': entry.middle_name,
             'suffix': entry.suffix,
-            'phone': person.get('phone') or clean_phone(entry.phone_number),
+            'phone': person.get('phone') or self.clean_phone(entry.phone_number),
             # TODO: check if any face book members have a college but not a college code
+            'college': person.get('college') or entry.residential_college_name.replace(' College', ''),
             'college_code': entry.residential_college_code,
             'school': school,
             'school_code': school_code,
