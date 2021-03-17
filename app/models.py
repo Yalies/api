@@ -110,6 +110,9 @@ class Person(SearchableMixin, db.Model):
     suffix = db.Column(db.String)
     pronoun = db.Column(db.String)
 
+    # Miscellaneous
+    address = db.Column(db.String)
+
     # Students
     school_code = db.Column(db.String)
     school = db.Column(db.String)
@@ -129,7 +132,6 @@ class Person(SearchableMixin, db.Model):
     suite = db.Column(db.Integer)
     room = db.Column(db.String)
     major = db.Column(db.String)
-    address = db.Column(db.String)
     access_code = db.Column(db.String)
 
     # Staff
