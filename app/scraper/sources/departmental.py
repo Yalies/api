@@ -90,7 +90,7 @@ class Departmental(Source):
                 person['image'] = entry['image']
 
         new_fields = (
-            'cv', 'address', 'email', 'website',
+            'cv', 'address', 'email', 'profile', 'website',
             'title', 'suffix', 'education', 'fax',
         )
         for field in new_fields:

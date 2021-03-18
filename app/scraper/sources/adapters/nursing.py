@@ -19,7 +19,7 @@ class Nursing(Adapter):
         profile_urls = self.extract_profile_urls(people_soup, department['url'])
         for profile_url in profile_urls:
             person = {
-                'profile_url': profile_url,
+                'profile': profile_url,
             }
             person_soup = self.get_soup(profile_url)
             person['name'], person['suffix'] = self.split_name_suffix(person_soup.find('h1', {'id': 'page-title'}).text)

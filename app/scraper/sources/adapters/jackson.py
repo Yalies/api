@@ -40,7 +40,7 @@ class Jackson(Adapter):
 
             profile_link = card.select_one('.page-item-person-bio-link a.more')
             if profile_link:
-                person['profile_url'] = profile_link['href']
+                person['profile'] = profile_link['href']
                 # TODO: parse bio and anything else useful from profile pages
                 # It doesn't seem like there's any other useful information in profiles though
                 #person_soup = self.get_soup(profile_url)

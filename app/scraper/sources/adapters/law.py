@@ -23,7 +23,7 @@ class Law(Adapter):
 
         for profile_url in profile_urls:
             person = {
-                'profile_url': profile_url,
+                'profile': profile_url,
             }
             person_html = requests.get(profile_url).text
             person_soup = BeautifulSoup(person_html, 'html5lib')

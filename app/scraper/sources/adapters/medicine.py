@@ -22,7 +22,7 @@ class Medicine(Adapter):
         print(f'Found {len(profile_urls)} profile URLs.')
         for profile_url in profile_urls:
             person = {
-                'profile_url': profile_url,
+                'profile': profile_url,
             }
             person_soup = self.get_soup(profile_url)
 

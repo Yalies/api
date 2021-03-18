@@ -131,9 +131,9 @@ class Default(Adapter):
                     person['orcid'] = orcid.replace('http://orcid.org/', '').replace('https://orcid.org/', '')
             else:
                 person = {
-                    'profile_url': self.get_url(username['href'], department['url'])
+                    'profile': self.get_url(username['href'], department['url'])
                 }
-                person_soup = self.get_soup(person['profile_url'])
+                person_soup = self.get_soup(person['profile'])
                 body = self.get_body(person_soup)
                 if not body:
                     print('Could not find profile page body, skipping this person.')
