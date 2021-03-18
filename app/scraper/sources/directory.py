@@ -200,4 +200,15 @@ class Directory(Source):
             print('Warning: organization_name and primary_division_name are diferent!')
         if not person.get('year') and entry.student_expected_graduation_year:
             person['year'] = int(entry.student_expected_graduation_year)
+
+        pronunciation = self.directory.pronounce(person['email'])
+        if pronunciation:
+            print('Found pronunciation: ' + pronunciation.phonetic_spelling)
+            person.update({
+                'name_recording': pronunciation.recording_url,
+                'phonetic_spelling': pronunciation.phonetic_spelling,
+                'pronouns': person.get('pronouns') or pronunciation.pronouns,
+            })
+            print('Pronunciation notes: ' + pronunciation.notes)
+
         return person

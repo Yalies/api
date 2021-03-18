@@ -110,6 +110,9 @@ class Person(SearchableMixin, db.Model):
     suffix = db.Column(db.String)
     pronoun = db.Column(db.String)
 
+    phonetic_name = db.Column(db.String)
+    name_recording = db.Column(db.String)
+
     # Miscellaneous
     address = db.Column(db.String)
 
