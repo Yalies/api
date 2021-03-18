@@ -58,7 +58,7 @@ class Departmental(Source):
         for divider in range(1, len(names)):
             first_name = ' '.join(names[:divider])
             last_name = ' '.join(names[divider:])
-            if person['first_name'] == first_name and person['last_name'] == last_name:
+            if person.get('first_name') == first_name and person.get('last_name') == last_name:
                 return True
         return False
 
@@ -107,7 +107,7 @@ class Departmental(Source):
 
     def merge(self, current_people, new_people):
         people = current_people
-        emails = {person['email']: i for i, person in enumerate(people)}
+        emails = {person['email']: i for i, person in enumerate(people) if person.get('email')}
 
         for record in new_people:
             person_i = None
