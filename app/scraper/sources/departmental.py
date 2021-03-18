@@ -79,7 +79,7 @@ class Departmental(Source):
         return 1
 
     def merge_one(self, person, entry):
-        if entry.get('image'):
+        if person.get('school_code') != 'YC' and entry.get('image'):
             if person.get('image'):
                 # If we have an image already, we should only replace it if the new one is higher quality.
                 current_class = self.classify_image(person['image'])
