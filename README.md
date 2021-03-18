@@ -7,8 +7,13 @@ To develop changes to the application, you'll need to run it locally for testing
 
 This guide assumes, as prerequisites, that you have:
 * A MacOS or Linux-based OS (if you use Windows, you can still follow along, but some commands may be different)
-* Python 3 (included by default with many computers, or available [here](https://www.python.org/downloads/))
 * Access to, and basic understanding of, the terminal on your computer
+* Python 3
+    * Modern MacOS versions and most Linux distributions include Python 3 by default.
+    * If you use a version of MacOS with only Python 2, first [install Homebrew](https://brew.sh/#install), a helpful package manager for MacOS, then use it to install Python 3:
+    ```sh
+    brew install python3
+    ```
 
 Once all prerequisites are installed, clone this repository to your machine from your terminal:
 ```sh
