@@ -112,7 +112,7 @@ class Departmental(Source):
         for record in new_people:
             person_i = None
             if record.get('email'):
-                person_i = emails[record['email']]
+                person_i = emails.get(record['email'])
             if not person_i:
                 for i, person in enumerate(people):
                     if self.name_matches(person, record['name']):
@@ -126,6 +126,8 @@ class Departmental(Source):
             else:
                 print('Could not match department record to person:')
                 print(record)
+
+        return people
 
 if __name__ == '__main__':
     departmental = Departmental()
