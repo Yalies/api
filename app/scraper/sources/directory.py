@@ -209,6 +209,5 @@ class Directory(Source):
                 'phonetic_spelling': pronunciation.phonetic_spelling,
                 'pronouns': person.get('pronouns') or pronunciation.pronouns,
             })
-            print(f'Pronunciation notes: {pronunciation.notes}')
 
         return person

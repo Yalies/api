@@ -43,7 +43,10 @@ class Management(Adapter):
                 education = person_soup.find('ul', {'class': 'faculty--education-list'})
                 if education:
                     degrees = education.find_all('li')
-                    person['education'] = '\n'.join([degree.text for degree in degrees])
+                    person['education'] = '\n'.join([
+                        degree.text.replace(',,', ',').replace(' ,', ',')
+                        for degree in degrees
+                    ])
             else:
                 # We're in a faculty.som.yale.edu page
                 person['name'] = person_soup.find('h1', {'class': 'faculty-nameplate__name'}).text.strip()
