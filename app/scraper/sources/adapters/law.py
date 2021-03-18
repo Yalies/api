@@ -1,6 +1,7 @@
 from .adapter import Adapter
 import requests
 from bs4 import BeautifulSoup
+import html5lib
 
 
 class Law(Adapter):
@@ -24,12 +25,8 @@ class Law(Adapter):
             person = {
                 'profile_url': profile_url,
             }
-            person_html = requests.get(department['url'] + path).text
-            # There is some bad tag or comment that prevents us from properly parsing the page,
-            # so trim the string manually and then parse
-            person_html = person_html.split('<!-- main-container starts -->')[1].split('<!-- main-container ends -->')[0]
-            person_soup = BeautifulSoup(person_html, 'html.parser')
-            #body = person_soup.select_one('#main')
+            person_html = requests.get(profile_url).text
+            person_soup = BeautifulSoup(person_html, 'html5lib')
             person['name'] = person_soup.find('h1').text.strip()
             title = person_soup.find('p', {'class': 'sub-title'})
             if title:
