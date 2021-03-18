@@ -30,7 +30,7 @@ class Departmental(Source):
         adapter = self.ADAPTERS.get(website_type)
         return adapter.scrape(department)
 
-    def scrape(self):
+    def scrape(self, current_people):
         # TEMPORARY
         # For testing with local JSON file
         #with open('/tmp/people.json', 'r') as f:
@@ -105,11 +105,14 @@ class Departmental(Source):
             if entry.get(field) and not person.get(field):
                 person[field] = entry[field]
 
-    def merge(self, people):
-        for record in department_people:
+    def merge(self, current_people, new_people):
+        people = current_people
+        emails = {person['email']: i for i, person in enumerate(people)}
+
+        for record in new_people:
             person_i = None
             if record.get('email'):
-                person_i = emails.index(record['email'])
+                person_i = emails[record['email']]
             if not person_i:
                 for i, person in enumerate(people):
                     if self.name_matches(person, record['name']):
