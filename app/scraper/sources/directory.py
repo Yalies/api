@@ -203,12 +203,12 @@ class Directory(Source):
 
         pronunciation = self.directory.pronounce(person['email'])
         if pronunciation:
-            print('Found pronunciation: ' + pronunciation.phonetic_spelling)
+            print('Found pronunciation: ' + pronunciation.recording_url)
             person.update({
                 'name_recording': pronunciation.recording_url,
                 'phonetic_spelling': pronunciation.phonetic_spelling,
                 'pronouns': person.get('pronouns') or pronunciation.pronouns,
             })
-            print('Pronunciation notes: ' + pronunciation.notes)
+            print(f'Pronunciation notes: {pronunciation.notes}')
 
         return person
