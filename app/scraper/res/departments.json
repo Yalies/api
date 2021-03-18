@@ -876,7 +876,6 @@
             "/faculty",
             "/faculty?combine=&field_type_value=Lecturers-Affiliates"
         ]
-        ,"enabled": false
     },
     {
         "name": "Management",

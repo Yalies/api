@@ -6,10 +6,10 @@ from app.scraper import sources
 
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
-    # TODO: think of a better name
     print('Initializing sources.')
     directory = sources.Directory(people_search_session_cookie, csrf_token)
     face_book = sources.FaceBook(face_book_cookie, directory)
+    # TODO: think of a better name
     scraper_sources = (
         face_book,
         directory,
