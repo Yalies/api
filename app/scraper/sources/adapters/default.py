@@ -227,6 +227,9 @@ class Default(Adapter):
                             start, end = search.span()
                             person['address'] = person['address'][:start].strip(',').strip()
 
+                    if person['education']:
+                        person['education'] = '\n'.join([degree.strip() for degree in person['education'].split(';')])
+
                     # There is no elegance here. Only sleep deprivation and regret.
                     if department['name'] == 'Spanish & Portuguese':
                         # The Spanish and Portuguese website puts educational history in the fax number slot
