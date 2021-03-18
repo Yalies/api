@@ -21,7 +21,7 @@ class Source:
     # Scraping flow
     ###############
 
-    def scrape(self):
+    def scrape(self, current_people):
         """
         Read all people from this source.
         """
@@ -41,5 +41,5 @@ class Source:
         :param people: list of existing people from previous sources.
         :return: list with new records integrated.
         """
-        new_people = self.scrape()
+        new_people = self.scrape(current_people)
         return self.merge(current_people, new_people)

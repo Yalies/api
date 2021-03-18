@@ -121,7 +121,11 @@ class Departmental(Source):
 
             # Add in data if we found a match
             if person_i:
+                print('Matched ' + record['name'] + ' to existing person.')
                 people[person_i] = self.merge_one(people[person_i], record)
+            else:
+                print('Could not match department record to person:')
+                print(record)
 
 if __name__ == '__main__':
     departmental = Departmental()

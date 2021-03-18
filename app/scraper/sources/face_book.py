@@ -114,7 +114,7 @@ class FaceBook(Source):
                 print(email + ' is' + (' not' if not people[emails[email]]['leave'] else '') + ' taking a leave.')
         return people
 
-    def scrape(self):
+    def scrape(self, current_people):
         html = self.get_html(self.cookie)
         tree = self.get_tree(html)
         containers = self.get_containers(tree)

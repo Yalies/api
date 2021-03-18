@@ -88,9 +88,9 @@ class Directory(Source):
             office_room = components[1]
         return office_building, office_room
 
-    def read_directory(self, directory, prefix: str = ''):
+    def read_directory(self, prefix: str = ''):
         print('Attempting prefix ' + prefix)
-        people, total = directory.people(netid=prefix, include_total=True)
+        people, total = self.directory.people(netid=prefix, include_total=True)
 
         if total == len(people):
             print(f'Successfully found {total} people.')
@@ -103,14 +103,14 @@ class Directory(Source):
         MAX_CHARS_IN_PREFIX = 3
         if len(prefix) < MIN_CHARS_IN_PREFIX:
             choices = self.letters
-        elif len(prefix) >= MAX_CHARS_IN_PREFIX or (len(prefix) != 0 and prefix[-1] not in letters):
+        elif len(prefix) >= MAX_CHARS_IN_PREFIX or (len(prefix) != 0 and prefix[-1] not in self.letters):
             choices = self.numbers
         else:
             choices = self.characters
 
         res = []
         for choice in choices:
-            res += self.read_directory(directory, prefix + choice)
+            res += self.read_directory(prefix + choice)
         return res
 
     def scrape(self, current_people):
@@ -118,11 +118,11 @@ class Directory(Source):
         Fetch new records and integrate.
         Overridden from normal scraping flow because we need to access existing records during scraping process.
         """
-        people = current_people
+        people = []
         # Fetch non-undergrad users by iterating netids
         # Get set of netids for students we've already processed
-        checked_netids = {person_dict.get('netid') for person_dict in people if 'netid' in person_dict}
-        directory_entries = self.read_directory(directory)
+        checked_netids = {person_dict.get('netid') for person_dict in current_people if 'netid' in person_dict}
+        directory_entries = self.read_directory()
         for entry in directory_entries:
             if entry.netid not in checked_netids:
                 print('Parsing directory entry with NetID ' + entry.netid)
