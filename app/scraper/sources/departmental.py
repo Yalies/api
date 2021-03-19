@@ -79,6 +79,8 @@ class Departmental(Source):
         return 1
 
     def merge_one(self, person, entry):
+        if person is None:
+            return None
         if person.get('school_code') != 'YC' and entry.get('image'):
             if person.get('image'):
                 # If we have an image already, we should only replace it if the new one is higher quality.
@@ -107,6 +109,8 @@ class Departmental(Source):
 
     def merge(self, current_people, new_people):
         people = current_people
+        # TODO temporary, None shouldn't be coming in
+        people = {person for person in current_people if person is not None}
         emails = {person['email']: i for i, person in enumerate(people) if person.get('email')}
 
         for record in new_people:
