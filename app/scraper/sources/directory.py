@@ -205,9 +205,9 @@ class Directory(Source):
         if pronunciation:
             print('Found pronunciation: ' + pronunciation.recording_url)
             person.update({
+                'phonetic_name': pronunciation.phonetic_spelling,
                 'name_recording': pronunciation.recording_url,
-                'phonetic_spelling': pronunciation.phonetic_spelling,
-                'pronouns': person.get('pronouns') or pronunciation.pronouns,
+                'pronoun': person.get('pronoun') or pronunciation.pronouns,
             })
 
         return person
