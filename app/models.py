@@ -147,7 +147,7 @@ class Person(SearchableMixin, db.Model):
     office_building = db.Column(db.String)
     office_room = db.Column(db.String)
     cv = db.Column(db.String)
-    profile_url = db.Column(db.String)
+    profile = db.Column(db.String)
     website = db.Column(db.String)
     education = db.Column(db.String)
     publications = db.Column(db.String)
