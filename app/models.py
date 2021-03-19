@@ -100,6 +100,7 @@ class Person(SearchableMixin, db.Model):
     email = db.Column(db.String)
     mailbox = db.Column(db.String)
     phone = db.Column(db.String)
+    fax = db.Column(db.String)
 
     # Naming
     title = db.Column(db.String)
