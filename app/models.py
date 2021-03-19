@@ -2,6 +2,7 @@ from app import app, db
 from app.search import SearchableMixin
 import jwt
 import datetime
+from sqlalchemy.sql import collate
 
 
 class User(db.Model):
@@ -167,7 +168,10 @@ class Person(SearchableMixin, db.Model):
         if query:
             person_query = Person.query_search(query)
         else:
-            person_query = person_query.order_by(Person.last_name, Person.first_name)
+            person_query = person_query.order_by(
+                collate(Person.last_name, 'NOCASE'),
+                collate(Person.first_name, 'NOCASE'),
+            )
         if filters:
             for category in filters:
                 if category not in (Person.__filterable_identifiable__ + Person.__filterable__):
