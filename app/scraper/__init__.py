@@ -3,6 +3,7 @@ from app.models import Person
 
 from app.scraper import sources
 import json
+import os
 
 
 @celery.task
@@ -21,9 +22,14 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     people = []
     for source in scraper_sources:
         print('Scraping source ' + source.__class__.__name__ + '...')
-        people = source.integrate(people)
-        with open('/tmp/people_' + source.__class__.__name__ + '.json', 'w') as f:
-            json.dump(people, f)
+        backup_file = '/tmp/people_' + source.__class__.__name__ + '.json'
+        if os.path.exists(backup_file):
+            with open(backup_file, 'r') as f:
+                people = json.load(f)
+        else:
+            people = source.integrate(people)
+            with open(backup_file, 'w') as f:
+                json.dump(people, f)
 
     # Store people into database
     Person.query.delete()
