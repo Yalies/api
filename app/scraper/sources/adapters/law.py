@@ -20,6 +20,7 @@ class Law(Adapter):
         people_soup = self.get_soup(department['url'] + path)
         profile_links = people_soup.select('.faculty-result-content h2 a')
         profile_urls = [department['url'] + link['href'] for link in profile_links]
+        profile_urls = list(set(profile_urls))
 
         for profile_url in profile_urls:
             person = {

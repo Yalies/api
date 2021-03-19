@@ -36,6 +36,7 @@ class Environment(Adapter):
         links = people_soup.select('.row_wrap.listing > a, .primary_body tr a[title]')
         print(f'Found {len(links)} people.')
         profile_urls = [department['url'] + link['href'] for link in links]
+        profile_urls = list(set(profile_urls))
 
         for profile_url in profile_urls:
             person = {

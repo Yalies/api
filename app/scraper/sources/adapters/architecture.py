@@ -17,6 +17,7 @@ class Architecture(Adapter):
             profile_urls += [department['url'] + link['href'] for link in links_page]
             page += 1
 
+        profile_urls = list(set(profile_urls))
         for profile_url in profile_urls:
             person = {
                 'profile': profile_url,

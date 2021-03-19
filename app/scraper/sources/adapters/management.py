@@ -11,6 +11,7 @@ class Management(Adapter):
         people = []
         people_soup = self.get_soup(department['url'] + path)
         profile_urls = self.get_profile_urls(people_soup, department['url'])
+        profile_urls = list(set(profile_urls))
 
         for profile_url in profile_urls:
             person = {
