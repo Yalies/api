@@ -52,6 +52,10 @@ function isFilter(element) {
     return element.tagName === 'DIV' && element.classList.contains('filter');
 }
 
+function isPronunciation(element) {
+    return element.tagName === 'SPAN' && element.classList.contains('pronunciation');
+}
+
 onclick = function(e) {
     let filter = null;
     if (isFilter(e.target)) {
@@ -61,9 +65,25 @@ onclick = function(e) {
     } else if (e.target.tagName === 'I' && isFilter(e.target.parentElement.parentElement)) {
         filter = e.target.parentElement.parentElement;
     }
-
     if (filter) {
         filter.classList.toggle('collapsed');
+    }
+
+    let pronunciation = null;
+    if (isPronunciation(e.target)) {
+        pronunciation = e.target;
+    } else if (e.target.tagName === 'I' && isPronunciation(e.target.parentElement)) {
+        pronunciation = e.target.parentElement;
+    }
+    if (pronunciation) {
+        // Play audio
+        pronunciation.classList.add('playing');
+        let audio = pronunciation.getElementsByTagName('audio')[0];
+        audio.onended = function() {
+            pronunciation.classList.remove('playing');
+        }
+        console.log(audio);
+        audio.play();
     }
 };
 
