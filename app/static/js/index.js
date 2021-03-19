@@ -185,6 +185,27 @@ function addRow(container, property, title, icon, student, protocol) {
     }
 }
 
+function createPronunciationButton(person) {
+    let button = document.createElement('span');
+    button.className = 'pronunciation';
+    if (person.phonetic_name) {
+        button.title = person.phonetic_name;
+    }
+    let icon = document.createElement('i');
+    icon.className = 'fa fa-volume-up';
+
+    let audio = document.createElement('audio');
+    let source = document.createElement('source');
+    source.src = person.name_recording;
+    // All pronunciations appear to be mp3 files
+    source.type = 'audio/mpeg';
+    audio.appendChild(source);
+
+    icon.appendChild(audio);
+    button.appendChild(icon);
+    return button;
+}
+
 function loadNextPage() {
     if (!pagesFinished) {
         p.empty.style.display = 'none';
@@ -219,6 +240,10 @@ function loadNextPage() {
                     let name = document.createElement('h3');
                     name.className = 'name';
                     name.textContent = student.last_name + ', ' + student.first_name;
+                    if (student.name_recording) {
+                        name.textContent += ' ';
+                        name.appendChild(createPronunciationButton(student));
+                    }
                     studentContainer.appendChild(name);
 
                     if (student.netid || student.upi) {
