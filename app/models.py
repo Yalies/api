@@ -82,14 +82,16 @@ class Person(SearchableMixin, db.Model):
         'organization_code', 'organization', 'unit_class', 'unit_code', 'unit', 'office_building',
     )
     __serializable__ = (
-        'netid', 'upi', 'email', 'mailbox', 'phone',
+        'netid', 'upi', 'email', 'mailbox', 'phone', 'fax',
         'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronoun',
+        'phonetic_name', 'name_recording',
         'school_code', 'school', 'year', 'curriculum',
         'college', 'college_code', 'leave', 'eli_whitney', 'image', 'birthday',
         'residence', 'building_code', 'entryway', 'floor', 'suite', 'room',
         'major', 'address', 'access_code',
         'organization_code', 'organization', 'unit_class', 'unit_code', 'unit',
         'postal_address', 'office_building', 'office_room',
+        'cv', 'profile', 'website', 'education', 'publications',
     )
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
