@@ -26,6 +26,9 @@
     width: 100px;
     height: 120px;
 }
+.pronunciation.playing {
+    color: #00d018;
+}
 .pills {
     margin-top: 4px;
 }
