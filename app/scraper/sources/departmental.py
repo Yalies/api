@@ -115,10 +115,20 @@ class Departmental(Source):
             if record.get('email'):
                 person_i = emails.get(record['email'])
             if not person_i:
+                matches_found = 0
+                latest_person_i = None
                 for i, person in enumerate(people):
                     if self.name_matches(person, record['name']):
-                        person_i = i
-                        break
+                        matches_found += 1
+                        latest_person_i = i
+                # If we find one match, excellent.
+                # But if we find more than one, there are multiple people with this name, and unless
+                # we can establish which one to choose, we run the risk of matching with the wrong person,
+                # so in this case we'll skip this record.
+                if matches_found == 1:
+                    person_i = latest_person_i
+                else:
+                    print('Found multiple name matches, skipping.')
 
             # Add in data if we found a match
             if person_i:
