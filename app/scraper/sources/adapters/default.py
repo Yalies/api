@@ -105,7 +105,9 @@ class Default(Adapter):
                 card.find('a', {'class': 'username'}) or
                 card.select_one('.user-picture a') or
                 # TODO: make sure there aren't any cards that have no link but do have emails
-                card.find('a:not(.views-field-field-lab-enter-year a, .views-field-field-orcid a)')
+                card.find('a:not(.views-field-field-lab-enter-year a, .views-field-field-orcid a)') or
+                # Applied Math website only
+                card.select_one('td.views-field-name a:first-child')
             )
             if username is None:
                 # There's no profile link; just get what we can from the card

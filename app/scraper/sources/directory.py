@@ -186,7 +186,7 @@ class Directory(Source):
             # primary_organization_id: always empty
             # primary_division_name: always the same as organization_name
             # display_name, matched: useless
-            # residential_college_name, student_expected_graduation_year: useless or from face book
+            # residential_college_name: from face book
         })
         if person['organization'] and not person['organization_code'] and person['school_code']:
             # This is a student, but their organization is still listed.
