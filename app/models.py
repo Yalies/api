@@ -74,7 +74,7 @@ class Person(SearchableMixin, db.Model):
     __searchable__ = ('first_name', 'last_name', 'netid', 'college', 'email', 'residence', 'major', 'address')
     __filterable_identifiable__ = (
         'netid', 'upi', 'email', 'mailbox', 'phone',
-        'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronoun',
+        'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronouns',
         'access_code', 'birthday', 'residence', 'office_room',
     )
     __filterable__ = (
@@ -84,7 +84,7 @@ class Person(SearchableMixin, db.Model):
     )
     __serializable__ = (
         'netid', 'upi', 'email', 'mailbox', 'phone', 'fax',
-        'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronoun',
+        'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronouns',
         'phonetic_name', 'name_recording',
         'school_code', 'school', 'year', 'curriculum',
         'college', 'college_code', 'leave', 'eli_whitney', 'image', 'birthday',
@@ -112,7 +112,7 @@ class Person(SearchableMixin, db.Model):
     middle_name = db.Column(db.String)
     last_name = db.Column(db.String, nullable=False)
     suffix = db.Column(db.String)
-    pronoun = db.Column(db.String)
+    pronouns = db.Column(db.String)
 
     phonetic_name = db.Column(db.String)
     name_recording = db.Column(db.String)

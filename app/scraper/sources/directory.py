@@ -207,7 +207,7 @@ class Directory(Source):
             person.update({
                 'phonetic_name': pronunciation.phonetic_spelling,
                 'name_recording': pronunciation.recording_url,
-                'pronoun': person.get('pronoun') or pronunciation.pronouns,
+                'pronouns': person.get('pronouns') or pronunciation.pronouns,
             })
 
         return person

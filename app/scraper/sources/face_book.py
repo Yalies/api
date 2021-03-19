@@ -136,8 +136,8 @@ class FaceBook(Source):
 
             person['last_name'], person['first_name'] = self.clean_name(container.find('h5', {'class': 'yalehead'}).text)
             person['year'] = self.clean_year(container.find('div', {'class': 'student_year'}).text)
-            pronoun = container.find('div', {'class': 'student_info_pronoun'}).text
-            person['pronoun'] = pronoun if pronoun else None
+            pronouns = container.find('div', {'class': 'student_info_pronoun'}).text
+            person['pronouns'] = pronouns if pronouns else None
 
             info = container.find_all('div', {'class': 'student_info'})
 
