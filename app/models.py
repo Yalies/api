@@ -169,8 +169,10 @@ class Person(SearchableMixin, db.Model):
             person_query = Person.query_search(query)
         else:
             person_query = person_query.order_by(
-                collate(Person.last_name, 'NOCASE'),
-                collate(Person.first_name, 'NOCASE'),
+                #collate(Person.last_name, 'NOCASE'),
+                #collate(Person.first_name, 'NOCASE'),
+                Person.last_name,
+                Person.first_name,
             )
         if filters:
             for category in filters:
