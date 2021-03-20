@@ -15,6 +15,8 @@ class Source:
             phone = str(phone)
         phone = self.RE_PHONE_COUNTRY_CODE.sub('', phone)
         phone = self.RE_PHONE_DISALLOWED_CHARACTERS.sub('', phone)
+        if phone in ('1111111111'):
+            return None
         return phone
 
     ###############
