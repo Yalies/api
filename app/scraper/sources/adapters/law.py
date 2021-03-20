@@ -35,6 +35,9 @@ class Law(Adapter):
             leave = person_soup.find('p', {'class': 'on-leave'})
             if leave:
                 person['leave'] = bool(leave.text.strip())
+            image = person_soup.select_one('img[typeof="foaf:Image"]')
+            if image:
+                person['image'] = image['src']
             contacts = person_soup.select_one('div.faculty-content ul')
             person.update({
                 'room_number': self.extract_field(contacts, 'door'),
