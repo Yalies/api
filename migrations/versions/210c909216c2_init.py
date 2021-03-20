@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 16efb9fe176b
+Revision ID: 210c909216c2
 Revises: 
-Create Date: 2021-03-14 21:56:06.457425
+Create Date: 2021-03-19 20:54:58.119101
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '16efb9fe176b'
+revision = '210c909216c2'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,13 +25,17 @@ def upgrade():
     sa.Column('email', sa.String(), nullable=True),
     sa.Column('mailbox', sa.String(), nullable=True),
     sa.Column('phone', sa.String(), nullable=True),
+    sa.Column('fax', sa.String(), nullable=True),
     sa.Column('title', sa.String(), nullable=True),
     sa.Column('first_name', sa.String(), nullable=False),
     sa.Column('preferred_name', sa.String(), nullable=True),
     sa.Column('middle_name', sa.String(), nullable=True),
     sa.Column('last_name', sa.String(), nullable=False),
     sa.Column('suffix', sa.String(), nullable=True),
-    sa.Column('pronoun', sa.String(), nullable=True),
+    sa.Column('pronouns', sa.String(), nullable=True),
+    sa.Column('phonetic_name', sa.String(), nullable=True),
+    sa.Column('name_recording', sa.String(), nullable=True),
+    sa.Column('address', sa.String(), nullable=True),
     sa.Column('school_code', sa.String(), nullable=True),
     sa.Column('school', sa.String(), nullable=True),
     sa.Column('year', sa.Integer(), nullable=True),
@@ -49,7 +53,6 @@ def upgrade():
     sa.Column('suite', sa.Integer(), nullable=True),
     sa.Column('room', sa.String(), nullable=True),
     sa.Column('major', sa.String(), nullable=True),
-    sa.Column('address', sa.String(), nullable=True),
     sa.Column('access_code', sa.String(), nullable=True),
     sa.Column('organization_code', sa.String(), nullable=True),
     sa.Column('organization', sa.String(), nullable=True),
@@ -59,6 +62,11 @@ def upgrade():
     sa.Column('postal_address', sa.String(), nullable=True),
     sa.Column('office_building', sa.String(), nullable=True),
     sa.Column('office_room', sa.String(), nullable=True),
+    sa.Column('cv', sa.String(), nullable=True),
+    sa.Column('profile', sa.String(), nullable=True),
+    sa.Column('website', sa.String(), nullable=True),
+    sa.Column('education', sa.String(), nullable=True),
+    sa.Column('publications', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
