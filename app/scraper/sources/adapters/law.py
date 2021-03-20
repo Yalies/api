@@ -49,7 +49,11 @@ class Law(Adapter):
                 person['cv'] = cv['href']
             website = person_soup.select_one('div.field-name-field-additional-links a')
             if website:
-                person['website'] = website['href']
+                person['website'] = website['href'].rstrip('/')
+            # TODO: check that this won't select unintended things
+            education = person_soup.select('.col-sm-4:nth-child(2) .faculty-content > p')
+            if education:
+                person['education'] = '\n'.join([ed.text.strip() for ed in education]).strip()
 
             people.append(person)
             print('Parsed ' + person['name'])
