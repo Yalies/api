@@ -128,9 +128,7 @@ class Default(Adapter):
                     title = title.replace('<br/>', ', ')
                     person['title'] = title.strip()
                     #person['division'] = division.strip()
-                orcid = self.extract_field_url(card, 'orcid')
-                if orcid is not None:
-                    person['orcid'] = orcid.replace('http://orcid.org/', '').replace('https://orcid.org/', '')
+                person['publications'] = self.extract_field_url(card, 'orcid')
             else:
                 person = {
                     'profile': self.get_url(username['href'], department['url'])
