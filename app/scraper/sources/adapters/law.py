@@ -47,6 +47,9 @@ class Law(Adapter):
             cv = person_soup.select_one('div.faculty-content li.document a')
             if cv:
                 person['cv'] = cv['href']
+            website = person_soup.select_one('div.field-name-field-additional-links a')
+            if website:
+                person['website'] = website['href']
 
             people.append(person)
             print('Parsed ' + person['name'])
