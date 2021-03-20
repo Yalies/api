@@ -249,14 +249,12 @@ function loadNextPage() {
                     let studentContainer = document.createElement('div');
                     studentContainer.className = 'student';
 
-                    let img = document.createElement('img');
-                    img.className = 'image';
+                    let image = document.createElement('div');
+                    image.className = 'image';
                     if (student.image) {
-                        img.src = student.image;
-                    } else {
-                        img.src = '/static/images/user.png';
+                        image.style.backgroundImage = 'url(' + student.image + ')';
                     }
-                    studentContainer.appendChild(img);
+                    studentContainer.appendChild(image);
                     let name = document.createElement('h3');
                     name.className = 'name';
                     name.textContent = student.last_name + ', ' + student.first_name;

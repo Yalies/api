@@ -22,9 +22,12 @@
     max-width: 80%;
 }
 
-#list img {
+#list div.image {
     width: 100px;
     height: 120px;
+    background-size: cover;
+    background-image: url(/static/images/user.png);
+    background-position: center center;
 }
 .pronunciation.playing {
     color: #00d018;
