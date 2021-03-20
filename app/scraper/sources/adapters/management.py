@@ -37,7 +37,7 @@ class Management(Adapter):
                     for link in info_list.select('li.url a'):
                         # TODO: are these all the options?
                         if 'Website' in link.text or 'Webpage' in link.text:
-                            person['website'] = link['href']
+                            person['website'] = link['href'].rstrip('/')
                         elif 'CV' in link.text:
                             person['cv'] = link['href']
 
