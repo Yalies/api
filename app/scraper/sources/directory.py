@@ -103,7 +103,7 @@ class Directory(Source):
         MAX_CHARS_IN_PREFIX = 3
         if len(prefix) < MIN_CHARS_IN_PREFIX:
             choices = self.letters
-        elif len(prefix) >= MAX_CHARS_IN_PREFIX or (len(prefix) != 0 and prefix[-1] not in self.letters):
+        elif len(prefix) >= MAX_CHARS_IN_PREFIX and (len(prefix) != 0 and prefix[-1] in self.numbers):
             choices = self.numbers
         else:
             choices = self.characters
