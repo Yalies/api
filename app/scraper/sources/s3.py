@@ -24,7 +24,8 @@ class ImageUploader:
         page_iterator = paginator.paginate(Bucket=S3_BUCKET_NAME)
         files = set()
         for page in page_iterator:
-            files.update({obj['Key'] for obj in page['Contents']})
+            if page.get('Contents'):
+                files.update({obj['Key'] for obj in page['Contents']})
         return files
 
     def get_image_filename(self, image_id, person):
