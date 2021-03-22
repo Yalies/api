@@ -23,19 +23,21 @@ class Source:
     # Scraping flow
     ###############
 
+    new_people = None
+
     def scrape(self, current_people):
         """
         Read all people from this source.
         """
         raise NotImplementedError
 
-    def merge(self, current_people, new_people):
+    def merge(self, current_people):
         """
         Given list of people from previous sources, merge in newly scraped people.
         :param current_people: list of people scraped from previous sources.
         :param new_people: list of new people scraped from this source.
         """
-        return current_people + new_people
+        return current_people + self.new_people
 
     def integrate(self, current_people):
         """
@@ -43,5 +45,5 @@ class Source:
         :param people: list of existing people from previous sources.
         :return: list with new records integrated.
         """
-        new_people = self.scrape(current_people)
-        return self.merge(current_people, new_people)
+        self.scrape(current_people)
+        return self.merge(current_people)

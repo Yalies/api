@@ -47,7 +47,7 @@ class Departmental(Source):
         people = []
         for department in departments:
             people += self.scrape_department(department)
-        return people
+        self.new_people = people
 
     #########
     # Merging

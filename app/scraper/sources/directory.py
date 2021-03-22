@@ -121,16 +121,14 @@ class Directory(Source):
         people = []
         # Fetch non-undergrad users by iterating netids
         # Get set of netids for students we've already processed
-        checked_netids = {person_dict.get('netid') for person_dict in current_people if 'netid' in person_dict}
         directory_entries = self.read_directory()
         for entry in directory_entries:
-            if entry.netid not in checked_netids:
-                print('Parsing directory entry with NetID ' + entry.netid)
-                checked_netids.add(entry.netid)
-                person = self.merge_one({}, entry)
-                people.append(person)
+            print('Parsing directory entry with NetID ' + entry.netid)
+            checked_netids.add(entry.netid)
+            person = self.merge_one({}, entry)
+            people.append(person)
 
-        return people
+        self.new_people = people
 
     #########
     # Merging
@@ -202,3 +200,13 @@ class Directory(Source):
             person['year'] = int(entry.student_expected_graduation_year)
 
         return person
+
+    def merge(self, current_people):
+        checked_netids = {person_dict.get('netid') for person_dict in current_people if 'netid' in person_dict}
+        new_entries = [
+            person for person in self.new_people
+            if 'netid' in person and person['netid'] not in checked_netids
+        ]
+        return current_people + new_entries
+
+

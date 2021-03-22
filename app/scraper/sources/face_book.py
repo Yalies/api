@@ -230,4 +230,4 @@ class FaceBook(Source):
         people = self.compare_years('pre2020', people, emails)
         people = self.compare_years('fall2020', people, emails)
 
-        return people
+        self.new_people = people
