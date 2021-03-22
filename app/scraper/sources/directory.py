@@ -201,13 +201,4 @@ class Directory(Source):
         if not person.get('year') and entry.student_expected_graduation_year:
             person['year'] = int(entry.student_expected_graduation_year)
 
-        pronunciation = self.directory.pronounce(person['email'])
-        if pronunciation:
-            print('Found pronunciation: ' + pronunciation.recording_url)
-            person.update({
-                'phonetic_name': pronunciation.phonetic_spelling,
-                'name_recording': pronunciation.recording_url,
-                'pronouns': person.get('pronouns') or pronunciation.pronouns,
-            })
-
         return person
