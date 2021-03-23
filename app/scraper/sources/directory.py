@@ -124,7 +124,6 @@ class Directory(Source):
         directory_entries = self.read_directory()
         for entry in directory_entries:
             print('Parsing directory entry with NetID ' + entry.netid)
-            checked_netids.add(entry.netid)
             person = self.merge_one({}, entry)
             people.append(person)
 
