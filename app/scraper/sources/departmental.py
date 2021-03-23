@@ -110,7 +110,7 @@ class Departmental(Source):
         people = current_people
         emails = {person['email']: i for i, person in enumerate(people) if person.get('email')}
 
-        for record in people:
+        for record in self.new_people:
             person_i = None
             if record.get('email'):
                 person_i = emails.get(record['email'])
@@ -125,7 +125,7 @@ class Departmental(Source):
                 # But if we find more than one, there are multiple people with this name, and unless
                 # we can establish which one to choose, we run the risk of matching with the wrong person,
                 # so in this case we'll skip this record.
-                if matches_found == 1:
+                if matches_found <= 1:
                     person_i = latest_person_i
                 else:
                     print('Found multiple name matches, skipping.')
