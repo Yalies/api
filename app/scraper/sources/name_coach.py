@@ -1,5 +1,8 @@
 from .source import Source
 
+import yaledirectory
+
+
 class NameCoach(Source):
     def __init__(self, people_search_session_cookie, csrf_token):
         self.directory = yaledirectory.API(people_search_session_cookie, csrf_token)
@@ -22,6 +25,7 @@ class NameCoach(Source):
             else:
                 print('No pronunciation found for ' + person['email'] + '.')
                 pronunciations.append(None)
+        self.new_people = pronunciations
 
     def merge(self, current_people):
         """
@@ -32,4 +36,5 @@ class NameCoach(Source):
         people = []
         for person, pronunciation in zip(current_people, self.new_people):
             people.append({**person, **pronunciation})
+        self.people = people
         return people

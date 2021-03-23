@@ -24,10 +24,11 @@ class Source:
     ###############
 
     new_people = None
+    people = None
 
     def scrape(self, current_people):
         """
-        Read all people from this source.
+        Read all people from this source and store to new_people.
         """
         raise NotImplementedError
 
