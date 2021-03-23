@@ -14,7 +14,7 @@ class NameCoach(Source):
     def scrape(self, current_people):
         pronunciations = []
         for person in current_people:
-            if not person['email']:
+            if not person.get('email'):
                 print('No email found, skipping pronunciation search.')
                 pronunciations.append(None)
                 continue
