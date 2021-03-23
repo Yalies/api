@@ -39,6 +39,8 @@ class NameCoach(Source):
         """
         people = []
         for person, pronunciation in zip(current_people, self.new_people):
-            people.append({**person, **pronunciation})
+            if pronunciation:
+                person.update(pronunciation)
+            people.append(person)
         self.people = people
         return people
