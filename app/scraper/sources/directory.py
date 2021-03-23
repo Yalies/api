@@ -201,7 +201,6 @@ class Directory(Source):
         return person
 
     def merge(self, current_people):
-        print(self.new_people)
         checked_netids = {person_dict.get('netid') for person_dict in current_people if 'netid' in person_dict}
         new_entries = [
             person for person in self.new_people

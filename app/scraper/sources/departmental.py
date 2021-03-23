@@ -106,11 +106,11 @@ class Departmental(Source):
                 person[field] = entry[field]
         return person
 
-    def merge(self, current_people, new_people):
+    def merge(self, current_people):
         people = current_people
         emails = {person['email']: i for i, person in enumerate(people) if person.get('email')}
 
-        for record in new_people:
+        for record in people:
             person_i = None
             if record.get('email'):
                 person_i = emails.get(record['email'])
