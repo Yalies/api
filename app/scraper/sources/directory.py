@@ -4,6 +4,7 @@ import yaledirectory
 import requests
 import re
 import string
+from threading import Thread
 
 
 class Directory(Source):
@@ -50,6 +51,8 @@ class Directory(Source):
     letters = string.ascii_lowercase
     numbers = string.digits
     characters = letters + numbers
+
+    directory_entries = []
 
     def get_directory_entry(self, person):
         query = {
@@ -113,6 +116,10 @@ class Directory(Source):
             res += self.read_directory(prefix + choice)
         return res
 
+    def read_directory_async(self, prefix):
+        directory_entries = self.read_directory(prefix=prefix)
+        self.directory_entries += directory_entries
+
     def scrape(self, current_people):
         """
         Fetch new records and integrate.
@@ -121,13 +128,20 @@ class Directory(Source):
         people = []
         # Fetch non-undergrad users by iterating netids
         # Get set of netids for students we've already processed
-        directory_entries = self.read_directory()
-        for entry in directory_entries:
+        threads = []
+        for prefix in self.letters:
+            thread = Thread(target=self.read_directory_async, args=(prefix,))
+            thread.start()
+            threads.append(thread)
+        for thread in threads:
+            thread.join()
+        for entry in self.directory_entries:
             print('Parsing directory entry with NetID ' + entry.netid)
             person = self.merge_one({}, entry)
             people.append(person)
 
         self.new_people = people
+        print(self.new_people)
 
     #########
     # Merging
@@ -208,5 +222,3 @@ class Directory(Source):
         ]
         people = current_people + new_entries
         return people
-
-
