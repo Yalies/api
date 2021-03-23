@@ -139,9 +139,3 @@ class Departmental(Source):
                 print(record)
 
         return people
-
-if __name__ == '__main__':
-    departmental = Departmental()
-    people = departmental.scrape()
-    with open('/tmp/people.json', 'w') as f:
-        json.dump(people, f)
