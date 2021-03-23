@@ -17,6 +17,7 @@ class NameCoach(Source):
             if not person['email']:
                 print('No email found, skipping pronunciation search.')
                 pronunciations.append(None)
+                continue
             pronunciation = self.directory.pronounce(person['email'])
             if pronunciation:
                 print('Found pronunciation for ' + person['email'] + ': ' + pronunciation.recording_url)
