@@ -30,18 +30,25 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     departmental = sources.Departmental()
 
     print('Beginning scrape.')
-    people = []
+    backup_file = 'people.json'
+    if os.path.exists(backup_file):
+        with open(backup_file, 'r') as f:
+            people = json.load(f)
+    else:
+        people = []
 
-    thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
-                              args=(face_book, directory, name_coach))
-    thread_departmental = Thread(target=departmental.scrape, args=(people,))
-    thread_fb_dir_nc.start()
-    thread_departmental.start()
-    thread_fb_dir_nc.join()
-    thread_departmental.join()
-    # TODO: find a cleaner way to exchange this data
-    people = name_coach.people
-    people = departmental.merge(people)
+        thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
+                                  args=(face_book, directory, name_coach))
+        thread_departmental = Thread(target=departmental.scrape, args=(people,))
+        thread_fb_dir_nc.start()
+        thread_departmental.start()
+        thread_fb_dir_nc.join()
+        thread_departmental.join()
+        # TODO: find a cleaner way to exchange this data
+        people = name_coach.people
+        people = departmental.merge(people)
+        with open(backup_file, 'w') as f:
+            json.dump(people, f)
 
     # Store people into database
     Person.query.delete()
