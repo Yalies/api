@@ -2,6 +2,7 @@ from .source import Source
 
 import json
 import hashlib
+from threading import Thread
 from app.scraper.sources import adapters
 #import adapters
 
@@ -23,12 +24,14 @@ class Departmental(Source):
         'nursing': adapters.Nursing(),
         'seas': adapters.Seas(),
     }
+    new_people = None
 
     def scrape_department(self, department):
         print('Scraping department: ' + department['name'])
         website_type = department.get('website_type')
         adapter = self.ADAPTERS.get(website_type)
-        return adapter.scrape(department)
+        new_people = adapter.scrape(department)
+        self.new_people += new_people
 
     def scrape(self, current_people):
         # TEMPORARY
@@ -44,11 +47,16 @@ class Departmental(Source):
         if enabled_departments:
             departments = enabled_departments
 
-        people = []
+        self.new_people = []
+        threads = []
         for department in departments:
-            people += self.scrape_department(department)
-        self.new_people = people
+            thread = Thread(target=self.scrape_department, args=(department,))
+            thread.start()
+            threads.append(thread)
+        for thread in threads:
+            thread.join()
 
+        return self.new_people
     #########
     # Merging
     #########
