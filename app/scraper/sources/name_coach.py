@@ -1,6 +1,7 @@
 from .source import Source
 
 import yaledirectory
+from threading import Thread
 
 
 class NameCoach(Source):
@@ -11,25 +12,35 @@ class NameCoach(Source):
     # Scraping
     ##########
 
-    def scrape(self, current_people):
-        pronunciations = []
-        for person in current_people:
+    PAGE_SIZE = 1000
+
+    def scrape_range(self, current_people, begin, end):
+        for index in range(begin, end):
+            person = current_people[index]
             if not person.get('email'):
                 print('No email found, skipping pronunciation search.')
-                pronunciations.append(None)
                 continue
             pronunciation = self.directory.pronounce(person['email'])
             if pronunciation:
                 print('Found pronunciation for ' + person['email'] + ': ' + pronunciation.recording_url)
-                pronunciations.append({
+                self.new_people[index] = {
                     'phonetic_name': pronunciation.phonetic_spelling,
                     'name_recording': pronunciation.recording_url,
                     'pronouns': person.get('pronouns') or pronunciation.pronouns,
-                })
+                }
             else:
                 print('No pronunciation found for ' + person['email'] + '.')
-                pronunciations.append(None)
-        self.new_people = pronunciations
+
+    def scrape(self, current_people):
+        self.new_people = [None] * len(current_people)
+        threads = []
+        for begin in range(0, len(self.new_people), self.PAGE_SIZE):
+            thread = Thread(target=self.scrape_range, args=(current_people, begin, begin + self.PAGE_SIZE))
+            thread.start()
+            threads.append(thread)
+        for thread in threads:
+            thread.join()
+        return self.new_people
 
     def merge(self, current_people):
         """
