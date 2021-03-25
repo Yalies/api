@@ -36,6 +36,19 @@ class Source:
         """
         raise NotImplementedError
 
+    def pull(self, current_people):
+        """
+        Read data from this source, either through redis cache or by scraping.
+        """
+        redis_key = 'scraped_data.' + self.__class__.__name__
+        current_cache = self.redis.get(redis_key)
+        if current_cache:
+            return json.loads(current_cache)
+        else:
+            scraped_data = self.scrape(current_people)
+            self.redis.set(redis_key, json.dump(scraped_data))
+            return scraped_data
+
     def merge(self, current_people):
         """
         Given list of people from previous sources, merge in newly scraped people.
