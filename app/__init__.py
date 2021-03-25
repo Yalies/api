@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cas import CAS
+from flask_redis import FlaskRedis
 from elasticsearch import Elasticsearch
 
 
@@ -16,6 +17,7 @@ cors = CORS(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 cas = CAS(app)
+redis = FlaskRedis(app)
 elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
     if app.config['ELASTICSEARCH_URL'] else None
 
