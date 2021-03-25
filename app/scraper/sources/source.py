@@ -1,6 +1,10 @@
 import re
+import json
 
 class Source:
+    def __init__(self, redis):
+        self.redis = redis
+
     ###########
     # Utilities
     ###########

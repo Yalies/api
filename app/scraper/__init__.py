@@ -1,4 +1,4 @@
-from app import app, db, celery
+from app import app, db, celery, redis
 from app.models import Person
 
 from app.scraper import sources

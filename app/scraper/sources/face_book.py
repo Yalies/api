@@ -24,7 +24,8 @@ with open('app/scraper/res/major_full_names.json') as f:
 class FaceBook(Source):
     FERNET_KEY = os.environ.get('FERNET_KEY')
 
-    def __init__(self, cookie, directory):
+    def __init__(self, redis, cookie, directory):
+        super().__init__(redis)
         self.cookie = cookie
         self.directory = directory
         self.image_uploader = ImageUploader()
