@@ -39,12 +39,3 @@ class Source:
         :param new_people: list of new people scraped from this source.
         """
         return current_people + self.new_people
-
-    def integrate(self, current_people):
-        """
-        Run scraper and integrate results into existing list of people.
-        :param people: list of existing people from previous sources.
-        :return: list with new records integrated.
-        """
-        self.scrape(current_people)
-        return self.merge(current_people)
