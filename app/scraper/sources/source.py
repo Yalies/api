@@ -43,7 +43,8 @@ class Source:
         redis_key = 'scraped_data.' + self.__class__.__name__
         current_cache = self.redis.get(redis_key)
         if current_cache:
-            return json.loads(current_cache)
+            self.new_people = json.loads(current_cache)
+            return self.new_people
         else:
             scraped_data = self.scrape(current_people)
             self.redis.set(redis_key, json.dumps(scraped_data))
