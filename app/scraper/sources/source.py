@@ -46,7 +46,7 @@ class Source:
             return json.loads(current_cache)
         else:
             scraped_data = self.scrape(current_people)
-            self.redis.set(redis_key, json.dump(scraped_data))
+            self.redis.set(redis_key, json.dumps(scraped_data))
             return scraped_data
 
     def merge(self, current_people):
