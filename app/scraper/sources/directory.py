@@ -141,8 +141,8 @@ class Directory(Source):
             person = self.merge_one({}, entry)
             people.append(person)
 
-        self.new_people = people
-        print(self.new_people)
+        self.new_records = people
+        print(self.new_records)
 
     #########
     # Merging
@@ -218,7 +218,7 @@ class Directory(Source):
     def merge(self, current_people):
         checked_netids = {person_dict.get('netid') for person_dict in current_people if 'netid' in person_dict}
         new_entries = [
-            person for person in self.new_people
+            person for person in self.new_records
             if 'netid' in person and person['netid'] not in checked_netids
         ]
         people = current_people + new_entries

@@ -24,7 +24,7 @@ class NameCoach(Source):
             pronunciation = self.directory.pronounce(person['email'])
             if pronunciation:
                 print('Found pronunciation for ' + person['email'] + ': ' + pronunciation.recording_url)
-                self.new_people[index] = {
+                self.new_records[index] = {
                     'phonetic_name': pronunciation.phonetic_spelling,
                     'name_recording': pronunciation.recording_url,
                     'pronouns': person.get('pronouns') or pronunciation.pronouns,
@@ -33,24 +33,24 @@ class NameCoach(Source):
                 print('No pronunciation found for ' + person['email'] + '.')
 
     def scrape(self, current_people):
-        self.new_people = [None] * len(current_people)
+        self.new_records = [None] * len(current_people)
         threads = []
-        for begin in range(0, len(self.new_people), self.PAGE_SIZE):
+        for begin in range(0, len(self.new_records), self.PAGE_SIZE):
             thread = Thread(target=self.scrape_range, args=(current_people, begin, begin + self.PAGE_SIZE))
             thread.start()
             threads.append(thread)
         for thread in threads:
             thread.join()
-        return self.new_people
+        return self.new_records
 
     def merge(self, current_people):
         """
         Given list of people from previous sources, merge in newly scraped people.
         :param current_people: list of people scraped from previous sources.
-        :param new_people: list of new people scraped from this source.
+        :param new_records: list of new people scraped from this source.
         """
         people = []
-        for person, pronunciation in zip(current_people, self.new_people):
+        for person, pronunciation in zip(current_people, self.new_records):
             if pronunciation:
                 person.update(pronunciation)
             people.append(person)

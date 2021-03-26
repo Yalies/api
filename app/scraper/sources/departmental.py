@@ -24,14 +24,14 @@ class Departmental(Source):
         'nursing': adapters.Nursing(),
         'seas': adapters.Seas(),
     }
-    new_people = None
+    new_records = None
 
     def scrape_department(self, department):
         print('Scraping department: ' + department['name'])
         website_type = department.get('website_type')
         adapter = self.ADAPTERS.get(website_type)
-        new_people = adapter.scrape(department)
-        self.new_people += new_people
+        new_records = adapter.scrape(department)
+        self.new_records += new_records
 
     def scrape(self, current_people):
         # TEMPORARY
@@ -47,7 +47,7 @@ class Departmental(Source):
         if enabled_departments:
             departments = enabled_departments
 
-        self.new_people = []
+        self.new_records = []
         threads = []
         for department in departments:
             thread = Thread(target=self.scrape_department, args=(department,))
@@ -56,7 +56,7 @@ class Departmental(Source):
         for thread in threads:
             thread.join()
 
-        return self.new_people
+        return self.new_records
     #########
     # Merging
     #########
@@ -118,7 +118,7 @@ class Departmental(Source):
         people = current_people
         emails = {person['email']: i for i, person in enumerate(people) if person.get('email')}
 
-        for record in self.new_people:
+        for record in self.new_records:
             person_i = None
             if record.get('email'):
                 person_i = emails.get(record['email'])
