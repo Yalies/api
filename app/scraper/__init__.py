@@ -32,26 +32,22 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     print('Beginning scrape.')
 
     cache_key = 'scraped_data'
-    current_cache = redis.get(cache_key)
-    if current_cache:
-        current_cache = json.loads(current_cache)
-
-    if current_cache:
-        people = current_cache
+    cache_file = 'people.json'
+    if os.path.exists(cache_file):
+        with open(cache_file, 'r') as f:
+            people = json.load(f)
     else:
         people = []
         thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
                                   args=(face_book, directory, name_coach))
-        #thread_departmental = Thread(target=departmental.pull, args=(people,))
+        thread_departmental = Thread(target=departmental.pull, args=(people,))
         thread_fb_dir_nc.start()
-        #thread_departmental.start()
+        thread_departmental.start()
         thread_fb_dir_nc.join()
-        #thread_departmental.join()
+        thread_departmental.join()
         # TODO: find a cleaner way to exchange this data
         people = name_coach.people
-        print('::::::' * 5)
-        print(people)
-        #people = departmental.merge(people)
+        people = departmental.merge(people)
         redis.set(cache_key, json.dumps(people))
 
     # Store people into database
