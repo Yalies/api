@@ -2,8 +2,8 @@ import re
 import json
 
 class Source:
-    def __init__(self, redis):
-        self.redis = redis
+    def __init__(self, cache):
+        self.cache = cache
 
     ###########
     # Utilities

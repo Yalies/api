@@ -1,4 +1,4 @@
-from app import app, db, celery, redis
+from app import app, db, celery
 from app.models import Person
 
 from app.scraper import sources
@@ -24,10 +24,11 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     print('Initializing sources.')
-    directory = sources.Directory(redis, people_search_session_cookie, csrf_token)
-    face_book = sources.FaceBook(redis, face_book_cookie, directory)
-    name_coach = sources.NameCoach(redis, people_search_session_cookie, csrf_token)
-    departmental = sources.Departmental(redis)
+    cache = Cache()
+    directory = sources.Directory(cache, people_search_session_cookie, csrf_token)
+    face_book = sources.FaceBook(cache, face_book_cookie, directory)
+    name_coach = sources.NameCoach(cache, people_search_session_cookie, csrf_token)
+    departmental = sources.Departmental(cache)
 
     print('Beginning scrape.')
 

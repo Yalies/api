@@ -8,8 +8,8 @@ from threading import Thread
 
 
 class Directory(Source):
-    def __init__(self, redis, people_search_session_cookie, csrf_token):
-        super().__init__(redis)
+    def __init__(self, cache, people_search_session_cookie, csrf_token):
+        super().__init__(cache)
         self.directory = yaledirectory.API(people_search_session_cookie, csrf_token)
 
     ##########
