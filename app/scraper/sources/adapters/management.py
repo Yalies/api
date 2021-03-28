@@ -15,7 +15,7 @@ class Management(Adapter):
 
         for profile_url in profile_urls:
             person = {
-                'profile': profile_url,
+                'profile': profile_url.rstrip('/'),
             }
             person_soup = self.get_soup(profile_url)
             name = person_soup.find('h1', {'id': 'page-title'})
