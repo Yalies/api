@@ -69,9 +69,9 @@ class Medicine(Adapter):
             if cv:
                 person['cv'] = cv['href']
 
-            bio = person_soup.find('div', {'class': 'profile-details-biography-tab__biography'})
-            if bio:
-                person['bio'] = bio.text.strip()
+            #bio = person_soup.find('div', {'class': 'profile-details-biography-tab__biography'})
+            #if bio:
+            #    person['bio'] = bio.text.strip()
 
             print('Parsed ' + person['name'])
             people.append(person)
