@@ -263,6 +263,11 @@
         "url": "https://eall.yale.edu",
         "paths": [
             "/people/all"
+        ],
+        "ignored_images": [
+            "24bb2c879f04216e2410610c75e35d79",
+            "d2faaaf755355cbbcf052cce694f22b3",
+            "33a6476f5426cc5e977d15ca31488ac5"
         ]
     },
     {
