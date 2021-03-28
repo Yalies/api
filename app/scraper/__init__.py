@@ -33,11 +33,8 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     print('Beginning scrape.')
 
     cache_key = 'scraped_data'
-    cache_file = 'people.json'
-    if os.path.exists(cache_file):
-        with open(cache_file, 'r') as f:
-            people = json.load(f)
-    else:
+    people = cache.get(cache_key)
+    if not people:
         people = []
         thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
                                   args=(face_book, directory, name_coach))
@@ -49,7 +46,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         # TODO: find a cleaner way to exchange this data
         people = name_coach.people
         people = departmental.merge(people)
-        redis.set(cache_key, json.dumps(people))
+        cache.set(cache_key, json.dumps(people))
 
     # Store people into database
     Person.query.delete()
