@@ -2,6 +2,7 @@ from app import app, db, celery
 from app.models import Person
 
 from app.scraper import sources
+from .cache import Cache
 import json
 import os
 from threading import Thread
