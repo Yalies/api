@@ -38,19 +38,17 @@ class Source:
 
     def pull(self, current_people):
         """
-        Read data from this source, either through redis cache or by scraping.
+        Read data from this source, either through cache or by running scraper.
         """
-        redis_key = 'scraped_data.' + self.__class__.__name__
-        current_cache = self.redis.get(redis_key)
-        if current_cache:
-            current_cache = json.loads(current_cache)
+        cache_key = 'scraped_data.' + self.__class__.__name__
+        people = self.cache.get(cache_key)
 
-        if current_cache:
-            self.new_records = current_cache
+        if people:
+            self.new_records = people
             return self.new_records
         else:
             self.scrape(current_people)
-            self.redis.set(redis_key, json.dumps(self.new_records))
+            self.cache.set(cache_key, self.new_records)
             return self.new_records
 
     def merge(self, current_people):
