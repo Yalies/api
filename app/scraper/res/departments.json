@@ -700,6 +700,9 @@
             "/people/postdoctoral-researchers",
             "/people/graduate-students",
             "/people/administrative-staff"
+        ],
+        "ignored_images": [
+            "fb2acb6937fd0097da3462e0c0f55feb"
         ]
     },
     {
