@@ -170,7 +170,7 @@ p.submit.onclick = function() {
     runSearch();
 };
 
-function addRow(container, property, title, icon, student, protocol) {
+function addRow(container, property, title, icon, student, url, showTitle) {
     let value = student[property];
     if (value) {
         let row = document.createElement('div');
@@ -191,10 +191,14 @@ function addRow(container, property, title, icon, student, protocol) {
             //    readout.appendChild(document.createTextNode(line));
             //}
             readout.textContent = lines[lines.length - 1];
-        } else if (protocol) {
+        } else if (url) {
             let a = document.createElement('a');
-            a.href = protocol + ':' + value;
-            a.textContent = value;
+            a.href = url;
+            if (showTitle) {
+                a.textContent = title;
+            } else {
+                a.textContent = value;
+            }
             readout.appendChild(a);
         } else {
             readout.textContent = value;
@@ -321,13 +325,15 @@ function loadNextPage() {
                         studentContainer.appendChild(row);
                     }
                     addRow(studentContainer, 'college', 'Residential College', 'graduation-cap', student);
-                    addRow(studentContainer, 'email', 'Email', 'envelope', student, 'mailto');
+                    addRow(studentContainer, 'email', 'Email', 'envelope', student, student.email ? 'mailto:' + student.email : null, false);
                     //addRow(studentContainer, 'residence', 'Residence', 'building', student);
                     addRow(studentContainer, 'major', 'Major', 'book', student);
                     //addRow(studentContainer, 'phone', 'Phone Number', 'phone', student, 'tel');
                     addRow(studentContainer, 'birthday', 'Birthday', 'birthday-cake', student);
                     addRow(studentContainer, 'access_code', 'Swipe Access Code', 'key', student);
                     addRow(studentContainer, 'address', 'Address', 'home', student);
+                    addRow(studentContainer, 'website', 'Website', 'globe', student, student.website, true);
+                    //addRow(studentContainer, 'education', 'Education', 'university', student);
 
                     p.list.appendChild(studentContainer);
                 }
