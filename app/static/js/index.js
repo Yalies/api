@@ -170,8 +170,8 @@ p.submit.onclick = function() {
     runSearch();
 };
 
-function addRow(container, property, title, icon, student, url, showTitle) {
-    let value = student[property];
+function addRow(container, property, title, icon, person, url, showTitle) {
+    let value = person[property];
     if (value) {
         let row = document.createElement('div');
         row.title = title;
@@ -244,57 +244,57 @@ function loadNextPage() {
             body: JSON.stringify(criteria),
         })
             .then(response => response.json())
-            .then(students => {
-                pagesFinished = (students.length < 20);
-                if (pagesLoaded == 1 && !students.length) {
+            .then(people => {
+                pagesFinished = (people.length < 20);
+                if (pagesLoaded == 1 && !people.length) {
                     p.empty.style.display = 'block';
                 }
-                for (let student of students) {
-                    let studentContainer = document.createElement('div');
-                    studentContainer.className = 'student';
+                for (let person of people) {
+                    let personContainer = document.createElement('div');
+                    personContainer.className = 'person';
 
                     let image = document.createElement('div');
                     image.className = 'image';
-                    if (student.image) {
-                        image.style.backgroundImage = 'url(' + student.image + ')';
+                    if (person.image) {
+                        image.style.backgroundImage = 'url(' + person.image + ')';
                     }
-                    studentContainer.appendChild(image);
+                    personContainer.appendChild(image);
                     let name = document.createElement('h3');
                     name.className = 'name';
-                    let fullName = student.last_name + ', ' + student.first_name;
-                    if (student.profile) {
+                    let fullName = person.last_name + ', ' + person.first_name;
+                    if (person.profile) {
                         let a = document.createElement('a');
-                        a.href = student.profile;
+                        a.href = person.profile;
                         a.textContent = fullName;
                         name.appendChild(a);
                     } else {
                         name.textContent = fullName;
                     }
-                    if (student.name_recording) {
+                    if (person.name_recording) {
                         name.textContent += ' ';
-                        name.appendChild(createPronunciationButton(student));
+                        name.appendChild(createPronunciationButton(person));
                     }
-                    studentContainer.appendChild(name);
+                    personContainer.appendChild(name);
 
-                    if (student.netid || student.upi) {
+                    if (person.netid || person.upi) {
                         let pills = document.createElement('div');
                         pills.className = 'pills';
-                        if (student.netid) {
+                        if (person.netid) {
                             let pill = document.createElement('div');
                             pill.className = 'pill';
-                            pill.textContent = 'NetID ' + student.netid;
+                            pill.textContent = 'NetID ' + person.netid;
                             pills.appendChild(pill);
                         }
-                        if (student.upi) {
+                        if (person.upi) {
                             let pill = document.createElement('div');
                             pill.className = 'pill';
-                            pill.textContent = 'UPI ' + student.upi;
+                            pill.textContent = 'UPI ' + person.upi;
                             pills.appendChild(pill);
                         }
-                        studentContainer.appendChild(pills);
+                        personContainer.appendChild(pills);
                     }
-                    addRow(studentContainer, 'year', 'Graduation Year', 'calendar', student);
-                    if (student.leave) {
+                    addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
+                    if (person.leave) {
                         let row = document.createElement('div');
                         row.classList.add('row');
                         row.classList.add('leave');
@@ -307,9 +307,9 @@ function loadNextPage() {
                         readout.textContent = 'Took Leave';
                         row.appendChild(readout);
 
-                        studentContainer.appendChild(row);
+                        personContainer.appendChild(row);
                     }
-                    if (student.eli_whitney) {
+                    if (person.eli_whitney) {
                         let row = document.createElement('div');
                         row.classList.add('row');
                         row.classList.add('eli-whitney');
@@ -322,20 +322,20 @@ function loadNextPage() {
                         readout.textContent = 'Eli Whitney Program';
                         row.appendChild(readout);
 
-                        studentContainer.appendChild(row);
+                        personContainer.appendChild(row);
                     }
-                    addRow(studentContainer, 'college', 'Residential College', 'graduation-cap', student);
-                    addRow(studentContainer, 'email', 'Email', 'envelope', student, student.email ? 'mailto:' + student.email : null, false);
-                    //addRow(studentContainer, 'residence', 'Residence', 'building', student);
-                    addRow(studentContainer, 'major', 'Major', 'book', student);
-                    addRow(studentContainer, 'phone', 'Phone Number', 'phone', student, student.phone ? 'tel:' + student.phone : null, false);
-                    addRow(studentContainer, 'birthday', 'Birthday', 'birthday-cake', student);
-                    addRow(studentContainer, 'access_code', 'Swipe Access Code', 'key', student);
-                    addRow(studentContainer, 'address', 'Address', 'home', student);
-                    addRow(studentContainer, 'website', 'Website', 'globe', student, student.website, true);
-                    //addRow(studentContainer, 'education', 'Education', 'university', student);
+                    addRow(personContainer, 'college', 'Residential College', 'graduation-cap', person);
+                    addRow(personContainer, 'email', 'Email', 'envelope', person, person.email ? 'mailto:' + person.email : null, false);
+                    //addRow(personContainer, 'residence', 'Residence', 'building', person);
+                    addRow(personContainer, 'major', 'Major', 'book', person);
+                    addRow(personContainer, 'phone', 'Phone Number', 'phone', person, person.phone ? 'tel:' + person.phone : null, false);
+                    addRow(personContainer, 'birthday', 'Birthday', 'birthday-cake', person);
+                    addRow(personContainer, 'access_code', 'Swipe Access Code', 'key', person);
+                    addRow(personContainer, 'address', 'Address', 'home', person);
+                    addRow(personContainer, 'website', 'Website', 'globe', person, person.website, true);
+                    //addRow(personContainer, 'education', 'Education', 'university', person);
 
-                    p.list.appendChild(studentContainer);
+                    p.list.appendChild(personContainer);
                 }
                 p.loading.style.display = 'none';
             });
