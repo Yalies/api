@@ -46,7 +46,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         # TODO: find a cleaner way to exchange this data
         people = name_coach.people
         people = departmental.merge(people)
-        cache.set(cache_key, json.dumps(people))
+        cache.set(cache_key, people)
 
     # Store people into database
     Person.query.delete()
