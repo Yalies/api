@@ -257,7 +257,15 @@ function loadNextPage() {
                     studentContainer.appendChild(image);
                     let name = document.createElement('h3');
                     name.className = 'name';
-                    name.textContent = student.last_name + ', ' + student.first_name;
+                    let fullName = student.last_name + ', ' + student.first_name;
+                    if (student.profile) {
+                        let a = document.createElement('a');
+                        a.href = student.profile;
+                        a.textContent = fullName;
+                        name.appendChild(a);
+                    } else {
+                        name.textContent = fullName;
+                    }
                     if (student.name_recording) {
                         name.textContent += ' ';
                         name.appendChild(createPronunciationButton(student));
