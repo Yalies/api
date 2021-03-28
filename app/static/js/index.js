@@ -329,7 +329,9 @@ function loadNextPage() {
                     addRow(personContainer, 'email', 'Email', 'envelope', person, person.email ? 'mailto:' + person.email : null, false);
                     //addRow(personContainer, 'residence', 'Residence', 'building', person);
                     addRow(personContainer, 'major', 'Major', 'book', person);
-                    addRow(personContainer, 'phone', 'Phone Number', 'phone', person, person.phone ? 'tel:' + person.phone : null, false);
+                    if (person.school_code !== 'YC') {
+                        addRow(personContainer, 'phone', 'Phone Number', 'phone', person, person.phone ? 'tel:' + person.phone : null, false);
+                    }
                     addRow(personContainer, 'birthday', 'Birthday', 'birthday-cake', person);
                     addRow(personContainer, 'access_code', 'Swipe Access Code', 'key', person);
                     addRow(personContainer, 'address', 'Address', 'home', person);
