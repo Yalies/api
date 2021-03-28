@@ -53,7 +53,12 @@ class Law(Adapter):
             # TODO: check that this won't select unintended things
             education = person_soup.select('.col-sm-4:nth-child(2) .faculty-content > p')
             if education:
-                person['education'] = '\n'.join([ed.text.strip() for ed in education]).strip()
+                person['education'] = ''
+                for ed in education:
+                    for br in ed.find_all('br'):
+                        br.replace_with('\n')
+                    person['education'] += '\n' + ed.text.strip()
+                person['education'] = person['education'].strip()
 
             people.append(person)
             print('Parsed ' + person['name'])
