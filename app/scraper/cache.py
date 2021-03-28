@@ -22,17 +22,20 @@ class Cache:
     def get_file_url(self, filename):
         return S3_LOCATION + filename
 
-    def download_json(self, filename):
-        body = self.s3.get_object(
-            Bucket=S3_BUCKET_NAME,
-            Key=filename + '.json'
-        )
+    def get(self, key):
+        try:
+            body = self.s3.get_object(
+                Bucket=S3_BUCKET_NAME,
+                Key=key + '.json'
+            )
+        except:
+            return None
         if body:
             body = body['Body'].read()
             return json.loads(body.decode())
         return None
 
-    def upload_json(self, data, key):
+    def set(self, key, data):
         filename = key + '.json'
         local_path = '/tmp/' + filename
         with open(local_path, 'w') as f:
