@@ -293,6 +293,7 @@ function loadNextPage() {
                         }
                         personContainer.appendChild(pills);
                     }
+                    addRow(personContainer, 'title', 'Title', 'tags', person);
                     addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
                     if (person.leave) {
                         let row = document.createElement('div');
