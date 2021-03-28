@@ -23,10 +23,11 @@ class Cache:
         return S3_LOCATION + filename
 
     def get(self, key):
+        filename = key + '.json'
         try:
             body = self.s3.get_object(
                 Bucket=S3_BUCKET_NAME,
-                Key=key + '.json'
+                Key=filename,
             )
         except:
             return None
@@ -47,3 +48,10 @@ class Cache:
             filename,
         )
         return self.get_file_url(filename)
+
+    def delete(self, key):
+        filename = key + '.json'
+        self.s3.delete_object(
+            Bucket=S3_BUCKET_NAME,
+            Key=filename,
+        )
