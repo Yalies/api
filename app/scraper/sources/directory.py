@@ -200,6 +200,8 @@ class Directory(Source):
             # display_name, matched: useless
             # residential_college_name: from face book
         })
+        if person['college'] == 'Undeclared':
+            person['college'] = None
         if person['organization'] and not person['organization_code'] and person['school_code']:
             # This is a student, but their organization is still listed.
             # Remove their organization field, which is duplicated `school`.
