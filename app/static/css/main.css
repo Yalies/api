@@ -23,13 +23,20 @@ header {
     margin-bottom: 10px;
 }
 header img {
-    height: 52px;
+    height: 46px;
     vertical-align: top;
     display: inline-block;
 }
 header #logo {
     display: block;
     text-decoration: none;
+    margin-top: 4px;
+}
+h2 {
+    font-size: 40px;
+    display: inline-block;
+    margin-top: -2px;
+    margin-left: 2px;
 }
 nav {
     float: right;
@@ -44,10 +51,6 @@ footer {
     margin-top: 10px;
     font-size: 10px;
     color: lightgray;
-}
-h2 {
-    font-size: 40px;
-    display: inline-block;
 }
 h3 {
     margin-top: 10px;
