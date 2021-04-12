@@ -33,7 +33,3 @@ if (!localStorage.popupShown) {
     showPopup('flag', 'Note', paragraphs);
     localStorage.popupShown = true;
 }
-if (!localStorage.departmentalMaintenancePopupShown) {
-    showPopup('exclamation-triangle', 'Maintenance', ['Our database is currently under maintenance. Some data may be missing. We are working to fix this issue. Sorry for the inconvenience.'])
-    localStorage.departmentalMaintenancePopupShown = true;
-}
