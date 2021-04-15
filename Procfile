@@ -1,2 +1,2 @@
 web: gunicorn app:app
-worker: celery -A app.celery worker --loglevel=INFO
+worker: REMAP_SIGTERM=SIGQUIT celery -A app.celery worker --loglevel=INFO
