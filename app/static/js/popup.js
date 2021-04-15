@@ -1,6 +1,6 @@
 function showPopup(icon, title, paragraphs) {
     let popup = document.createElement('div');
-    popup.id = 'popup';
+    popup.className = 'popup';
     let content = document.createElement('div');
     content.className = 'content';
     let header = document.createElement('h1');
@@ -14,14 +14,15 @@ function showPopup(icon, title, paragraphs) {
     let closeButton = document.createElement('button');
     closeButton.id = 'close_popup';
     closeButton.textContent = 'Dismiss warning';
-    closeButton.onclick = closePopup;
+    closeButton.onclick = function() {
+        closePopup(popup);
+    }
     content.appendChild(closeButton);
     popup.appendChild(content);
     document.body.appendChild(popup);
 }
 
-function closePopup() {
-    let popup = document.getElementById('popup');
+function closePopup(popup) {
     popup.parentElement.removeChild(popup);
 }
 
