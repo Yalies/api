@@ -51,8 +51,10 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         cache.set(cache_key, people)
 
     # Store people into database
-    Person.query.delete()
+    print('Inserting new data.')
+    #Person.query.delete()
     for person_dict in people:
         db.session.add(Person(**{k: v for k, v in person_dict.items() if v or type(v) == bool}))
-    db.session.commit()
+        # TODO: this is very bad and temporary
+        db.session.commit()
     print('Done.')
