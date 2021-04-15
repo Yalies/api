@@ -36,6 +36,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     cache_key = 'scraped_data'
     people = cache.get(cache_key)
     if not people:
+        print('No full cache found.')
         people = []
         thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
                                   args=(face_book, directory, name_coach))
