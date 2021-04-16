@@ -12,17 +12,22 @@ S3_LOCATION = 'https://' + S3_BUCKET_NAME + '.s3.amazonaws.com/'
 
 
 class Cache:
-    def __init__(self):
+    def __init__(self, caches_active):
         self.s3 = boto3.client(
             's3',
             aws_access_key_id=S3_ACCESS_KEY,
             aws_secret_access_key=S3_SECRET_ACCESS_KEY,
         )
+        self.caches_active = caches_active
 
     def get_file_url(self, filename):
         return S3_LOCATION + filename
 
     def get(self, key):
+        print(self.caches_active)
+        cache_active = self.caches_active.get(key, True)
+        if cache_active:
+            return None
         filename = key + '.json'
         try:
             print(f'Checking for {filename} in cache.')
