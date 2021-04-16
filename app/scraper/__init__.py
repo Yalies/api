@@ -21,22 +21,35 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
     name_coach.pull(people)
     people = name_coach.merge(people)
 
+def getsize(obj):
+    """sum size of object & members."""
+    seen_ids = set()
+    size = 0
+    objects = [obj]
+    while objects:
+        need_referents = []
+        for obj in objects:
+            if id(obj) not in seen_ids:
+                seen_ids.add(id(obj))
+                size += sys.getsizeof(obj)
+                need_referents.append(obj)
+        objects = get_referents(*need_referents)
+    return size
 
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
-    print('Initializing sources.')
     cache = Cache()
-    directory = sources.Directory(cache, people_search_session_cookie, csrf_token)
-    face_book = sources.FaceBook(cache, face_book_cookie, directory)
-    name_coach = sources.NameCoach(cache, people_search_session_cookie, csrf_token)
-    departmental = sources.Departmental(cache)
-
-    print('Beginning scrape.')
 
     cache_key = 'scraped_data'
     people = cache.get(cache_key)
     if not people:
-        print('No full cache found.')
+        print('Initializing sources.')
+        directory = sources.Directory(cache, people_search_session_cookie, csrf_token)
+        face_book = sources.FaceBook(cache, face_book_cookie, directory)
+        name_coach = sources.NameCoach(cache, people_search_session_cookie, csrf_token)
+        departmental = sources.Departmental(cache)
+
+        print('Beginning scrape.')
         people = []
         thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
                                   args=(face_book, directory, name_coach))
@@ -55,6 +68,5 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     Person.query.delete()
     for person_dict in people:
         db.session.add(Person(**{k: v for k, v in person_dict.items() if v or type(v) == bool}))
-        # TODO: this is very bad and temporary
-        db.session.commit()
+    db.session.commit()
     print('Done.')
