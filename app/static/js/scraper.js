@@ -1,4 +1,5 @@
 let inputs = document.getElementsByTagName('textarea'),
+    cacheCheckboxes = document.getElementsByClassName('cache'),
     submit = document.getElementById('submit');
 
 oninput = function() {
@@ -18,6 +19,11 @@ submit.onclick = function() {
     for (let input of inputs) {
         payload[input.name] = input.value;
     }
+    let caches = {};
+    for (let cacheCheckbox of cacheCheckboxes) {
+        caches[cacheCheckbox.name] = cacheCheckbox.checked;
+    }
+    payload.caches = caches;
     fetch('/scraper', {
         method: 'POST',
         headers: {
