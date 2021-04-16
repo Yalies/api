@@ -36,6 +36,20 @@ class Source:
         """
         raise NotImplementedError
 
+    def clean_one(self, person: dict):
+        """
+        Remove empty properties from person record.
+        :param person: single person record.
+        """
+        return {k: v for k, v in person.items() if v or type(v) == bool}
+
+    def clean(self, people):
+        """
+        Remove empty properties from a list of people.
+        :param person: list of people records.
+        """
+        return [self.clean_one(person) for person in people]
+
     def pull(self, current_people):
         """
         Read data from this source, either through cache or by running scraper.
@@ -48,6 +62,8 @@ class Source:
             return self.new_records
         else:
             self.scrape(current_people)
+            # Strip out empty properties for space efficiency
+            self.new_records = self.clean(self.new_records)
             self.cache.set(cache_key, self.new_records)
             return self.new_records
 
@@ -55,6 +71,14 @@ class Source:
         """
         Given list of people from previous sources, merge in newly scraped people.
         :param current_people: list of people scraped from previous sources.
-        :param new_records: list of new people scraped from this source.
         """
         return current_people + self.new_records
+
+    def integrate(self, current_people):
+        """
+        Given list of people from previous sources, merge in newly scraped people and clean up.
+        :param current_people: list of people scraped from previous sources.
+        """
+        people = self.merge(current_people)
+        people = self.clean(people)
+        return people

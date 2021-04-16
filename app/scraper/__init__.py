@@ -16,10 +16,10 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
     thread_dir.start()
     thread_fb.join()
     thread_dir.join()
-    people = face_book.merge(people)
-    people = directory.merge(people)
+    people = face_book.integrate(people)
+    people = directory.integrate(people)
     name_coach.pull(people)
-    people = name_coach.merge(people)
+    people = name_coach.integrate(people)
 
 def getsize(obj):
     """sum size of object & members."""
@@ -64,7 +64,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
         thread_departmental.join()
         # TODO: find a cleaner way to exchange this data
         people = name_coach.people
-        people = departmental.merge(people)
+        people = departmental.integrate(people)
         cache.set(cache_key, people)
 
     # Store people into database

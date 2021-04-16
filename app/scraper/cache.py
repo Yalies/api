@@ -33,10 +33,10 @@ class Cache:
         except:
             return None
         if body:
-            print('Found cached content, parsing.')
-            body = body['Body'].read()
-            print('Decoding cache.')
-            return json.loads(body.decode())
+            print('Extracting found cached content.')
+            body = body['Body'].read().decode()
+            print('Parsing cache.')
+            return json.loads(body)
         return None
 
     def set(self, key, data):
