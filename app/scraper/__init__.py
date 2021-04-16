@@ -42,6 +42,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     cache = Cache()
 
     cache_key = 'scraped_data'
+    print('Checking cache...')
     people = cache.get(cache_key)
     if people:
         print('Found people in cache.')
