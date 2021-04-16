@@ -36,7 +36,7 @@ class Source:
         """
         raise NotImplementedError
 
-    def clean_one(self, person: dict):
+    def clean_one(self, person):
         """
         Remove empty properties from person record.
         :param person: single person record.
