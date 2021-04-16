@@ -25,6 +25,7 @@ class Cache:
     def get(self, key):
         filename = key + '.json'
         try:
+            print(f'Checking for {filename} in cache.')
             body = self.s3.get_object(
                 Bucket=S3_BUCKET_NAME,
                 Key=filename,
@@ -32,7 +33,9 @@ class Cache:
         except:
             return None
         if body:
+            print('Found cached content, parsing.')
             body = body['Body'].read()
+            print('Decoding cache.')
             return json.loads(body.decode())
         return None
 
