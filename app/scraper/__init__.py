@@ -26,11 +26,17 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
     print('Loading people.')
-    people = Person.query.all()
-    print('Loaded people.')
-    for person in people:
-        print(person.netid)
-        add_to_index('person', person)
+    page = 0
+    page_size = 1000
+    while True:
+        people = Person.query.paginate(page, page_size, False).items
+        print('Loaded people.')
+        for person in people:
+            print(person.netid)
+            add_to_index('person', person)
+        if len(people) < page_size:
+            break
+        page += 1
     return
 
     print('Launching scraper.')
