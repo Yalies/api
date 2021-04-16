@@ -21,20 +21,6 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
     name_coach.pull(people)
     people = name_coach.integrate(people)
 
-def getsize(obj):
-    """sum size of object & members."""
-    seen_ids = set()
-    size = 0
-    objects = [obj]
-    while objects:
-        need_referents = []
-        for obj in objects:
-            if id(obj) not in seen_ids:
-                seen_ids.add(id(obj))
-                size += sys.getsizeof(obj)
-                need_referents.append(obj)
-        objects = get_referents(*need_referents)
-    return size
 
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
