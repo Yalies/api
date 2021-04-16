@@ -25,6 +25,8 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
 
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
+    # Fix missing ElasticSearch index
+    """
     print('Loading people.')
     page = 0
     page_size = 1000
@@ -38,6 +40,7 @@ def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
             break
         page += 1
     return
+    """
 
     print('Launching scraper.')
     cache = Cache()
