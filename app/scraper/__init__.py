@@ -38,11 +38,14 @@ def getsize(obj):
 
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
+    print('Launching scraper.')
     cache = Cache()
 
     cache_key = 'scraped_data'
     people = cache.get(cache_key)
-    if not people:
+    if people:
+        print('Found people in cache.')
+    else:
         print('Initializing sources.')
         directory = sources.Directory(cache, people_search_session_cookie, csrf_token)
         face_book = sources.FaceBook(cache, face_book_cookie, directory)
