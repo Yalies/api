@@ -6,6 +6,7 @@ from .cache import Cache
 import json
 import os
 from threading import Thread
+from app.search import add_to_index
 
 
 def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
@@ -24,6 +25,11 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
 
 @celery.task
 def scrape(face_book_cookie, people_search_session_cookie, csrf_token):
+    people = Person.query.all()
+    for person in people:
+        add_to_index('person', person)
+    return
+
     print('Launching scraper.')
     cache = Cache()
 
