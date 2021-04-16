@@ -24,7 +24,6 @@ class Cache:
         return S3_LOCATION + filename
 
     def get(self, key):
-        print(self.caches_active)
         cache_active = self.caches_active.get(key, True)
         if not cache_active:
             return None
@@ -38,9 +37,8 @@ class Cache:
         except:
             return None
         if body:
-            print('Extracting found cached content.')
-            body = body['Body'].read().decode()
             print('Parsing cache.')
+            body = body['Body'].read().decode()
             return json.loads(body)
         return None
 
