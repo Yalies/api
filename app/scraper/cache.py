@@ -26,7 +26,7 @@ class Cache:
     def get(self, key):
         print(self.caches_active)
         cache_active = self.caches_active.get(key, True)
-        if cache_active:
+        if not cache_active:
             return None
         filename = key + '.json'
         try:
