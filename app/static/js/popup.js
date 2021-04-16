@@ -35,6 +35,7 @@ if (!localStorage.popupShown) {
     localStorage.popupShown = true;
 }
 
+/*
 if (!localStorage.popupShownSearch) {
     let paragraphs = [
         'We are aware of issues with our search functionality and are working on a resolution. Thank you for your patience.'
@@ -42,3 +43,4 @@ if (!localStorage.popupShownSearch) {
     showPopup('search', 'Search Outage', paragraphs);
     localStorage.popupShownSearch = true;
 }
+*/
