@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, abort, g
+from flask import render_template, request, redirect, url_for, jsonify, abort, g
 from flask_cas import login_required
 from app import app, db, scraper, cas
 from app.models import User, Person, Key
@@ -127,10 +127,15 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/hide_me')
+@app.route('/faq')
 @login_required
+def faq():
+    return render_template('faq.html')
+
+
+@app.route('/hide_me')
 def hide_me():
-    return render_template('hide_me.html')
+    return redirect(url_for('faq'))
 
 
 @app.route('/keys', methods=['GET'])
