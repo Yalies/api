@@ -8,6 +8,7 @@ from sqlalchemy import distinct
 
 import datetime
 import time
+import calendar
 
 
 with open('app/scraper/res/majors_clean.txt') as f:
@@ -87,6 +88,8 @@ def index():
     years.append('')
     leave = ['Yes', 'No']
     eli_whitney = ['Yes', 'No']
+    birth_months = {index + 1: name for index, name in enumerate(list(calendar.month_name)[1:])}
+    birth_days = list(range(1, 31 + 1))
     # SQLAlchemy returns lists of tuples, so we gotta convert to a list of items.
     # TODO: is there a SQL-based way to do this?
     """
@@ -96,7 +99,8 @@ def index():
     rooms = untuple(db.session.query(distinct(Person.room)).order_by(Person.room))
     """
     return render_template('index.html', colleges=colleges,
-                           years=years, leave=leave, eli_whitney=eli_whitney, majors=majors)
+                           years=years, leave=leave, eli_whitney=eli_whitney, majors=majors,
+                           birth_months=birth_months, birth_days=birth_days)
     """
                            building_codes=building_codes,
                            entryways=entryways, floors=floors, suites=suites, rooms=rooms)
