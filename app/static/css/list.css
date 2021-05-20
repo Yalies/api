@@ -29,6 +29,9 @@
     background-image: url(/static/images/user.png);
     background-position: center center;
 }
+.pronouns {
+    font-weight: normal;
+}
 .pronunciation.playing {
     color: #00d018;
 }
