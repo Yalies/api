@@ -40,6 +40,11 @@ class FaceBook(Source):
     RE_ACCESS_CODE = re.compile(r'[0-9]-[0-9]+')
     RE_PHONE = re.compile(r'[0-9]{3}-[0-9]{3}-[0-9]{4}')
 
+    MONTH_ABBREVIATIONS = (
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    )
+
     def get_html(self, cookie):
         filename = 'page.html'
         if not os.path.exists(filename):
@@ -154,7 +159,12 @@ class FaceBook(Source):
                     person['residence'] = room
                     result = RE_ROOM.search(room)
                     person['building_code'], person['entryway'], person['floor'], person['suite'], person['room'] = result.groups()
-                person['birthday'] = trivia.pop() if self.RE_BIRTHDAY.match(trivia[-1]) else None
+                if self.RE_BIRTHDAY.match(trivia[-1]):
+                    birthday = trivia.pop()
+                    person['birthday'] = birthday
+                    birth_month, birth_day = birthday.split()
+                    person['birth_month'] = self.MONTH_ABBREVIATIONS.index(birth_month) + 1
+                    person['birth_day'] = int(birth_day)
                 person['major'] = trivia.pop() if trivia[-1] in MAJORS else None
                 if person['major'] and person['major'] in MAJOR_FULL_NAMES:
                     person['major'] = MAJOR_FULL_NAMES[person['major']]
