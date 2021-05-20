@@ -18,6 +18,21 @@
         {% with name = "leave", items = leave, header = "On leave?" %}{% include "_filter.html" %}{% endwith %}
         {% with name = "eli_whitney", items = eli_whitney, header = "Eli Whitney?" %}{% include "_filter.html" %}{% endwith %}
         {% with name = "major", items = majors %}{% include "_filter.html" %}{% endwith %}
+        <div class="filter collapsed" id="birth_month">
+            <h4>
+                <i class="fa fa-chevron-circle-down"></i>
+                Birth Month
+            </h4>
+            <label>
+                <input type="checkbox" name="birth_month-all"> All
+            </label>
+            {% for birth_month, birth_month_name in birth_months.items() %}
+            <label>
+                <input type="checkbox" name="{{ birth_month }}"> {{ birth_month_name }}
+            </label>
+            {% endfor %}
+        </div>
+        {% with name = "birth_day", items = birth_days, header = "Birth Day" %}{% include "_filter.html" %}{% endwith %}
         {#
         <div class="filter collapsed" id="building_code">
             <h4>
