@@ -75,11 +75,11 @@ class Person(SearchableMixin, db.Model):
     __filterable_identifiable__ = (
         'netid', 'upi', 'email', 'mailbox', 'phone',
         'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronouns',
-        'access_code', 'birthday', 'residence', 'office_room',
+        'access_code', 'residence', 'office_room',
     )
     __filterable__ = (
         'school_code', 'school', 'year', 'curriculum', 'college', 'college_code', 'leave', 'eli_whitney',
-        'building_code', 'entryway', 'floor', 'suite', 'room', 'major',
+        'birth_month', 'birth_day', 'building_code', 'entryway', 'floor', 'suite', 'room', 'major',
         'organization_code', 'organization', 'unit_class', 'unit_code', 'unit', 'office_building',
     )
     __serializable__ = (
@@ -87,7 +87,7 @@ class Person(SearchableMixin, db.Model):
         'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronouns',
         'phonetic_name', 'name_recording',
         'school_code', 'school', 'year', 'curriculum',
-        'college', 'college_code', 'leave', 'eli_whitney', 'image', 'birthday',
+        'college', 'college_code', 'leave', 'eli_whitney', 'image', 'birthday', 'birth_month', 'birth_day',
         'residence', 'building_code', 'entryway', 'floor', 'suite', 'room',
         'major', 'address', 'access_code',
         'organization_code', 'organization', 'unit_class', 'unit_code', 'unit',
@@ -132,6 +132,8 @@ class Person(SearchableMixin, db.Model):
     eli_whitney = db.Column(db.Boolean)
     image = db.Column(db.String)
     birthday = db.Column(db.String)
+    birth_month = db.Column(db.Integer)
+    birth_day = db.Column(db.Integer)
     residence = db.Column(db.String)
     building_code = db.Column(db.String)
     entryway = db.Column(db.String)

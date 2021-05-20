@@ -145,7 +145,7 @@ function runSearch() {
                 if (checkbox.checked) {
                     if (category === 'leave' || category === 'eli_whitney') {
                         filters[category].push(checkbox.name === 'Yes');
-                    } else if (category === 'year' || category === 'floor' || category === 'room') {
+                    } else if (['year', 'birth_month', 'birth_day', 'floor', 'room'].includes(category)) {
                         filters[category].push(checkbox.name ? parseInt(checkbox.name) : null);
                     } else {
                         filters[category].push(checkbox.name);
@@ -293,6 +293,7 @@ function loadNextPage() {
                         }
                         personContainer.appendChild(pills);
                     }
+                    addRow(personContainer, 'pronouns', 'Pronouns', 'comments', person);
                     addRow(personContainer, 'title', 'Title', 'tags', person);
                     addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
                     if (person.leave) {

@@ -48,6 +48,6 @@
 
 @media (max-width: 700px) {
     .filter label {
-        margin-bottom: 4px;
+        margin: 6px 0;
     }
 }
