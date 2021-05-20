@@ -270,13 +270,6 @@ function loadNextPage() {
                     } else {
                         name.textContent = fullName;
                     }
-                    if (person.pronouns) {
-                        name.textContent += ' ';
-                        let pronouns = document.createElement('span');
-                        pronouns.className = 'pronouns';
-                        pronouns.textContent = '(' + person.pronouns + ')';
-                        name.appendChild(pronouns);
-                    }
                     if (person.name_recording) {
                         name.textContent += ' ';
                         name.appendChild(createPronunciationButton(person));
@@ -300,6 +293,7 @@ function loadNextPage() {
                         }
                         personContainer.appendChild(pills);
                     }
+                    addRow(personContainer, 'pronouns', 'Pronouns', 'comments', person);
                     addRow(personContainer, 'title', 'Title', 'tags', person);
                     addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
                     if (person.leave) {
