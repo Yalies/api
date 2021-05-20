@@ -132,6 +132,8 @@ class Person(SearchableMixin, db.Model):
     eli_whitney = db.Column(db.Boolean)
     image = db.Column(db.String)
     birthday = db.Column(db.String)
+    birth_month = db.Column(db.Integer)
+    birth_day = db.Column(db.Integer)
     residence = db.Column(db.String)
     building_code = db.Column(db.String)
     entryway = db.Column(db.String)
