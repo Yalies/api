@@ -22,8 +22,12 @@ def store_user():
             g.user = User.query.get(cas.username)
             timestamp = int(time.time())
             if not g.user:
+                # If this is the first user (probably local run), there's been no chance to
+                # run the scraper yet, so give them admin to prevent an instant 403.
+                is_first_user = User.query.count() == 0
                 g.user = User(id=cas.username,
-                              registered_on=timestamp)
+                              registered_on=timestamp,
+                              admin=is_first_user)
                 db.session.add(g.user)
             g.user.last_seen = timestamp
             g.person = Person.query.filter_by(netid=cas.username, school_code='YC').first()
