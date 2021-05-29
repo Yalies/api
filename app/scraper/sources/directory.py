@@ -138,7 +138,7 @@ class Directory(Source):
             thread.join()
         for entry in self.directory_entries:
             # Remove ETRAIN_ accounts, which are not actual people
-            if entry['netid'].startswith('etrain'):
+            if entry.netid.startswith('etrain'):
                 continue
             print('Parsing directory entry with NetID ' + entry.netid)
             person = self.merge_one({}, entry)
