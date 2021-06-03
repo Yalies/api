@@ -1,9 +1,9 @@
 # Scraper
 Our scraper crawls Yale's websites in to obtain the data we provide.
 
-To run the scraper process (not necessary if you want to view the website without user data):
+To run the scraper process (not necessary if you want to view the website without user data), first start the Celery task manager:
 ```sh
-celery -A app.celery worker --loglevel=INFO
+./celery.sh
 ```
 In order to actually execute the scraper, visit [localhost:5000/scraper](http://localhost:5000/scraper) and fill in the fields. To retrieve the tokens you need, you'll want to use the developer tools ("inspect element") for your browser, specifically the Network tab, to view the headers on requests made to the Face Book and Directory.
 
