@@ -230,7 +230,7 @@ class FaceBook(Source):
             people.append(person)
 
         # Check leaves
-        people = self.compare_years('pre2020', people, emails)
-        people = self.compare_years('fall2020', people, emails)
+        for backup in ('pre2020', 'fall2020', 'spring2020'):
+            people = self.compare_years(backup, people, emails)
 
         self.new_records = people
