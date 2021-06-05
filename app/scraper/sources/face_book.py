@@ -103,18 +103,10 @@ class FaceBook(Source):
 
     def compare_years(self, page_key, people, emails):
         print(f'Comparing years from {page_key} store.')
-        with open(f'app/scraper/res/{page_key}.html.fernet', 'rb') as f:
-            html = self.fernet.decrypt(f.read())
-        tree = self.get_tree(html)
-        containers = self.get_containers(tree)
+        with open(f'app/scraper/res/historical/{page_key}.json.fernet', 'rb') as f:
+            years = json.loads(self.fernet.decrypt(f.read()))
 
-        for container in containers:
-            year = self.clean_year(container.find('div', {'class': 'student_year'}).text)
-            info = container.find_all('div', {'class': 'student_info'})
-            try:
-                email = info[1].find('a').text
-            except AttributeError:
-                continue
+        for email, year in years.items():
             if email in emails and not people[emails[email]].get('leave') and email in emails and year is not None and people[emails[email]]['year'] is not None:
                 people[emails[email]]['leave'] = (year < people[emails[email]]['year'])
                 print(email + ' is' + (' not' if not people[emails[email]]['leave'] else '') + ' taking a leave.')
