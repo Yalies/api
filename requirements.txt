@@ -6,7 +6,7 @@ flask-cas
 flask-redis
 psycopg2
 boto3
-elasticsearch
+elasticsearch==7.9
 beautifulsoup4
 html5lib
 requests
