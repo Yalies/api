@@ -2,6 +2,7 @@ from .source import Source
 
 import json
 import hashlib
+from math import ceil
 from threading import Thread
 from app.scraper.sources import adapters
 #import adapters
@@ -26,12 +27,18 @@ class Departmental(Source):
     }
     new_records = None
 
+    NUM_THREADS = 8
+
     def scrape_department(self, department):
         print('Scraping department: ' + department['name'])
         website_type = department.get('website_type')
         adapter = self.ADAPTERS.get(website_type)
         new_records = adapter.scrape(department)
         self.new_records += new_records
+
+    def scrape_departments(self, departments):
+        for department in departments:
+            self.scrape_department(department)
 
     def scrape(self, current_people):
         # TEMPORARY
@@ -47,10 +54,12 @@ class Departmental(Source):
         if enabled_departments:
             departments = enabled_departments
 
+        chunk_size = ceil(len(departments) / self.NUM_THREADS)
+        department_chunks = [departments[n:n + chunk_size] for n in range(0, len(departments), chunk_size)]
         self.new_records = []
         threads = []
-        for department in departments:
-            thread = Thread(target=self.scrape_department, args=(department,))
+        for department_chunk in department_chunks:
+            thread = Thread(target=self.scrape_departments, args=(department_chunk,))
             thread.start()
             threads.append(thread)
         for thread in threads:
