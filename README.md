@@ -2,6 +2,8 @@
 
 > A website and API for getting information on students at Yale College.
 
+![Screenshot](screenshot.png)
+
 ## Setup
 To develop changes to the application, you'll need to run it locally for testing.
 
