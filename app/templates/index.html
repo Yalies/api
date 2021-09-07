@@ -15,7 +15,7 @@
         </button>
         {% with name = "college", items = colleges %}{% include "_filter.html" %}{% endwith %}
         {% with name = "year", items = years, default = "Other" %}{% include "_filter.html" %}{% endwith %}
-        {% with name = "leave", items = leave, header = "On leave?" %}{% include "_filter.html" %}{% endwith %}
+        {% with name = "leave", items = leave, header = "Took leave?" %}{% include "_filter.html" %}{% endwith %}
         {% with name = "eli_whitney", items = eli_whitney, header = "Eli Whitney?" %}{% include "_filter.html" %}{% endwith %}
         {% with name = "major", items = majors %}{% include "_filter.html" %}{% endwith %}
         <div class="filter collapsed" id="birth_month">
