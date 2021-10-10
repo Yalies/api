@@ -35,6 +35,11 @@ pip3 install -r requirements-test.txt
 
 If `pip3` is not recognized, you'll need to install Python 3 on your system.
 
+Finally, run the database migrations:
+```sh
+python3 -m flask db upgrade
+```
+
 ## Running
 To locally launch the application:
 ```sh
