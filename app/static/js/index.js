@@ -72,11 +72,10 @@ onclick = function(e) {
     let pronunciation = null;
     if (isPronunciation(e.target)) {
         pronunciation = e.target;
-        pronunciation.classList.add('stopped');
     } else if (e.target.tagName === 'I' && isPronunciation(e.target.parentElement)) {
         pronunciation = e.target.parentElement;
-        pronunciation.classList.add('stopped');
     }
+    
     if (pronunciation) {
         // Play audio
         
@@ -86,12 +85,9 @@ onclick = function(e) {
             audio.onended = function() {
                 pronunciation.classList.remove('playing');
             }
-            console.log(audio);
             audio.play();
         } else {
             pronunciation.classList.remove('playing');
-
-            console.log(audio);
             audio.pause();
             audio.currentTime = 0;
         }
