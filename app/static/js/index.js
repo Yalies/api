@@ -72,20 +72,35 @@ onclick = function(e) {
     let pronunciation = null;
     if (isPronunciation(e.target)) {
         pronunciation = e.target;
+        pronunciation.classList.add('stopped');
     } else if (e.target.tagName === 'I' && isPronunciation(e.target.parentElement)) {
         pronunciation = e.target.parentElement;
+        pronunciation.classList.add('stopped');
     }
     if (pronunciation) {
         // Play audio
-        pronunciation.classList.add('playing');
+        
         let audio = pronunciation.getElementsByTagName('audio')[0];
-        audio.onended = function() {
+        if (!isPlaying(audio)) {
+            pronunciation.classList.add('playing');
+            pronunciation.classList.remove('paused');
+            audio.onended = function() {
+                pronunciation.classList.remove('playing');
+            }
+            console.log(audio);
+            audio.play();
+        } else {
+            pronunciation.classList.add('paused');
             pronunciation.classList.remove('playing');
+
+            console.log(audio);
+            audio.pause();
         }
-        console.log(audio);
-        audio.play();
+
     }
 };
+
+function isPlaying(audio) { return !audio.paused; }
 
 onchange = function(e) {
     let input = e.target;
