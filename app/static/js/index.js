@@ -83,18 +83,17 @@ onclick = function(e) {
         let audio = pronunciation.getElementsByTagName('audio')[0];
         if (!isPlaying(audio)) {
             pronunciation.classList.add('playing');
-            pronunciation.classList.remove('paused');
             audio.onended = function() {
                 pronunciation.classList.remove('playing');
             }
             console.log(audio);
             audio.play();
         } else {
-            pronunciation.classList.add('paused');
             pronunciation.classList.remove('playing');
 
             console.log(audio);
             audio.pause();
+            audio.currentTime = 0;
         }
 
     }
