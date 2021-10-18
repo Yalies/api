@@ -27,6 +27,11 @@ Then, enter the directory:
 cd api
 ```
 
+On Mac, use Homebrew (or another package manager) to install PostgreSQL, which is needed for working with our databases:
+```sh
+brew install postgresql
+```
+
 Install dependencies:
 ```sh
 pip3 install -r requirements.txt
