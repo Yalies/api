@@ -44,8 +44,15 @@
     margin-top: 2px;
     margin-right: 4px;
 }
+/*
 .row.leave {
     color: #00d018;
+}
+*/
+.i.leave {
+    color: #00d018;
+    font-size: 12px;
+    margin-left: 5px;
 }
 .row.eli-whitney {
     color: #E4572E;
