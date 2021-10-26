@@ -214,8 +214,8 @@ function addRow(container, property, title, icon, person, url, showTitle) {
             readout.textContent = value;
         }
         row.appendChild(readout);
-
         container.appendChild(row);
+        return row;
     }
 }
 
@@ -305,48 +305,15 @@ function loadNextPage() {
                     }
                     addRow(personContainer, 'pronouns', 'Pronouns', 'comments', person);
                     addRow(personContainer, 'title', 'Title', 'tags', person);
-                    //addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
-                    if (person.year) {
-                        let row = document.createElement('div');
-                        row.classList.add('row');
-                        row.classList.add('year');
-                        let i = document.createElement('i');
-                        i.className = 'fa fa-' + 'calendar';
-                        i.title = 'Graduation Year';
-                        row.appendChild(i);
-                        let readout = document.createElement('p');
-                        readout.classList.add('value');
-                        readout.classList.add('year');
-                        readout.textContent = person.year;
-                        readout.title = 'Graduation Year';
-                        row.appendChild(readout);
-                        if (person.leave) {
-                            let j = document.createElement('i');
-                            j.className = 'fa fa-' + 'hourglass';
-                            j.classList.add('i');
-                            j.classList.add('leave');
-                            j.title = 'Took Leave'
-                            row.appendChild(j);
-                        }
-                        personContainer.appendChild(row);
-                    }
-                    /*
+                    let leave_row = addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
                     if (person.leave) {
-                        let row = document.createElement('div');
-                        row.classList.add('row');
-                        row.classList.add('leave');
-                        let i = document.createElement('i');
-                        i.className = 'fa fa-' + 'hourglass';
-                        row.appendChild(i);
-                        let readout = document.createElement('p');
-                        readout.classList.add('value');
-                        readout.classList.add('leave');
-                        readout.textContent = 'Took Leave';
-                        row.appendChild(readout);
-
-                        personContainer.appendChild(row);
-                    } 
-                    */
+                        let leave_i = document.createElement('i');
+                        leave_i.className = 'fa fa-' + 'hourglass';
+                        leave_i.classList.add('i');
+                        leave_i.classList.add('leave');
+                        leave_i.title = 'Took Leave';
+                        leave_row.appendChild(leave_i);
+                    }
                     if (person.eli_whitney) {
                         let row = document.createElement('div');
                         row.classList.add('row');
