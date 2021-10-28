@@ -305,14 +305,13 @@ function loadNextPage() {
                     }
                     addRow(personContainer, 'pronouns', 'Pronouns', 'comments', person);
                     addRow(personContainer, 'title', 'Title', 'tags', person);
-                    let leave_row = addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
+                    let leaveRow = addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
                     if (person.leave) {
-                        let leave_i = document.createElement('i');
-                        leave_i.className = 'fa fa-' + 'hourglass';
-                        leave_i.classList.add('i');
-                        leave_i.classList.add('leave');
-                        leave_i.title = 'Took Leave';
-                        leave_row.appendChild(leave_i);
+                        let leaveIcon = document.createElement('i');
+                        leaveIcon.className = 'fa fa-' + 'hourglass';
+                        leaveIcon.classList.add('leave');
+                        leaveIcon.title = 'Took Leave';
+                        leaveRow.appendChild(leaveIcon);
                     }
                     if (person.eli_whitney) {
                         let row = document.createElement('div');
