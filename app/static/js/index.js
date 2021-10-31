@@ -175,7 +175,7 @@ function runSearch() {
     p.list.innerHTML = '';
     pagesLoaded = 0;
     pagesFinished = false;
-    window.history.pushState(nextState, "test", createUrl(criteria));
+    window.history.pushState(nextState, "Updated URL Search Query", createUrl(criteria));
     loadNextPage();
 }
 
