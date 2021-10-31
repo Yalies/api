@@ -235,7 +235,6 @@ function addRow(container, property, title, icon, person, url, showTitle) {
         }
         row.appendChild(readout);
         container.appendChild(row);
-        return row;
     }
 }
 
@@ -327,13 +326,21 @@ function loadNextPage() {
                     }
                     addRow(personContainer, 'pronouns', 'Pronouns', 'comments', person);
                     addRow(personContainer, 'title', 'Title', 'tags', person);
-                    let leaveRow = addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
+                    addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
                     if (person.leave) {
-                        let leaveIcon = document.createElement('i');
-                        leaveIcon.className = 'fa fa-' + 'hourglass';
-                        leaveIcon.classList.add('leave');
-                        leaveIcon.title = 'Took Leave';
-                        leaveRow.appendChild(leaveIcon);
+                        let row = document.createElement('div');
+                        row.classList.add('row');
+                        row.classList.add('leave');
+                        let i = document.createElement('i');
+                        i.className = 'fa fa-' + 'hourglass';
+                        row.appendChild(i);
+                        let readout = document.createElement('p');
+                        readout.classList.add('value');
+                        readout.classList.add('leave');
+                        readout.textContent = 'Took Leave';
+                        row.appendChild(readout);
+
+                        personContainer.appendChild(row);
                     }
                     if (person.eli_whitney) {
                         let row = document.createElement('div');
