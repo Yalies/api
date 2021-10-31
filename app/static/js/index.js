@@ -13,6 +13,9 @@ let p = {
     empty: document.getElementById('empty'),
 };
 
+const baseUrl = "https://yalies.io/";
+const nextState = { additionalInformation: 'Updated the URL to include search' };
+
 //////////////
 // Controls //
 //////////////
@@ -172,7 +175,24 @@ function runSearch() {
     p.list.innerHTML = '';
     pagesLoaded = 0;
     pagesFinished = false;
+    window.history.pushState(nextState, "test", createUrl(criteria));
     loadNextPage();
+}
+
+function createUrl(criteria) {
+    const params = new URLSearchParams(flattenDict(criteria));
+    const query = params.toString(); 
+    const url = baseUrl + `?${query}`;
+    return url;
+}
+
+function flattenDict(criteria) {
+    var dict = {};
+    dict["query"] = criteria['query'];
+    for (var key in criteria['filters']) {
+        dict[key] = criteria['filters'][key];
+    }
+    return dict;
 }
 
 p.submit.onclick = function() {
@@ -214,8 +234,8 @@ function addRow(container, property, title, icon, person, url, showTitle) {
             readout.textContent = value;
         }
         row.appendChild(readout);
-
         container.appendChild(row);
+        return row;
     }
 }
 
@@ -245,6 +265,8 @@ function loadNextPage() {
         p.empty.style.display = 'none';
         p.loading.style.display = 'block';
         criteria['page'] = ++pagesLoaded;
+        updateCriteria(criteria);
+        console.log(criteria);
         console.log('Loading page', pagesLoaded);
         fetch('/api/people', {
             method: 'POST',
@@ -305,21 +327,13 @@ function loadNextPage() {
                     }
                     addRow(personContainer, 'pronouns', 'Pronouns', 'comments', person);
                     addRow(personContainer, 'title', 'Title', 'tags', person);
-                    addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
+                    let leaveRow = addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
                     if (person.leave) {
-                        let row = document.createElement('div');
-                        row.classList.add('row');
-                        row.classList.add('leave');
-                        let i = document.createElement('i');
-                        i.className = 'fa fa-' + 'hourglass';
-                        row.appendChild(i);
-                        let readout = document.createElement('p');
-                        readout.classList.add('value');
-                        readout.classList.add('leave');
-                        readout.textContent = 'Took Leave';
-                        row.appendChild(readout);
-
-                        personContainer.appendChild(row);
+                        let leaveIcon = document.createElement('i');
+                        leaveIcon.className = 'fa fa-' + 'hourglass';
+                        leaveIcon.classList.add('leave');
+                        leaveIcon.title = 'Took Leave';
+                        leaveRow.appendChild(leaveIcon);
                     }
                     if (person.eli_whitney) {
                         let row = document.createElement('div');
@@ -356,6 +370,20 @@ function loadNextPage() {
     }
 }
 
+function updateCriteria(criteria) {
+    let urlSearchParams = new URLSearchParams(window.location.search);
+    let params = Object.fromEntries(urlSearchParams.entries());
+    if (params['query'] != 'undefined') {
+        criteria['query'] = params['query'];
+    }
+    for (const [param, paramValue] of Object.entries(params)) {
+        if (param != 'query') {
+            criteria['filters'][param] = paramValue;
+        }
+    }
+
+    return;
+}
 loadNextPage();
 
 window.onscroll = function(e) {
