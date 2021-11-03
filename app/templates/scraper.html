@@ -1,9 +1,17 @@
 {% extends 'base.html' %}
+{% block head %}
 
+<style>
+textarea{
+	white-space: nowrap;
+}
+</style>
+
+{% endblock %}
 {% block content %}
-<textarea name="face_book_cookie" cols=30 rows=5 placeholder="Face Book cookie"></textarea>
-<textarea name="people_search_session_cookie" cols=30 rows=8 placeholder="Directory people_search_session cookie"></textarea>
-<textarea name="csrf_token" cols=30 rows=3 placeholder="Directory CSRF Token"></textarea>
+<textarea name="face_book_cookie" cols=1000 rows=1 placeholder="Face Book cookie"></textarea>
+<textarea name="people_search_session_cookie" cols=1000 rows=1 placeholder="Directory people_search_session cookie"></textarea>
+<textarea name="csrf_token" cols=1000 rows=1 placeholder="Directory CSRF Token"></textarea>
 <h3>Use caches:</h3>
 <label><input type="checkbox" class="cache" name=""> <strong>Full</strong></label>
 <label><input type="checkbox" class="cache" name="FaceBook"> Face Book</label>
