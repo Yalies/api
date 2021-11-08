@@ -53,3 +53,17 @@ class ImageUploader:
             }
         )
         return self.get_file_url(filename)
+
+    def deleted_unused_imgs(self, people): #people is list of everyone scraped from face_book
+        filename_offset = len(S3_LOCATION)
+        deleted = set() 
+        scraped_imaged_filenames = [(person['img'][filename_offset:] if 'img' in person else None) for person in people]
+        for aws_file in self.files: 
+            if aws_file not in scraped_image_filenames:
+                self.s3.Object(BUCKET_NAME, aws_file).delete()
+                deleted.add(aws_file)
+        print('Deleted %d unused images.' % len(deleted)) 
+
+
+
+

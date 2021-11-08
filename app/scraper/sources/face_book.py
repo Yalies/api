@@ -234,3 +234,4 @@ class FaceBook(Source):
             people = self.compare_years(backup, people, emails)
 
         self.new_records = people
+        self.image_uploader.deleted_unused_imgs(people)
