@@ -87,9 +87,7 @@ def index():
         'TC': 'Trumbull',
     }
     """
-    current_year = datetime.date.today().year
-    years = list(range(current_year, current_year + 5))
-    years.append('')
+    years = get_years()
     leave = ['Yes', 'No']
     eli_whitney = ['Yes', 'No']
     birth_months = {index + 1: name for index, name in enumerate(list(calendar.month_name)[1:])}
@@ -208,3 +206,24 @@ def auth():
 def untuple(tuples):
     return [t[0] for t in tuples]
 """
+
+
+def get_years():
+    """
+    returns list of currently enrolled class years
+    After May, the oldest class should be removed
+    After July, the next class should be added
+    e.g.:
+    in January 2021: years = [2021, 2022, 2023, 2024]
+    in July 2021: years = [2022, 2023, 2024]
+    in September 2021: years = [2022, 2023, 2024, 2025]
+    """
+    GRAD_MONTH = 5  # May
+    ADD_MONTH = 8   # August
+    NUM_CLASSES = 4
+    current_date = datetime.date.today()
+    oldest_class_year = current_date.year if current_date.month <= GRAD_MONTH else current_date.year + 1
+    youngest_class_year = current_date.year + NUM_CLASSES if current_date.month >= ADD_MONTH else current_date.year + NUM_CLASSES - 1
+    years = list(range(oldest_class_year, youngest_class_year + 1))
+    years.append('')
+    return years

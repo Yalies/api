@@ -11,6 +11,7 @@ parser.add_argument('filename', type=str, help='Name of file to encrypt')
 parser.add_argument('--key', type=str, default=os.environ.get('FERNET_KEY', Fernet.generate_key()))
 args = parser.parse_args()
 
+
 # TODO: don't duplicate from FaceBook class
 def clean_year(year):
     year = year.lstrip('\'')
@@ -18,14 +19,17 @@ def clean_year(year):
         return None
     return 2000 + int(year)
 
+
 def get_tree(html):
     print('Building tree.')
     tree = BeautifulSoup(html, 'html.parser')
     print('Done building tree.')
     return tree
 
+
 def get_containers(tree):
     return tree.find_all('div', {'class': 'student_container'})
+
 
 with open(args.filename, 'r') as f:
     html = f.read()
