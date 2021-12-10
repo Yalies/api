@@ -75,6 +75,7 @@ class Person(SearchableMixin, db.Model):
         'preferred_name', 'middle_name', 'suffix', 'pronouns', 'address',
         'school_code', 'school', 'year', 'curriculum', 'organization_code', 'organization', 'unit_class', 'unit_code', 'unit',
         'postal_address', 'office_building', 'office_room')
+        
     __filterable_identifiable__ = (
         'netid', 'upi', 'email', 'mailbox', 'phone',
         'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronouns',
