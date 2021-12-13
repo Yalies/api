@@ -71,19 +71,10 @@ class User(db.Model):
 
 class Person(SearchableMixin, db.Model):
     __tablename__ = 'person'
-<<<<<<< HEAD
     __searchable__ = ('first_name', 'last_name', 'netid', 'email', 'college_code', 'college', 'residence', 'major', 'upi', 'title',
         'preferred_name', 'middle_name', 'suffix', 'pronouns', 'address',
         'school_code', 'school', 'year', 'curriculum', 'organization_code', 'organization', 'unit_class', 'unit_code', 'unit',
         'postal_address', 'office_building', 'office_room')
-=======
-    __searchable__ = (
-        'first_name', 'last_name', 'netid', 'email', 'college_code', 'college', 'residence', 'major', 'upi', 'title',
-        'preferred_name', 'middle_name', 'suffix', 'pronouns', 'address',
-        'school_code', 'school', 'year', 'curriculum', 'organization_code', 'organization', 'unit_class', 'unit_code', 'unit',
-        'postal_address', 'office_building', 'office_room',
-    )
->>>>>>> 74fa6716070a9d5335866c6b154466a7a9a90824
     __filterable_identifiable__ = (
         'netid', 'upi', 'email', 'mailbox', 'phone',
         'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronouns',
