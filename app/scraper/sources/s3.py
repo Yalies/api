@@ -54,16 +54,24 @@ class ImageUploader:
         )
         return self.get_file_url(filename)
 
-    def deleted_unused_imgs(self, people): #people is list of everyone scraped from face_book
+    def deleted_unused_imgs(self, people):
+        """
+        :param people: list of people records of everyone scraped from face_book
+        """
         filename_offset = len(S3_LOCATION)
-        deleted = set() 
-        scraped_imaged_filenames = [(person['img'][filename_offset:] if 'img' in person else None) for person in people]
-        for aws_file in self.files: 
-            if aws_file not in scraped_image_filenames:
-                self.s3.Object(BUCKET_NAME, aws_file).delete()
-                deleted.add(aws_file)
-        print('Deleted %d unused images.' % len(deleted)) 
+        scraped_image_filenames = { (person['img'][filename_offset:] if 'img' in person else None) for person in people }
+        to_delete = set(self.files) - scraped_image_filenames
+        to_delete_objects = [{'Key':key} for key in to_delete]
 
+        # delete_objects(...) will delete at most 1000 objects at a time
+        chunk_size = 1000
+        num_deleted = len(to_delete)
+        for i in range(0,num_deleted,chunk_size):
+            self.s3.delete_objects(
+                Bucket=S3_BUCKET_NAME,
+                Delete={
+                    'Objects': to_delete_objects[i:i+chunk_size],
+                    'Quiet': True
+                })
 
-
-
+        print('Deleted %d unused images.' % num_deleted) 
