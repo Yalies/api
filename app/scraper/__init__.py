@@ -8,8 +8,6 @@ import os
 from threading import Thread
 from app.search import add_to_index
 
-from .s3 import ImageUploader
-
 def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
     people = []
     thread_fb = Thread(target=face_book.pull, args=(people,))
