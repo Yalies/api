@@ -76,8 +76,7 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         people = departmental.integrate(people)
         cache.set(cache_key, people)
 
-    image_uploader = ImageUploader()
-    image_uploader.deleted_unused_imgs(people)
+    face_book.delete_unused_imgs(people)
 
     # Store people into database
     print('Inserting new data.')
