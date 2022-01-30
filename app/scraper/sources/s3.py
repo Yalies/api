@@ -62,7 +62,7 @@ class ImageUploader:
         :param people: list of people records of everyone scraped from face_book
         """
         filename_offset = len(S3_LOCATION)
-        scraped_image_filenames = { (person['img'][filename_offset:] if 'img' in person else None) for person in people }
+        scraped_image_filenames = { person['img'][filename_offset:] for person in people if 'img' in person }
         to_delete = set(self.files) - scraped_image_filenames
         to_delete_objects = [{'Key': key} for key in to_delete]
 
