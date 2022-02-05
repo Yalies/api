@@ -20,6 +20,8 @@ with open('app/scraper/res/majors.txt') as f:
 with open('app/scraper/res/major_full_names.json') as f:
     MAJOR_FULL_NAMES = json.load(f)
 
+VISITING_INTERNATIONAL = 'Visiting International Program'
+
 
 class FaceBook(Source):
     FERNET_KEY = os.environ.get('FERNET_KEY')
@@ -115,6 +117,10 @@ class FaceBook(Source):
     def delete_unused_imgs(self, people):
         self.image_uploader.delete_unused_imgs(people)
 
+    @staticmethod
+    def is_eli_whitney(person):
+        return not person.get('year') and not person['visiting_international']:
+
     def scrape(self, current_people):
         html = self.get_html(self.cookie)
         tree = self.get_tree(html)
@@ -142,6 +148,8 @@ class FaceBook(Source):
 
             info = container.find_all('div', {'class': 'student_info'})
 
+            person['visting_international'] = False
+
             person['college'] = info[0].text.replace(' College', '')
             try:
                 person['email'] = info[1].find('a').text
@@ -162,7 +170,11 @@ class FaceBook(Source):
                     person['birth_day'] = int(birth_day)
                 person['major'] = trivia.pop() if trivia[-1] in MAJORS else None
                 if person['major'] and person['major'] in MAJOR_FULL_NAMES:
-                    person['major'] = MAJOR_FULL_NAMES[person['major']]
+                    if person['major'] != VISITING_INTERNATIONAL:
+                        person['major'] = MAJOR_FULL_NAMES[person['major']]
+                    else:
+                        person['visiting_international'] = True
+                        person['major'] = None
             except IndexError:
                 pass
 
@@ -192,7 +204,7 @@ class FaceBook(Source):
 
             directory_entry = self.directory.get_directory_entry(person)
             if directory_entry is not None:
-                if not person.get('year') and directory_entry.student_expected_graduation_year:
+                if FaceBook.is_eli_whitney(person) and directory_entry.student_expected_graduation_year:
                     person['year'] = int(directory_entry.student_expected_graduation_year)
                     # This may not always be the case. But it's probably a safe bet.
                     person['eli_whitney'] = True
