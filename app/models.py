@@ -87,7 +87,7 @@ class Person(SearchableMixin, db.Model):
         'title', 'first_name', 'preferred_name', 'middle_name', 'last_name', 'suffix', 'pronouns',
         'phonetic_name', 'name_recording',
         'school_code', 'school', 'year', 'curriculum',
-        'college', 'college_code', 'leave', 'eli_whitney', 'visiting_international', 'image', 'birthday', 'birth_month', 'birth_day',
+        'college', 'college_code', 'leave', 'eli_whitney', 'visitor', 'image', 'birthday', 'birth_month', 'birth_day',
         'residence', 'building_code', 'entryway', 'floor', 'suite', 'room',
         'major', 'address', 'access_code',
         'organization_code', 'organization', 'unit_class', 'unit_code', 'unit',
@@ -130,7 +130,7 @@ class Person(SearchableMixin, db.Model):
     college_code = db.Column(db.String)
     leave = db.Column(db.Boolean)
     eli_whitney = db.Column(db.Boolean)
-    visiting_international = db.Column(db.Boolean)
+    visitor = db.Column(db.Boolean)
     image = db.Column(db.String)
     birthday = db.Column(db.String)
     birth_month = db.Column(db.Integer)

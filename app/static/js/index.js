@@ -217,7 +217,7 @@ function addRow(container, property, title, icon, person, url, showTitle) {
                 readout.textContent = 'Took Leave';
             } else if (property === 'eli_whitney') {
                 readout.textContent = 'Eli Whitney Program';
-            } else if (property === 'visiting_international') {
+            } else if (property === 'visitor') {
                 readout.textContent = 'Visiting International Program';
             } else {
                 readout.textContent = value;
@@ -318,7 +318,7 @@ function loadNextPage() {
                     addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
                     addRow(personContainer, 'leave', null, 'hourglass', person)
                     addRow(personContainer, 'eli_whitney', null, 'history', person)
-                    addRow(personContainer, 'visiting_international', null, 'globe', person)
+                    addRow(personContainer, 'visitor', null, 'globe', person)
                     addRow(personContainer, 'college', 'Residential College', 'graduation-cap', person);
                     addRow(personContainer, 'email', 'Email', 'envelope', person, person.email ? 'mailto:' + person.email : null, false);
                     //addRow(personContainer, 'residence', 'Residence', 'building', person);
