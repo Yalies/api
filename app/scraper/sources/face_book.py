@@ -20,8 +20,6 @@ with open('app/scraper/res/majors.txt') as f:
 with open('app/scraper/res/major_full_names.json') as f:
     MAJOR_FULL_NAMES = json.load(f)
 
-VISITING_INTERNATIONAL = 'Visiting International Program'
-
 
 class FaceBook(Source):
     FERNET_KEY = os.environ.get('FERNET_KEY')
@@ -119,7 +117,7 @@ class FaceBook(Source):
 
     @staticmethod
     def is_eli_whitney(person):
-        return not person.get('year') and not person['visiting_international']:
+        return not person.get('year') and not person['visitor']:
 
     def scrape(self, current_people):
         html = self.get_html(self.cookie)
@@ -148,8 +146,6 @@ class FaceBook(Source):
 
             info = container.find_all('div', {'class': 'student_info'})
 
-            person['visting_international'] = False
-
             person['college'] = info[0].text.replace(' College', '')
             try:
                 person['email'] = info[1].find('a').text
@@ -170,11 +166,12 @@ class FaceBook(Source):
                     person['birth_day'] = int(birth_day)
                 person['major'] = trivia.pop() if trivia[-1] in MAJORS else None
                 if person['major'] and person['major'] in MAJOR_FULL_NAMES:
-                    if person['major'] != VISITING_INTERNATIONAL:
-                        person['major'] = MAJOR_FULL_NAMES[person['major']]
-                    else:
-                        person['visiting_international'] = True
-                        person['major'] = None
+                    person['major'] = MAJOR_FULL_NAMES[person['major']]
+                if person['major'] == 'Visiting International Program':
+                    person['visitor'] = True
+                    person['major'] = None
+                else:
+                    person['visitor'] = False
             except IndexError:
                 pass
 
