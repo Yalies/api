@@ -117,7 +117,7 @@ class FaceBook(Source):
 
     @staticmethod
     def is_eli_whitney(person):
-        return not person.get('year') and not person['visitor']:
+        return not person.get('year') and not person['visitor']
 
     def scrape(self, current_people):
         html = self.get_html(self.cookie)
