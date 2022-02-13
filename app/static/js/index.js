@@ -184,7 +184,9 @@ function addRow(container, property, title, icon, person, url, showTitle) {
     let value = person[property];
     if (value) {
         let row = document.createElement('div');
-        row.title = title;
+        if (title) {
+            row.title = title;
+        }
         row.classList.add('row');
         row.classList.add(property);
         let i = document.createElement('i');
@@ -211,7 +213,15 @@ function addRow(container, property, title, icon, person, url, showTitle) {
             }
             readout.appendChild(a);
         } else {
-            readout.textContent = value;
+            if (property === 'leave') {
+                readout.textContent = 'Took Leave';
+            } else if (property === 'eli_whitney') {
+                readout.textContent = 'Eli Whitney Program';
+            } else if (property === 'visitor') {
+                readout.textContent = 'Visiting International Program';
+            } else {
+                readout.textContent = value;
+            }
         }
         row.appendChild(readout);
 
@@ -306,36 +316,9 @@ function loadNextPage() {
                     addRow(personContainer, 'pronouns', 'Pronouns', 'comments', person);
                     addRow(personContainer, 'title', 'Title', 'tags', person);
                     addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
-                    if (person.leave) {
-                        let row = document.createElement('div');
-                        row.classList.add('row');
-                        row.classList.add('leave');
-                        let i = document.createElement('i');
-                        i.className = 'fa fa-' + 'hourglass';
-                        row.appendChild(i);
-                        let readout = document.createElement('p');
-                        readout.classList.add('value');
-                        readout.classList.add('leave');
-                        readout.textContent = 'Took Leave';
-                        row.appendChild(readout);
-
-                        personContainer.appendChild(row);
-                    }
-                    if (person.eli_whitney) {
-                        let row = document.createElement('div');
-                        row.classList.add('row');
-                        row.classList.add('eli-whitney');
-                        let i = document.createElement('i');
-                        i.className = 'fa fa-' + 'history';
-                        row.appendChild(i);
-                        let readout = document.createElement('p');
-                        readout.classList.add('value');
-                        readout.classList.add('eli-whitney');
-                        readout.textContent = 'Eli Whitney Program';
-                        row.appendChild(readout);
-
-                        personContainer.appendChild(row);
-                    }
+                    addRow(personContainer, 'leave', null, 'hourglass', person)
+                    addRow(personContainer, 'eli_whitney', null, 'history', person)
+                    addRow(personContainer, 'visitor', null, 'globe', person)
                     addRow(personContainer, 'college', 'Residential College', 'graduation-cap', person);
                     addRow(personContainer, 'email', 'Email', 'envelope', person, person.email ? 'mailto:' + person.email : null, false);
                     //addRow(personContainer, 'residence', 'Residence', 'building', person);

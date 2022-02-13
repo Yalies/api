@@ -112,6 +112,13 @@ class FaceBook(Source):
                 print(email + ' is' + (' not' if not people[emails[email]]['leave'] else '') + ' taking a leave.')
         return people
 
+    def delete_unused_imgs(self, people):
+        self.image_uploader.delete_unused_imgs(people)
+
+    @staticmethod
+    def is_eli_whitney(person):
+        return not person.get('year') and not person['visitor']:
+
     def scrape(self, current_people):
         html = self.get_html(self.cookie)
         tree = self.get_tree(html)
@@ -160,6 +167,11 @@ class FaceBook(Source):
                 person['major'] = trivia.pop() if trivia[-1] in MAJORS else None
                 if person['major'] and person['major'] in MAJOR_FULL_NAMES:
                     person['major'] = MAJOR_FULL_NAMES[person['major']]
+                if person['major'] == 'Visiting International Program':
+                    person['visitor'] = True
+                    person['major'] = None
+                else:
+                    person['visitor'] = False
             except IndexError:
                 pass
 
@@ -189,7 +201,7 @@ class FaceBook(Source):
 
             directory_entry = self.directory.get_directory_entry(person)
             if directory_entry is not None:
-                if not person.get('year') and directory_entry.student_expected_graduation_year:
+                if FaceBook.is_eli_whitney(person) and directory_entry.student_expected_graduation_year:
                     person['year'] = int(directory_entry.student_expected_graduation_year)
                     # This may not always be the case. But it's probably a safe bet.
                     person['eli_whitney'] = True

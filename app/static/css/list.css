@@ -47,6 +47,6 @@
 .row.leave {
     color: #00d018;
 }
-.row.eli-whitney {
+.row.eli_whitney, .row.visitor {
     color: #E4572E;
 }
