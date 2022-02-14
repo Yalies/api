@@ -317,7 +317,6 @@ function loadNextPage() {
                     addRow(personContainer, 'title', 'Title', 'tags', person);
                     addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
                     addRow(personContainer, 'leave', null, 'hourglass', person)
-                    addRow(personContainer, 'eli_whitney', null, 'history', person)
                     addRow(personContainer, 'visitor', null, 'globe', person)
                     addRow(personContainer, 'college', 'Residential College', 'graduation-cap', person);
                     addRow(personContainer, 'email', 'Email', 'envelope', person, person.email ? 'mailto:' + person.email : null, false);
