@@ -11,6 +11,7 @@ let p = {
     list: document.getElementById('list'),
     loading: document.getElementById('loading'),
     empty: document.getElementById('empty'),
+    query_count: document.getElementById('query_count'),
 };
 
 //////////////
@@ -256,6 +257,15 @@ function loadNextPage() {
         p.loading.style.display = 'block';
         criteria['page'] = ++pagesLoaded;
         console.log('Loading page', pagesLoaded);
+        fetch('/api/people', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({...criteria, count_only: 1}),
+        })
+            .then(response => response.json())
+            .then(r => p.query_count.innerText = `${r.count} results`);
         fetch('/api/people', {
             method: 'POST',
             headers: {

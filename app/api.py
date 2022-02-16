@@ -70,6 +70,10 @@ def api_students():
 @api_bp.route('/people', methods=['POST'])
 def api_people():
     criteria = request.get_json() or {}
+    # only return count in case requested; needed for backwards compatibility
+    if (criteria.get("count_only")):
+        return '{{"count": {}}}'.format(Person.count(criteria))
+
     people = Person.search(criteria)
     return to_json(people)
 

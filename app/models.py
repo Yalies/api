@@ -195,6 +195,27 @@ class Person(SearchableMixin, db.Model):
             people = person_query.all()
         return people
 
+    @staticmethod
+    def count(criteria):
+        query = criteria.get('query')
+        filters = criteria.get('filters')
+        person_query = Person.query
+        if query:
+            person_query = Person.query_search(query)
+        else:
+            person_query = person_query.order_by(
+                Person.last_name,
+                Person.first_name,
+            )
+        if filters:
+            for category in filters:
+                if category not in (Person.__filterable_identifiable__ + Person.__filterable__):
+                    return None
+                if not isinstance(filters[category], list):
+                    filters[category] = [filters[category]]
+                person_query = person_query.filter(getattr(Person, category).in_(filters[category]))
+        return person_query.count()
+
 
 class Key(db.Model):
     __tablename__ = 'key'
