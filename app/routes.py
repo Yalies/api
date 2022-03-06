@@ -89,7 +89,6 @@ def index():
     """
     years = get_years()
     leave = ['Yes', 'No']
-    eli_whitney = ['Yes', 'No']
     birth_months = {index + 1: name for index, name in enumerate(list(calendar.month_name)[1:])}
     birth_days = list(range(1, 31 + 1))
     # SQLAlchemy returns lists of tuples, so we gotta convert to a list of items.
@@ -101,7 +100,7 @@ def index():
     rooms = untuple(db.session.query(distinct(Person.room)).order_by(Person.room))
     """
     return render_template('index.html', colleges=colleges,
-                           years=years, leave=leave, eli_whitney=eli_whitney, majors=majors,
+                           years=years, leave=leave, majors=majors,
                            birth_months=birth_months, birth_days=birth_days)
     """
                            building_codes=building_codes,
@@ -134,7 +133,6 @@ def about():
 
 
 @app.route('/faq')
-@login_required
 def faq():
     return render_template('faq.html')
 
