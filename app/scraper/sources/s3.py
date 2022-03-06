@@ -11,6 +11,9 @@ S3_LOCATION = 'https://' + S3_BUCKET_NAME + '.s3.amazonaws.com/'
 
 
 class ImageUploader:
+
+    CHUNK_SIZE = 1000
+
     def __init__(self):
         self.s3 = boto3.client(
             's3',
@@ -53,3 +56,23 @@ class ImageUploader:
             }
         )
         return self.get_file_url(filename)
+
+    def deleted_unused_imgs(self, people):
+        """
+        :param people: list of people records of everyone scraped from face_book
+        """
+        filename_offset = len(S3_LOCATION)
+        scraped_image_filenames = { person['img'][filename_offset:] for person in people if 'img' in person }
+        to_delete = set(self.files) - scraped_image_filenames
+        to_delete_objects = [{'Key': key} for key in to_delete]
+
+        # delete_objects(...) will delete at most 1000 objects at a time
+        for i in range(0, len(to_delete), CHUNK_SIZE):
+            self.s3.delete_objects(
+                Bucket=S3_BUCKET_NAME,
+                Delete={
+                    'Objects': to_delete_objects[i:i+CHUNK_SIZE],
+                    'Quiet': True
+                })
+
+        print('Deleted %d unused images.' % num_deleted) 

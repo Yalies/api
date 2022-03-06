@@ -8,7 +8,6 @@ import os
 from threading import Thread
 from app.search import add_to_index
 
-
 def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
     people = []
     thread_fb = Thread(target=face_book.pull, args=(people,))
@@ -74,6 +73,8 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         people = name_coach.people
         people = departmental.integrate(people)
         cache.set(cache_key, people)
+
+    face_book.delete_unused_imgs(people)
 
     # Store people into database
     print('Inserting new data.')
