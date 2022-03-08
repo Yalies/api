@@ -347,3 +347,24 @@ window.onscroll = function(e) {
         pagesFinished = true;
     }
 }
+
+// Scroll to top button
+var scrollTopBtn = document.getElementById('scrollToTopBtn')
+var rootElement = document.documentElement
+
+function showButton() {
+if ((rootElement.scrollTop / (rootElement.scrollHeight - rootElement.clientHeight)) > 0.15 ) {
+    scrollTopBtn.classList.add('showBtn')
+} else {
+    scrollTopBtn.classList.remove('showBtn')
+}
+}
+function scrollToTop() {
+rootElement.scrollTo({
+    top: 0,
+    behavior: "smooth"
+})
+}
+scrollTopBtn.addEventListener('click', scrollToTop);
+document.addEventListener('scroll', showButton);
+    
