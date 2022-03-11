@@ -71,6 +71,8 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         thread_departmental.join()
         # TODO: find a cleaner way to exchange this data
         people = name_coach.people
+        print('People retreived from name coach:')
+        print(people)
         people = departmental.integrate(people)
         cache.set(cache_key, people)
 
