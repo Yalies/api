@@ -2,8 +2,9 @@
 
 {% block content %}
 <h1>API documentation</h1>
+<p>The Yalies API can be used to programmatically query information about the student body in your own programs and software projects. Data is served in a developer-friendly JSON format.
 <h3>Authentication</h3>
-<p>You must pass in the header <code>Authorization</code>, with a value of <code>Bearer _______</code>, replacing the underscores with a key obtained below.</p>
+<p>In order to verify your identity, you must create a token below, attaching an accurate description of what you will use it for. Then, when making HTTP queries to the API (described in detail below), you must pass in the HTTP header <code>Authorization</code>, with a value of <code>Bearer _______</code>, replacing the underscores with the key you have been provided.</p>
 <div id="key">
     <table id="keys_table">
         <thead>
