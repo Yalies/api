@@ -346,4 +346,21 @@ window.onscroll = function(e) {
         // Temporarily set so that we won't load tons of pages at once
         pagesFinished = true;
     }
+    showButton(); // Shows scroll_top_button
 }
+
+// Scroll to top button
+var scrollTopBtn = document.getElementById('scroll_top_button')
+
+function showButton() {
+    scrollTopBtn.classList.toggle('shown', (window.scrollY > (2 * window.innerHeight)))
+}
+
+scrollTopBtn.onclick = function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    })
+}
+
+    
