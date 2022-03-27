@@ -11,7 +11,7 @@ let p = {
     list: document.getElementById('list'),
     loading: document.getElementById('loading'),
     empty: document.getElementById('empty'),
-    scrollTop: document.getElementById('scroll_top_button'),
+    scrollTop: document.getElementById('scroll_top'),
 };
 
 //////////////
