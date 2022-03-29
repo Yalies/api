@@ -11,6 +11,7 @@ let p = {
     list: document.getElementById('list'),
     loading: document.getElementById('loading'),
     empty: document.getElementById('empty'),
+    scrollTop: document.getElementById('scroll_top'),
 };
 
 //////////////
@@ -75,10 +76,10 @@ onclick = function(e) {
     } else if (e.target.tagName === 'I' && isPronunciation(e.target.parentElement)) {
         pronunciation = e.target.parentElement;
     }
-    
+
     if (pronunciation) {
         // Play audio
-        
+
         let audio = pronunciation.getElementsByTagName('audio')[0];
         if (!isPlaying(audio)) {
             pronunciation.classList.add('playing');
@@ -127,6 +128,13 @@ onchange = function(e) {
         }
         runSearch();
     }
+};
+
+p.scrollTop.onclick = function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 };
 
 
@@ -346,4 +354,6 @@ window.onscroll = function(e) {
         // Temporarily set so that we won't load tons of pages at once
         pagesFinished = true;
     }
-}
+
+    p.scrollTop.classList.toggle('shown', window.scrollY > (2 * window.innerHeight));
+};
