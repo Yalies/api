@@ -334,7 +334,6 @@ function loadNextPage() {
                         addRow(personContainer, 'phone', 'Phone Number', 'phone', person, person.phone ? 'tel:' + person.phone : null, false);
                     }
                     addRow(personContainer, 'birthday', 'Birthday', 'birthday-cake', person);
-                    addRow(personContainer, 'access_code', 'Swipe Access Code', 'key', person);
                     addRow(personContainer, 'address', 'Address', 'home', person);
                     addRow(personContainer, 'website', 'Website', 'globe', person, person.website, true);
                     //addRow(personContainer, 'education', 'Education', 'university', person);
