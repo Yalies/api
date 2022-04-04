@@ -1,5 +1,5 @@
 # Scraper
-Our scraper crawls Yale's websites in to obtain the data we provide.
+Our scraper crawls Yale's websites to obtain the data we provide.
 
 ## Running the scraper on your local machine
 The scraper requires Redis as an additional dependency. On a Mac with Homebrew installed, you can get Redis with `brew install redis`. For other platforms, install Redis using [this guide](https://redis.io/topics/quickstart) or by googling "install redis [your platform]".
