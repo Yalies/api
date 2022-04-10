@@ -36,7 +36,7 @@
     color: #00d018;
 }
 .pills {
-    margin: 5px 0 3px;
+    margin: 5px 0 4px -1px;
 }
 .pill {
     background: #00356b;
@@ -46,6 +46,9 @@
     border-radius: 12px;
     margin-top: 2px;
     margin-right: 4px;
+}
+.row {
+    margin-left: 1px;
 }
 .row.leave {
     color: #00d018;
@@ -57,4 +60,8 @@
     width: 15px;
     vertical-align: center;
     margin: 7px 5px 0 -1px;
+}
+.row i.fa-graduation-cap {
+    margin-left: -2px;
+    margin-right: 1px;
 }
