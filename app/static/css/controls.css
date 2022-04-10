@@ -13,16 +13,18 @@
     margin-top: 8px;
     display: inline-block;
     vertical-align: top;
-    padding: 8px 12px;
-    border: solid 1px lightgray;
-    border-radius: 20px;
+    padding: 8px 13px 12px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    border-radius: 18px;
     user-select: none;
     cursor: pointer;
 }
 .filter.active {
     border-color: #00356b;
     border-width: 2px;
-    padding: 7px 11px;
+}
+.filter.collapsed {
+    padding: 8px 13px;
 }
 .filter h4 {
     margin-bottom: 5px;

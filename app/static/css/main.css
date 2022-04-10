@@ -76,7 +76,8 @@ textarea {
 }
 input[type="text"] {
     padding: 8px 10px;
-    border: solid 1px lightgray;
+    border: none;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 button, .button {
     padding: 9px 12px;
@@ -89,7 +90,8 @@ button, .button {
 }
 button.outline, .button.outline {
     padding: 8px 12px;
-    border: solid 1px lightgray;
+    border: none;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
     background: none;
     color: #00356b;
 }
@@ -108,7 +110,8 @@ textarea {
     margin-bottom: 10px;
     padding: 10px;
     overflow: visible;
-    border: solid 1px lightgray;
+    border: none;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
     resize: none;
     display: block;
 }
