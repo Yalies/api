@@ -17,3 +17,15 @@ class Config(object):
     CAS_SERVER = 'https://secure.its.yale.edu'
     CAS_AFTER_LOGIN = 'index'
     CAS_LOGIN_ROUTE = '/cas/login'
+
+    # Email sending with Gmail
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 465
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+    # Authentication
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
+    # Recipients for diagnostic emails
+    ADMIN_EMAILS = os.environ['ADMIN_EMAILS'].split(',')
