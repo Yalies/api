@@ -3,9 +3,11 @@
 }
 
 #submit {
-    padding: 10px 13px;
+    padding: 10px 12px;
 }
 
+.filters {
+}
 #clear_filters {
     margin-top: 8px;
 }
@@ -13,7 +15,8 @@
     margin-top: 8px;
     display: inline-block;
     vertical-align: top;
-    padding: 10px 13px 12px;
+    padding: 8px 11px 10px;
+    border: solid 2px white;
     box-shadow: 0 0 4px rgba(0, 21, 42, 0.2);
     border-radius: 20px;
     user-select: none;
@@ -22,10 +25,10 @@
 }
 .filter.active {
     border-color: #00356b;
-    border-width: 2px;
+    box-shadow: none;
 }
 .filter.collapsed {
-    padding: 10px 13px;
+    padding: 8px 11px;
 }
 .filter h4 {
     margin-bottom: 5px;
