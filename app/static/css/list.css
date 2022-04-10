@@ -53,3 +53,8 @@
 .row.visitor {
     color: #E4572E;
 }
+.row img {
+    width: 15px;
+    vertical-align: center;
+    margin: 7px 5px 0 -1px;
+}

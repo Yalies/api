@@ -326,7 +326,21 @@ function loadNextPage() {
                     addRow(personContainer, 'year', 'Graduation Year', 'calendar', person);
                     addRow(personContainer, 'leave', null, 'hourglass', person)
                     addRow(personContainer, 'visitor', null, 'globe', person)
-                    addRow(personContainer, 'college', 'Residential College', 'graduation-cap', person);
+                    if (person.college_code) {
+                        let row = document.createElement('div');
+                        row.title = 'Residential College';
+                        row.classList.add('row');
+                        row.classList.add('college');
+                        let img = document.createElement('img');
+                        img.src = '/static/images/shields/' + person.college_code + '.png';
+                        row.appendChild(img);
+                        let readout = document.createElement('p');
+                        readout.textContent = person.college;
+                        readout.classList.add('value');
+                        readout.classList.add('college');
+                        row.appendChild(readout);
+                        personContainer.appendChild(row);
+                    }
                     addRow(personContainer, 'email', 'Email', 'envelope', person, person.email ? 'mailto:' + person.email : null, false);
                     //addRow(personContainer, 'residence', 'Residence', 'building', person);
                     addRow(personContainer, 'major', 'Major', 'book', person);
