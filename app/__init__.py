@@ -4,6 +4,7 @@ from celery import Celery
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_mail import Mail
 from flask_cas import CAS
 from flask_redis import FlaskRedis
 from elasticsearch import Elasticsearch
@@ -16,6 +17,7 @@ celery.conf.update(app.config)
 cors = CORS(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+mail = Mail(app)
 cas = CAS(app)
 redis = FlaskRedis(app)
 elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
