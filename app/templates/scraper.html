@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<h3>Face Book</h3>
+<p>Open the <a href="https://students.yale.edu/facebook" target="_blank">Yale Face Book</a>. Open your browser's developer tools (F12, Command+Option+I, or Right Click + Inspect Element), and navigate to the Network tab. Then, log in, and choose a network request that occurred after the login and copy the value of the <code>Cookie</code> property.</p>
+<img src="/static/images/scraper/face_book.png" alt="Copying Face Book cookie">
 <textarea name="face_book_cookie" cols=30 rows=5 placeholder="Face Book cookie"></textarea>
+<h3>Directory</h3>
+<p>Open the <a href="https://directory.yale.edu" target="_blank">Yale Directory</a>, and open your developer tools again. <strong>Log in</strong> (you may still need to click the blue LOG IN button to access the privileged version of the website). Then, perform a search, and in the developer tools, select the query to the <code>api</code> endpoint. You'll notice the <code>Cookie</code> is too long to be displayed without elipses, so right click and copy it elsewhere then extract only the <code>_people_search_session</code> value. (You can also copy the value under the "Cookies" tab of the developer tools.) Finally, grab the <code>X-CSRF-Token</code> header value.</p>
+
 <textarea name="people_search_session_cookie" cols=30 rows=8 placeholder="Directory people_search_session cookie"></textarea>
 <textarea name="csrf_token" cols=30 rows=3 placeholder="Directory CSRF Token"></textarea>
 <h3>Use caches:</h3>
