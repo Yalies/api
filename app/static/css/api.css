@@ -9,7 +9,7 @@
 }
 #keys_table button i {
     /* Correct for trash icon being misshapen */
-    margin: 0 1px;
+    margin: 0 1.5px;
 }
 #keys_table th,
 #keys_table td {
