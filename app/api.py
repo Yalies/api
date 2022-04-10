@@ -57,7 +57,10 @@ def api_filters():
 
 @api_bp.route('/students', methods=['POST'])
 def api_students():
-    criteria = request.get_json() or {}
+    try:
+        criteria = request.get_json(force=True) or {}
+    except:
+        criteria = {}
     if not criteria.get('filters'):
         criteria['filters'] = {}
     if not criteria['filters'].get('school_code'):
@@ -69,7 +72,10 @@ def api_students():
 
 @api_bp.route('/people', methods=['POST'])
 def api_people():
-    criteria = request.get_json() or {}
+    try:
+        criteria = request.get_json(force=True) or {}
+    except:
+        criteria = {}
     people = Person.search(criteria)
     return to_json(people)
 
