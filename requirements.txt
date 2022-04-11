@@ -2,6 +2,7 @@ flask
 flask-cors
 flask-sqlalchemy
 flask-migrate
+flask-mail
 flask-cas
 flask-redis
 psycopg2
