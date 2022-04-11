@@ -1,9 +1,15 @@
-main img {
+article {
+    max-width: 6.5in;
+}
+article img {
     max-width: 100%;
-    max-height: 4in;
+    max-height: 5in;
     margin-top: 10px;
 }
-main ul {
+article ul {
     margin-left: 15px;
     line-height: 1.5;
+}
+article textarea {
+    margin-top: 10px;
 }
