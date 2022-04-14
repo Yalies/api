@@ -85,6 +85,8 @@ class Directory(Source):
         return '', combined
 
     def split_office(self, office):
+        if office is None:
+            return None, None
         components = office.split(' > ')
         office_building = components[0]
         office_room = None
