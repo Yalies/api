@@ -1,0 +1,23 @@
+<div style="font-size: 16px; line-height: 1.1;">
+    {% if error is not none %}
+    <pre style="color: red;">{{ error }}</pre>
+    {% endif %}
+    {% if stats is not none %}
+    <p>Start time: {{ stats['start_time'].strftime(DATETIME_FMT) }}</p>
+    <p>Completion time: {{ stats['end_time'].strftime(DATETIME_FMT) }}</p>
+    {% for hall_name, hall in stats['halls'].items() %}
+    <div>
+        <h3>{{ hall_name }}</h3>
+        <p>Scraped to {{ hall['end_day'].strftime(DATE_FMT) }} <span style="color: {{ status_color(hall['days_left']) }}">({{ hall['days_left'] }} days left)</p>
+        <p>New days: {{ hall['found']['days'] }}</p>
+        {% if hall['found']['days'] %}
+        <p>Meals found: {{ hall['inserted']['meals'] }}</p>
+        <p>Items found: {{ hall['found']['items'] }} ({{ hall['inserted']['items'] }} new)</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {#<a style="display: inline-block; padding: 10px 15px; background: #00356b; box-sizing: border-box; color: white; text-decoration: none;" href="https://yalies.io/scraper">Rerun scraper</a>#}
+</div>
+
