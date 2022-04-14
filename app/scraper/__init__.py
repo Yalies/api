@@ -1,5 +1,6 @@
 from app import app, db, celery
 from app.models import Person
+from app.mail import send_scraper_report
 
 from app.scraper import sources
 from .cache import Cache
