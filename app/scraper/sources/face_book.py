@@ -193,7 +193,7 @@ class FaceBook(Source):
             person['address'] = '\n'.join(trivia)
 
             person['leave'] = False
-            person['eli_whitney'] = False
+            person['eli_whitney'] = None
 
             directory_entry = self.directory.get_directory_entry(person)
             if directory_entry is not None:
