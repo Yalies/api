@@ -115,10 +115,6 @@ class FaceBook(Source):
     def delete_unused_imgs(self, people):
         self.image_uploader.delete_unused_imgs(people)
 
-    @staticmethod
-    def is_eli_whitney(person):
-        return not person.get('year') and not person['visitor']
-
     def scrape(self, current_people):
         html = self.get_html(self.cookie)
         tree = self.get_tree(html)
@@ -201,13 +197,6 @@ class FaceBook(Source):
 
             directory_entry = self.directory.get_directory_entry(person)
             if directory_entry is not None:
-                if FaceBook.is_eli_whitney(person) and directory_entry.student_expected_graduation_year:
-                    person['year'] = int(directory_entry.student_expected_graduation_year)
-                    # This may not always be the case. But it's probably a safe bet.
-                    person['eli_whitney'] = True
-                    # If they're an Eli Whitney student, we won't be able to tell whether
-                    # they're on leave because there's no year in the face book.
-                    person['leave'] = None
                 person = self.directory.merge_one(person, directory_entry)
             else:
                 print('Could not find directory entry.')
