@@ -39,7 +39,8 @@ class NameCoach(Source):
         self.new_records = [None] * len(current_people)
         threads = []
         for begin in range(0, len(self.new_records), self.PAGE_SIZE):
-            thread = Thread(target=self.scrape_range, args=(current_people, begin, begin + self.PAGE_SIZE))
+            end = min(len(self.new_records), begin + self.PAGE_SIZE)
+            thread = Thread(target=self.scrape_range, args=(current_people, begin, end))
             thread.start()
             threads.append(thread)
         for thread in threads:
