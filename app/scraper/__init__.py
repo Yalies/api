@@ -79,7 +79,6 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             people = departmental.integrate(people)
             cache.set(cache_key, people)
 
-        face_book.delete_unused_imgs(people)
 
         # Store people into database
         print('Inserting new data.')
@@ -87,6 +86,9 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         for person_dict in people:
             db.session.add(Person(**person_dict))
         db.session.commit()
+
+        print('Deleting unused images from S3.')
+        face_book.delete_unused_imgs(people)
         print('Done.')
     except Exception as e:
         print('Encountered fatal error, terminating scraper:')

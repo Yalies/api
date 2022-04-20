@@ -112,8 +112,8 @@ class FaceBook(Source):
                 print(email + ' is' + (' not' if not people[emails[email]]['leave'] else '') + ' taking a leave.')
         return people
 
-    def delete_unused_imgs(self, people):
-        self.image_uploader.delete_unused_imgs(people)
+    def delete_unused_images(self, people):
+        self.image_uploader.delete_unused_images(people)
 
     def scrape(self, current_people):
         html = self.get_html(self.cookie)

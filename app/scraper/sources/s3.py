@@ -57,7 +57,7 @@ class ImageUploader:
         )
         return self.get_file_url(filename)
 
-    def deleted_unused_imgs(self, people):
+    def delete_unused_images(self, people):
         """
         :param people: list of people records of everyone scraped from face_book
         """
@@ -75,4 +75,4 @@ class ImageUploader:
                     'Quiet': True
                 })
 
-        print('Deleted %d unused images.' % num_deleted) 
+        print('Deleted %d unused images.' % num_deleted)
