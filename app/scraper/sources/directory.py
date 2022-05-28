@@ -215,6 +215,8 @@ class Directory(Source):
 
         if entry.primary_organization_name != entry.organization_unit_name:
             print('Warning: primary_organization_name and organization_unit_name are different!')
+            print(person)
+            print(entry)
         if entry.organization_name != entry.primary_division_name:
             print('Warning: organization_name and primary_division_name are diferent!')
         if not person.get('year') and entry.student_expected_graduation_year:
