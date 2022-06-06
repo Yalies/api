@@ -85,6 +85,10 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         Person.query.delete()
         for person_dict in people:
             db.session.add(Person(**person_dict))
+            # Avoid memory overflows
+            num_inserted += 1
+            if num_inserted % 64 == 0:
+                db.session.commit()
         db.session.commit()
 
         print('Deleting unused images from S3.')
