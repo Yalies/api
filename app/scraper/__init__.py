@@ -83,6 +83,7 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         # Store people into database
         print('Inserting new data.')
         Person.query.delete()
+        num_inserted = 0
         for person_dict in people:
             db.session.add(Person(**person_dict))
             # Avoid memory overflows
