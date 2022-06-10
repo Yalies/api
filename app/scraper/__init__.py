@@ -85,6 +85,8 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         Person.query.delete()
         num_inserted = 0
         for person_dict in people:
+            if not person_dict.get('netid'):
+                continue
             db.session.add(Person(**person_dict))
             # Avoid memory overflows
             num_inserted += 1
