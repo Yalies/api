@@ -54,6 +54,7 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         cache_key = 'scraped_data'
         print('Checking cache...')
         people = cache.get(cache_key)
+        face_book = None
         if people:
             print('Found people in cache.')
         else:
@@ -94,8 +95,9 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
                 db.session.commit()
         db.session.commit()
 
-        print('Deleting unused images from S3.')
-        face_book.delete_unused_imgs(people)
+        if face_book is not None:
+            print('Deleting unused images from S3.')
+            face_book.delete_unused_imgs(people)
         print('Done.')
     except Exception as e:
         print('Encountered fatal error, terminating scraper:')
