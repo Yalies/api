@@ -200,12 +200,6 @@ def auth():
     return jsonify({'token': key.token, 'expires_in': expires_in})
 
 
-"""
-def untuple(tuples):
-    return [t[0] for t in tuples]
-"""
-
-
 def get_years():
     """
     returns list of currently enrolled class years
