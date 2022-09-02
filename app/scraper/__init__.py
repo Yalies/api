@@ -25,7 +25,7 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
 
 
 @celery.task
-def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_token):
+def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_token, yaleconnect_cookie):
     # Fix missing ElasticSearch index
     """
     print('Loading people.')
@@ -63,12 +63,14 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             face_book = sources.FaceBook(cache, face_book_cookie, directory)
             name_coach = sources.NameCoach(cache, people_search_session_cookie, csrf_token)
             departmental = sources.Departmental(cache)
+            yaleconnect = sources.YaleConnect(yaleconnect_cookie)
 
             print('Beginning scrape.')
             people = []
             thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
                                       args=(face_book, directory, name_coach))
             thread_departmental = Thread(target=departmental.pull, args=(people,))
+            thread_yaleconnect = Thead(target=yaleconnect.scrape, args=(people,))
             thread_fb_dir_nc.start()
             thread_departmental.start()
             thread_fb_dir_nc.join()
@@ -94,6 +96,8 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             if num_inserted % 64 == 0:
                 db.session.commit()
         db.session.commit()
+
+        yaleconnect.merge(people)
 
         if face_book is not None:
             print('Deleting unused images from S3.')
