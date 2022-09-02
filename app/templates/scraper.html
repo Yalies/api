@@ -21,12 +21,15 @@
     <p>Finally, grab the <code>X-CSRF-Token</code> header value.</p>
     <img src="/static/images/scraper/directory_csrf_token.png" alt="Copying Yale Directory X-CSRF-Token header">
     <textarea name="csrf_token" cols=30 rows=3 placeholder="Directory CSRF Token"></textarea>
+    <p>Next, log into YaleConnect at <a href="https://yaleconnect.yale.edu">yaleconnect.yale.edu</a>. Return to the network tab and choose any request made after login, then select the Cookie property's value (again excluding the 'Cookie: ' label). Paste it below.</p>
+    <textarea name="yaleconnect_cookie" cols=30 rows=8 placeholder="YaleConnect cookie"></textarea>
     <h3>Use caches:</h3>
     <label><input type="checkbox" class="cache" name=""> <strong>Full</strong></label>
     <label><input type="checkbox" class="cache" name="FaceBook"> Face Book</label>
     <label><input type="checkbox" class="cache" name="Directory"> Directory</label>
     <label><input type="checkbox" class="cache" name="NameCoach"> Name Coach</label>
     <label><input type="checkbox" class="cache" name="Departmental"> Departmental</label>
+    <label><input type="checkbox" class="cache" name="YaleConnect"> YaleConnect</label>
     <button id="submit">Run Scraper</button>
 </article>
 <script src="/static/js/scraper.js"></script>
