@@ -33,7 +33,7 @@ class YaleConnect(Source):
     def scrape(self, current_people):
         # Store people into database
         logger.info('Reading groups list.')
-        groups_soup = get_soup(
+        groups_soup = self.get_soup(
             ROOT + ('/club_signup' if DEBUG else '/club_signup?view=all'),
             cookie,
         ).find('div', {'class': 'content-cont'})
@@ -73,7 +73,7 @@ class YaleConnect(Source):
         for i in range(len(groups)):
             group_id = groups[i]['id']
             logger.info('Parsing ' + groups[i]['name'])
-            about_soup = get_soup(f'{ROOT}/ajax_group_page_about?ax=1&club_id={group_id}', self.cookie).find('div', {'class': 'card-block'})
+            about_soup = self.get_soup(f'{ROOT}/ajax_group_page_about?ax=1&club_id={group_id}', self.cookie).find('div', {'class': 'card-block'})
             current_header = None
             current_contact_property = None
             for child in about_soup.children:
@@ -152,11 +152,9 @@ class YaleConnect(Source):
             # Remove empty values
             group_dict = {prop: value for prop, value in group_dict.items() if value}
             for leader in leaders:
-                person = Person.query.get(leader['id'])
-                if not person:
-                    person = Person(**leader)
-                    db.session.add(person)
-                group.leaders.append(person)
+                person = Person.query.filter_by(leader['email']).first()
+                if person:
+                    group.leaders.append(person)
         db.session.commit()
         logger.info('Done.')
 
