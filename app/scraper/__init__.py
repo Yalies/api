@@ -70,7 +70,7 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
                                       args=(face_book, directory, name_coach))
             thread_departmental = Thread(target=departmental.pull, args=(people,))
-            thread_yaleconnect = Thead(target=yaleconnect.scrape, args=(people,))
+            thread_yaleconnect = Thread(target=yaleconnect.scrape, args=(people,))
             thread_fb_dir_nc.start()
             thread_departmental.start()
             thread_fb_dir_nc.join()
