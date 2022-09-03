@@ -5,6 +5,13 @@ import datetime
 from sqlalchemy.sql import collate
 
 
+leaderships = db.Table(
+    'leadership',
+    db.Column('group_id', db.Integer, db.ForeignKey('group.id'), nullable=False),
+    db.Column('person_id', db.Integer, db.ForeignKey('person.id'), nullable=False),
+)
+
+
 class User(db.Model):
     __tablename__ = 'user'
 
@@ -164,6 +171,10 @@ class Person(SearchableMixin, db.Model):
     education = db.Column(db.String)
     publications = db.Column(db.String)
 
+    leaders = db.relationship(
+        'Group', secondary=leaderships, lazy='subquery',
+        backref=db.backref('person', lazy=True))
+
     @staticmethod
     def search(criteria):
         print('Searching by criteria:')
@@ -194,6 +205,76 @@ class Person(SearchableMixin, db.Model):
         else:
             people = person_query.all()
         return people
+
+
+class Group(db.Model):
+    __tablename__ = 'group'
+    __searchable__ = (
+        'name', 'email', 'address', 'website',
+    )
+    __filterable_identifiable__ = (
+        'id', 'name', 'email',
+    )
+    __filterable__ = (
+        'type', 'category',
+    )
+    __serializable__ = (
+        'id', 'name', 'type', 'category', 'email', 'website', 'phone', 'logo', 'address',
+        'mission', 'benefits', 'goals', 'constitution', 'leaders',
+    )
+    _to_expand = ('leaders')
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    type = db.Column(db.String)
+    category = db.Column(db.String)
+    website = db.Column(db.String)
+    phone = db.Column(db.String)
+    email = db.Column(db.String)
+    logo = db.Column(db.String)
+    address = db.Column(db.String)
+
+    mission = db.Column(db.String)
+    benefits = db.Column(db.String)
+    goals = db.Column(db.String)
+    constitution = db.Column(db.String)
+
+    leaders = db.relationship(
+        'Person', secondary=leaderships, lazy='subquery',
+        backref=db.backref('group', lazy=True))
+
+    @staticmethod
+    def search(criteria):
+        print('Searching by criteria:')
+        print(criteria)
+        group_query = Group.query
+        query = criteria.get('query')
+        filters = criteria.get('filters')
+        page = criteria.get('page')
+        page_size = criteria.get('page_size')
+        """
+        if query:
+            group_query = Group.query_search(query)
+        else:
+            group_query = group_query.order_by(
+                #collate(Person.last_name, 'NOCASE'),
+                #collate(Person.first_name, 'NOCASE'),
+                Person.last_name,
+                Person.first_name,
+            )
+        """
+        if filters:
+            for category in filters:
+                if category not in (Group.__filterable_identifiable__ + Group.__filterable__):
+                    return None
+                if not isinstance(filters[category], list):
+                    filters[category] = [filters[category]]
+                group_query = group_query.filter(getattr(Group, category).in_(filters[category]))
+        if page:
+            groups = group_query.paginate(page, page_size or app.config['PAGE_SIZE'], False).items
+        else:
+            groups = group_query.all()
+        return groups
 
 
 class Key(db.Model):
