@@ -171,10 +171,6 @@ class Person(SearchableMixin, db.Model):
     education = db.Column(db.String)
     publications = db.Column(db.String)
 
-    leaders = db.relationship(
-        'Group', secondary=leaderships, lazy='subquery',
-        backref=db.backref('person', lazy=True))
-
     @staticmethod
     def search(criteria):
         print('Searching by criteria:')
