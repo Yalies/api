@@ -77,8 +77,10 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             thread_yaleconnect = Thread(target=yaleconnect.scrape, args=(people,))
             thread_fb_dir_nc.start()
             thread_departmental.start()
+            thread_yaleconnect.start()
             thread_fb_dir_nc.join()
             thread_departmental.join()
+            thread_yaleconnect.join()
             # TODO: find a cleaner way to exchange this data
             people = name_coach.people
             logger.info('People retreived from name coach:')
