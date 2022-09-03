@@ -2,6 +2,9 @@ import boto3
 import botocore
 import os
 import hashlib
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 S3_BUCKET_NAME = 'yalestudentphotos'
@@ -44,7 +47,7 @@ class ImageUploader:
         return S3_LOCATION + filename
 
     def upload_image(self, f, filename):
-        print('Uploading image %s with size %d bytes.' % (filename, f.getbuffer().nbytes))
+        logger.info('Uploading image %s with size %d bytes.' % (filename, f.getbuffer().nbytes))
         f.seek(0)
         self.s3.upload_fileobj(
             f,
@@ -75,4 +78,4 @@ class ImageUploader:
                     'Quiet': True
                 })
 
-        print('Deleted %d unused images.' % num_deleted)
+        logger.info('Deleted %d unused images.' % num_deleted)

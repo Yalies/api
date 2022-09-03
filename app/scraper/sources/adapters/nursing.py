@@ -1,4 +1,7 @@
 from .adapter import Adapter
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 class Nursing(Adapter):
@@ -56,6 +59,6 @@ class Nursing(Adapter):
                     person['title'] = '; '.join([self.clean_string(elem.text) for elem in contact_elems])
 
             people.append(person)
-            print('Parsed ' + person['name'])
+            logger.info('Parsed ' + person['name'])
 
         return people

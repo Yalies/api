@@ -1,5 +1,8 @@
 from .adapter import Adapter
 import re
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 class Environment(Adapter):
@@ -34,7 +37,7 @@ class Environment(Adapter):
         people_soup = self.get_soup(department['url'] + path)
         # Handle both table styles
         links = people_soup.select('.row_wrap.listing > a, .primary_body tr a[title]')
-        print(f'Found {len(links)} people.')
+        logger.info(f'Found {len(links)} people.')
         profile_urls = [department['url'] + link['href'] for link in links]
         profile_urls = list(set(profile_urls))
 
@@ -66,5 +69,5 @@ class Environment(Adapter):
                 person['website'] = website['href']
 
             people.append(person)
-            print('Parsed ' + person['name'])
+            logger.info('Parsed ' + person['name'])
         return people

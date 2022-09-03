@@ -1,4 +1,7 @@
 from .adapter import Adapter
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 class Architecture(Adapter):
@@ -13,7 +16,7 @@ class Architecture(Adapter):
             links_page = people_page_soup.select('div.faculty-member-thumbnail a')
             if len(links_page) == 0:
                 break
-            print(f'Found {len(links_page)} people on page {page}.')
+            logger.info(f'Found {len(links_page)} people on page {page}.')
             profile_urls += [department['url'] + link['href'] for link in links_page]
             page += 1
 
@@ -32,6 +35,6 @@ class Architecture(Adapter):
             if title:
                 person['title'] = title.text
             # TODO: parse bio and education as well
-            print('Parsing ' + person['name'])
+            logger.info('Parsing ' + person['name'])
             people.append(person)
         return people

@@ -9,6 +9,10 @@ import os
 from threading import Thread
 from app.search import add_to_index
 import traceback
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
+
 
 def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
     people = []
@@ -28,14 +32,14 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
 def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_token, yaleconnect_cookie):
     # Fix missing ElasticSearch index
     """
-    print('Loading people.')
+    logger.info('Loading people.')
     page = 0
     page_size = 1000
     while True:
         people = Person.query.paginate(page, page_size, False).items
-        print('Loaded people.')
+        logger.info('Loaded people.')
         for person in people:
-            print(person.netid)
+            logger.info(person.netid)
             add_to_index('person', person)
         if len(people) < page_size:
             break
@@ -48,24 +52,24 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             'scraped_data.' + key if key else 'scraped_data': value
             for key, value in caches_active.items()
         }
-        print('Launching scraper.')
+        logger.info('Launching scraper.')
         cache = Cache(caches_active)
 
         cache_key = 'scraped_data'
-        print('Checking cache...')
+        logger.info('Checking cache...')
         people = cache.get(cache_key)
         face_book = None
         if people:
-            print('Found people in cache.')
+            logger.info('Found people in cache.')
         else:
-            print('Initializing sources.')
+            logger.info('Initializing sources.')
             directory = sources.Directory(cache, people_search_session_cookie, csrf_token)
             face_book = sources.FaceBook(cache, face_book_cookie, directory)
             name_coach = sources.NameCoach(cache, people_search_session_cookie, csrf_token)
             departmental = sources.Departmental(cache)
             yaleconnect = sources.YaleConnect(cache, yaleconnect_cookie)
 
-            print('Beginning scrape.')
+            logger.info('Beginning scrape.')
             people = []
             thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
                                       args=(face_book, directory, name_coach))
@@ -77,14 +81,14 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             thread_departmental.join()
             # TODO: find a cleaner way to exchange this data
             people = name_coach.people
-            print('People retreived from name coach:')
-            print(people)
+            logger.info('People retreived from name coach:')
+            logger.info(people)
             people = departmental.integrate(people)
             cache.set(cache_key, people)
 
 
         # Store people into database
-        print('Inserting new data.')
+        logger.info('Inserting new data.')
         Person.query.delete()
         num_inserted = 0
         for person_dict in people:
@@ -100,10 +104,10 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         yaleconnect.merge(people)
 
         if face_book is not None:
-            print('Deleting unused images from S3.')
+            logger.info('Deleting unused images from S3.')
             face_book.delete_unused_imgs(people)
-        print('Done.')
+        logger.info('Done.')
     except Exception as e:
-        print('Encountered fatal error, terminating scraper:')
-        print(e)
+        logger.info('Encountered fatal error, terminating scraper:')
+        logger.info(e)
         send_scraper_report(error=traceback.format_exc())

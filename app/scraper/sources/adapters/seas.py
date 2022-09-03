@@ -1,5 +1,8 @@
 from .adapter import Adapter
 import re
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 class Seas(Adapter):
@@ -28,7 +31,7 @@ class Seas(Adapter):
         while True:
             people_page_soup = self.get_soup(department['url'] + path, params={'page': page})
             links_page = people_page_soup.select('.view-faculty-directory .view-content > div .views-field-title .viewmore a:not([title])')
-            print(f'Found {len(links_page)} people on page {page}.')
+            logger.info(f'Found {len(links_page)} people on page {page}.')
             profile_urls += [department['url'] + link['href'] for link in links_page]
             next_button = people_page_soup.select_one('li.pager-next a')
             if next_button is None:
@@ -62,6 +65,6 @@ class Seas(Adapter):
                 person['website'] = website['href']
 
             people.append(person)
-            print('Parsed ' + person['name'])
+            logger.info('Parsed ' + person['name'])
         return people
 

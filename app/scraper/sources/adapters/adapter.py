@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import re
 
 
-
 class Adapter:
 
     #########################
@@ -20,7 +19,7 @@ class Adapter:
     ##############
 
     def get_soup(self, url, **kwargs):
-        #print('Souping URL: ' + url)
+        #logger.info('Souping URL: ' + url)
         html = requests.get(url, **kwargs).text
         return BeautifulSoup(html, 'html.parser')
 
@@ -67,11 +66,11 @@ class Adapter:
     def scrape(self, department):
         paths = department.get('paths')
         if paths is None:
-            print('Skipping department.')
+            logger.info('Skipping department.')
             return []
 
         people = []
         for path in paths:
-            print('Scraping path: ' + path)
+            logger.info('Scraping path: ' + path)
             people += self.scrape_path(department, path)
         return people

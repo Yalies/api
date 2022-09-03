@@ -2,6 +2,9 @@ from .adapter import Adapter
 import requests
 from bs4 import BeautifulSoup
 import html5lib
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 class Law(Adapter):
@@ -61,5 +64,5 @@ class Law(Adapter):
                 person['education'] = person['education'].strip()
 
             people.append(person)
-            print('Parsed ' + person['name'])
+            logger.info('Parsed ' + person['name'])
         return people

@@ -2,6 +2,9 @@ from .source import Source
 
 import yaledirectory
 from threading import Thread
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 class NameCoach(Source):
@@ -22,18 +25,18 @@ class NameCoach(Source):
         for index in range(begin, end):
             person = current_people[index]
             if not person.get('email'):
-                print('No email found, skipping pronunciation search.')
+                logger.info('No email found, skipping pronunciation search.')
                 continue
             pronunciation = self.directory.pronounce(person['email'])
             if pronunciation:
-                print('Found pronunciation for ' + person['email'] + ': ' + pronunciation.recording_url)
+                logger.info('Found pronunciation for ' + person['email'] + ': ' + pronunciation.recording_url)
                 self.new_records[index] = {
                     'phonetic_name': pronunciation.phonetic_spelling,
                     'name_recording': pronunciation.recording_url,
                     'pronouns': person.get('pronouns') or pronunciation.pronouns,
                 }
             else:
-                print('No pronunciation found for ' + person['email'] + '.')
+                logger.info('No pronunciation found for ' + person['email'] + '.')
 
     def scrape(self, current_people):
         self.new_records = [None] * len(current_people)

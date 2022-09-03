@@ -5,6 +5,9 @@ from app.models import Group, Person, leaderships
 
 import requests
 from bs4 import BeautifulSoup, Tag, NavigableString
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 DEBUG = False
 ROOT = 'https://yaleconnect.yale.edu'
@@ -14,6 +17,7 @@ class YaleConnect(Source):
     def __init__(self, cache, cookie):
         super().__init__(cache)
         self.cookie = cookie
+        self.groups = None
 
     ##########
     # Scraping
@@ -28,7 +32,7 @@ class YaleConnect(Source):
 
     def scrape(self, current_people):
         # Store people into database
-        print('Reading groups list.')
+        logger.info('Reading groups list.')
         groups_soup = get_soup(
             ROOT + ('/club_signup' if DEBUG else '/club_signup?view=all'),
             cookie,
@@ -46,7 +50,7 @@ class YaleConnect(Source):
             group_id = int(url.replace(ROOT + '/student_community?club_id=', ''))
             name = a.text.strip()
             if group_id in group_ids:
-                print(f'Already tracking {name}.')
+                logger.info(f'Already tracking {name}.')
                 continue
             logo = row.find('img')['src']
             if 'Default_Group_Logo' in logo:
@@ -64,11 +68,11 @@ class YaleConnect(Source):
             })
             group_ids.add(group_id)
 
-        print(groups)
+        logger.info(groups)
 
         for i in range(len(groups)):
             group_id = groups[i]['id']
-            print('Parsing ' + groups[i]['name'])
+            logger.info('Parsing ' + groups[i]['name'])
             about_soup = get_soup(f'{ROOT}/ajax_group_page_about?ax=1&club_id={group_id}', self.cookie).find('div', {'class': 'card-block'})
             current_header = None
             current_contact_property = None
@@ -117,7 +121,7 @@ class YaleConnect(Source):
                                 elif current_contact_property == 'cellphone':
                                     groups[i]['phone'] = ''.join([char for char in text if text.isdigit()])
                                 else:
-                                    print(f'Saw unrecognized contact property {current_contact_property} with value {text}.')
+                                    logger.info(f'Saw unrecognized contact property {current_contact_property} with value {text}.')
                     elif current_header == 'OFFICERS':
                         if child.name == 'img':
                             leader = {}
@@ -132,12 +136,12 @@ class YaleConnect(Source):
                     elif current_header is None:
                         pass
                     else:
-                        print(f'Encountered unknown About header {current_header}.')
+                        logger.info(f'Encountered unknown About header {current_header}.')
 
         self.groups = groups
 
     def merge(self, _):
-        print('Inserting new data.')
+        logger.info('Inserting new data.')
         db.session.query(leaderships).delete()
         Group.query.delete()
         for group_dict in self.groups:
@@ -154,5 +158,5 @@ class YaleConnect(Source):
                     db.session.add(person)
                 group.leaders.append(person)
         db.session.commit()
-        print('Done.')
+        logger.info('Done.')
 

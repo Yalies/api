@@ -3,7 +3,9 @@ import botocore
 import os
 from io import StringIO
 import json
+from celery.utils.log import get_task_logger
 
+logger = get_task_logger(__name__)
 
 S3_BUCKET_NAME = 'yalies'
 S3_ACCESS_KEY = os.environ.get('S3_ACCESS_KEY')
@@ -29,7 +31,7 @@ class Cache:
             return None
         filename = key + '.json'
         try:
-            print(f'Checking for {filename} in cache.')
+            logger.info(f'Checking for {filename} in cache.')
             body = self.s3.get_object(
                 Bucket=S3_BUCKET_NAME,
                 Key=filename,
@@ -37,7 +39,7 @@ class Cache:
         except:
             return None
         if body:
-            print('Parsing cache.')
+            logger.info('Parsing cache.')
             body = body['Body'].read().decode()
             return json.loads(body)
         return None
@@ -47,7 +49,7 @@ class Cache:
         local_path = '/tmp/' + filename
         with open(local_path, 'w') as f:
             json.dump(data, f)
-        print(f'Uploading cache {key}.')
+        logger.info(f'Uploading cache {key}.')
         self.s3.upload_file(
             local_path,
             S3_BUCKET_NAME,

@@ -6,6 +6,9 @@ from math import ceil
 from threading import Thread
 from app.scraper.sources import adapters
 #import adapters
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 class Departmental(Source):
@@ -30,7 +33,7 @@ class Departmental(Source):
     NUM_THREADS = 8
 
     def scrape_department(self, department):
-        print('Scraping department: ' + department['name'])
+        logger.info('Scraping department: ' + department['name'])
         website_type = department.get('website_type')
         adapter = self.ADAPTERS.get(website_type)
         new_records = adapter.scrape(department)
@@ -145,14 +148,14 @@ class Departmental(Source):
                 if matches_found <= 1:
                     person_i = latest_person_i
                 else:
-                    print('Found multiple name matches, skipping.')
+                    logger.info('Found multiple name matches, skipping.')
 
             # Add in data if we found a match
             if person_i:
-                print('Matched ' + record['name'] + ' to existing person.')
+                logger.info('Matched ' + record['name'] + ' to existing person.')
                 people[person_i] = self.merge_one(people[person_i], record)
             else:
-                print('Could not match department record to person:')
-                print(record)
+                logger.info('Could not match department record to person:')
+                logger.info(record)
 
         return people
