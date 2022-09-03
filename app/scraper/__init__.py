@@ -63,7 +63,7 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             face_book = sources.FaceBook(cache, face_book_cookie, directory)
             name_coach = sources.NameCoach(cache, people_search_session_cookie, csrf_token)
             departmental = sources.Departmental(cache)
-            yaleconnect = sources.YaleConnect(yaleconnect_cookie)
+            yaleconnect = sources.YaleConnect(cache, yaleconnect_cookie)
 
             print('Beginning scrape.')
             people = []
