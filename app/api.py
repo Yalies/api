@@ -3,7 +3,7 @@ from sqlalchemy import distinct
 import time
 from app import db, cas
 from app.util import to_json, fail, succ
-from app.models import User, Person
+from app.models import User, Person, Group
 
 
 api_bp = Blueprint('api', __name__)
@@ -78,6 +78,16 @@ def api_people():
         criteria = {}
     people = Person.search(criteria)
     return to_json(people)
+
+
+@api_bp.route('/groups', methods=['POST'])
+def api_groups():
+    try:
+        criteria = request.get_json(force=True) or {}
+    except:
+        criteria = {}
+    groups = Group.search(criteria)
+    return to_json(groups)
 
 
 def untuple(tuples):
