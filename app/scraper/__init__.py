@@ -104,6 +104,7 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         db.session.commit()
 
         yaleconnect.merge(people)
+        db.session.commit()
 
         if face_book is not None:
             logger.info('Deleting unused images from S3.')
