@@ -75,20 +75,17 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             face_book = sources.FaceBook(cache, face_book_cookie, directory)
             name_coach = sources.NameCoach(cache, people_search_session_cookie, csrf_token)
             departmental = sources.Departmental(cache)
-            yaleconnect = sources.YaleConnect(cache, yaleconnect_cookie)
 
             logger.info('Beginning scrape.')
             people = []
             thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
                                       args=(face_book, directory, name_coach))
             thread_departmental = Thread(target=departmental.pull, args=(people,))
-            thread_yaleconnect = Thread(target=yaleconnect.scrape, args=(people,))
             thread_fb_dir_nc.start()
             thread_departmental.start()
             thread_yaleconnect.start()
             thread_fb_dir_nc.join()
             thread_departmental.join()
-            thread_yaleconnect.join()
             # TODO: find a cleaner way to exchange this data
             people = name_coach.people
             logger.info('People retreived from name coach:')
@@ -111,8 +108,11 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
                 db.session.commit()
         db.session.commit()
 
+        # TODO: merge this into main scraper section;
+        # currently we do it after the rest of the scraper because
+        yaleconnect = sources.YaleConnect(cache, yaleconnect_cookie)
+        yaleconnect.pull(people)
         yaleconnect.merge(people)
-        db.session.commit()
 
         if face_book is not None:
             logger.info('Deleting unused images from S3.')
