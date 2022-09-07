@@ -59,13 +59,12 @@ class Source:
 
         if records:
             self.new_records = records
-            return self.new_records
         else:
             self.scrape(current_records)
             # Strip out empty properties for space efficiency
             self.new_records = self.clean(self.new_records)
             self.cache.set(cache_key, self.new_records)
-            return self.new_records
+        return self.new_records
 
     def merge(self, current_people):
         """
