@@ -156,6 +156,10 @@ class YaleConnect(Source):
             # Remove empty values
             group_dict = {prop: value for prop, value in group_dict.items() if value}
             for leader in leaders:
+                if not leader.get('email'):
+                    logger.warning('Leader without email found:')
+                    logger.warning(str(leader))
+                    continue
                 person = Person.query.filter_by(email=leader['email']).first()
                 if person:
                     group.leaders.append(person)
