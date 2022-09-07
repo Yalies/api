@@ -58,7 +58,7 @@ class Source:
         records = self.cache.get(cache_key)
 
         if records:
-            self.new_records = people
+            self.new_records = records
             return self.new_records
         else:
             self.scrape(current_records)
