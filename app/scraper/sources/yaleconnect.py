@@ -45,7 +45,12 @@ class YaleConnect(Source):
             header = row.find('h2', {'class': 'media-heading'})
             a = header.find('a')
             url = a['href']
-            group_id = int(url.replace(ROOT + '/student_community?club_id=', ''))
+            try:
+                group_id = int(url.replace(ROOT + '/student_community?club_id=', ''))
+            except Exception:
+                print('Malformed URL. Header content:')
+                print(header)
+                continue
             name = a.text.strip()
             if group_id in group_ids:
                 logger.info(f'Already tracking {name}.')
