@@ -17,16 +17,15 @@ class YaleConnect(Source):
     def __init__(self, cache, cookie):
         super().__init__(cache)
         self.cookie = cookie
-        self.groups = None
 
     ##########
     # Scraping
     ##########
 
-    def get_soup(url, cookie):
+    def get_soup(self, url):
         r = requests.get(
             url,
-            headers={'Cookie': cookie}
+            headers={'Cookie': self.cookie}
         )
         return BeautifulSoup(r.text, 'html5lib')
 
@@ -34,8 +33,7 @@ class YaleConnect(Source):
         # Store people into database
         logger.info('Reading groups list.')
         groups_soup = self.get_soup(
-            ROOT + ('/club_signup' if DEBUG else '/club_signup?view=all'),
-            cookie,
+            ROOT + ('/club_signup' if DEBUG else '/club_signup?view=all')
         ).find('div', {'class': 'content-cont'})
         rows = groups_soup.find('ul', {'class': 'list-group'}).find_all('li', {'class': 'list-group-item'})
         # Remove header
@@ -73,7 +71,7 @@ class YaleConnect(Source):
         for i in range(len(groups)):
             group_id = groups[i]['id']
             logger.info('Parsing ' + groups[i]['name'])
-            about_soup = self.get_soup(f'{ROOT}/ajax_group_page_about?ax=1&club_id={group_id}', self.cookie).find('div', {'class': 'card-block'})
+            about_soup = self.get_soup(f'{ROOT}/ajax_group_page_about?ax=1&club_id={group_id}').find('div', {'class': 'card-block'})
             current_header = None
             current_contact_property = None
             for child in about_soup.children:
@@ -128,7 +126,7 @@ class YaleConnect(Source):
                             leader['name'] = child['alt'].replace('Profile image for ', '')
                             ajax_path = child['onclick'].split('\'')[1]
                             leader['id'] = int(ajax_path.split('=')[-1])
-                            profile_soup = get_soup(ROOT + ajax_path, self.cookie)
+                            profile_soup = self.get_soup(ROOT + ajax_path)
                             email_li = profile_soup.find('li', {'class': 'mdi-email'})
                             if email_li:
                                 leader['email'] = email_li.find('a')['href'].replace('mailto:', '')
@@ -138,13 +136,14 @@ class YaleConnect(Source):
                     else:
                         logger.info(f'Encountered unknown About header {current_header}.')
 
-        self.groups = groups
+        self.new_records = groups
+        return self.new_records
 
-    def merge(self, _):
+    def merge(self, current_people):
         logger.info('Inserting new data.')
         db.session.query(leaderships).delete()
         Group.query.delete()
-        for group_dict in self.groups:
+        for group_dict in self.new_records:
             leaders = group_dict.pop('leaders')
             group = Group(**group_dict)
             db.session.add(group)
@@ -152,9 +151,10 @@ class YaleConnect(Source):
             # Remove empty values
             group_dict = {prop: value for prop, value in group_dict.items() if value}
             for leader in leaders:
-                person = Person.query.filter_by(leader['email']).first()
+                person = Person.query.filter_by(email=leader['email']).first()
                 if person:
                     group.leaders.append(person)
         db.session.commit()
         logger.info('Done.')
+        return current_people
 
