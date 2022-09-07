@@ -144,7 +144,7 @@ class YaleConnect(Source):
         db.session.query(leaderships).delete()
         Group.query.delete()
         for group_dict in self.new_records:
-            leaders = group_dict.pop('leaders')
+            leaders = group_dict.pop('leaders', [])
             group = Group(**group_dict)
             db.session.add(group)
             group.leaders[:] = []
