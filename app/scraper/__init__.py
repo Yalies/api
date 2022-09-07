@@ -83,7 +83,6 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             thread_departmental = Thread(target=departmental.pull, args=(people,))
             thread_fb_dir_nc.start()
             thread_departmental.start()
-            thread_yaleconnect.start()
             thread_fb_dir_nc.join()
             thread_departmental.join()
             # TODO: find a cleaner way to exchange this data
