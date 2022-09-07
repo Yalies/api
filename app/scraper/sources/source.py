@@ -30,38 +30,38 @@ class Source:
     new_records = None
     people = None
 
-    def scrape(self, current_people):
+    def scrape(self, current_records):
         """
         Read all people from this source and store to new_records.
         """
         raise NotImplementedError
 
-    def clean_one(self, person):
+    def clean_one(self, record):
         """
-        Remove empty properties from person record.
-        :param person: single person record.
+        Remove empty properties from record.
+        :param record: single record.
         """
-        return {k: v for k, v in person.items() if v or type(v) == bool}
+        return {k: v for k, v in record.items() if v or type(v) == bool}
 
-    def clean(self, people):
+    def clean(self, records):
         """
-        Remove empty properties from a list of people.
-        :param person: list of people records.
+        Remove empty properties from a list of records.
+        :param records: list of records.
         """
-        return [self.clean_one(person) for person in people]
+        return [self.clean_one(record) for record in records]
 
-    def pull(self, current_people):
+    def pull(self, current_records):
         """
         Read data from this source, either through cache or by running scraper.
         """
         cache_key = 'scraped_data.' + self.__class__.__name__
-        people = self.cache.get(cache_key)
+        records = self.cache.get(cache_key)
 
-        if people:
+        if records:
             self.new_records = people
             return self.new_records
         else:
-            self.scrape(current_people)
+            self.scrape(current_records)
             # Strip out empty properties for space efficiency
             self.new_records = self.clean(self.new_records)
             self.cache.set(cache_key, self.new_records)
