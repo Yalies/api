@@ -10,8 +10,16 @@ from threading import Thread
 from app.search import add_to_index
 import traceback
 from celery.utils.log import get_task_logger
+from celery.signals import after_setup_task_logger
+from celery.app.log import TaskFormatter
 
 logger = get_task_logger(__name__)
+
+
+@after_setup_task_logger.connect
+def setup_task_logger(logger, *args, **kwargs):
+    for handler in logger.handlers:
+        handler.setFormatter(TaskFormatter('%(message)s'))
 
 
 def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
