@@ -29,6 +29,18 @@ class YaleConnect(Source):
         )
         return BeautifulSoup(r.text, 'html5lib')
 
+    def clean_value(self, value):
+        if isinstance(value, str):
+            value = value.replace('\u2018', '\'')
+            value = value.replace('\u2019', '\'')
+            value = value.replace('\u201c', '"')
+            value = value.replace('\u201d', '"')
+            value = value.replace('\u00a0', ' ')
+            value = value.replace('\u2022\t', '- ')
+            value = value.replace('\u200b', '')
+            return value
+        return value
+
     def scrape(self, current_people):
         # Store people into database
         logger.info('Reading groups list.')
@@ -56,7 +68,7 @@ class YaleConnect(Source):
                 logger.info(f'Already tracking {name}.')
                 continue
             logo = row.find('img')['src']
-            if 'Default_Group_Logo' in logo:
+            if 'Default_Group_Logo' in logo or 'default_club_logo' in logo:
                 logo = None
             else:
                 logo = ROOT + logo
@@ -150,11 +162,11 @@ class YaleConnect(Source):
         Group.query.delete()
         for group_dict in self.new_records:
             leaders = group_dict.pop('leaders', [])
+            group_dict = {prop: clean_value(value) for prop, value in group_dict.items() if value}
             group = Group(**group_dict)
             db.session.add(group)
             group.leaders[:] = []
             # Remove empty values
-            group_dict = {prop: value for prop, value in group_dict.items() if value}
             for leader in leaders:
                 if not leader.get('email'):
                     logger.warning('Leader without email found:')
