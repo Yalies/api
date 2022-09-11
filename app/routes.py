@@ -123,18 +123,18 @@ def scrape():
 @app.route('/apidocs')
 @login_required
 def apidocs():
-    return render_template('apidocs.html')
+    return render_template('apidocs.html', title='API')
 
 
 @app.route('/about')
 @login_required
 def about():
-    return render_template('about.html')
+    return render_template('about.html', title='About')
 
 
 @app.route('/faq')
 def faq():
-    return render_template('faq.html')
+    return render_template('faq.html', title='FAQ')
 
 
 @app.route('/hide_me')
