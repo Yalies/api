@@ -23,6 +23,13 @@
         <button id="get_key" disabled>Create Key</button>
     </div>
 </div>
+<h3>Client Libraries</h3>
+<p>You might be able to save time by using an API wrapper library in your language to abstract away excess network logic etc. Their READMEs will explain in detail how to query the API in a syntactically consistent and straightforward manner.</p>
+<ul>
+    <li><a href="https://github.com/Yalies/js-yalies#readme">js-yalies</a>: a JavaScript library for querying the Yalies API.</li>
+    <li><a href="https://github.com/Yalies/python-yalies#readme">python-yalies</a>: a Python library for querying the Yalies API.</li>
+</ul>
+<p>If there is no pre-existing library for your language, you will need to interact with it directly. Don't worry; this should be relatively simple using your language's web querying and JSON parsing libraries.</p>
 <h3>Endpoints</h3>
 <h4><code>/people</code></h4>
 <p>This main endpoint of the API can be accessed through <code>POST https://yalies.io/api/people</code>. The endpoint returns a JSON list of yale personnel. It accepts a JSON-formatted body containing the properties <code>query</code>, <code>filters</code>, <code>page</code>, and <code>page_size</code> (8I guwhich may all be omitted). <code>query</code> represents an arbitrary string to search by, which will search across most fields of student data. <code>filters</code> is a dictionary mapping column names to lists of acceptable values. <code>page</code> represents the number of the page of students to get, which may allow you to improve request efficiency if you do not need to fetch every student at once. <code>page_size</code> allows you to change the size of each page you'd like, and is ignored if <code>page</code> is not provided. For example:</p>
