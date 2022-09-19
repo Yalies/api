@@ -93,6 +93,11 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
 
         # Store people into database
         logger.info('Inserting new data.')
+
+        # TODO: we do this at the starting of YaleConnect.merge; I'm just temporarily adding this so that the Person models can be deleted. Maybe we should make the deletes cascade or something?
+        db.session.query(leaderships).delete()
+        Group.query.delete()
+
         Person.query.delete()
         elasticsearch.indices.delete(index=Person.__tablename__)
         elasticsearch.indices.create(index=Person.__tablename__)
