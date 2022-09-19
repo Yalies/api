@@ -38,6 +38,10 @@ h2 {
     margin-top: -2px;
     margin-left: 2px;
 }
+ul {
+    margin-left: 15px;
+    line-height: 1.5;
+}
 nav {
     float: right;
     position: relative;
