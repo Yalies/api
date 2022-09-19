@@ -162,7 +162,7 @@ class YaleConnect(Source):
         Group.query.delete()
         for group_dict in self.new_records:
             leaders = group_dict.pop('leaders', [])
-            group_dict = {prop: clean_value(value) for prop, value in group_dict.items() if value}
+            group_dict = {prop: self.clean_value(value) for prop, value in group_dict.items() if value}
             group = Group(**group_dict)
             db.session.add(group)
             group.leaders[:] = []
