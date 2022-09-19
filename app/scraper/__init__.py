@@ -1,4 +1,4 @@
-from app import app, db, celery
+from app import app, db, celery, elasticsearch
 from app.models import Person
 from app.mail import send_scraper_report
 
@@ -94,6 +94,8 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         # Store people into database
         logger.info('Inserting new data.')
         Person.query.delete()
+        elasticsearch.indices.delete(index=Person.__tablename__)
+        elasticsearch.indices.create(index=Person.__tablename__)
         num_inserted = 0
         for person_dict in people:
             if not person_dict.get('netid'):
