@@ -28,7 +28,7 @@ header img {
     display: inline-block;
 }
 header #logo {
-    display: block;
+    display: inline-block;
     text-decoration: none;
     margin-top: 4px;
 }
