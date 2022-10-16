@@ -28,4 +28,4 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
     # Recipients for diagnostic emails
-    ADMIN_EMAILS = os.environ['ADMIN_EMAILS'].split(',')
+    ADMIN_EMAILS = os.environ.get('ADMIN_EMAILS', 'erik.boesen@yale.edu').split(',')

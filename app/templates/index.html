@@ -5,8 +5,7 @@
 {% endblock %}
 
 {% block content %}
-{# Hack to fix strange onclick bubbling behavior on mobile Safari #}
-<div id="controls" onclick="void(0);">
+<div id="controls">
     <input type="text" id="query" placeholder="Search">
     <button id="submit"><i class="fa fa-search"></i></button>
     <div class="filters">
