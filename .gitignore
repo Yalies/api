@@ -110,5 +110,6 @@ celerybeat.pid
 # Custom
 *.db
 *.db-journal
+.DS_Store
 data/
 page.html
