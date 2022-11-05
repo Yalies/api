@@ -32,7 +32,7 @@
     </head>
     <body>
         <header>
-            <nav>
+            <nav class="navbar" id="idNavbar">
                 <a class="button outline" href="/">Home</a>
                 <a class="button outline" href="/about">About</a>
                 <a class="button outline" href="/faq">FAQ</a>
@@ -40,6 +40,9 @@
                 {% if not unauthenticated %}
                 <a class="button outline" href="/logout/">Log out</a>
                 {% endif %}
+                <a href="javascript:void(0);" class="icon" onclick="hamburgerFunction()">
+                    <i class="fa fa-bars"></i>
+                </a>
             </nav>
             <a id="logo" href="/">
                 <img src="/static/images/logo/logo.png" alt="Logo">
@@ -53,5 +56,18 @@
         <footer>
             <p>This directory is intended for official University use and for individual communication of a business or incidental personal nature between individuals who are included in the facebook/directory. No other uses are permitted, including but not limited to using the addresses or other information for any private, commercial or political mailing or other purposes.</p>
         </footer>
+
+        <script>
+            function hamburgerFunction() {
+                var x = document.getElementById("idNavbar");
+                if (x.className === "navbar") {
+                    x.className += " responsive";
+                } 
+                else {
+                    x.className = "navbar";
+                }
+            }
+        </script>
     </body>
 </html>
+ 

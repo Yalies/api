@@ -49,7 +49,7 @@ nav {
     margin-bottom: 2px;
 }
 nav .button {
-    margin-bottom: 8px;
+    margin-bottom: 8px; 
 }
 footer {
     margin-top: 10px;
@@ -125,5 +125,55 @@ textarea {
     nav {
         float: none;
         position: static;
+    }
+}
+
+
+.navbar {
+    overflow: hidden;
+}
+  
+.navbar a {
+    float: left;
+    display: block;
+    color: #000000;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+  
+.navbar a:hover {
+    background-color: rgb(213, 213, 222);
+    color: black;
+}
+  
+.navbar a.active {
+    color: white;
+}
+  
+.navbar .icon {
+    display: none;
+}
+  
+@media screen and (max-width: 600px) {
+    .navbar a:not(:first-child) {display: none;}
+    .navbar a.icon {
+        float: right;
+        display: block;
+    }
+}
+  
+@media screen and (max-width: 600px) {
+    .navbar.responsive {position: relative;}
+    .navbar.responsive .icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .navbar.responsive a {
+        float: none;
+        display: block;
+        text-align: left;
     }
 }
