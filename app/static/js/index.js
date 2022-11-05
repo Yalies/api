@@ -161,7 +161,7 @@ function runSearch() {
             filters[category] = [];
             for (let checkbox of otherCheckboxes) {
                 if (checkbox.checked) {
-                    if (category === 'leave' || category === 'eli_whitney') {
+                    if (category === 'leave') {
                         filters[category].push(checkbox.name === 'Yes');
                     } else if (['year', 'birth_month', 'birth_day', 'floor', 'room'].includes(category)) {
                         filters[category].push(checkbox.name ? parseInt(checkbox.name) : null);
@@ -223,8 +223,6 @@ function addRow(container, property, title, icon, person, url, showTitle) {
         } else {
             if (property === 'leave') {
                 readout.textContent = 'Took Leave';
-            } else if (property === 'eli_whitney') {
-                readout.textContent = 'Eli Whitney Program';
             } else if (property === 'visitor') {
                 readout.textContent = 'Visiting International Program';
             } else {
