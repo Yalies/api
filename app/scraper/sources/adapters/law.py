@@ -1,8 +1,9 @@
 from .adapter import Adapter
+from app import logger
+
 import requests
 from bs4 import BeautifulSoup
 import html5lib
-import logging
 
 
 class Law(Adapter):

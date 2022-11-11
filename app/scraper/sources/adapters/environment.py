@@ -1,6 +1,6 @@
 from .adapter import Adapter
+from app import logger
 import re
-import logging
 
 
 class Environment(Adapter):
@@ -35,7 +35,7 @@ class Environment(Adapter):
         people_soup = self.get_soup(department['url'] + path)
         # Handle both table styles
         links = people_soup.select('.row_wrap.listing > a, .primary_body tr a[title]')
-        logging.info(f'Found {len(links)} people.')
+        logger.info(f'Found {len(links)} people.')
         profile_urls = [department['url'] + link['href'] for link in links]
         profile_urls = list(set(profile_urls))
 
@@ -67,5 +67,5 @@ class Environment(Adapter):
                 person['website'] = website['href']
 
             people.append(person)
-            logging.info('Parsed ' + person['name'])
+            logger.info('Parsed ' + person['name'])
         return people

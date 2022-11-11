@@ -1,5 +1,5 @@
 from .adapter import Adapter
-import logging
+from app import logger
 
 
 class Jackson(Adapter):
@@ -22,7 +22,7 @@ class Jackson(Adapter):
         people_soup = self.get_soup(department['url'] + path)
         # Handle both table styles
         cards = self.get_cards(people_soup)
-        logging.info(f'Found {len(cards)} people.')
+        logger.info(f'Found {len(cards)} people.')
 
         for card in cards:
             person = {
@@ -46,5 +46,5 @@ class Jackson(Adapter):
                 # It doesn't seem like there's any other useful information in profiles though
                 #person_soup = self.get_soup(profile_url)
             people.append(person)
-            logging.info('Parsed ' + person['name'])
+            logger.info('Parsed ' + person['name'])
         return people

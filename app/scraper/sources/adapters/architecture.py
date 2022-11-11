@@ -1,5 +1,5 @@
 from .adapter import Adapter
-import logging
+from app import logger
 
 
 class Architecture(Adapter):
@@ -14,7 +14,7 @@ class Architecture(Adapter):
             links_page = people_page_soup.select('div.faculty-member-thumbnail a')
             if len(links_page) == 0:
                 break
-            logging.info(f'Found {len(links_page)} people on page {page}.')
+            logger.info(f'Found {len(links_page)} people on page {page}.')
             profile_urls += [department['url'] + link['href'] for link in links_page]
             page += 1
 
@@ -33,6 +33,6 @@ class Architecture(Adapter):
             if title:
                 person['title'] = title.text
             # TODO: parse bio and education as well
-            logging.info('Parsing ' + person['name'])
+            logger.info('Parsing ' + person['name'])
             people.append(person)
         return people

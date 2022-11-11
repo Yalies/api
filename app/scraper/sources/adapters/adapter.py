@@ -1,7 +1,7 @@
+from app import logger
 import requests
 from bs4 import BeautifulSoup
 import re
-import logging
 
 
 class Adapter:
@@ -20,7 +20,7 @@ class Adapter:
     ##############
 
     def get_soup(self, url, **kwargs):
-        #logging.info('Souping URL: ' + url)
+        #logger.info('Souping URL: ' + url)
         html = requests.get(url, **kwargs).text
         return BeautifulSoup(html, 'html.parser')
 
@@ -67,11 +67,11 @@ class Adapter:
     def scrape(self, department):
         paths = department.get('paths')
         if paths is None:
-            logging.info('Skipping department.')
+            logger.info('Skipping department.')
             return []
 
         people = []
         for path in paths:
-            logging.info('Scraping path: ' + path)
+            logger.info('Scraping path: ' + path)
             people += self.scrape_path(department, path)
         return people

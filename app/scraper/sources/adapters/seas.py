@@ -1,6 +1,6 @@
 from .adapter import Adapter
+from app import logger
 import re
-import logging
 
 
 class Seas(Adapter):
@@ -29,7 +29,7 @@ class Seas(Adapter):
         while True:
             people_page_soup = self.get_soup(department['url'] + path, params={'page': page})
             links_page = people_page_soup.select('.view-faculty-directory .view-content > div .views-field-title .viewmore a:not([title])')
-            logging.info(f'Found {len(links_page)} people on page {page}.')
+            logger.info(f'Found {len(links_page)} people on page {page}.')
             profile_urls += [department['url'] + link['href'] for link in links_page]
             next_button = people_page_soup.select_one('li.pager-next a')
             if next_button is None:
@@ -63,6 +63,6 @@ class Seas(Adapter):
                 person['website'] = website['href']
 
             people.append(person)
-            logging.info('Parsed ' + person['name'])
+            logger.info('Parsed ' + person['name'])
         return people
 

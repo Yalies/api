@@ -1,5 +1,5 @@
 from .adapter import Adapter
-import logging
+from app import logger
 
 
 class Nursing(Adapter):
@@ -57,6 +57,6 @@ class Nursing(Adapter):
                     person['title'] = '; '.join([self.clean_string(elem.text) for elem in contact_elems])
 
             people.append(person)
-            logging.info('Parsed ' + person['name'])
+            logger.info('Parsed ' + person['name'])
 
         return people
