@@ -90,7 +90,7 @@ class Person(SearchableMixin, db.Model):
         'access_code', 'residence', 'office_room',
     )
     __filterable__ = (
-        'school_code', 'school', 'year', 'curriculum', 'college', 'college_code', 'leave', 
+        'school_code', 'school', 'year', 'curriculum', 'college', 'college_code', 'leave',
         'birth_month', 'birth_day', 'building_code', 'entryway', 'floor', 'suite', 'room', 'major',
         'organization_code', 'organization', 'unit_class', 'unit_code', 'unit', 'office_building',
     )
@@ -172,8 +172,6 @@ class Person(SearchableMixin, db.Model):
 
     @staticmethod
     def search(criteria):
-        print('Searching by criteria:')
-        print(criteria)
         person_query = Person.query
         query = criteria.get('query')
         filters = criteria.get('filters')
