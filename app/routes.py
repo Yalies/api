@@ -5,7 +5,7 @@ from app.models import User, Person, Key
 from app.util import to_json, succ, fail
 from app.cas_validate import validate
 from sqlalchemy import distinct
-
+from threading import Thread
 import datetime
 import time
 import calendar
@@ -116,7 +116,10 @@ def scrape():
     if request.method == 'GET':
         return render_template('scraper.html')
     payload = request.get_json()
-    scraper.scrape.apply_async(args=[payload['caches'], payload['face_book_cookie'], payload['people_search_session_cookie'], payload['csrf_token'], payload['yaleconnect_cookie']])
+    Thread(target=scraper.scrape, args=(
+        payload['caches'], payload['face_book_cookie'],
+        payload['people_search_session_cookie'], payload['csrf_token'],
+        payload['yaleconnect_cookie'])).start()
     return '', 200
 
 

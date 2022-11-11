@@ -1,7 +1,5 @@
 from .adapter import Adapter
-from celery.utils.log import get_task_logger
-
-logger = get_task_logger(__name__)
+import logging
 
 
 class Jackson(Adapter):
@@ -24,7 +22,7 @@ class Jackson(Adapter):
         people_soup = self.get_soup(department['url'] + path)
         # Handle both table styles
         cards = self.get_cards(people_soup)
-        logger.info(f'Found {len(cards)} people.')
+        logging.info(f'Found {len(cards)} people.')
 
         for card in cards:
             person = {
@@ -48,5 +46,5 @@ class Jackson(Adapter):
                 # It doesn't seem like there's any other useful information in profiles though
                 #person_soup = self.get_soup(profile_url)
             people.append(person)
-            logger.info('Parsed ' + person['name'])
+            logging.info('Parsed ' + person['name'])
         return people
