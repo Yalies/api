@@ -1,5 +1,5 @@
 from .adapter import Adapter
-import logging
+from app import logger
 
 
 class Management(Adapter):
@@ -84,6 +84,6 @@ class Management(Adapter):
                             person['room_number'] = p.text.replace('office:', '').strip()
 
             people.append(person)
-            logging.info('Parsed ' + person['name'])
+            logger.info('Parsed ' + person['name'])
 
         return people

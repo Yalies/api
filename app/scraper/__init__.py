@@ -1,4 +1,4 @@
-from app import app, db, celery, elasticsearch
+from app import app, db, celery, elasticsearch, logger
 from app.models import leaderships, Group, Person
 from app.mail import send_scraper_report
 
@@ -9,7 +9,6 @@ import os
 from threading import Thread
 from app.search import add_to_index
 import traceback
-import logging
 
 
 def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
@@ -27,17 +26,17 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
 
 
 def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_token, yaleconnect_cookie):
-    print('Scraper kicking off.')
+    logger.info('Scraper kicking off.')
     # Fix missing ElasticSearch index
     """
-    logging.info('Loading people.')
+    logger.info('Loading people.')
     page = 0
     page_size = 1000
     while True:
         people = Person.query.paginate(page, page_size, False).items
-        logging.info('Loaded people.')
+        logger.info('Loaded people.')
         for person in people:
-            logging.info(person.netid)
+            logger.info(person.netid)
             add_to_index('person', person)
         if len(people) < page_size:
             break
@@ -50,23 +49,23 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             'scraped_data.' + key if key else 'scraped_data': value
             for key, value in caches_active.items()
         }
-        logging.info('Launching scraper.')
+        logger.info('Launching scraper.')
         cache = Cache(caches_active)
 
         cache_key = 'scraped_data'
-        logging.info('Checking cache...')
+        logger.info('Checking cache...')
         people = cache.get(cache_key)
         face_book = None
         if people:
-            logging.info('Found people in cache.')
+            logger.info('Found people in cache.')
         else:
-            logging.info('Initializing sources.')
+            logger.info('Initializing sources.')
             directory = sources.Directory(cache, people_search_session_cookie, csrf_token)
             face_book = sources.FaceBook(cache, face_book_cookie, directory)
             name_coach = sources.NameCoach(cache, people_search_session_cookie, csrf_token)
             departmental = sources.Departmental(cache)
 
-            logging.info('Beginning scrape.')
+            logger.info('Beginning scrape.')
             people = []
             thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
                                       args=(face_book, directory, name_coach))
@@ -82,7 +81,7 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
 
 
         # Store people into database
-        logging.info('Inserting new data.')
+        logger.info('Inserting new data.')
 
         # TODO: we do this at the starting of YaleConnect.merge; I'm just temporarily adding this so that the Person models can be deleted. Maybe we should make the deletes cascade or something?
         db.session.query(leaderships).delete()
@@ -109,10 +108,10 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
         yaleconnect.merge(people)
 
         if face_book is not None:
-            logging.info('Deleting unused images from S3.')
+            logger.info('Deleting unused images from S3.')
             face_book.delete_unused_imgs(people)
-        logging.info('Done.')
+        logger.info('Done.')
     except Exception as e:
-        logging.info('Encountered fatal error, terminating scraper:')
-        logging.info(e)
+        logger.info('Encountered fatal error, terminating scraper:')
+        logger.info(e)
         send_scraper_report(error=traceback.format_exc())

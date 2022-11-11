@@ -1,10 +1,10 @@
 from .source import Source
+from app import logger
 
 import yaledirectory
 import requests
 import re
 import string
-import logging
 from threading import Thread
 
 
@@ -67,12 +67,12 @@ class Directory(Source):
         if person.get('college'):
             query['college'] = person['college'] + ' College'
         people = self.directory.people(**query)
-        logging.info('Found %d matching people in directory.' % len(people))
+        logger.info('Found %d matching people in directory.' % len(people))
         if not people:
             # If nothing found, do a broader search and return first result
             person = self.directory.person(first_name=person['first_name'], last_name=person['last_name'])
             if person:
-                logging.info('Found matching person searching only by name.')
+                logger.info('Found matching person searching only by name.')
             return person
         return people[0]
 
@@ -96,13 +96,13 @@ class Directory(Source):
         return office_building, office_room
 
     def read_directory(self, prefix: str = ''):
-        logging.info('Attempting prefix ' + prefix)
+        logger.info('Attempting prefix ' + prefix)
         people, total = self.directory.people(netid=prefix, include_total=True)
 
         if total == len(people):
-            logging.info(f'Successfully found {total} people.')
+            logger.info(f'Successfully found {total} people.')
             return people
-        logging.info(f'Found {total} people; trying more specific prefixes.')
+        logger.info(f'Found {total} people; trying more specific prefixes.')
 
         # NetIds have 2-3 characters followed by any amount of numbers.
         # Some emeritus professors have longer strings of letters without numbers, such as 'frhole'
@@ -143,12 +143,12 @@ class Directory(Source):
             # Remove ETRAIN_ accounts, which are not actual people
             if entry.netid and entry.netid.startswith('etrain'):
                 continue
-            logging.info('Parsing directory entry with NetID ' + entry.netid)
+            logger.info('Parsing directory entry with NetID ' + entry.netid)
             person = self.merge_one({}, entry)
             people.append(person)
 
         self.new_records = people
-        logging.info(self.new_records)
+        logger.info(self.new_records)
 
     #########
     # Merging
@@ -215,13 +215,13 @@ class Directory(Source):
             person['organization'] = None
 
         if entry.primary_organization_name != entry.organization_unit_name:
-            logging.info('Warning: primary_organization_name and organization_unit_name are different!')
-            logging.info(person)
-            logging.info(entry)
+            logger.info('Warning: primary_organization_name and organization_unit_name are different!')
+            logger.info(person)
+            logger.info(entry)
         if entry.organization_name != entry.primary_division_name:
-            logging.info('Warning: organization_name and primary_division_name are diferent!')
-            logging.info(person)
-            logging.info(entry)
+            logger.info('Warning: organization_name and primary_division_name are diferent!')
+            logger.info(person)
+            logger.info(entry)
         if not person.get('year') and entry.student_expected_graduation_year:
             person['year'] = int(entry.student_expected_graduation_year)
 

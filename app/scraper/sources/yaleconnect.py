@@ -1,6 +1,6 @@
 from .source import Source
 
-from app import app, db, celery
+from app import app, db, celery, logger
 from app.models import Group, Person, leaderships
 
 import requests
@@ -40,7 +40,7 @@ class YaleConnect(Source):
 
     def scrape(self, current_people):
         # Store people into database
-        logging.info('Reading groups list.')
+        logger.info('Reading groups list.')
         groups_soup = self.get_soup(
             ROOT + ('/club_signup' if DEBUG else '/club_signup?view=all')
         ).find('div', {'class': 'content-cont'})
@@ -62,7 +62,7 @@ class YaleConnect(Source):
                 continue
             name = a.text.strip()
             if group_id in group_ids:
-                logging.info(f'Already tracking {name}.')
+                logger.info(f'Already tracking {name}.')
                 continue
             logo = row.find('img')['src']
             if 'Default_Group_Logo' in logo or 'default_club_logo' in logo:
@@ -80,11 +80,11 @@ class YaleConnect(Source):
             })
             group_ids.add(group_id)
 
-        logging.info(groups)
+        logger.info(groups)
 
         for i in range(len(groups)):
             group_id = groups[i]['id']
-            logging.info('Parsing ' + groups[i]['name'])
+            logger.info('Parsing ' + groups[i]['name'])
             about_soup = self.get_soup(f'{ROOT}/ajax_group_page_about?ax=1&club_id={group_id}').find('div', {'class': 'card-block'})
             current_header = None
             current_contact_property = None
@@ -133,7 +133,7 @@ class YaleConnect(Source):
                                 elif current_contact_property == 'cellphone':
                                     groups[i]['phone'] = ''.join([char for char in text if text.isdigit()])
                                 else:
-                                    logging.info(f'Saw unrecognized contact property {current_contact_property} with value {text}.')
+                                    logger.info(f'Saw unrecognized contact property {current_contact_property} with value {text}.')
                     elif current_header == 'OFFICERS':
                         if child.name == 'img':
                             leader = {}
@@ -148,13 +148,13 @@ class YaleConnect(Source):
                     elif current_header is None:
                         pass
                     else:
-                        logging.info(f'Encountered unknown About header {current_header}.')
+                        logger.info(f'Encountered unknown About header {current_header}.')
 
         self.new_records = groups
         return self.new_records
 
     def merge(self, current_people):
-        logging.info('Inserting new data.')
+        logger.info('Inserting new data.')
         db.session.query(leaderships).delete()
         Group.query.delete()
         for group_dict in self.new_records:
@@ -166,13 +166,13 @@ class YaleConnect(Source):
             # Remove empty values
             for leader in leaders:
                 if not leader.get('email'):
-                    logging.warning('Leader without email found:')
-                    logging.warning(str(leader))
+                    logger.warning('Leader without email found:')
+                    logger.warning(str(leader))
                     continue
                 person = Person.query.filter_by(email=leader['email']).first()
                 if person:
                     group.leaders.append(person)
         db.session.commit()
-        logging.info('Done.')
+        logger.info('Done.')
         return current_people
 
