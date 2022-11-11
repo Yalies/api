@@ -1,7 +1,5 @@
 from .adapter import Adapter
-from celery.utils.log import get_task_logger
-
-logger = get_task_logger(__name__)
+import logging
 
 
 class Management(Adapter):
@@ -86,6 +84,6 @@ class Management(Adapter):
                             person['room_number'] = p.text.replace('office:', '').strip()
 
             people.append(person)
-            logger.info('Parsed ' + person['name'])
+            logging.info('Parsed ' + person['name'])
 
         return people

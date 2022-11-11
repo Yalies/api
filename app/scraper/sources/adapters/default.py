@@ -3,9 +3,7 @@ import requests
 import hashlib
 from bs4.element import Tag, NavigableString
 import re
-from celery.utils.log import get_task_logger
-
-logger = get_task_logger(__name__)
+import logging
 
 
 class Default(Adapter):
@@ -43,7 +41,7 @@ class Default(Adapter):
             image_r.raw.decode_content = True
             image_hash = hashlib.md5(image_r.content).hexdigest()
             if image_hash in ignored_images:
-                logger.info('Ignoring image with hash ' + image_hash)
+                logging.info('Ignoring image with hash ' + image_hash)
                 return None
         return src
 
@@ -86,7 +84,7 @@ class Default(Adapter):
     def scrape_path(self, department, path):
         people = []
         if department.get('paginated'):
-            logger.info('Paginating...')
+            logging.info('Paginating...')
             cards = []
             page = 0
             while True:
@@ -97,7 +95,7 @@ class Default(Adapter):
                     break
                 cards += cards_page
 
-                logger.info(f'Page {page} had {len(cards_page)} people.')
+                logging.info(f'Page {page} had {len(cards_page)} people.')
                 page += 1
         else:
             people_soup = self.get_soup(department['url'] + path)
@@ -139,7 +137,7 @@ class Default(Adapter):
                 person_soup = self.get_soup(person['profile'])
                 body = self.get_body(person_soup)
                 if not body:
-                    logger.info('Could not find profile page body, skipping this person.')
+                    logging.info('Could not find profile page body, skipping this person.')
                     continue
                 name_suffix = body.find('h1', {'class': ['title', 'page-title']}).text
                 # Clean up duplicate spaces, such as on https://clais.macmillan.yale.edu/people/all
@@ -244,6 +242,6 @@ class Default(Adapter):
                     #if bio is not None:
                     #    person['bio'] = bio.lstrip('_').strip()
 
-            logger.info('Parsed ' + person['name'])
+            logging.info('Parsed ' + person['name'])
             people.append(person)
         return people

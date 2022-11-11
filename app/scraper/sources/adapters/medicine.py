@@ -1,7 +1,5 @@
 from .adapter import Adapter
-from celery.utils.log import get_task_logger
-
-logger = get_task_logger(__name__)
+import logging
 
 
 class Medicine(Adapter):
@@ -22,7 +20,7 @@ class Medicine(Adapter):
         people_soup = self.get_soup(department['url'] + path)
 
         profile_urls = self.extract_links(people_soup, department['url'])
-        logger.info(f'Found {len(profile_urls)} profile URLs.')
+        logging.info(f'Found {len(profile_urls)} profile URLs.')
         for profile_url in profile_urls:
             person = {
                 'profile': profile_url,
@@ -31,7 +29,7 @@ class Medicine(Adapter):
 
             name_suffix = person_soup.find('h1', {'class': 'profile-details-header__name'})
             if name_suffix is None:
-                logger.info('Empty page, skipping.')
+                logging.info('Empty page, skipping.')
                 continue
             person['name'], person['suffix'] = self.split_name_suffix(name_suffix.text)
             title = person_soup.find('div', {'class': 'profile-details-header__title'})
@@ -76,7 +74,7 @@ class Medicine(Adapter):
             #if bio:
             #    person['bio'] = bio.text.strip()
 
-            logger.info('Parsed ' + person['name'])
+            logging.info('Parsed ' + person['name'])
             people.append(person)
         return people
 

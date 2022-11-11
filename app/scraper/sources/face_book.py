@@ -8,14 +8,12 @@ import json
 import requests
 import os
 import re
+import logging
 from cryptography.fernet import Fernet
-from celery.utils.log import get_task_logger
 
 # Image processing
 from PIL import Image
 from io import BytesIO
-
-logger = get_task_logger(__name__)
 
 
 with open('app/scraper/res/majors.txt') as f:
@@ -51,7 +49,7 @@ class FaceBook(Source):
     def get_html(self, cookie):
         filename = 'page.html'
         if not os.path.exists(filename):
-            logger.info('Page not cached, fetching.')
+            logging.info('Page not cached, fetching.')
             requests.get('https://students.yale.edu/facebook/ChangeCollege',
                          params={
                              'newOrg': 'Yale College'
@@ -70,17 +68,17 @@ class FaceBook(Source):
             html = r.text
             with open(filename, 'w') as f:
                 f.write(html)
-            logger.info('Done fetching page.')
+            logging.info('Done fetching page.')
         else:
-            logger.info('Using cached page.')
+            logging.info('Using cached page.')
             with open(filename, 'r') as f:
                 html = f.read()
         return html
 
     def get_tree(self, html):
-        logger.info('Building tree.')
+        logging.info('Building tree.')
         tree = BeautifulSoup(html, 'html.parser')
-        logger.info('Done building tree.')
+        logging.info('Done building tree.')
         return tree
 
     def get_containers(self, tree):
@@ -94,7 +92,7 @@ class FaceBook(Source):
         return int(image_id)
 
     def clean_name(self, name):
-        logger.info('Parsing ' + name)
+        logging.info('Parsing ' + name)
         first_name, last_name = name.strip().split(', ', 1)
         return first_name, last_name
 
@@ -105,14 +103,14 @@ class FaceBook(Source):
         return 2000 + int(year)
 
     def compare_years(self, page_key, people, emails):
-        logger.info(f'Comparing years from {page_key} store.')
+        logging.info(f'Comparing years from {page_key} store.')
         with open(f'app/scraper/res/historical/{page_key}.json.fernet', 'rb') as f:
             years = json.loads(self.fernet.decrypt(f.read()))
 
         for email, year in years.items():
             if email in emails and not people[emails[email]].get('leave') and email in emails and year is not None and people[emails[email]]['year'] is not None:
                 people[emails[email]]['leave'] = (year < people[emails[email]]['year'])
-                logger.info(email + ' is' + (' not' if not people[emails[email]]['leave'] else '') + ' taking a leave.')
+                logging.info(email + ' is' + (' not' if not people[emails[email]]['leave'] else '') + ' taking a leave.')
         return people
 
     def delete_unused_images(self, people):
@@ -124,11 +122,11 @@ class FaceBook(Source):
         containers = self.get_containers(tree)
 
         if len(containers) == 0:
-            logger.info('No people were found on this page. There may be something wrong with authentication, aborting.')
+            logging.info('No people were found on this page. There may be something wrong with authentication, aborting.')
             return []
 
         watermark_mask = Image.open('app/scraper/res/watermark_mask.png')
-        logger.info('Already hosting {} images.'.format(len(self.image_uploader.files)))
+        logging.info('Already hosting {} images.'.format(len(self.image_uploader.files)))
 
         people = []
         emails = {}
@@ -200,13 +198,13 @@ class FaceBook(Source):
             person['address'] = '\n'.join(trivia)
 
             person['leave'] = False
-            
+
 
             directory_entry = self.directory.get_directory_entry(person)
             if directory_entry is not None:
                 person = self.directory.merge_one(person, directory_entry)
             else:
-                logger.info('Could not find directory entry.')
+                logging.info('Could not find directory entry.')
 
             image_id = self.clean_image_id(container.find('img')['src'])
             if image_id:
@@ -214,7 +212,7 @@ class FaceBook(Source):
                 if image_filename in self.image_uploader.files:
                     person['image'] = self.image_uploader.get_file_url(image_filename)
                 else:
-                    logger.info('Image has not been processed yet.')
+                    logging.info('Image has not been processed yet.')
                     image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id),
                                            headers={'Cookie': self.cookie},
                                            stream=True)
@@ -231,7 +229,7 @@ class FaceBook(Source):
                         person['image'] = self.image_uploader.upload_image(output, image_filename)
                     except OSError:
                         # "Cannot identify image" error
-                        logger.info('PIL could not identify image.')
+                        logging.info('PIL could not identify image.')
 
             if person.get('email'):
                 emails[person['email']] = len(people)

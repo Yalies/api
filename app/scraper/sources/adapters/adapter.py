@@ -1,9 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-from celery.utils.log import get_task_logger
-
-logger = get_task_logger(__name__)
+import logging
 
 
 class Adapter:
@@ -22,7 +20,7 @@ class Adapter:
     ##############
 
     def get_soup(self, url, **kwargs):
-        #logger.info('Souping URL: ' + url)
+        #logging.info('Souping URL: ' + url)
         html = requests.get(url, **kwargs).text
         return BeautifulSoup(html, 'html.parser')
 
@@ -69,11 +67,11 @@ class Adapter:
     def scrape(self, department):
         paths = department.get('paths')
         if paths is None:
-            logger.info('Skipping department.')
+            logging.info('Skipping department.')
             return []
 
         people = []
         for path in paths:
-            logger.info('Scraping path: ' + path)
+            logging.info('Scraping path: ' + path)
             people += self.scrape_path(department, path)
         return people
