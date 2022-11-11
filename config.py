@@ -10,8 +10,6 @@ class Config(object):
                                              'sqlite:///' + os.path.join(basedir, 'app.db')).replace('postgres://', 'postgresql://')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    REDIS_URL = CELERY_BROKER_URL = CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
-
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
 
     CAS_SERVER = 'https://secure.its.yale.edu'
