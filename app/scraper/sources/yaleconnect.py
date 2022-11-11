@@ -1,6 +1,6 @@
 from .source import Source
 
-from app import app, db, celery, logger
+from app import app, db, logger
 from app.models import Group, Person, leaderships
 
 import requests
