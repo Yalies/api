@@ -194,7 +194,7 @@ class Person(SearchableMixin, db.Model):
                     filters[category] = [filters[category]]
                 person_query = person_query.filter(getattr(Person, category).in_(filters[category]))
         if page:
-            people = person_query.paginate(page, page_size or app.config['PAGE_SIZE'], False).items
+            people = person_query.paginate(page=page, per_page=page_size or app.config['PAGE_SIZE']).items
         else:
             people = person_query.all()
         return people
