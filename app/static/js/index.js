@@ -47,6 +47,7 @@ resetFilters();
 p.clearFilters.onclick = function() {
     resetFilters();
     runSearch();
+    p.clearFilters.style.visibility = "hidden";
 }
 
 function isFilter(element) {
@@ -101,6 +102,7 @@ function isPlaying(audio) { return !audio.paused; }
 onchange = function(e) {
     let input = e.target;
     if (input.type === 'checkbox') {
+        p.clearFilters.style.visibility = "visible";
         let checked = input.checked;
         let otherCheckboxes = Array.from(input.parentElement.parentElement.getElementsByTagName('input'));
         let allCheckbox = otherCheckboxes.shift();

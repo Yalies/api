@@ -11,6 +11,7 @@
 }
 #clear_filters {
     margin-top: 8px;
+    visibility: hidden;
 }
 .filter {
     margin-top: 8px;
