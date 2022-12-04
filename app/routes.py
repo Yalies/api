@@ -90,15 +90,6 @@ def index():
                 'header': 'Took Leave?',
                 'default': 'N/A'
             },
-            'eli_whitney': {
-                'header': 'Eli Whitney?',
-                'default': 'N/A'
-            },
-            #'building_code': 'Building',
-            #'entryway': 'Entryway',
-            #'floor': 'Floor',
-            #'suite': 'Suite',
-            #'room': 'Room',
         },
         'Graduate': {
             'curriculum': {
