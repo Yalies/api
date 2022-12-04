@@ -75,7 +75,6 @@ def index():
         'Students': {
             'school': {
                 'header': 'School',
-                'preset': 'Yale College',
             },
             'year': {
                 'header': 'Year',
@@ -99,7 +98,7 @@ def index():
         },
         'Graduate': {
             'curriculum': {
-                'Grad Curriculum',
+                'header': 'Grad Curriculum',
             },
         },
         'Staff': {

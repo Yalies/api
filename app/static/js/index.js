@@ -44,6 +44,14 @@ function resetFilters() {
 }
 resetFilters();
 
+const schoolFilter = document.getElementById('school'),
+      schoolAllCheckbox = document.querySelector('input[name="school-all"]'),
+      schoolYCCheckbox = document.querySelector('input[name="Yale College"]');
+schoolFilter.classList.add('active');
+schoolAllCheckbox.checked = false;
+schoolYCCheckbox.checked = true;
+
+
 p.clearFilters.onclick = function() {
     resetFilters();
     runSearch();
@@ -144,8 +152,7 @@ p.scrollTop.onclick = function() {
 // List building //
 ///////////////////
 let criteria = {
-    'filters': {
-    },
+    'filters': {},
 };
 let pagesLoaded = 0;
 let pagesFinished = false;
@@ -356,7 +363,7 @@ function loadNextPage() {
     }
 }
 
-loadNextPage();
+runSearch();
 
 window.onscroll = function(e) {
     if (2 * window.innerHeight + window.scrollY >= document.body.offsetHeight) {
