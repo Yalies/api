@@ -90,6 +90,12 @@ def index():
                 'header': 'Took Leave?',
                 'default': 'N/A'
             },
+            'birth_month': {
+                'header': 'Birth Month',
+            },
+            'birth_day': {
+                'header': 'Birth Day',
+            },
         },
         'Graduate': {
             'curriculum': {
