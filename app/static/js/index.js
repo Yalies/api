@@ -143,16 +143,13 @@ p.scrollTop.onclick = function() {
 ///////////////////
 let criteria = {
     'filters': {
-        'school_code': ['YC'],
     },
 };
 let pagesLoaded = 0;
 let pagesFinished = false;
 
 function runSearch() {
-    let filters = {
-        'school_code': ['YC'],
-    };
+    let filters = {};
     for (let filter of p.filters) {
         let category = filter.id;
         let otherCheckboxes = Array.from(filter.getElementsByTagName('input'));
