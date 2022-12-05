@@ -1,5 +1,4 @@
 from .source import Source
-from app import logger
 
 import yaledirectory
 import requests
