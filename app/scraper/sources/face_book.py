@@ -9,10 +9,13 @@ import requests
 import os
 import re
 from cryptography.fernet import Fernet
+from celery.utils.log import get_task_logger
 
 # Image processing
 from PIL import Image
 from io import BytesIO
+
+logger = get_task_logger(__name__)
 
 
 with open('app/scraper/res/majors.txt') as f:
@@ -197,7 +200,7 @@ class FaceBook(Source):
             person['address'] = '\n'.join(trivia)
 
             person['leave'] = False
-
+            
 
             directory_entry = self.directory.get_directory_entry(person)
             if directory_entry is not None:

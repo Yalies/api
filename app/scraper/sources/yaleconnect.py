@@ -5,6 +5,9 @@ from app.models import Group, Person, leaderships
 
 import requests
 from bs4 import BeautifulSoup, Tag, NavigableString
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 DEBUG = False
 ROOT = 'https://yaleconnect.yale.edu'

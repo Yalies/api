@@ -3,6 +3,9 @@ from app import logger
 
 import yaledirectory
 from threading import Thread
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 class NameCoach(Source):

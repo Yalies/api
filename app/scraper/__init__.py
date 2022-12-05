@@ -9,6 +9,17 @@ import os
 from threading import Thread
 from app.search import add_to_index
 import traceback
+from celery.utils.log import get_task_logger
+from celery.signals import after_setup_task_logger
+from celery.app.log import TaskFormatter
+
+logger = get_task_logger(__name__)
+
+
+@after_setup_task_logger.connect
+def setup_task_logger(logger, *args, **kwargs):
+    for handler in logger.handlers:
+        handler.setFormatter(TaskFormatter('%(message)s'))
 
 
 def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
@@ -25,6 +36,7 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
     people = name_coach.integrate(people)
 
 
+@celery.task
 def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_token, yaleconnect_cookie):
     logger.info('Scraper kicking off.')
     # Fix missing ElasticSearch index

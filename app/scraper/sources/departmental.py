@@ -7,6 +7,11 @@ import json
 import hashlib
 from math import ceil
 from threading import Thread
+from app.scraper.sources import adapters
+#import adapters
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 class Departmental(Source):
