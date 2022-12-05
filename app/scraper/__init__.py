@@ -1,4 +1,4 @@
-from app import app, db, elasticsearch, logger
+from app import app, db, celery, elasticsearch, logger
 from app.models import leaderships, Group, Person
 from app.mail import send_scraper_report
 
