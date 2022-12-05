@@ -1,7 +1,6 @@
 from .source import Source
 from .directory import Directory
 from .s3 import ImageUploader
-from app import logger
 
 from bs4 import BeautifulSoup
 import json
@@ -200,7 +199,7 @@ class FaceBook(Source):
             person['address'] = '\n'.join(trivia)
 
             person['leave'] = False
-            
+
 
             directory_entry = self.directory.get_directory_entry(person)
             if directory_entry is not None:

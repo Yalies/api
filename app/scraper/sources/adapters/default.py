@@ -1,5 +1,4 @@
 from .adapter import Adapter
-from app import logger
 
 import requests
 import hashlib

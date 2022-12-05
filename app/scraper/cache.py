@@ -1,4 +1,3 @@
-from app import logger
 import boto3
 import botocore
 import os

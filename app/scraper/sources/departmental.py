@@ -1,5 +1,4 @@
 from .source import Source
-from app import logger
 from app.scraper.sources import adapters
 #import adapters
 
