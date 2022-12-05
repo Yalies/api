@@ -1,4 +1,5 @@
 import botocore
+import boto3
 import os
 import hashlib
 from celery.utils.log import get_task_logger
