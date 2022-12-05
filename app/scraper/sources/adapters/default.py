@@ -5,7 +5,9 @@ import requests
 import hashlib
 from bs4.element import Tag, NavigableString
 import re
-import logging
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 class Default(Adapter):
