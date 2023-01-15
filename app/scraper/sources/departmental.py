@@ -1,4 +1,6 @@
 from .source import Source
+from app.scraper.sources import adapters
+#import adapters
 
 import json
 import hashlib

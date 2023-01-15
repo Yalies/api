@@ -61,51 +61,65 @@ def index():
         'Timothy Dwight',
         'Trumbull',
     ]
-    """
-    building_codes = {
-        '': 'Off Campus',
-        'BM': 'Bingham Hall',
-        'W': 'Welch Hall',
-        'F': 'Farnam Hall',
-        'D': 'Durfee Hall',
-        'L': 'Lawrance Hall',
-        'V': 'Vanderbilt Hall',
-        'LW': 'Lanman-Wright Hall',
-        'BK': 'Berkeley',
-        'BR': 'Branford',
-        'DC': 'Davenport',
-        'ES': 'Ezra Stiles',
-        'JE': 'Jonathan Edwards',
-        'BF': 'Benjamin Franklin',
-        'GH': 'Grace Hopper',
-        'MC': 'Morse',
-        'MY': 'Pauli Murray',
-        'PC': 'Pierson',
-        'SY': 'Saybrook',
-        'SM': 'Silliman',
-        'TD': 'Timothy Dwight',
-        'TC': 'Trumbull',
-    }
-    """
     years = get_years()
     leave = ['Yes', 'No']
     birth_months = {index + 1: name for index, name in enumerate(list(calendar.month_name)[1:])}
     birth_days = list(range(1, 31 + 1))
-    # SQLAlchemy returns lists of tuples, so we gotta convert to a list of items.
-    # TODO: is there a SQL-based way to do this?
-    """
-    entryways = untuple(db.session.query(distinct(Person.entryway)).order_by(Person.entryway))
-    floors = untuple(db.session.query(distinct(Person.floor)).order_by(Person.floor))
-    suites = untuple(db.session.query(distinct(Person.suite)).order_by(Person.suite))
-    rooms = untuple(db.session.query(distinct(Person.room)).order_by(Person.room))
-    """
+
+    # TODO: should this be loaded from the filters endpoint?
+    options = {}
+    for category in Person.__filterable__:
+        options[category] = untuple(db.session.query(distinct(getattr(Person, category))).order_by(getattr(Person, category)))
+
+    filters = {
+        'Students': {
+            'school': {
+                'header': 'School',
+            },
+            'year': {
+                'header': 'Year',
+            },
+        },
+        'Undergraduate': {
+            'college': {
+                'header': 'College',
+            },
+            'major': 'Major',
+            'leave': {
+                'header': 'Took Leave?',
+                'default': 'N/A'
+            },
+            'birth_month': {
+                'header': 'Birth Month',
+            },
+            'birth_day': {
+                'header': 'Birth Day',
+            },
+        },
+        'Graduate': {
+            'curriculum': {
+                'header': 'Grad Curriculum',
+            },
+        },
+        'Staff': {
+            'organization': {
+                'header': 'Staff Organization',
+            },
+            'unit': {
+                'header': 'Staff Unit',
+            },
+            'office_building': {
+                'header': 'Office Building',
+            },
+        },
+    }
     return render_template('index.html', colleges=colleges,
                            years=years, leave=leave, majors=majors,
-                           birth_months=birth_months, birth_days=birth_days)
-    """
-                           building_codes=building_codes,
-                           entryways=entryways, floors=floors, suites=suites, rooms=rooms)
-    """
+                           birth_months=birth_months, birth_days=birth_days, options=options, filters=filters)
+
+
+def untuple(tuples):
+    return [t[0] for t in tuples]
 
 
 @app.route('/scraper', methods=['GET', 'POST'])

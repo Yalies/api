@@ -1,4 +1,5 @@
 from .adapter import Adapter
+
 import requests
 import hashlib
 from bs4.element import Tag, NavigableString

@@ -1,6 +1,5 @@
 from .source import Source
 from .directory import Directory
-
 from .s3 import ImageUploader
 
 from bs4 import BeautifulSoup
@@ -200,7 +199,7 @@ class FaceBook(Source):
             person['address'] = '\n'.join(trivia)
 
             person['leave'] = False
-            person['eli_whitney'] = None
+
 
             directory_entry = self.directory.get_directory_entry(person)
             if directory_entry is not None:
@@ -238,7 +237,7 @@ class FaceBook(Source):
             people.append(person)
 
         # Check leaves
-        for backup in ('pre2020', 'fall2020', 'spring2020'):
+        for backup in ('pre2020', 'fall2020', 'spring2020', 'fall2022'):
             people = self.compare_years(backup, people, emails)
 
         self.new_records = people

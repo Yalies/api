@@ -44,6 +44,14 @@ function resetFilters() {
 }
 resetFilters();
 
+const schoolFilter = document.getElementById('school'),
+      schoolAllCheckbox = document.querySelector('input[name="school-all"]'),
+      schoolYCCheckbox = document.querySelector('input[name="Yale College"]');
+schoolFilter.classList.add('active');
+schoolAllCheckbox.checked = false;
+schoolYCCheckbox.checked = true;
+
+
 p.clearFilters.onclick = function() {
     resetFilters();
     runSearch();
@@ -142,17 +150,13 @@ p.scrollTop.onclick = function() {
 // List building //
 ///////////////////
 let criteria = {
-    'filters': {
-        'school_code': ['YC'],
-    },
+    'filters': {},
 };
 let pagesLoaded = 0;
 let pagesFinished = false;
 
 function runSearch() {
-    let filters = {
-        'school_code': ['YC'],
-    };
+    let filters = {};
     for (let filter of p.filters) {
         let category = filter.id;
         let otherCheckboxes = Array.from(filter.getElementsByTagName('input'));
@@ -161,7 +165,7 @@ function runSearch() {
             filters[category] = [];
             for (let checkbox of otherCheckboxes) {
                 if (checkbox.checked) {
-                    if (category === 'leave' || category === 'eli_whitney') {
+                    if (category === 'leave') {
                         filters[category].push(checkbox.name === 'Yes');
                     } else if (['year', 'birth_month', 'birth_day', 'floor', 'room'].includes(category)) {
                         filters[category].push(checkbox.name ? parseInt(checkbox.name) : null);
@@ -223,8 +227,6 @@ function addRow(container, property, title, icon, person, url, showTitle) {
         } else {
             if (property === 'leave') {
                 readout.textContent = 'Took Leave';
-            } else if (property === 'eli_whitney') {
-                readout.textContent = 'Eli Whitney Program';
             } else if (property === 'visitor') {
                 readout.textContent = 'Visiting International Program';
             } else {
@@ -360,7 +362,7 @@ function loadNextPage() {
     }
 }
 
-loadNextPage();
+runSearch();
 
 window.onscroll = function(e) {
     if (2 * window.innerHeight + window.scrollY >= document.body.offsetHeight) {

@@ -1,10 +1,15 @@
 from flask import render_template
 from flask_mail import Message
 from app import app, mail
+from app.models import User
 
 DATE_FMT = '%Y-%m-%d'
 TIME_FMT = '%H:%M'
 DATETIME_FMT = DATE_FMT + ' ' + TIME_FMT
+
+def get_admin_emails():
+    admins = User.query.filter_by(admin=True).all()
+    return [admin.email for admin in admins]
 
 
 def send_mail(subject, html, recipients):
@@ -41,4 +46,4 @@ def send_scraper_report(stats=None, error=None):
                                    status_color=status_color)
     send_mail(subject=subject,
               html=html,
-              recipients=app.config['ADMIN_EMAILS'])
+              recipients=get_admin_emails())
