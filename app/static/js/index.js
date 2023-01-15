@@ -325,6 +325,7 @@ function loadNextPage() {
                     }
                     addRow(personContainer, 'pronouns', 'Pronouns', 'comments', person);
                     addRow(personContainer, 'title', 'Title', 'tags', person);
+                    addRow(personContainer, 'school', 'School', 'university', person);
                     if (person.college_code) {
                         let row = document.createElement('div');
                         row.title = 'Residential College';
