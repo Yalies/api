@@ -5,7 +5,7 @@ flask-migrate
 flask-mail
 flask-cas
 flask-redis
-psycopg2
+psycopg2-binary
 boto3
 elasticsearch==7.9
 beautifulsoup4

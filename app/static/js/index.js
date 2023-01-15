@@ -349,6 +349,7 @@ function loadNextPage() {
                     }
                     addRow(personContainer, 'birthday', 'Birthday', 'birthday-cake', person);
                     addRow(personContainer, 'address', 'Address', 'home', person);
+                    addRow(personContainer, 'school', 'School','school',person);
                     addRow(personContainer, 'website', 'Website', 'globe', person, person.website, true);
                     //addRow(personContainer, 'education', 'Education', 'university', person);
 
