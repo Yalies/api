@@ -65,9 +65,65 @@ def index():
     leave = ['Yes', 'No']
     birth_months = {index + 1: name for index, name in enumerate(list(calendar.month_name)[1:])}
     birth_days = list(range(1, 31 + 1))
+
+    # TODO: should this be loaded from the filters endpoint?
+    options = {}
+    for category in Person.__filterable__:
+        options[category] = untuple(db.session.query(distinct(getattr(Person, category))).order_by(getattr(Person, category)))
+
+    filters = {
+        'Students': {
+            'school': {
+                'header': 'School',
+                'preset': 'Yale College',
+            },
+            'year': {
+                'header': 'Year',
+            },
+        },
+        'Undergraduate': {
+            'college': {
+                'header': 'College',
+            },
+            'major': 'Major',
+            'leave': {
+                'header': 'Took Leave?',
+                'default': 'N/A'
+            },
+            'eli_whitney': {
+                'header': 'Eli Whitney?',
+                'default': 'N/A'
+            },
+            #'building_code': 'Building',
+            #'entryway': 'Entryway',
+            #'floor': 'Floor',
+            #'suite': 'Suite',
+            #'room': 'Room',
+        },
+        'Graduate': {
+            'curriculum': {
+                'Grad Curriculum',
+            },
+        },
+        'Staff': {
+            'organization': {
+                'header': 'Staff Organization',
+            },
+            'unit': {
+                'header': 'Staff Unit',
+            },
+            'office_building': {
+                'header': 'Office Building',
+            },
+        },
+    }
     return render_template('index.html', colleges=colleges,
                            years=years, leave=leave, majors=majors,
-                           birth_months=birth_months, birth_days=birth_days)
+                           birth_months=birth_months, birth_days=birth_days, options=options, filters=filters)
+
+
+def untuple(tuples):
+    return [t[0] for t in tuples]
 
 
 @app.route('/scraper', methods=['GET', 'POST'])

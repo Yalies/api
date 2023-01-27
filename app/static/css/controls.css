@@ -7,7 +7,7 @@
 }
 
 .filters {
-    display: inline-block;
+    display: inline;
 }
 #clear_filters {
     margin-top: 8px;
