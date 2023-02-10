@@ -15,7 +15,7 @@ class Directory(Source):
     def __init__(self, cache, people_search_session_cookie, csrf_token):
         super().__init__(cache)
         self.directory = yaledirectory.API(people_search_session_cookie, csrf_token)
-        self.thread_pool = multiprocessing.pool.ThreadPool(processes=8)
+        self.thread_pool = ThreadPool(processes=8)
 
     ##########
     # Scraping
