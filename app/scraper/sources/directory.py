@@ -6,6 +6,7 @@ import re
 import string
 from threading import Thread
 from celery.utils.log import get_task_logger
+from multiprocessing.pool import ThreadPool
 
 logger = get_task_logger(__name__)
 
@@ -14,6 +15,7 @@ class Directory(Source):
     def __init__(self, cache, people_search_session_cookie, csrf_token):
         super().__init__(cache)
         self.directory = yaledirectory.API(people_search_session_cookie, csrf_token)
+        self.thread_pool = multiprocessing.pool.ThreadPool(processes=8)
 
     ##########
     # Scraping
@@ -134,13 +136,10 @@ class Directory(Source):
         people = []
         # Fetch non-undergrad users by iterating netids
         # Get set of netids for students we've already processed
-        threads = []
         for prefix in self.letters:
-            thread = Thread(target=self.read_directory_async, args=(prefix,))
-            thread.start()
-            threads.append(thread)
-        for thread in threads:
-            thread.join()
+            self.thread_pool.apply_async(target=self.read_directory_async, args=(prefix,))
+            (thread.start)
+        self.thread_pool.join()
         for entry in self.directory_entries:
             # Remove ETRAIN_ accounts, which are not actual people
             if entry.netid and entry.netid.startswith('etrain'):
