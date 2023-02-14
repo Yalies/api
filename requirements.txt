@@ -18,4 +18,3 @@ pyjwt
 yaledirectory>=1.3.1
 Pillow
 cryptography
-multiprocessing
