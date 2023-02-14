@@ -4,18 +4,21 @@ import yaledirectory
 import requests
 import re
 import string
-from threading import Thread
 from celery.utils.log import get_task_logger
 from multiprocessing.pool import ThreadPool
+from queue import LifoQueue
 
 logger = get_task_logger(__name__)
 
 
 class Directory(Source):
+    THREAD_COUNT = 8
+
     def __init__(self, cache, people_search_session_cookie, csrf_token):
         super().__init__(cache)
         self.directory = yaledirectory.API(people_search_session_cookie, csrf_token)
-        self.thread_pool = ThreadPool(processes=8)
+        self.prefix_queue = LifoQueue()
+        self.thread_pool = ThreadPool(processes=self.THREAD_COUNT)
 
     ##########
     # Scraping
@@ -121,12 +124,19 @@ class Directory(Source):
 
         res = []
         for choice in choices:
-            res += self.read_directory(prefix + choice)
+            print('Adding new prefix to queue: ' + (prefix + choice))
+            self.prefix_queue.put(prefix + choice)
         return res
 
-    def read_directory_async(self, prefix):
-        directory_entries = self.read_directory(prefix=prefix)
-        self.directory_entries += directory_entries
+    def read_directory_async(self):
+        while True:
+            if self.prefix_queue.empty():
+                print('Prefix queue is empty from this thread.')
+                return
+            prefix = self.prefix_queue.get()
+            print('Scraping prefix ' + prefix)
+            self.directory_entries += self.read_directory(prefix=prefix)
+            print('We now have a total of {len(self.directory_entries)} directory entries.')
 
     def scrape(self, current_people):
         """
@@ -137,8 +147,10 @@ class Directory(Source):
         # Fetch non-undergrad users by iterating netids
         # Get set of netids for students we've already processed
         for prefix in self.letters:
-            self.thread_pool.apply_async(target=self.read_directory_async, args=(prefix,))
-            (thread.start)
+            self.prefix_queue.put(prefix)
+        for thread in range(self.THREAD_COUNT):
+            self.thread_pool.apply_async(self.read_directory_async, args=())
+        self.thread_pool.close()
         self.thread_pool.join()
         for entry in self.directory_entries:
             # Remove ETRAIN_ accounts, which are not actual people
