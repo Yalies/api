@@ -20,7 +20,7 @@
     {% else %}
         {% for item in items %}
         <label>
-            <input type="checkbox" name="{{ item if item is not None else '' }}">
+            <input type="checkbox" name="{{ item if item is not none else '' }}">
             {% if item == "" %}
                 {{ default or "None" }}
             {% elif item == True %}
