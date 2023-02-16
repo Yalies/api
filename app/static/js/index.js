@@ -166,7 +166,13 @@ function runSearch() {
             for (let checkbox of otherCheckboxes) {
                 if (checkbox.checked) {
                     if (category === 'leave') {
-                        filters[category].push(checkbox.name === 'Yes');
+                        if (checkbox.name === 'True') {
+                            filters[category].push(true);
+                        } else if (checkbox.name === 'False') {
+                            filters[category].push(false);
+                        } else {
+                            filters[category].push(checkbox.name || null);
+                        }
                     } else if (['year', 'birth_month', 'birth_day', 'floor', 'room'].includes(category)) {
                         filters[category].push(checkbox.name ? parseInt(checkbox.name) : null);
                     } else {
