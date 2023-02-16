@@ -23,6 +23,10 @@
             <input type="checkbox" name="{{ item or '' }}">
             {% if item == "" %}
                 {{ default or "None" }}
+            {% elif item == True %}
+                Yes
+            {% elif item == False %}
+                No
             {% else %}
                 {{ item }}
             {% endif %}
