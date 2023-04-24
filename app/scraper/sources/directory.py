@@ -124,7 +124,7 @@ class Directory(Source):
 
         res = []
         for choice in choices:
-            print('Adding new prefix to queue: ' + (prefix + choice))
+            logger.info('Adding new prefix to queue: ' + (prefix + choice))
             self.prefix_queue.put(prefix + choice)
         return res
 
