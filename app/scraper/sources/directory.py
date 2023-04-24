@@ -150,7 +150,6 @@ class Directory(Source):
             self.prefix_queue.put(prefix)
         for thread in range(self.THREAD_COUNT):
             self.thread_pool.apply_async(self.read_directory_async, args=())
-        self.thread_pool.close()
         self.thread_pool.join()
         for entry in self.directory_entries:
             # Remove ETRAIN_ accounts, which are not actual people
