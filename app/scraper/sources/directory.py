@@ -131,12 +131,12 @@ class Directory(Source):
     def read_directory_async(self):
         while True:
             if self.prefix_queue.empty():
-                print('Prefix queue is empty from this thread.')
+                logger.info('Prefix queue is empty from this thread.')
                 return
             prefix = self.prefix_queue.get()
-            print('Scraping prefix ' + prefix)
+            logger.info('Scraping prefix ' + prefix)
             self.directory_entries += self.read_directory(prefix=prefix)
-            print('We now have a total of {len(self.directory_entries)} directory entries.')
+            logger.info(f'We now have a total of {len(self.directory_entries)} directory entries.')
 
     def scrape(self, current_people):
         """
