@@ -19,7 +19,7 @@ logger = get_task_logger(__name__)
 @after_setup_task_logger.connect
 def setup_task_logger(logger, *args, **kwargs):
     for handler in logger.handlers:
-        handler.setFormatter(TaskFormatter('%(message)s'))
+        handler.setFormatter(TaskFormatter('%(name)s | %(message)s'))
 
 
 def scrape_face_book_directory_name_coach(face_book, directory, name_coach):

@@ -12,7 +12,7 @@ logger = get_task_logger(__name__)
 
 
 class Directory(Source):
-    THREAD_COUNT = 4
+    THREAD_COUNT = 2
 
     def __init__(self, cache, people_search_session_cookie, csrf_token):
         super().__init__(cache)
