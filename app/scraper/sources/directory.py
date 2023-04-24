@@ -123,7 +123,7 @@ class Directory(Source):
             choices = self.characters
 
         res = []
-        logger.info('Adding new prefixes to queue: ' + (prefix + choices[0]) + '->' + (prefix + choices[-1])
+        logger.info('Adding new prefixes to queue: ' + (prefix + choices[0]) + '->' + (prefix + choices[-1]))
         for choice in choices:
             self.prefix_queue.put(prefix + choice)
         return res
