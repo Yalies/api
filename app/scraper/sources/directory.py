@@ -12,7 +12,7 @@ logger = get_task_logger(__name__)
 
 
 class Directory(Source):
-    THREAD_COUNT = 8
+    THREAD_COUNT = 4
 
     def __init__(self, cache, people_search_session_cookie, csrf_token):
         super().__init__(cache)
@@ -123,8 +123,8 @@ class Directory(Source):
             choices = self.characters
 
         res = []
+        logger.info('Adding new prefixes to queue: ' + (prefix + choices[0]) + '->' + (prefix + choices[-1])
         for choice in choices:
-            logger.info('Adding new prefix to queue: ' + (prefix + choice))
             self.prefix_queue.put(prefix + choice)
         return res
 
@@ -134,7 +134,6 @@ class Directory(Source):
                 logger.info('Prefix queue is empty from this thread.')
                 return
             prefix = self.prefix_queue.get()
-            logger.info('Scraping prefix ' + prefix)
             self.directory_entries += self.read_directory(prefix=prefix)
             logger.info(f'We now have a total of {len(self.directory_entries)} directory entries.')
 

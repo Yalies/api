@@ -32,7 +32,7 @@ class Departmental(Source):
     }
     new_records = None
 
-    NUM_THREADS = 8
+    NUM_THREADS = 4
 
     def scrape_department(self, department):
         logger.info('Scraping department: ' + department['name'])
