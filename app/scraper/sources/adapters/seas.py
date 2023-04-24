@@ -44,6 +44,8 @@ class Seas(Adapter):
             }
             person_soup = self.get_soup(profile_url)
             body = person_soup.find('article')
+            if body is None:
+                raise Exception('No body found on this page: ' + profile_url)
             person['name'] = body.find('h1', {'class': 'title'}).text
             # RIP Stan
             if 'In Memoriam' in person['name']:
