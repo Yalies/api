@@ -11,6 +11,7 @@ logger = get_task_logger(__name__)
 
 class Default(Adapter):
     FUSED_ADDRESS_ROOM_NUMBER_RE = re.compile(r' +Rooms? ([a-zA-Z0-9]{2,}( & )?)+$')
+    MAX_PAGE_COUNT = 50
 
     def get_url(self, path, department_url):
         if path.startswith('/'):
@@ -91,6 +92,11 @@ class Default(Adapter):
             cards = []
             page = 0
             while True:
+                # Failsafe in case the last page has the exact page length # of people
+                # So that it doesn't loop forever
+                # TODO: would be better to just detect duplicate people but this is simpler for now
+                if page > MAX_PAGE_COUNT:
+                    break
                 people_page_soup = self.get_soup(department['url'] + path, params={'page': page})
 
                 cards_page = self.get_cards(people_page_soup, department)
