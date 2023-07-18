@@ -95,7 +95,7 @@ class Default(Adapter):
                 # Failsafe in case the last page has the exact page length # of people
                 # So that it doesn't loop forever
                 # TODO: would be better to just detect duplicate people but this is simpler for now
-                if page > MAX_PAGE_COUNT:
+                if page > self.MAX_PAGE_COUNT:
                     break
                 people_page_soup = self.get_soup(department['url'] + path, params={'page': page})
 
