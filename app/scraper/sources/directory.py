@@ -147,9 +147,9 @@ class Directory(Source):
         # Get set of netids for students we've already processed
         for prefix in self.letters:
             self.prefix_queue.put(prefix)
-        for thread in range(self.THREAD_COUNT):
-            self.thread_pool.apply_async(self.read_directory_async, args=())
-        self.thread_pool.join()
+        #self.thread_pool.map(self.read_directory_async, [self] * self.THREAD_COUNT)
+        self.read_directory_async()
+        # TODO: this isn't terminating...
         for entry in self.directory_entries:
             # Remove ETRAIN_ accounts, which are not actual people
             if entry.netid and entry.netid.startswith('etrain'):
