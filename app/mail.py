@@ -1,7 +1,7 @@
 from flask import render_template
 from flask_mail import Message
 from app import app, mail
-from app.models import User
+from app.models import User, Person
 
 DATE_FMT = '%Y-%m-%d'
 TIME_FMT = '%H:%M'
@@ -9,7 +9,9 @@ DATETIME_FMT = DATE_FMT + ' ' + TIME_FMT
 
 def get_admin_emails():
     admins = User.query.filter_by(admin=True).all()
-    return [admin.email for admin in admins]
+    admin_ids = [admin.id for admin in admins]
+    admin_people = Person.query.filter(Person.netid.in_(admin_ids)).all()
+    return [person.email for person in admin_people]
 
 
 def send_mail(subject, html, recipients):
