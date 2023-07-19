@@ -5,20 +5,19 @@ import requests
 import re
 import string
 from celery.utils.log import get_task_logger
-from multiprocessing.pool import ThreadPool
+from threading import Thread
 from queue import LifoQueue
 
 logger = get_task_logger(__name__)
 
 
 class Directory(Source):
-    THREAD_COUNT = 2
+    THREAD_COUNT = 3
 
     def __init__(self, cache, people_search_session_cookie, csrf_token):
         super().__init__(cache)
         self.directory = yaledirectory.API(people_search_session_cookie, csrf_token)
         self.prefix_queue = LifoQueue()
-        self.thread_pool = ThreadPool(processes=self.THREAD_COUNT)
 
     ##########
     # Scraping
@@ -147,8 +146,15 @@ class Directory(Source):
         # Get set of netids for students we've already processed
         for prefix in self.letters:
             self.prefix_queue.put(prefix)
-        #self.thread_pool.map(self.read_directory_async, [self] * self.THREAD_COUNT)
-        self.read_directory_async()
+
+        threads = []
+        for thread_index in range(self.THREAD_COUNT):
+            thread = Thread(target=self.read_directory_async, args=())
+            thread.start()
+            threads.append(thread)
+        for thread in threads:
+            thread.join()
+
         # TODO: this isn't terminating...
         for entry in self.directory_entries:
             # Remove ETRAIN_ accounts, which are not actual people
