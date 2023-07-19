@@ -31,8 +31,9 @@ class Departmental(Source):
         'seas': adapters.Seas(),
     }
     new_records = None
+    department_queue = None
 
-    NUM_THREADS = 2
+    NUM_THREADS = 3
 
     def scrape_department(self, department):
         logger.info('Scraping department: ' + department['name'])
@@ -43,6 +44,11 @@ class Departmental(Source):
 
     def scrape_departments(self, departments):
         for department in departments:
+            self.scrape_department(department)
+
+    def scrape_department_queue(self):
+        while len(self.department_queue) > 0:
+            department = self.department_queue.pop()
             self.scrape_department(department)
 
     def scrape(self, current_people):
@@ -58,13 +64,12 @@ class Departmental(Source):
         enabled_departments = [department for department in departments if department.get('enabled')]
         if enabled_departments:
             departments = enabled_departments
+        self.department_queue = departments
 
-        chunk_size = ceil(len(departments) / self.NUM_THREADS)
-        department_chunks = [departments[n:n + chunk_size] for n in range(0, len(departments), chunk_size)]
         self.new_records = []
         threads = []
-        for department_chunk in department_chunks:
-            thread = Thread(target=self.scrape_departments, args=(department_chunk,))
+        for thread_index in range(self.NUM_THREADS):
+            thread = Thread(target=self.scrape_department_queue, args=())
             thread.start()
             threads.append(thread)
         for thread in threads:
