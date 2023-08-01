@@ -122,8 +122,5 @@ git pull upstream master
 ```
 Repeat until all features are implemented and all bugs fixed! :slightly_smiling_face:
 
-## License
-[MIT](LICENSE)
-
 ## Author
 Built by [Erik Boesen](https://github.com/ErikBoesen). Maintained by the <a href="https://yalecompsociety.com">Yale Computer Society</a>.
