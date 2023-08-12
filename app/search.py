@@ -16,7 +16,31 @@ def remove_from_index(index, model):
     elasticsearch.delete(index=index, id=model.id)
 
 
-def query_index(index, query):
+def query_index_fuzzy(index, query):
+    if not elasticsearch:
+        return [], 0
+    search = elasticsearch.search(
+        index=index,
+        body={
+            'from': 0,
+            'size': 10_000,
+            'query': {
+                'multi_match': {
+                    'query': query,
+                    # 'type': 'cross_fields',
+                    # "type": "bool_prefix",
+                    'operator': 'and',
+                    # 'fields': ['*'],
+                    'fields': ['name', 'email', 'netid', 'first_name', 'middle_name', 'last_name'],
+                    "fuzziness": "AUTO"
+                },
+            },
+        })
+    ids = [int(hit['_id']) for hit in search['hits']['hits']]
+    return ids
+
+
+def query_index_exact(index, query):
     if not elasticsearch:
         return [], 0
     search = elasticsearch.search(
@@ -29,7 +53,7 @@ def query_index(index, query):
                     'query': query,
                     'type': 'cross_fields',
                     'operator': 'and',
-                    'fields': ['*']
+                    'fields': ['*'],
                 },
             },
         })
@@ -40,14 +64,16 @@ def query_index(index, query):
 class SearchableMixin:
     @classmethod
     def query_search(cls, expression):
-        ids = query_index(cls.__tablename__, expression)
+        # ids = query_index_exact(cls.__tablename__, expression)
+        ids = query_index_fuzzy(cls.__tablename__, expression)
         if len(ids) == 0:
             return cls.query.filter_by(id=0)
         when = []
         for i in range(len(ids)):
             when.append((ids[i], i))
         return cls.query.filter(cls.id.in_(ids)).order_by(
-            db.case(when, value=cls.id))
+            # DEPENDS ON VERSION OF SQLAlchemy: db.case(when, value=cls.id))
+            db.case(*when, value=cls.id))
 
     @classmethod
     def before_commit(cls, session):

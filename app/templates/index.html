@@ -1,36 +1,39 @@
-{% extends "base.html" %}
-
-{% block head %}
-<link rel="stylesheet" href="/static/css/popup.css">
-{% endblock %}
-
-{% block content %}
-{# Hack to fix strange onclick bubbling behavior on mobile Safari #}
+{% extends "base.html" %} {% block head %}
+<link rel="stylesheet" href="/static/css/popup.css" />
+{% endblock %} {% block content %} {# Hack to fix strange onclick bubbling
+behavior on mobile Safari #}
 <div id="controls" onclick="void(0);">
-    <input type="text" id="query" placeholder="Search">
-    <button id="submit"><i class="fa fa-search"></i></button>
-    <div class="filters">
-        <button id="clear_filters">
-            <i class="fa fa-filter"></i>
-            Clear Filters
-        </button>
-        {% for category in filters %}
-            {% for filter in filters[category] %}
-                {% with name = filter, items = options[filter], header=filters[category][filter]['header'], default = filters[category][filter]['default'] %}
-                    {% include "_filter.html" %}
-                {% endwith %}
-            {% endfor %}
-        {% endfor %}
-    </div>
+	<div id="control_bar">
+		<div class="search_wrapper">
+			<input type="text" id="query" placeholder="Search" />
+			<button id="submit"><i class="fa fa-search"></i></button>
+		</div>
+
+		<div class="filters" id="filters">
+			<button id="clear_filters">
+				<i class="fa fa-filter"></i>
+				Clear Filters
+			</button>
+			{% for category in filters %} {% for filter in filters[category] %} {%
+			with name = filter, items = options[filter],
+			header=filters[category][filter]['header'], default =
+			filters[category][filter]['default'] %} {% include "_filter.html" %} {%
+			endwith %} {% endfor %} {% endfor %}
+			<button id="expand_filters">
+				<i class="fa fa-filter"></i>
+				Advanced
+			</button>
+		</div>
+	</div>
 </div>
 <div id="empty">
-    <i class="fa fa-exclamation-circle"></i>
-    No matching students found.
+	<i class="fa fa-exclamation-circle"></i>
+	No matching students found.
 </div>
 <div id="list"></div>
 <div id="loading">
-    <i class="fa fa-hourglass"></i>
-    Loading...
+	<i class="fa fa-hourglass"></i>
+	Loading...
 </div>
 <button id="scroll_top"><i class="fa fa-arrow-up"></i></button>
 <script src="/static/js/index.js"></script>
