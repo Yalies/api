@@ -3,9 +3,7 @@
 ///////////////////
 let p = {
 	checkboxes: document.querySelectorAll('input[type="checkbox"]'),
-	allCheckboxes: document.querySelectorAll(
-		'input[type="checkbox"][name$="-all"]'
-	),
+	allCheckboxes: document.querySelectorAll('input[type="checkbox"][name$="-all"]'),
 	query: document.getElementById("query"),
 	submit: document.getElementById("submit"),
 	filters: document.getElementsByClassName("filter"),
@@ -47,9 +45,7 @@ function resetFilters() {
 resetFilters();
 
 // ... (other controls)
-const schoolFilter = document.getElementById("school"),
-	schoolAllCheckbox = document.querySelector('input[name="school-all"]'),
-	schoolYCCheckbox = document.querySelector('input[name="Yale College"]');
+const schoolFilter = document.getElementById("school"), schoolAllCheckbox = document.querySelector('input[name="school-all"]'), schoolYCCheckbox = document.querySelector('input[name="Yale College"]');
 schoolFilter.classList.add("active");
 schoolAllCheckbox.checked = false;
 schoolYCCheckbox.checked = true;
@@ -121,9 +117,7 @@ onchange = function (e) {
 	let input = e.target;
 	if (input.type === "checkbox") {
 		let checked = input.checked;
-		let otherCheckboxes = Array.from(
-			input.parentElement.parentElement.getElementsByTagName("input")
-		);
+		let otherCheckboxes = Array.from(input.parentElement.parentElement.getElementsByTagName("input"));
 		let allCheckbox = otherCheckboxes.shift();
 		let filter = input.parentElement.parentElement;
 		if (input == allCheckbox) {
@@ -185,14 +179,8 @@ function runSearch() {
 						} else {
 							filters[category].push(checkbox.name || null);
 						}
-					} else if (
-						["year", "birth_month", "birth_day", "floor", "room"].includes(
-							category
-						)
-					) {
-						filters[category].push(
-							checkbox.name ? parseInt(checkbox.name) : null
-						);
+					} else if (["year", "birth_month", "birth_day", "floor", "room"].includes(category)) {
+						filters[category].push(checkbox.name ? parseInt(checkbox.name) : null);
 					} else {
 						filters[category].push(checkbox.name);
 					}
@@ -269,16 +257,7 @@ function addPill(pillContainer, property, title, icon, person) {
  * @param {boolean} showTitle - Indicates whether to display the title in the link (if 'url' is provided).
  * @param {boolean} checkLeave - Indicates whether to check 'leave' and 'visitor' properties.
  */
-function addRow(
-	container,
-	property,
-	title,
-	icon,
-	person,
-	url,
-	showTitle,
-	checkLeave
-) {
+function addRow(container, property, title, icon, person, url, showTitle, checkLeave) {
 	let value = person[property];
 
 	// Check if the value exists
@@ -467,15 +446,7 @@ function loadNextPage() {
 					nameWrapper.appendChild(name);
 
 					// Add rows for different information categories
-					addRow(
-						nameWrapper,
-						"email",
-						"Email",
-						"envelope",
-						person,
-						person.email ? "mailto:" + person.email : null,
-						false
-					);
+					addRow(nameWrapper,	"email", "Email", "envelope", person, person.email ? "mailto:" + person.email : null, false);
 					if (person.college_code) {
 						let row = document.createElement("div");
 						row.title = "Residential College";
@@ -494,38 +465,12 @@ function loadNextPage() {
 					if (person.school && !person.college_code) {
 						addRow(nameWrapper, "school", "School", "university", person);
 					}
-					addRow(
-						nameWrapper,
-						"year",
-						"Graduation Year",
-						"graduation-cap",
-						person,
-						null,
-						true,
-						true
-					);
+					addRow(nameWrapper, "year", "Graduation Year", "graduation-cap", person, null, true, true);
 					// Don't show student Phone#
 					if (person.school_code !== "YC") {
-						addRow(
-							nameWrapper,
-							"phone",
-							"Phone Number",
-							"phone",
-							person,
-							person.phone ? "tel:" + person.phone : null,
-							false
-						);
+						addRow(nameWrapper, "phone", "Phone Number", "phone", person, person.phone ? "tel:" + person.phone : null, false);
 					}
-					addRow(
-						nameWrapper,
-						"website",
-						"Website",
-						"globe",
-						person,
-						person.website,
-						false,
-						true
-					);
+					addRow(nameWrapper, "website", "Website", "globe", person, person.website, false, true);
 
 					// Append the name wrapper to the header wrapper
 					headerWrapper.appendChild(nameWrapper);
