@@ -1,6 +1,6 @@
 from .source import Source
 from .directory import Directory
-from .s3 import ImageUploader
+from .s3 import ImageUploader, DummyImageUploader
 
 from bs4 import BeautifulSoup
 import json
@@ -23,30 +23,6 @@ with open('app/scraper/res/major_full_names.json') as f:
     MAJOR_FULL_NAMES = json.load(f)
 
 
-# Define a function to check if S3 credentials are set
-def has_s3_credentials():
-    return os.environ.get("S3_ACCESS_KEY") and os.environ.get("S3_SECRET_ACCESS_KEY")
-
-
-# Define a dummy ImageUploader that doesn't perform any actions related to S3
-
-
-class DummyImageUploader:
-    def delete_unused_images(self, people):
-        pass
-
-    def get_image_filename(self, image_id, person):
-        return ""
-
-    def get_file_url(self, filename):
-        return ""
-
-    def upload_image(self, image, filename):
-        # Return a placeholder image data (1x1 transparent PNG)
-        placeholder_image_data = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x01\x00\x00\x00\x00\x90\x77\x53\xde\x00\x00\x00\x0cIDAT\x08\xd7c`\x00\x00\x00\x02\x00\x01\x8d\x8f\x0f\x00\x00\x00\x00IEND\xaeB`\x82'
-        return placeholder_image_data
-
-
 class FaceBook(Source):
 
     def __init__(self, cache, cookie, directory):
@@ -54,7 +30,7 @@ class FaceBook(Source):
         self.cookie = cookie
         self.directory = directory
         # Check if S3 credentials are set and use the appropriate ImageUploader
-        if has_s3_credentials():
+        if self.has_s3_credentials():
             self.image_uploader = ImageUploader()
             FERNET_KEY = os.environ.get('FERNET_KEY')
             self.fernet = Fernet(self.FERNET_KEY)
@@ -70,30 +46,14 @@ class FaceBook(Source):
     RE_ACCESS_CODE = re.compile(r'[0-9]-[0-9]+')
     RE_PHONE = re.compile(r'[0-9]{3}-[0-9]{3}-[0-9]{4}')
 
-    MONTH_ABBREVIATIONS = (
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-    )
+    MONTH_ABBREVIATIONS = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
 
     def get_html(self, cookie):
         filename = 'page.html'
         if not os.path.exists(filename):
             logger.info('Page not cached, fetching.')
-            requests.get('https://students.yale.edu/facebook/ChangeCollege',
-                         params={
-                             'newOrg': 'Yale College'
-                         },
-                         headers={
-                             'Cookie': cookie,
-                         })
-            r = requests.get('https://students.yale.edu/facebook/PhotoPageNew',
-                             params={
-                                 'currentIndex': -1,
-                                 'numberToGet': -1,
-                             },
-                             headers={
-                                 'Cookie': cookie,
-                             })
+            requests.get('https://students.yale.edu/facebook/ChangeCollege', params={'newOrg': 'Yale College'}, headers={'Cookie': cookie, })
+            r = requests.get('https://students.yale.edu/facebook/PhotoPageNew', params={  'currentIndex': -1, 'numberToGet': -1, }, headers={ 'Cookie': cookie, })
             html = r.text
             with open(filename, 'w') as f:
                 f.write(html)
@@ -138,10 +98,8 @@ class FaceBook(Source):
 
         for email, year in years.items():
             if email in emails and not people[emails[email]].get('leave') and email in emails and year is not None and people[emails[email]]['year'] is not None:
-                people[emails[email]]['leave'] = (
-                    year < people[emails[email]]['year'])
-                logger.info(
-                    email + ' is' + (' not' if not people[emails[email]]['leave'] else '') + ' taking a leave.')
+                people[emails[email]]['leave'] = (year < people[emails[email]]['year'])
+                logger.info(email + ' is' + (' not' if not people[emails[email]]['leave'] else '') + ' taking a leave.')
         return people
 
     def delete_unused_images(self, people):
@@ -153,13 +111,11 @@ class FaceBook(Source):
         containers = self.get_containers(tree)
 
         if len(containers) == 0:
-            logger.info(
-                'No people were found on this page. There may be something wrong with authentication, aborting.')
+            logger.info('No people were found on this page. There may be something wrong with authentication, aborting.')
             return []
 
         watermark_mask = Image.open('app/scraper/res/watermark_mask.png')
-        logger.info('Already hosting {} images.'.format(
-            len(self.image_uploader.files)))
+        logger.info('Already hosting {} images.'.format(len(self.image_uploader.files)))
 
         people = []
         emails = {}
@@ -169,12 +125,9 @@ class FaceBook(Source):
                 'school_code': 'YC',
             }
 
-            person['last_name'], person['first_name'] = self.clean_name(
-                container.find('h5', {'class': 'yalehead'}).text)
-            person['year'] = self.clean_year(
-                container.find('div', {'class': 'student_year'}).text)
-            pronouns = container.find(
-                'div', {'class': 'student_info_pronoun'}).text
+            person['last_name'], person['first_name'] = self.clean_name(container.find('h5', {'class': 'yalehead'}).text)
+            person['year'] = self.clean_year(container.find('div', {'class': 'student_year'}).text)
+            pronouns = container.find('div', {'class': 'student_info_pronoun'}).text
 
             pronouns = pronouns.replace(')', '')
             pronouns = pronouns.replace('(', '')
@@ -199,11 +152,9 @@ class FaceBook(Source):
                     birthday = trivia.pop()
                     person['birthday'] = birthday
                     birth_month, birth_day = birthday.split()
-                    person['birth_month'] = self.MONTH_ABBREVIATIONS.index(
-                        birth_month) + 1
+                    person['birth_month'] = self.MONTH_ABBREVIATIONS.index(birth_month) + 1
                     person['birth_day'] = int(birth_day)
-                person['major'] = trivia.pop(
-                ) if trivia[-1] in MAJORS else None
+                person['major'] = trivia.pop() if trivia[-1] in MAJORS else None
                 if person['major'] and person['major'] in MAJOR_FULL_NAMES:
                     person['major'] = MAJOR_FULL_NAMES[person['major']]
                 if person['major'] == 'Visiting International Program':
@@ -245,16 +196,12 @@ class FaceBook(Source):
 
             image_id = self.clean_image_id(container.find('img')['src'])
             if image_id:
-                image_filename = self.image_uploader.get_image_filename(
-                    image_id, person)
+                image_filename = self.image_uploader.get_image_filename(image_id, person)
                 if image_filename in self.image_uploader.files:
-                    person['image'] = self.image_uploader.get_file_url(
-                        image_filename)
+                    person['image'] = self.image_uploader.get_file_url(image_filename)
                 else:
                     logger.info('Image has not been processed yet.')
-                    image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id),
-                                           headers={'Cookie': self.cookie},
-                                           stream=True)
+                    image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id), headers={'Cookie': self.cookie}, stream=True)
                     image_r.raw.decode_content = True
                     try:
                         im = Image.open(image_r.raw)

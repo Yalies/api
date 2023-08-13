@@ -27,10 +27,7 @@ def query_index_fuzzy(index, query):
             'query': {
                 'multi_match': {
                     'query': query,
-                    # 'type': 'cross_fields',
-                    # "type": "bool_prefix",
                     'operator': 'and',
-                    # 'fields': ['*'],
                     'fields': ['name', 'email', 'netid', 'first_name', 'middle_name', 'last_name'],
                     "fuzziness": "AUTO"
                 },

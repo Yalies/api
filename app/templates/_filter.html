@@ -1,21 +1,35 @@
 <div class="filter collapsed" id="{{ name }}">
 	<h4>
 		<i class="fa fa-chevron-down"></i>
-		{% if header %} {{ header }} {% else %} {{ name[0] | upper }}{{ name[1:] }}
+		{% if header %} 
+			{{ header }} 
+		{% else %} 
+			{{ name[0] | upper }}{{ name[1:] }}
 		{% endif %}
 	</h4>
 
-	<label> <input type="checkbox" name="{{ name }}-all" /> All </label>
-	{% if name == 'birth_month' %} {% for birth_month, birth_month_name in
-	birth_months.items() %}
-	<label>
-		<input type="checkbox" name="{{ birth_month }}" /> {{ birth_month_name }}
-	</label>
-	{% endfor %} {% else %} {% for item in items %}
-	<label>
-		<input type="checkbox" name="{{ item if item is not none else '' }}" />
-		{% if item == "" %} {{ default or "None" }} {% elif item == True %} Yes {%
-		elif item == False %} No {% else %} {{ item }} {% endif %}
-	</label>
-	{% endfor %} {% endif %}
+	<label> 
+		<input type="checkbox" name="{{ name }}-all" /> All </label>
+	{% if name == 'birth_month' %} 
+		{% for birth_month, birth_month_name in birth_months.items() %}
+			<label>
+				<input type="checkbox" name="{{ birth_month }}" /> {{ birth_month_name }}
+			</label>
+		{% endfor %} 
+	{% else %} 
+		{% for item in items %}
+			<label>
+				<input type="checkbox" name="{{ item if item is not none else '' }}" />
+				{% if item == "" %} 
+					{{ default or "None" }} 
+				{% elif item == True %} 
+					Yes 
+				{% elif item == False %} 
+					No 
+				{% else %} 
+					{{ item }} 
+				{% endif %}
+			</label>
+		{% endfor %} 
+	{% endif %}
 </div>

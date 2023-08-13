@@ -13,6 +13,25 @@ S3_SECRET_ACCESS_KEY = os.environ.get('S3_SECRET_ACCESS_KEY')
 S3_LOCATION = 'https://' + S3_BUCKET_NAME + '.s3.amazonaws.com/'
 
 
+# Define a dummy ImageUploader that doesn't perform any actions related to S3
+
+
+class DummyImageUploader:
+    def delete_unused_images(self, people):
+        pass
+
+    def get_image_filename(self, image_id, person):
+        return ""
+
+    def get_file_url(self, filename):
+        return ""
+
+    def upload_image(self, image, filename):
+        # Return a placeholder image data (1x1 transparent PNG)
+        placeholder_image_data = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x01\x00\x00\x00\x00\x90\x77\x53\xde\x00\x00\x00\x0cIDAT\x08\xd7c`\x00\x00\x00\x02\x00\x01\x8d\x8f\x0f\x00\x00\x00\x00IEND\xaeB`\x82'
+        return placeholder_image_data
+
+
 class ImageUploader:
 
     CHUNK_SIZE = 1000
@@ -47,7 +66,8 @@ class ImageUploader:
         return S3_LOCATION + filename
 
     def upload_image(self, f, filename):
-        logger.info('Uploading image %s with size %d bytes.' % (filename, f.getbuffer().nbytes))
+        logger.info('Uploading image %s with size %d bytes.' %
+                    (filename, f.getbuffer().nbytes))
         f.seek(0)
         self.s3.upload_fileobj(
             f,
@@ -65,7 +85,8 @@ class ImageUploader:
         :param people: list of people records of everyone scraped from face_book
         """
         filename_offset = len(S3_LOCATION)
-        scraped_image_filenames = { person['img'][filename_offset:] for person in people if 'img' in person }
+        scraped_image_filenames = {
+            person['img'][filename_offset:] for person in people if 'img' in person}
         to_delete = set(self.files) - scraped_image_filenames
         to_delete_objects = [{'Key': key} for key in to_delete]
 
