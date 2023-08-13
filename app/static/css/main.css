@@ -32,6 +32,7 @@ body {
 	color: white;
 	padding: 10px 15px;
 	text-align: center;
+	font-size: 13px;
 }
 
 @media (max-width: 700px) {
