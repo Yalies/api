@@ -29,7 +29,7 @@ def query_index_fuzzy(index, query):
                     'query': query,
                     'operator': 'and',
                     'fields': ['name', 'email', 'netid', 'first_name', 'middle_name', 'last_name'],
-                    "fuzziness": "AUTO"
+                    'fuzziness': 'AUTO'
                 },
             },
         })

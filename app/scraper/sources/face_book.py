@@ -32,10 +32,11 @@ class FaceBook(Source):
         # Check if S3 credentials are set and use the appropriate ImageUploader
         if self.has_s3_credentials():
             self.image_uploader = ImageUploader()
-            FERNET_KEY = os.environ.get('FERNET_KEY')
-            self.fernet = Fernet(self.FERNET_KEY)
         else:
             self.image_uploader = DummyImageUploader()
+
+        FERNET_KEY = os.environ.get('FERNET_KEY')
+        self.fernet = Fernet(self.FERNET_KEY)
 
     ##########
     # Scraping
@@ -52,8 +53,21 @@ class FaceBook(Source):
         filename = 'page.html'
         if not os.path.exists(filename):
             logger.info('Page not cached, fetching.')
-            requests.get('https://students.yale.edu/facebook/ChangeCollege', params={'newOrg': 'Yale College'}, headers={'Cookie': cookie, })
-            r = requests.get('https://students.yale.edu/facebook/PhotoPageNew', params={  'currentIndex': -1, 'numberToGet': -1, }, headers={ 'Cookie': cookie, })
+            requests.get('https://students.yale.edu/facebook/ChangeCollege',
+                         params={
+                             'newOrg': 'Yale College'
+                         },
+                         headers={
+                             'Cookie': cookie,
+                         })
+            r = requests.get('https://students.yale.edu/facebook/PhotoPageNew',
+                             params={
+                                 'currentIndex': -1,
+                                 'numberToGet': -1,
+                             },
+                             headers={
+                                 'Cookie': cookie,
+                             })
             html = r.text
             with open(filename, 'w') as f:
                 f.write(html)
@@ -201,7 +215,9 @@ class FaceBook(Source):
                     person['image'] = self.image_uploader.get_file_url(image_filename)
                 else:
                     logger.info('Image has not been processed yet.')
-                    image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id), headers={'Cookie': self.cookie}, stream=True)
+                    image_r = requests.get('https://students.yale.edu/facebook/Photo?id=' + str(image_id),
+                                           headers={'Cookie': self.cookie},
+                                           stream=True)
                     image_r.raw.decode_content = True
                     try:
                         im = Image.open(image_r.raw)
@@ -212,8 +228,7 @@ class FaceBook(Source):
                         output = BytesIO()
                         im.save(output, format='JPEG', mode='RGB')
 
-                        person['image'] = self.image_uploader.upload_image(
-                            output, image_filename)
+                        person['image'] = self.image_uploader.upload_image(output, image_filename)
                     except OSError:
                         # "Cannot identify image" error
                         logger.info('PIL could not identify image.')
