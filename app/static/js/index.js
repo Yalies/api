@@ -533,21 +533,19 @@ window.onscroll = function (e) {
 	);
 };
 
-document.addEventListener("DOMContentLoaded", (event) => {
-	let filters = document.querySelectorAll("#filters > div");
-	filters.forEach((filter, index) => {
-		const IMPORTANT_FILTERS = 4; // NUMBER OF DEFAULT FILTERS
-		if (index >= IMPORTANT_FILTERS) {
-			filter.style.display = "none";
-		}
-	});
-
-	document
-		.getElementById("expand_filters")
-		.addEventListener("click", function () {
-			filters.forEach((filter) => {
-				filter.style.display = "inline-block";
-			});
-			this.style.display = "none";
-		});
+let filters = document.querySelectorAll("#filters > div");
+filters.forEach((filter, index) => {
+	const IMPORTANT_FILTERS = 4; // NUMBER OF DEFAULT FILTERS
+	if (index >= IMPORTANT_FILTERS) {
+		filter.style.display = "none";
+	}
 });
+
+document
+	.getElementById("expand_filters")
+	.addEventListener("click", function () {
+		filters.forEach((filter) => {
+			filter.style.display = "inline-block";
+		});
+		this.style.display = "none";
+	});
