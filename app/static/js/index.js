@@ -544,7 +544,7 @@ p.allFilters.forEach((filter, index) => {
 
 p.expandFilters
 	.addEventListener("click", function () {
-		filters.forEach((filter) => {
+		p.allFilters.forEach((filter) => {
 			filter.style.display = "inline-block";
 		});
 		this.style.display = "none";
