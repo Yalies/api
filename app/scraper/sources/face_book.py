@@ -1,6 +1,6 @@
 from .source import Source
 from .directory import Directory
-from .s3 import ImageUploader
+from .s3 import ImageUploader, DummyImageUploader
 
 from bs4 import BeautifulSoup
 import json
@@ -24,13 +24,18 @@ with open('app/scraper/res/major_full_names.json') as f:
 
 
 class FaceBook(Source):
-    FERNET_KEY = os.environ.get('FERNET_KEY')
 
     def __init__(self, cache, cookie, directory):
         super().__init__(cache)
         self.cookie = cookie
         self.directory = directory
-        self.image_uploader = ImageUploader()
+        # Check if S3 credentials are set and use the appropriate ImageUploader
+        if self.has_s3_credentials():
+            self.image_uploader = ImageUploader()
+        else:
+            self.image_uploader = DummyImageUploader()
+
+        FERNET_KEY = os.environ.get('FERNET_KEY')
         self.fernet = Fernet(self.FERNET_KEY)
 
     ##########
@@ -42,10 +47,7 @@ class FaceBook(Source):
     RE_ACCESS_CODE = re.compile(r'[0-9]-[0-9]+')
     RE_PHONE = re.compile(r'[0-9]{3}-[0-9]{3}-[0-9]{4}')
 
-    MONTH_ABBREVIATIONS = (
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-    )
+    MONTH_ABBREVIATIONS = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
 
     def get_html(self, cookie):
         filename = 'page.html'
@@ -199,7 +201,6 @@ class FaceBook(Source):
             person['address'] = '\n'.join(trivia)
 
             person['leave'] = False
-
 
             directory_entry = self.directory.get_directory_entry(person)
             if directory_entry is not None:

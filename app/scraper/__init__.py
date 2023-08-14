@@ -22,6 +22,11 @@ def setup_task_logger(logger, *args, **kwargs):
         handler.setFormatter(TaskFormatter('%(name)s | %(message)s'))
 
 
+# Define a function to check if S3 credentials are set
+def has_s3_credentials():
+    return os.environ.get('S3_ACCESS_KEY') and os.environ.get('S3_SECRET_ACCESS_KEY')
+
+
 def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
     with app.app_context():
         people = []
@@ -75,14 +80,14 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             else:
                 logger.info('Initializing sources.')
                 directory = sources.Directory(cache, people_search_session_cookie, csrf_token)
+
                 face_book = sources.FaceBook(cache, face_book_cookie, directory)
                 name_coach = sources.NameCoach(cache, people_search_session_cookie, csrf_token)
                 departmental = sources.Departmental(cache)
 
                 logger.info('Beginning scrape.')
                 people = []
-                thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach,
-                                          args=(face_book, directory, name_coach))
+                thread_fb_dir_nc = Thread(target=scrape_face_book_directory_name_coach, args=(face_book, directory, name_coach))
                 thread_departmental = Thread(target=departmental.pull, args=(people,))
                 thread_fb_dir_nc.start()
                 thread_departmental.start()
@@ -92,7 +97,6 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
                 people = name_coach.people
                 people = departmental.integrate(people)
                 cache.set(cache_key, people)
-
 
             # Store people into database
             logger.info('Inserting new data.')
@@ -121,7 +125,7 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
             yaleconnect.pull(people)
             yaleconnect.merge(people)
 
-            if face_book is not None:
+            if face_book is not None and has_s3_credentials():
                 logger.info('Deleting unused images from S3.')
                 face_book.delete_unused_imgs(people)
             logger.info('Done.')

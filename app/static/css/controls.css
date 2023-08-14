@@ -1,78 +1,87 @@
 #controls {
-    margin-bottom: 15px;
+	margin-bottom: 15px;
 }
 
 #submit {
-    padding: 10px 12px;
+	padding: 10px 12px;
 }
 
 .filters {
-    display: inline;
+	display: inline;
 }
+
+.filter_container {
+	display: inline;
+}
+
 #clear_filters {
-    margin-top: 8px;
+	margin-top: 8px;
+}
+
+#expand_filters {
+	margin-top: 8px;
 }
 .filter {
-    margin-top: 8px;
-    display: inline-block;
-    vertical-align: top;
-    padding: 8px 11px 10px;
-    border: solid 2px white;
-    box-shadow: 0 0 4px rgba(0, 21, 42, 0.2);
-    border-radius: 20px;
-    user-select: none;
-    cursor: pointer;
-    margin-right: 2px;
+	margin-top: 8px;
+	display: inline-block;
+	vertical-align: top;
+	padding: 8px 11px 10px;
+	border: solid 2px white;
+	box-shadow: 0 0 4px rgba(0, 21, 42, 0.2);
+	border-radius: 20px;
+	user-select: none;
+	cursor: pointer;
+	margin-right: 2px;
 }
 .filter.active {
-    border-color: #00356b;
-    box-shadow: none;
+	border-color: #00356b;
+	box-shadow: none;
 }
 .filter.collapsed {
-    padding: 8px 11px;
+	padding: 8px 11px;
 }
 .filter h4 {
-    margin-bottom: 5px;
-    cursor: pointer;
+	margin-bottom: 5px;
+	cursor: pointer;
 }
 .filter.collapsed h4 {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 .filter i {
-    transform: rotate(180deg);
-    transition: transform 0.1s;
-    cursor: pointer;
+	transform: rotate(180deg);
+	transition: transform 0.1s;
+	cursor: pointer;
 }
 .filter.collapsed i {
-    transform: rotate(0);
-    transition: transform 0.1s;
+	transform: rotate(0);
+	transition: transform 0.1s;
 }
 .filter input,
 .filter label {
-    cursor: pointer;
+	cursor: pointer;
 }
 .filter.collapsed label {
-    display: none;
+	display: none;
 }
 #scroll_top {
-    border-radius: 50%;
-    color: white;
-    background-color: #00356b;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 100;
-    opacity: 0;
-    transition: opacity 0.3s;
+	border-radius: 50%;
+	color: white;
+	background-color: #00356b;
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	z-index: 100;
+	opacity: 0;
+	transition: opacity 0.3s;
 }
 #scroll_top.shown {
-    opacity: 1;
+	opacity: 1;
 }
 @media (max-width: 700px) {
-    .filter label {
-        margin: 6px 0;
-    }
+	.filter label {
+		margin: 6px 0;
+	}
 }

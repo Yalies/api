@@ -113,3 +113,4 @@ celerybeat.pid
 .DS_Store
 data/
 page.html
+old_index.js
