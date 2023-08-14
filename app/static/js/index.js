@@ -7,13 +7,13 @@ let p = {
 	query: document.getElementById("query"),
 	submit: document.getElementById("submit"),
 	filters: document.getElementsByClassName("filter"),
+	allFilters: document.querySelectorAll("#filters > div"),
 	clearFilters: document.getElementById("clear_filters"),
 	list: document.getElementById("list"),
 	loading: document.getElementById("loading"),
 	empty: document.getElementById("empty"),
 	scrollTop: document.getElementById("scroll_top"),
 	expandFilters: document.getElementById("expand_filters"),
-	allFilters: document.querySelectorAll("#filters > div")
 };
 
 //////////////
@@ -544,7 +544,7 @@ p.allFilters.forEach((filter, index) => {
 
 p.expandFilters
 	.addEventListener("click", function () {
-		filters.forEach((filter) => {
+		p.allFilters.forEach((filter) => {
 			filter.style.display = "inline-block";
 		});
 		this.style.display = "none";
