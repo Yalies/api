@@ -152,6 +152,10 @@ textarea {
 	display: block;
 }
 
+.mobile-only {
+	display: none;
+}
+
 @media (max-width: 700px) {
 	body {
 		font-size: 16px;
@@ -159,6 +163,9 @@ textarea {
 	nav {
 		float: none;
 		position: static;
+	}
+	.mobile-only {
+		display: block;
 	}
 }
 
