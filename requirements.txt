@@ -1,6 +1,7 @@
 flask
 flask-cors
-flask-sqlalchemy
+flask-sqlalchemy==3.0.3
+SQLAlchemy==2.0.15
 flask-migrate
 flask-mail
 flask-cas
