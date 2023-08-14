@@ -178,3 +178,7 @@ textarea {
 	display: flex;
 	flex-direction: column;
 }
+
+.row-icon {
+	padding-right: 3px;
+}

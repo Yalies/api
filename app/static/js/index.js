@@ -12,6 +12,8 @@ let p = {
 	loading: document.getElementById("loading"),
 	empty: document.getElementById("empty"),
 	scrollTop: document.getElementById("scroll_top"),
+	expandFilters: document.getElementById("expand_filters"),
+	allFilters: document.querySelectorAll("#filters > div")
 };
 
 //////////////
@@ -276,8 +278,8 @@ function addRow(container, property, title, icon, person, url, showTitle, checkL
 
 		// Create an icon element
 		let iconElement = document.createElement("i");
-		iconElement.style.paddingRight = "3px";
-		iconElement.className = "fa fa-" + icon;
+		// iconElement.style.paddingRight = "3px";
+		iconElement.className = "row-icon fa fa-" + icon;
 		row.appendChild(iconElement);
 
 		// Create a paragraph element for the content
@@ -375,7 +377,6 @@ function loadNextPage() {
 		criteria["page"] = ++pagesLoaded;
 		console.log("Loading page", pagesLoaded);
 
-		// Fetch the data from the server
 		fetch("/api/people", {
 			method: "POST",
 			headers: {
@@ -446,7 +447,7 @@ function loadNextPage() {
 					nameWrapper.appendChild(name);
 
 					// Add rows for different information categories
-					addRow(nameWrapper,	"email", "Email", "envelope", person, person.email ? "mailto:" + person.email : null, false);
+					addRow(nameWrapper, "email", "Email", "envelope", person, person.email ? "mailto:" + person.email : null, false);
 					if (person.college_code) {
 						let row = document.createElement("div");
 						row.title = "Residential College";
@@ -533,16 +534,15 @@ window.onscroll = function (e) {
 	);
 };
 
-let filters = document.querySelectorAll("#filters > div");
-filters.forEach((filter, index) => {
-	const IMPORTANT_FILTERS = 4; // NUMBER OF DEFAULT FILTERS
+
+const IMPORTANT_FILTERS = 4; // NUMBER OF DEFAULT FILTERS
+p.allFilters.forEach((filter, index) => {
 	if (index >= IMPORTANT_FILTERS) {
 		filter.style.display = "none";
 	}
 });
 
-document
-	.getElementById("expand_filters")
+p.expandFilters
 	.addEventListener("click", function () {
 		filters.forEach((filter) => {
 			filter.style.display = "inline-block";

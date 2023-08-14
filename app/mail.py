@@ -17,12 +17,17 @@ def get_admin_emails():
 
 def send_mail(subject, html, recipients):
     with app.app_context():
-        msg = Message(subject, html=html, recipients=recipients, sender=app.config['MAIL_DEFAULT_SENDER'])
+        msg = Message(
+            subject,
+            html=html,
+            recipients=recipients,
+            sender=app.config['MAIL_DEFAULT_SENDER'],
+        )
         try:
             mail.send(msg)
         except Exception as e:
             # Handle any exceptions that may occur during email sending
-            print(f"Error sending email: {e}")
+            print(f'Error sending email: {e}')
 
 
 def status_color(days_left):
@@ -39,8 +44,10 @@ def send_scraper_report(stats=None, error=None):
     subject = None
     with app.app_context():
         if error:
-            subject = 'Yalies Scraper Error Report'
-            html = render_template('mail/scraper_report.html', error=error, stats=None)
+            subject = 'Yalies Scraper Report ' + stats['end_time'].strftime(DATE_FMT)
+            html = render_template('mail/scraper_report.html', error=None, stats=stats,
+                                   DATE_FMT=DATE_FMT, TIME_FMT=TIME_FMT, DATETIME_FMT=DATETIME_FMT,
+                                   status_color=status_color)
         else:
             subject = 'Yalies Scraper Report ' + \
                 stats['end_time'].strftime(DATE_FMT)
@@ -50,4 +57,4 @@ def send_scraper_report(stats=None, error=None):
     if recipients:
         send_mail(subject=subject, html=html, recipients=recipients)
     else:
-        print("No recipients available to send the email.")
+        print('No recipients available to send the email.')
