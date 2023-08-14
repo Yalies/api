@@ -69,8 +69,7 @@ class SearchableMixin:
         for i in range(len(ids)):
             when.append((ids[i], i))
         return cls.query.filter(cls.id.in_(ids)).order_by(
-            # DEPENDS ON VERSION OF SQLAlchemy: db.case(*when, value=cls.id))
-            db.case(when, value=cls.id))
+            db.case(*when, value=cls.id))
 
     @classmethod
     def before_commit(cls, session):
