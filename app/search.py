@@ -19,20 +19,53 @@ def remove_from_index(index, model):
 def query_index_fuzzy(index, query):
     if not elasticsearch:
         return [], 0
+    
+    # Split query into parts assuming a space separates first and last name
+    query_parts = query.split()
+
+    # bool query combining multiple queries – matches the best of all three
     search = elasticsearch.search(
         index=index,
         body={
             'from': 0,
             'size': 10_000,
             'query': {
-                'multi_match': {
-                    'query': query,
-                    'operator': 'and',
-                    'fields': ['name', 'email', 'netid', 'first_name', 'middle_name', 'last_name'],
-                    'fuzziness': 'AUTO'
-                },
+                'bool': {
+                    'should': [
+                        # Match for individual first or last name
+                        {
+                            'multi_match': {
+                                'query': query,
+                                'operator': 'or',
+                                'fields': ['first_name', 'last_name'],
+                                'fuzziness': 'AUTO'
+                            }
+                        },
+                        # Match for combination of first and last name
+                        {
+                            'multi_match': {
+                                'query': query,
+                                'type': 'phrase_prefix',
+                                'fields': ['first_name', 'last_name']
+                            }
+                        },
+                        # Additional option matching each part separately
+                        *[
+                            {
+                                'multi_match': {
+                                    'query': part,
+                                    'operator': 'or',
+                                    'fields': ['first_name', 'last_name'],
+                                    'fuzziness': 'AUTO'
+                                }
+                            } for part in query_parts
+                        ]
+                    ],
+                    'minimum_should_match': 1
+                }
             },
         })
+
     ids = [int(hit['_id']) for hit in search['hits']['hits']]
     return ids
 
