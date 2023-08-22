@@ -35,8 +35,7 @@ class FaceBook(Source):
         else:
             self.image_uploader = DummyImageUploader()
 
-        FERNET_KEY = os.environ.get('FERNET_KEY')
-        self.fernet = Fernet(self.FERNET_KEY)
+        self.fernet = Fernet(os.environ.get('FERNET_KEY'))
 
     ##########
     # Scraping

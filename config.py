@@ -14,6 +14,8 @@ class Config(object):
 
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
 
+    FERNET_KEY = os.environ.get('FERNET_KEY')
+
     CAS_SERVER = 'https://secure.its.yale.edu'
     CAS_AFTER_LOGIN = 'index'
     CAS_LOGIN_ROUTE = '/cas/login'
