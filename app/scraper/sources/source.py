@@ -84,5 +84,5 @@ class Source:
         return people
 
     # Define a function to check if S3 credentials are set
-    def has_s3_credentials():
+    def has_s3_credentials(self):
         return os.environ.get('S3_ACCESS_KEY') and os.environ.get('S3_SECRET_ACCESS_KEY')
