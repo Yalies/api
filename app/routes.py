@@ -226,7 +226,7 @@ def api_authorize_cas():
     print('Logged in!')
     g.user = User.query.get(username)
     db.session.commit()
-    return to_json({'user': g.user, 'token': g.user.generate_token()})
+    return to_json({'token': g.user.generate_token()})
 
 
 def get_years():
