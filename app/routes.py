@@ -19,7 +19,13 @@ with open('app/scraper/res/majors_clean.txt') as f:
 def store_user():
     if request.method != 'OPTIONS':
         g.user = None
-        if cas.username:
+        token = request.headers.get('Authorization')
+        if token:
+            token = token.split(' ')[-1]
+            g.user = User.from_token(token)
+            if g.user is None:
+                return fail('Invalid token.', code=401)
+        elif cas.username:
             g.user = User.query.get(cas.username)
             if not g.user:
                 # If this is the first user (probably local run), there's been no chance to
@@ -37,12 +43,6 @@ def store_user():
                 print(g.person.first_name + ' ' + g.person.last_name)
             except AttributeError:
                 print('Could not render name.')
-        token = request.headers.get('Authorization')
-        if token:
-            token = token.split(' ')[-1]
-            g.user = User.from_token(token)
-            if g.user is None:
-                return fail('Invalid token.', code=401)
         if g.user:
             timestamp = int(time.time())
             g.user.last_seen = timestamp
