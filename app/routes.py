@@ -19,6 +19,7 @@ with open('app/scraper/res/majors_clean.txt') as f:
 def store_user():
     if request.method != 'OPTIONS':
         g.user = None
+        timestamp = int(time.time())
         token = request.headers.get('Authorization')
         if token:
             token = token.split(' ')[-1]
@@ -48,7 +49,6 @@ def store_user():
             except AttributeError:
                 print('Could not render name.')
         if g.user:
-            timestamp = int(time.time())
             g.user.last_seen = timestamp
             db.session.commit()
 
