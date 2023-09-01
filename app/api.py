@@ -29,24 +29,6 @@ def internal(error):
     return fail('Internal server error.', 500)
 
 
-@api_bp.before_request
-def check_token():
-    if request.method != 'OPTIONS':
-        if cas.username:
-            g.user = User.query.get(cas.username)
-        else:
-            token = request.headers.get('Authorization')
-            if not token:
-                return fail('No token provided.')
-            token = token.split(' ')[-1]
-            g.user = User.from_token(token)
-            if g.user is None:
-                return fail('Invalid token.', code=401)
-        g.user.last_seen = int(time.time())
-        db.session.commit()
-        print('User: ' + g.user.id)
-
-
 @api_bp.route('/filters')
 def api_filters():
     filters = {}

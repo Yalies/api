@@ -29,7 +29,6 @@ def store_user():
                               registered_on=timestamp,
                               admin=is_first_user)
                 db.session.add(g.user)
-            g.user.last_seen = timestamp
             g.person = Person.query.filter_by(netid=cas.username, school_code='YC').first()
             if g.user.banned or (not g.person and not g.user.admin):
                 # TODO: give a more graceful error than just a 403
@@ -38,7 +37,16 @@ def store_user():
                 print(g.person.first_name + ' ' + g.person.last_name)
             except AttributeError:
                 print('Could not render name.')
-            db.session.commit()
+        else:
+            token = request.headers.get('Authorization')
+            if not token:
+                return fail('No token provided.')
+            token = token.split(' ')[-1]
+            g.user = User.from_token(token)
+            if g.user is None:
+                return fail('Invalid token.', code=401)
+        g.user.last_seen = timestamp
+        db.session.commit()
 
 
 @app.route('/')
@@ -193,7 +201,7 @@ def delete_key(key_id):
     return succ('Key deleted.')
 
 
-@app.route('/auth', methods=['POST'])
+@app.route('/authorize', methods=['POST'])
 def auth():
     # TODO: merge with above function?
     payload = request.get_json()
