@@ -19,6 +19,7 @@ class Config(object):
     CAS_SERVER = 'https://secure.its.yale.edu'
     CAS_AFTER_LOGIN = 'index'
     CAS_LOGIN_ROUTE = '/cas/login'
+    CAS_AFTER_LOGOUT = '/'
 
     # Email sending with Gmail
     MAIL_SERVER = 'smtp.googlemail.com'
