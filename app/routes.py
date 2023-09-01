@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for, jsonify, abort, g
 from app import app, db, scraper, cas
 from app.models import User, Person, Key
 from app.util import to_json, succ, fail
-from app.cas_validate import validate
+from .cas_validate import validate
 from sqlalchemy import distinct
 
 import datetime

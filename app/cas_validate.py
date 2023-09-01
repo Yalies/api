@@ -1,6 +1,6 @@
 import flask
 from app import app
-from flask_cas.cas_urls import create_cas_login_url, create_cas_logout_url, create_cas_validate_url
+from .flask_cas.cas_urls import create_cas_login_url, create_cas_logout_url, create_cas_validate_url
 from xmltodict import parse
 try:
     from urllib import urlopen
@@ -15,7 +15,6 @@ def validate(ticket):
     and the validated username is saved in the session under the
     key `CAS_USERNAME_SESSION_KEY` while tha validated attributes dictionary
     is saved under the key 'CAS_ATTRIBUTES_SESSION_KEY'.
-
     Copied and modified from Flask-CAS.
     """
 
@@ -60,4 +59,4 @@ def validate(ticket):
 
             flask.session[cas_attributes_session_key] = attributes
 
-    return is_valid
+    return is_valid, xml_from_dict.get('cas:user')
