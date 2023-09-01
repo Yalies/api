@@ -1,5 +1,4 @@
 from flask import render_template, request, redirect, url_for, jsonify, abort, g
-from flask_cas import login_required
 from app import app, db, scraper, cas
 from app.models import User, Person, Key
 from app.util import to_json, succ, fail
@@ -9,6 +8,7 @@ from sqlalchemy import distinct
 import datetime
 import time
 import calendar
+from functools import wraps
 
 
 with open('app/scraper/res/majors_clean.txt') as f:
@@ -18,9 +18,9 @@ with open('app/scraper/res/majors_clean.txt') as f:
 @app.before_request
 def store_user():
     if request.method != 'OPTIONS':
+        g.user = None
         if cas.username:
             g.user = User.query.get(cas.username)
-            timestamp = int(time.time())
             if not g.user:
                 # If this is the first user (probably local run), there's been no chance to
                 # run the scraper yet, so give them admin to prevent an instant 403.
@@ -37,16 +37,25 @@ def store_user():
                 print(g.person.first_name + ' ' + g.person.last_name)
             except AttributeError:
                 print('Could not render name.')
-        else:
-            token = request.headers.get('Authorization')
-            if not token:
-                return fail('No token provided.')
+        token = request.headers.get('Authorization')
+        if token:
             token = token.split(' ')[-1]
             g.user = User.from_token(token)
             if g.user is None:
                 return fail('Invalid token.', code=401)
-        g.user.last_seen = timestamp
-        db.session.commit()
+        if g.user:
+            timestamp = int(time.time())
+            g.user.last_seen = timestamp
+            db.session.commit()
+
+
+def requires_login(f):
+    @wraps(f)
+    def wrapper_requires_login(*args, **kwargs):
+        if g.user is None:
+            return fail('No authorization found.', code=401)
+        return f(*args, **kwargs)
+    return wrapper_requires_login
 
 
 @app.route('/')
@@ -131,7 +140,7 @@ def untuple(tuples):
 
 
 @app.route('/scraper', methods=['GET', 'POST'])
-@login_required
+@requires_login
 def scrape():
     if not g.user.admin:
         abort(403)
@@ -143,13 +152,13 @@ def scrape():
 
 
 @app.route('/apidocs')
-@login_required
+@requires_login
 def apidocs():
     return render_template('apidocs.html', title='API')
 
 
 @app.route('/about')
-@login_required
+@requires_login
 def about():
     return render_template('about.html', title='About')
 
@@ -165,7 +174,7 @@ def hide_me():
 
 
 @app.route('/keys', methods=['GET'])
-@login_required
+@requires_login
 def get_keys():
     keys = Key.query.filter_by(user_id=g.user.id,
                                deleted=False).all()
@@ -173,7 +182,7 @@ def get_keys():
 
 
 @app.route('/keys', methods=['POST'])
-@login_required
+@requires_login
 def create_key():
     payload = request.get_json()
     key = g.user.create_key(payload['description'])
@@ -184,14 +193,14 @@ def create_key():
 
 """
 @app.route('/keys/<key_id>', methods=['POST'])
-@login_required
+@requires_login
 def update_key(key_id):
     pass
 """
 
 
 @app.route('/keys/<key_id>', methods=['DELETE'])
-@login_required
+@requires_login
 def delete_key(key_id):
     key = Key.query.get(key_id)
     if key.user_id != g.user.id:
