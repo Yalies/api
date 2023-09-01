@@ -202,24 +202,18 @@ def delete_key(key_id):
 
 
 @app.route('/authorize', methods=['POST'])
-def auth():
+def api_authorize_cas():
     # TODO: merge with above function?
-    payload = request.get_json()
-    jsessionid = payload.get('jsessionid')
-    if not jsessionid:
+    ticket = request.args.get('ticket')
+    if not ticket:
         abort(401)
-    valid = validate(jsessionid)
+    valid, username = validate(ticket)
     if not valid:
         abort(401)
-    # Validation sets the user for this session, so we can re-query
-    g.user = User.query.get(cas.username)
-    description = 'Mobile login'
-    key = Key.query.filter_by(id=g.user.id, description=description, internal=True)
-    if key is None:
-        key = g.user.create_key(description, internal=True)
-        db.session.add(key)
-        db.session.commit()
-    return jsonify({'token': key.token, 'expires_in': expires_in})
+    print('Logged in!')
+    g.user = User.query.get(username)
+    db.session.commit()
+    return to_json({'user': g.user, 'token': g.user.generate_token()})
 
 
 def get_years():
