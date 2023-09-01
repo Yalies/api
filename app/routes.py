@@ -25,6 +25,10 @@ def store_user():
             g.user = User.from_token(token)
             if g.user is None:
                 return fail('Invalid token.', code=401)
+            try:
+                print('Authorized request by ' + g.person.first_name + ' ' + g.person.last_name + ' with token authentication.')
+            except AttributeError:
+                print('Could not render name.')
         elif cas.username:
             g.user = User.query.get(cas.username)
             if not g.user:
@@ -40,7 +44,7 @@ def store_user():
                 # TODO: give a more graceful error than just a 403
                 abort(403)
             try:
-                print(g.person.first_name + ' ' + g.person.last_name)
+                print('Authorized request by ' + g.person.first_name + ' ' + g.person.last_name + ' with CAS authentication.')
             except AttributeError:
                 print('Could not render name.')
         if g.user:
