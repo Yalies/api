@@ -20,6 +20,7 @@ def store_user():
     if request.method != 'OPTIONS':
         g.user = None
         timestamp = int(time.time())
+        print(request.headers)
         token = request.headers.get('Authorization')
         if token:
             token = token.split(' ')[-1]
