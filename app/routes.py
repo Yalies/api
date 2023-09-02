@@ -217,12 +217,13 @@ def delete_key(key_id):
 
 @app.route('/authorize', methods=['POST'])
 def api_authorize_cas():
-    # TODO: merge with above function?
     ticket = request.args.get('ticket')
     if not ticket:
+        print('Aborting due to missing ticket')
         abort(401)
     valid, username = validate(ticket)
     if not valid:
+        print('Aborting due to invalid ticket')
         abort(401)
     print('Logged in!')
     g.user = User.query.get(username)
