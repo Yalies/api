@@ -25,12 +25,6 @@ def store_user():
         if authorization:
             token = authorization.split(' ')[-1]
             g.user = User.from_token(token)
-            if g.user is None:
-                return fail('Invalid token.', code=401)
-            try:
-                print('Authorized request by ' + g.person.first_name + ' ' + g.person.last_name + ' with token authentication.')
-            except AttributeError:
-                print('Could not render name.')
             method_used = 'CAS'
         if g.user is None and cas.username:
             g.user = User.query.get(cas.username)
