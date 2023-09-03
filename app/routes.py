@@ -21,9 +21,9 @@ def store_user():
         g.user = None
         timestamp = int(time.time())
         print(request.headers)
-        token = request.headers.get('Authorization')
-        if token:
-            token = token.split(' ')[-1]
+        authorization = request.headers.get('Authorization')
+        if authorization:
+            token = authorization.split(' ')[-1]
             g.user = User.from_token(token)
             if g.user is None:
                 return fail('Invalid token.', code=401)
@@ -31,34 +31,38 @@ def store_user():
                 print('Authorized request by ' + g.person.first_name + ' ' + g.person.last_name + ' with token authentication.')
             except AttributeError:
                 print('Could not render name.')
-        elif cas.username:
+            method_used = 'CAS'
+        if g.user is None and cas.username:
             g.user = User.query.get(cas.username)
             if not g.user:
                 # If this is the first user (probably local run), there's been no chance to
-                # run the scraper yet, so give them admin to prevent an instant 403.
+                # run the scraper yet, so make them admin to prevent an instant 403.
                 is_first_user = User.query.count() == 0
                 g.user = User(id=cas.username,
                               registered_on=timestamp,
                               admin=is_first_user)
                 db.session.add(g.user)
-            g.person = Person.query.filter_by(netid=cas.username, school_code='YC').first()
+            method_used = 'CAS'
+        if g.user:
+            g.person = Person.query.filter_by(netid=g.user.id, school_code='YC').first()
             if g.user.banned or (not g.person and not g.user.admin):
                 # TODO: give a more graceful error than just a 403
                 abort(403)
             try:
-                print('Authorized request by ' + g.person.first_name + ' ' + g.person.last_name + ' with CAS authentication.')
+                print(f'Authorized request by {g.person.first_name} {g.person.last_name} with {method_used} authentication.')
             except AttributeError:
                 print('Could not render name.')
-        if g.user:
             g.user.last_seen = timestamp
             db.session.commit()
+        else:
+            print('Request made by unauthorized user.')
 
 
 def requires_login(f):
     @wraps(f)
     def wrapper_requires_login(*args, **kwargs):
         if g.user is None:
-            return fail('No authorization found.', code=401)
+            return fail('Missing or invalid authorization.', code=401)
         return f(*args, **kwargs)
     return wrapper_requires_login
 
