@@ -18,6 +18,7 @@ with open('app/scraper/res/majors_clean.txt') as f:
 @app.before_request
 def store_user():
     if request.method != 'OPTIONS':
+        print(request.headers)
         g.user = None
         timestamp = int(time.time())
         authorization = request.headers.get('Authorization')
