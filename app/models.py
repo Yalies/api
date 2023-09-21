@@ -68,12 +68,12 @@ class User(db.Model):
         if key is not None and key.approved:
             key.uses += 1
             key.last_used = get_now()
-        #try:
-        payload = jwt.decode(token, app.config.get('SECRET_KEY'), algorithms=['HS256'])
-        return User.query.get(payload['sub'])
-        #except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+        try:
+            payload = jwt.decode(token, app.config.get('SECRET_KEY'), algorithms=['HS256'])
+            return User.query.get(payload['sub'])
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             # Signature expired, or token otherwise invalid
-            #return None
+            return None
 
 
 class Person(SearchableMixin, db.Model):
