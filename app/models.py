@@ -1,5 +1,6 @@
 from app import app, db
 from app.search import SearchableMixin
+from app.util import get_now
 import jwt
 import datetime
 from sqlalchemy.sql import collate
@@ -50,7 +51,7 @@ class User(db.Model):
             token=token,
             description=description,
             internal=internal,
-            created_at=int(datetime.datetime.utcnow().timestamp())
+            created_at=get_now(),
         )
         key.approved = True
         self.keys.append(key)

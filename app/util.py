@@ -2,6 +2,7 @@ from flask import jsonify
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
 import json
+import datetime
 
 
 def succ(message, code=200):
@@ -46,3 +47,6 @@ class ModelEncoder(json.JSONEncoder):
 
 def to_json(model):
     return json.dumps(model, cls=ModelEncoder)
+
+def get_now():
+    return int(datetime.datetime.utcnow().timestamp())

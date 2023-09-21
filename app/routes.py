@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request, redirect, url_for, jsonify, abort, g, session
 from app import app, db, scraper, cas
 from app.models import User, Person, Key
-from app.util import to_json, succ, fail
+from app.util import to_json, get_now, succ, fail
 from .cas_validate import validate
 from sqlalchemy import distinct
 
@@ -10,7 +10,6 @@ from flask_cas.cas_urls import create_cas_logout_url
 from flask_cas.cas_urls import create_cas_validate_url
 
 import datetime
-import time
 import calendar
 from functools import wraps
 
@@ -23,11 +22,12 @@ with open('app/scraper/res/majors_clean.txt') as f:
 def store_user():
     if request.method != 'OPTIONS':
         g.user = None
-        timestamp = int(time.time())
+        timestamp = get_now()
         token_cookie = request.cookies.get('token')
         if token_cookie:
             g.user = User.from_token(token_cookie)
             method_used = 'cookie'
+            print(token_cookie)
             print(method_used)
             print(g.user)
         authorization = request.headers.get('Authorization')
