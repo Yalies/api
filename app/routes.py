@@ -156,39 +156,34 @@ def untuple(tuples):
 def login():
     token = None
 
-    # NOTE: most of this code is lifted from the flask_cas module!
-    cas_token_session_key = app.config['CAS_TOKEN_SESSION_KEY']
+    # NOTE: most of this code is adapted from the flask_cas module!
+    #cas_token_session_key = app.config['CAS_TOKEN_SESSION_KEY']
 
     redirect_url = create_cas_login_url(
         app.config['CAS_SERVER'],
         app.config['CAS_LOGIN_ROUTE'],
-        url_for('.login', origin=session.get('CAS_AFTER_LOGIN_SESSION_URL'), _external=True))
+        url_for('.login', _external=True))
 
+        #session[cas_token_session_key] = request.args['ticket']
+
+    #if cas_token_session_key in session:
+    #if 'token' in request.cookies:
     if 'ticket' in request.args:
-        session[cas_token_session_key] = request.args['ticket']
-
-    if cas_token_session_key in session:
-        valid, username = validate(session[cas_token_session_key])
-        if valid:
-            token = g.user.generate_token()
-            if 'CAS_AFTER_LOGIN_SESSION_URL' in session:
-                redirect_url = session.pop('CAS_AFTER_LOGIN_SESSION_URL')
-            elif request.args.get('origin'):
-                redirect_url = request.args['origin']
-            else:
-                redirect_url = url_for(
-                    app.config['CAS_AFTER_LOGIN'])
-            print('Logged in!')
-            g.user = User.query.get(username)
-            if g.user is None:
-                # TODO: this is duplicated from above. Decrease ick
-                g.user = User(id=username,
-                              registered_on=timestamp,
-                              admin=is_first_user)
-                db.session.add(g.user)
-            db.session.commit()
-        else:
-            del session[cas_token_session_key]
+        ticket = request.args['ticket']
+        valid, username = validate(ticket)
+        if not valid:
+            abort(401)
+        redirect_url = url_for(app.config['CAS_AFTER_LOGIN'])
+        g.user = User.query.get(username)
+        if g.user is None:
+            # TODO: this is duplicated from above. Decrease ick
+            g.user = User(id=username,
+                          registered_on=timestamp,
+                          admin=is_first_user)
+            db.session.add(g.user)
+        db.session.commit()
+        token = g.user.generate_token()
+        print('Logged in!')
 
     app.logger.debug('Redirecting to: {0}'.format(redirect_url))
 
