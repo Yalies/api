@@ -29,9 +29,8 @@ class User(db.Model):
         Generate auth token.
         :return: token and expiration timestamp.
         """
-        now = int(datetime.datetime.utcnow().timestamp())
         payload = {
-            'iat': now,
+            'iat': get_now() - 100_000,
             'sub': self.id,
         }
         return jwt.encode(
