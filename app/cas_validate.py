@@ -24,7 +24,8 @@ def validate(ticket):
     cas_validate_url = create_cas_validate_url(
         app.config['CAS_SERVER'],
         app.config['CAS_VALIDATE_ROUTE'],
-        flask.url_for('cas.login', origin=flask.session.get('CAS_AFTER_LOGIN_SESSION_URL'), _external=True),
+        # Modified the next line
+        flask.url_for('login', origin=flask.session.get('CAS_AFTER_LOGIN_SESSION_URL'), _external=True),
         ticket)
 
     xml_from_dict = {}

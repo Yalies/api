@@ -1,9 +1,13 @@
-from flask import render_template, request, redirect, url_for, jsonify, abort, g
+from flask import render_template, make_response, request, redirect, url_for, jsonify, abort, g, session
 from app import app, db, scraper, cas
 from app.models import User, Person, Key
 from app.util import to_json, succ, fail
 from .cas_validate import validate
 from sqlalchemy import distinct
+
+from flask_cas.cas_urls import create_cas_login_url
+from flask_cas.cas_urls import create_cas_logout_url
+from flask_cas.cas_urls import create_cas_validate_url
 
 import datetime
 import time
@@ -18,11 +22,16 @@ with open('app/scraper/res/majors_clean.txt') as f:
 @app.before_request
 def store_user():
     if request.method != 'OPTIONS':
-        print(request.headers)
         g.user = None
         timestamp = int(time.time())
+        token_cookie = request.cookies.get('token')
+        if token_cookie:
+            g.user = User.from_token(token_cookie)
+            method_used = 'cookie'
+            print(method_used)
+            print(g.user)
         authorization = request.headers.get('Authorization')
-        if authorization:
+        if g.user is None and authorization:
             token = authorization.split(' ')[-1]
             g.user = User.from_token(token)
             method_used = 'CAS'
@@ -138,8 +147,55 @@ def index():
                            birth_months=birth_months, birth_days=birth_days, options=options, filters=filters)
 
 
+
 def untuple(tuples):
     return [t[0] for t in tuples]
+
+
+@app.route('/login/', methods=['GET'])
+def login():
+    token = None
+
+    # NOTE: most of this code is lifted from the flask_cas module!
+    cas_token_session_key = app.config['CAS_TOKEN_SESSION_KEY']
+
+    redirect_url = create_cas_login_url(
+        app.config['CAS_SERVER'],
+        app.config['CAS_LOGIN_ROUTE'],
+        url_for('.login', origin=session.get('CAS_AFTER_LOGIN_SESSION_URL'), _external=True))
+
+    if 'ticket' in request.args:
+        session[cas_token_session_key] = request.args['ticket']
+
+    if cas_token_session_key in session:
+        valid, username = validate(session[cas_token_session_key])
+        if valid:
+            token = g.user.generate_token()
+            if 'CAS_AFTER_LOGIN_SESSION_URL' in session:
+                redirect_url = session.pop('CAS_AFTER_LOGIN_SESSION_URL')
+            elif request.args.get('origin'):
+                redirect_url = request.args['origin']
+            else:
+                redirect_url = url_for(
+                    app.config['CAS_AFTER_LOGIN'])
+            print('Logged in!')
+            g.user = User.query.get(username)
+            if g.user is None:
+                # TODO: this is duplicated from above. Decrease ick
+                g.user = User(id=username,
+                              registered_on=timestamp,
+                              admin=is_first_user)
+                db.session.add(g.user)
+            db.session.commit()
+        else:
+            del session[cas_token_session_key]
+
+    app.logger.debug('Redirecting to: {0}'.format(redirect_url))
+
+    resp = make_response(redirect(redirect_url))
+    if token is not None:
+        resp.set_cookie('token', token)
+    return resp
 
 
 @app.route('/scraper', methods=['GET', 'POST'])

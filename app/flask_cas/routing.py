@@ -14,7 +14,7 @@ except ImportError:
 blueprint = flask.Blueprint('cas', __name__)
 
 
-@blueprint.route('/login/')
+#@blueprint.route('/login/')
 def login():
     """
     This route has two purposes. First, it is used by the user
