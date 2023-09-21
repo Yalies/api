@@ -30,6 +30,7 @@ class User(db.Model):
         :return: token and expiration timestamp.
         """
         payload = {
+            # TODO: when we don't offset it, timezone issues emerge. Would be better to fix those issues
             'iat': get_now() - 100_000,
             'sub': self.id,
         }
@@ -63,17 +64,16 @@ class User(db.Model):
         :param token: token to decode.
         :return: User whose token this is, or None if token invalid/no user associated
         """
-        try:
-            key = Key.query.filter_by(token=token).first()
-            if key is None or not key.approved:
-                return None
+        key = Key.query.filter_by(token=token).first()
+        if key is not None and key.approved:
             key.uses += 1
-            key.last_used = int(datetime.datetime.utcnow().timestamp())
-            payload = jwt.decode(token, app.config.get('SECRET_KEY'), algorithms=['HS256'])
-            return User.query.get(payload['sub'])
-        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+            key.last_used = get_now()
+        #try:
+        payload = jwt.decode(token, app.config.get('SECRET_KEY'), algorithms=['HS256'])
+        return User.query.get(payload['sub'])
+        #except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             # Signature expired, or token otherwise invalid
-            return None
+            #return None
 
 
 class Person(SearchableMixin, db.Model):
