@@ -27,14 +27,11 @@ def store_user():
         if token_cookie:
             g.user = User.from_token(token_cookie)
             method_used = 'cookie'
-            print(token_cookie)
-            print(method_used)
-            print(g.user)
         authorization = request.headers.get('Authorization')
         if g.user is None and authorization:
             token = authorization.split(' ')[-1]
             g.user = User.from_token(token)
-            method_used = 'CAS'
+            method_used = 'header'
         if g.user is None and cas.username:
             g.user = User.query.get(cas.username)
             if not g.user:
@@ -156,18 +153,13 @@ def untuple(tuples):
 def login():
     token = None
 
-    # NOTE: most of this code is adapted from the flask_cas module!
-    #cas_token_session_key = app.config['CAS_TOKEN_SESSION_KEY']
+    # NOTE: most of this code is adapted from the flask_cas module, but has since been heavily modified.
 
     redirect_url = create_cas_login_url(
         app.config['CAS_SERVER'],
         app.config['CAS_LOGIN_ROUTE'],
         url_for('.login', _external=True))
 
-        #session[cas_token_session_key] = request.args['ticket']
-
-    #if cas_token_session_key in session:
-    #if 'token' in request.cookies:
     if 'ticket' in request.args:
         ticket = request.args['ticket']
         valid, username = validate(ticket)
@@ -178,7 +170,7 @@ def login():
         if g.user is None:
             # TODO: this is duplicated from above. Decrease ick
             g.user = User(id=username,
-                          registered_on=timestamp,
+                          registered_on=get_now(),
                           admin=is_first_user)
             db.session.add(g.user)
         db.session.commit()
