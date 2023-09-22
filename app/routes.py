@@ -149,7 +149,7 @@ def untuple(tuples):
     return [t[0] for t in tuples]
 
 
-@app.route('/login/', methods=['GET'])
+@app.route('/login/')
 def login():
     token = None
 
@@ -182,6 +182,27 @@ def login():
     resp = make_response(redirect(redirect_url))
     if token is not None:
         resp.set_cookie('token', token)
+    return resp
+
+
+@app.route('/logout/')
+def logout():
+    cas_username_session_key = app.config['CAS_USERNAME_SESSION_KEY']
+    cas_attributes_session_key = app.config['CAS_ATTRIBUTES_SESSION_KEY']
+
+    if cas_username_session_key in flask.session:
+        del flask.session[cas_username_session_key]
+
+    if cas_attributes_session_key in flask.session:
+        del flask.session[cas_attributes_session_key]
+
+    redirect_url = url_for('index')
+
+    app.logger.debug('Redirecting to: {0}'.format(redirect_url))
+
+    resp = make_response(redirect(redirect_url))
+    resp.set_cookie('token', '', expires=0)
+
     return resp
 
 
