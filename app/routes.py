@@ -181,7 +181,9 @@ def login():
 
     resp = make_response(redirect(redirect_url))
     if token is not None:
-        resp.set_cookie('token', token, max_age=365 * 60 * 60 * 24)
+        year = 365 * 60 * 60 * 24
+        resp.set_cookie('token', token, expires=get_now() + year,
+                        max_age=year)
     return resp
 
 
