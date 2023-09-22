@@ -190,11 +190,11 @@ def logout():
     cas_username_session_key = app.config['CAS_USERNAME_SESSION_KEY']
     cas_attributes_session_key = app.config['CAS_ATTRIBUTES_SESSION_KEY']
 
-    if cas_username_session_key in flask.session:
-        del flask.session[cas_username_session_key]
+    if cas_username_session_key in session:
+        del session[cas_username_session_key]
 
-    if cas_attributes_session_key in flask.session:
-        del flask.session[cas_attributes_session_key]
+    if cas_attributes_session_key in session:
+        del session[cas_attributes_session_key]
 
     redirect_url = app.config['CAS_AFTER_LOGOUT']
 
