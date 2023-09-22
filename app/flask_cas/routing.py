@@ -62,12 +62,14 @@ def login():
     """
 
 
-@blueprint.route('/logout/')
+#@blueprint.route('/logout/')
 def logout():
     """
     When the user accesses this route they are logged out.
     """
+    pass
 
+    """
     cas_username_session_key = current_app.config['CAS_USERNAME_SESSION_KEY']
     cas_attributes_session_key = current_app.config['CAS_ATTRIBUTES_SESSION_KEY']
 
@@ -89,6 +91,7 @@ def logout():
 
     current_app.logger.debug('Redirecting to: {0}'.format(redirect_url))
     return flask.redirect(redirect_url)
+    """
 
 
 def validate(ticket):

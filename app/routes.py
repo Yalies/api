@@ -196,7 +196,7 @@ def logout():
     if cas_attributes_session_key in flask.session:
         del flask.session[cas_attributes_session_key]
 
-    redirect_url = url_for('index')
+    redirect_url = app.config['CAS_AFTER_LOGOUT']
 
     app.logger.debug('Redirecting to: {0}'.format(redirect_url))
 
