@@ -151,6 +151,9 @@ def untuple(tuples):
 
 @app.route('/login/')
 def login():
+    if g.user:
+        return redirect(url_for(app.config['CAS_AFTER_LOGIN']))
+
     token = None
 
     # NOTE: most of this code is adapted from the flask_cas module, but has since been heavily modified.
