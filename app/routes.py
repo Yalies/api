@@ -69,7 +69,7 @@ def requires_login(f):
 
 @app.route('/')
 def index():
-    if not cas.username:
+    if not g.user:
         return render_template('splash.html')
     colleges = [
         'Berkeley',
