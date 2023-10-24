@@ -264,7 +264,7 @@ class Group(db.Model):
                     filters[category] = [filters[category]]
                 group_query = group_query.filter(getattr(Group, category).in_(filters[category]))
         if page:
-            groups = group_query.paginate(page, per_page=page_size or app.config['PAGE_SIZE'], error_out=False).items
+            groups = group_query.paginate(page=page, per_page=page_size or app.config['PAGE_SIZE'], error_out=False).items
         else:
             groups = group_query.all()
         return groups
