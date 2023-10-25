@@ -35,8 +35,11 @@ class ModelEncoder(json.JSONEncoder):
 
                 # is this field another SQLalchemy object, or a list of SQLalchemy objects, or a function?
                 if isinstance(val.__class__, DeclarativeMeta) or (isinstance(val, list) and len(val) > 0 and isinstance(val[0].__class__, DeclarativeMeta)) or callable(val):
-                    # Skip this field
-                    continue
+                    # unless we're expanding this field, stop here
+                    if field not in obj.__class__._to_expand:
+                        # not expanding this field: set it to None and continue
+                        fields[field] = None
+                        continue
 
                 fields[field] = val
             # a json-encodable dict
