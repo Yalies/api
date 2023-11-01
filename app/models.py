@@ -1,5 +1,6 @@
 from app import app, db
 from app.search import SearchableMixin
+from app.util import get_now
 import jwt
 import datetime
 from sqlalchemy.sql import collate
@@ -28,9 +29,9 @@ class User(db.Model):
         Generate auth token.
         :return: token and expiration timestamp.
         """
-        now = int(datetime.datetime.utcnow().timestamp())
         payload = {
-            'iat': now,
+            # TODO: when we don't offset it, timezone issues emerge. Would be better to fix those issues
+            'iat': get_now() - 100_000,
             'sub': self.id,
         }
         return jwt.encode(
@@ -50,7 +51,7 @@ class User(db.Model):
             token=token,
             description=description,
             internal=internal,
-            created_at=int(datetime.datetime.utcnow().timestamp())
+            created_at=get_now(),
         )
         key.approved = True
         self.keys.append(key)
@@ -63,12 +64,11 @@ class User(db.Model):
         :param token: token to decode.
         :return: User whose token this is, or None if token invalid/no user associated
         """
-        try:
-            key = Key.query.filter_by(token=token).first()
-            if key is None or not key.approved:
-                return None
+        key = Key.query.filter_by(token=token).first()
+        if key is not None and key.approved:
             key.uses += 1
-            key.last_used = int(datetime.datetime.utcnow().timestamp())
+            key.last_used = get_now()
+        try:
             payload = jwt.decode(token, app.config.get('SECRET_KEY'), algorithms=['HS256'])
             return User.query.get(payload['sub'])
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):

@@ -1,17 +1,23 @@
 from .source import Source
-from app import logger
 
 import yaledirectory
 import requests
 import re
 import string
+from celery.utils.log import get_task_logger
 from threading import Thread
+from queue import LifoQueue
+
+logger = get_task_logger(__name__)
 
 
 class Directory(Source):
+    THREAD_COUNT = 3
+
     def __init__(self, cache, people_search_session_cookie, csrf_token):
         super().__init__(cache)
         self.directory = yaledirectory.API(people_search_session_cookie, csrf_token)
+        self.prefix_queue = LifoQueue()
 
     ##########
     # Scraping
@@ -116,13 +122,19 @@ class Directory(Source):
             choices = self.characters
 
         res = []
+        logger.info('Adding new prefixes to queue: ' + (prefix + choices[0]) + '->' + (prefix + choices[-1]))
         for choice in choices:
-            res += self.read_directory(prefix + choice)
+            self.prefix_queue.put(prefix + choice)
         return res
 
-    def read_directory_async(self, prefix):
-        directory_entries = self.read_directory(prefix=prefix)
-        self.directory_entries += directory_entries
+    def read_directory_async(self):
+        while True:
+            if self.prefix_queue.empty():
+                logger.info('Prefix queue is empty from this thread.')
+                return
+            prefix = self.prefix_queue.get()
+            self.directory_entries += self.read_directory(prefix=prefix)
+            logger.info(f'We now have a total of {len(self.directory_entries)} directory entries.')
 
     def scrape(self, current_people):
         """
@@ -132,13 +144,18 @@ class Directory(Source):
         people = []
         # Fetch non-undergrad users by iterating netids
         # Get set of netids for students we've already processed
-        threads = []
         for prefix in self.letters:
-            thread = Thread(target=self.read_directory_async, args=(prefix,))
+            self.prefix_queue.put(prefix)
+
+        threads = []
+        for thread_index in range(self.THREAD_COUNT):
+            thread = Thread(target=self.read_directory_async, args=())
             thread.start()
             threads.append(thread)
         for thread in threads:
             thread.join()
+
+        # TODO: this isn't terminating...
         for entry in self.directory_entries:
             # Remove ETRAIN_ accounts, which are not actual people
             if entry.netid and entry.netid.startswith('etrain'):

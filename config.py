@@ -10,11 +10,16 @@ class Config(object):
                                              'sqlite:///' + os.path.join(basedir, 'app.db')).replace('postgres://', 'postgresql://')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    REDIS_URL = CELERY_BROKER_URL = CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
+
+    FERNET_KEY = os.environ.get('FERNET_KEY')
 
     CAS_SERVER = 'https://secure.its.yale.edu'
     CAS_AFTER_LOGIN = 'index'
     CAS_LOGIN_ROUTE = '/cas/login'
+    CAS_AFTER_LOGOUT = '/'
 
     # Email sending with Gmail
     MAIL_SERVER = 'smtp.googlemail.com'

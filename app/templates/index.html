@@ -1,68 +1,43 @@
-{% extends "base.html" %}
-
+{% extends "base.html" %} 
 {% block head %}
-<link rel="stylesheet" href="/static/css/popup.css">
-{% endblock %}
-
-{% block content %}
+	<link rel="stylesheet" href="/static/css/popup.css" />
+{% endblock %} 
+{% block content %} 
 {# Hack to fix strange onclick bubbling behavior on mobile Safari #}
 <div id="controls" onclick="void(0);">
-    <input type="text" id="query" placeholder="Search">
-    <button id="submit"><i class="fa fa-search"></i></button>
-    <div class="filters">
-        <button id="clear_filters">
-            <i class="fa fa-filter"></i>
-            Clear Filters
-        </button>
-        {% with name = "college", items = colleges %}{% include "_filter.html" %}{% endwith %}
-        {% with name = "year", items = years, default = "Other" %}{% include "_filter.html" %}{% endwith %}
-        {% with name = "leave", items = leave, header = "Took leave?" %}{% include "_filter.html" %}{% endwith %}
-        {% with name = "major", items = majors %}{% include "_filter.html" %}{% endwith %}
-        <div class="filter collapsed" id="birth_month">
-            <h4>
-                <i class="fa fa-chevron-down"></i>
-                Birth Month
-            </h4>
-            <label>
-                <input type="checkbox" name="birth_month-all"> All
-            </label>
-            {% for birth_month, birth_month_name in birth_months.items() %}
-            <label>
-                <input type="checkbox" name="{{ birth_month }}"> {{ birth_month_name }}
-            </label>
-            {% endfor %}
-        </div>
-        {% with name = "birth_day", items = birth_days, header = "Birth Day" %}{% include "_filter.html" %}{% endwith %}
-        {#
-        <div class="filter collapsed" id="building_code">
-            <h4>
-                <i class="fa fa-chevron-circle-down"></i>
-                Building
-            </h4>
-            <label>
-                <input type="checkbox" name="building_code-all"> All
-            </label>
-            {% for building_code, building in building_codes.items() %}
-            <label>
-                <input type="checkbox" name="{{ building_code }}"> {{ building }}
-            </label>
-            {% endfor %}
-        </div>
-        {% with name = "entryway", items = entryways %}{% include "_filter.html" %}{% endwith %}
-        {% with name = "floor", items = floors %}{% include "_filter.html" %}{% endwith %}
-        {% with name = "suite", items = suites %}{% include "_filter.html" %}{% endwith %}
-        {% with name = "room", items = rooms %}{% include "_filter.html" %}{% endwith %}
-        #}
-    </div>
+	<div id="control_bar">
+		<div class="search_wrapper">
+			<input type="text" id="query" placeholder="Search" />
+			<button id="submit"><i class="fa fa-search"></i></button>
+		</div>
+
+		<div class="filters" id="filters">
+			<button id="clear_filters">
+				<i class="fa fa-filter"></i>
+				Clear Filters
+			</button>
+			{% for category in filters %} 
+				{% for filter in filters[category] %} 
+					{% with name = filter, items = options[filter], header=filters[category][filter]['header'], default = filters[category][filter]['default'] %} 
+						{% include "_filter.html" %} 
+					{% endwith %} 
+				{% endfor %} 
+			{% endfor %}
+			<button id="expand_filters">
+				<i class="fa fa-chevron-circle-down"></i>
+				Advanced
+			</button>
+		</div>
+	</div>
 </div>
 <div id="empty">
-    <i class="fa fa-exclamation-circle"></i>
-    No matching students found.
+	<i class="fa fa-exclamation-circle"></i>
+	No matching students found.
 </div>
 <div id="list"></div>
 <div id="loading">
-    <i class="fa fa-hourglass"></i>
-    Loading...
+	<i class="fa fa-hourglass"></i>
+	Loading...
 </div>
 <button id="scroll_top"><i class="fa fa-arrow-up"></i></button>
 <script src="/static/js/index.js"></script>

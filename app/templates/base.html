@@ -30,28 +30,33 @@
         {% block head %}
         {% endblock %}
     </head>
-    <body> 
-        <header>
-            <nav>
-                <a class="button outline" href="/">Home</a>
-                <a class="button outline" href="/about">About</a>
-                <a class="button outline" href="/faq">FAQ</a>
-                <a class="button outline" href="/apidocs">API</a>
-                {% if not unauthenticated %}
-                <a class="button outline" href="/logout/">Log out</a>
-                {% endif %}
-            </nav>
-            <a id="logo" href="/">
-                <img src="/static/images/logo/logo.png" alt="Logo">
-                <h2>Yalies</h2>
-            </a>
-        </header>
-        <main>
-            {% block content %}
-            {% endblock %}
-        </main>
-        <footer>
-            <p>This directory is intended for official University use and for individual communication of a business or incidental personal nature between individuals who are included in the facebook/directory. No other uses are permitted, including but not limited to using the addresses or other information for any private, commercial or political mailing or other purposes.</p>
-        </footer>
+    <body>
+        <div class="banner">
+            🎉 Never log in again! <br class="mobile-only" /> Download the <a href="https://apps.apple.com/app/yalies/id6461600780">Yalies app!</a> 💻
+        </div>
+        <div class="content">
+            <header>
+                <nav>
+                    <a class="button outline" href="/">Home</a>
+                    <a class="button outline" href="/about">About</a>
+                    <a class="button outline" href="/faq">FAQ</a>
+                    <a class="button outline" href="/apidocs">API</a>
+                    {% if not unauthenticated %}
+                    <a class="button outline" href="/logout/">Log out</a>
+                    {% endif %}
+                </nav>
+                <a id="logo" href="/">
+                    <img src="/static/images/logo/logo.png" alt="Logo">
+                    <h2>Yalies</h2>
+                </a>
+            </header>
+            <main>
+                {% block content %}
+                {% endblock %}
+            </main>
+            <footer>
+                <p>This directory is intended for official University use and for individual communication of a business or incidental personal nature between individuals who are included in the facebook/directory. No other uses are permitted, including but not limited to using the addresses or other information for any private, commercial or political mailing or other purposes.</p>
+            </footer>
+        </div>
     </body>
 </html>

@@ -1,9 +1,11 @@
 from .adapter import Adapter
-from app import logger
 
 import requests
 from bs4 import BeautifulSoup
 import html5lib
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 
 class Law(Adapter):

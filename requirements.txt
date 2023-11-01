@@ -1,11 +1,12 @@
 flask
 flask-cors
-flask-sqlalchemy
+flask-sqlalchemy==3.0.3
+SQLAlchemy==2.0.15
 flask-migrate
 flask-mail
 flask-cas
 flask-redis
-psycopg2
+psycopg2-binary
 boto3
 elasticsearch==7.9
 beautifulsoup4
@@ -13,6 +14,7 @@ html5lib
 requests
 gunicorn
 redis
+celery
 pyjwt
 yaledirectory>=1.3.1
 Pillow

@@ -1,14 +1,17 @@
-from flask import render_template, request, redirect, url_for, jsonify, abort, g
-from flask_cas import login_required
+from flask import render_template, make_response, request, redirect, url_for, jsonify, abort, g, session
 from app import app, db, scraper, cas
 from app.models import User, Person, Key
-from app.util import to_json, succ, fail
-from app.cas_validate import validate
+from app.util import to_json, get_now, succ, fail
+from .cas_validate import validate
 from sqlalchemy import distinct
-from threading import Thread
+
+from flask_cas.cas_urls import create_cas_login_url
+from flask_cas.cas_urls import create_cas_logout_url
+from flask_cas.cas_urls import create_cas_validate_url
+
 import datetime
-import time
 import calendar
+from functools import wraps
 
 
 with open('app/scraper/res/majors_clean.txt') as f:
@@ -18,32 +21,55 @@ with open('app/scraper/res/majors_clean.txt') as f:
 @app.before_request
 def store_user():
     if request.method != 'OPTIONS':
-        if cas.username:
+        g.user = None
+        timestamp = get_now()
+        token_cookie = request.cookies.get('token')
+        if token_cookie:
+            g.user = User.from_token(token_cookie)
+            method_used = 'cookie'
+        authorization = request.headers.get('Authorization')
+        if g.user is None and authorization:
+            token = authorization.split(' ')[-1]
+            g.user = User.from_token(token)
+            method_used = 'header'
+        if g.user is None and cas.username:
             g.user = User.query.get(cas.username)
-            timestamp = int(time.time())
             if not g.user:
                 # If this is the first user (probably local run), there's been no chance to
-                # run the scraper yet, so give them admin to prevent an instant 403.
+                # run the scraper yet, so make them admin to prevent an instant 403.
                 is_first_user = User.query.count() == 0
                 g.user = User(id=cas.username,
                               registered_on=timestamp,
                               admin=is_first_user)
                 db.session.add(g.user)
-            g.user.last_seen = timestamp
-            g.person = Person.query.filter_by(netid=cas.username, school_code='YC').first()
+            method_used = 'CAS'
+        if g.user:
+            g.person = Person.query.filter_by(netid=g.user.id, school_code='YC').first()
             if g.user.banned or (not g.person and not g.user.admin):
                 # TODO: give a more graceful error than just a 403
                 abort(403)
             try:
-                print(g.person.first_name + ' ' + g.person.last_name)
+                print(f'Authorized request by {g.person.first_name} {g.person.last_name} with {method_used} authentication.')
             except AttributeError:
                 print('Could not render name.')
+            g.user.last_seen = timestamp
             db.session.commit()
+        else:
+            print('Request made by unauthorized user.')
+
+
+def requires_login(f):
+    @wraps(f)
+    def wrapper_requires_login(*args, **kwargs):
+        if g.user is None:
+            return fail('Missing or invalid authorization.', code=401)
+        return f(*args, **kwargs)
+    return wrapper_requires_login
 
 
 @app.route('/')
 def index():
-    if not cas.username:
+    if not g.user:
         return render_template('splash.html')
     colleges = [
         'Berkeley',
@@ -61,76 +87,148 @@ def index():
         'Timothy Dwight',
         'Trumbull',
     ]
-    """
-    building_codes = {
-        '': 'Off Campus',
-        'BM': 'Bingham Hall',
-        'W': 'Welch Hall',
-        'F': 'Farnam Hall',
-        'D': 'Durfee Hall',
-        'L': 'Lawrance Hall',
-        'V': 'Vanderbilt Hall',
-        'LW': 'Lanman-Wright Hall',
-        'BK': 'Berkeley',
-        'BR': 'Branford',
-        'DC': 'Davenport',
-        'ES': 'Ezra Stiles',
-        'JE': 'Jonathan Edwards',
-        'BF': 'Benjamin Franklin',
-        'GH': 'Grace Hopper',
-        'MC': 'Morse',
-        'MY': 'Pauli Murray',
-        'PC': 'Pierson',
-        'SY': 'Saybrook',
-        'SM': 'Silliman',
-        'TD': 'Timothy Dwight',
-        'TC': 'Trumbull',
-    }
-    """
     years = get_years()
     leave = ['Yes', 'No']
     birth_months = {index + 1: name for index, name in enumerate(list(calendar.month_name)[1:])}
     birth_days = list(range(1, 31 + 1))
-    # SQLAlchemy returns lists of tuples, so we gotta convert to a list of items.
-    # TODO: is there a SQL-based way to do this?
-    """
-    entryways = untuple(db.session.query(distinct(Person.entryway)).order_by(Person.entryway))
-    floors = untuple(db.session.query(distinct(Person.floor)).order_by(Person.floor))
-    suites = untuple(db.session.query(distinct(Person.suite)).order_by(Person.suite))
-    rooms = untuple(db.session.query(distinct(Person.room)).order_by(Person.room))
-    """
+
+    # TODO: should this be loaded from the filters endpoint?
+    options = {}
+    for category in Person.__filterable__:
+        options[category] = untuple(db.session.query(distinct(getattr(Person, category))).order_by(getattr(Person, category)))
+
+    filters = {
+        'Students': {
+            'school': {
+                'header': 'School',
+            },
+            'year': {
+                'header': 'Year',
+            },
+        },
+        'Undergraduate': {
+            'college': {
+                'header': 'College',
+            },
+            'major': 'Major',
+            'leave': {
+                'header': 'Took Leave?',
+                'default': 'N/A'
+            },
+            'birth_month': {
+                'header': 'Birth Month',
+            },
+            'birth_day': {
+                'header': 'Birth Day',
+            },
+        },
+        'Graduate': {
+            'curriculum': {
+                'header': 'Grad Curriculum',
+            },
+        },
+        'Staff': {
+            'organization': {
+                'header': 'Staff Organization',
+            },
+            'unit': {
+                'header': 'Staff Unit',
+            },
+            'office_building': {
+                'header': 'Office Building',
+            },
+        },
+    }
     return render_template('index.html', colleges=colleges,
                            years=years, leave=leave, majors=majors,
-                           birth_months=birth_months, birth_days=birth_days)
-    """
-                           building_codes=building_codes,
-                           entryways=entryways, floors=floors, suites=suites, rooms=rooms)
-    """
+                           birth_months=birth_months, birth_days=birth_days, options=options, filters=filters)
+
+
+
+def untuple(tuples):
+    return [t[0] for t in tuples]
+
+
+@app.route('/login/')
+def login():
+    if g.user:
+        return redirect(url_for(app.config['CAS_AFTER_LOGIN']))
+
+    token = None
+
+    # NOTE: most of this code is adapted from the flask_cas module, but has since been heavily modified.
+
+    redirect_url = create_cas_login_url(
+        app.config['CAS_SERVER'],
+        app.config['CAS_LOGIN_ROUTE'],
+        url_for('.login', _external=True))
+
+    if 'ticket' in request.args:
+        ticket = request.args['ticket']
+        valid, username = validate(ticket)
+        if not valid:
+            abort(401)
+        redirect_url = url_for(app.config['CAS_AFTER_LOGIN'])
+        g.user = User.query.get(username)
+        if g.user is None:
+            # TODO: this is duplicated from above. Decrease ick
+            g.user = User(id=username,
+                          registered_on=get_now(),
+                          admin=is_first_user)
+            db.session.add(g.user)
+        db.session.commit()
+        token = g.user.generate_token()
+        print('Logged in!')
+
+    app.logger.debug('Redirecting to: {0}'.format(redirect_url))
+
+    resp = make_response(redirect(redirect_url))
+    if token is not None:
+        resp.set_cookie('token', token, max_age=365 * 60 * 60 * 24)
+    return resp
+
+
+@app.route('/logout/')
+def logout():
+    cas_username_session_key = app.config['CAS_USERNAME_SESSION_KEY']
+    cas_attributes_session_key = app.config['CAS_ATTRIBUTES_SESSION_KEY']
+
+    if cas_username_session_key in session:
+        del session[cas_username_session_key]
+
+    if cas_attributes_session_key in session:
+        del session[cas_attributes_session_key]
+
+    redirect_url = app.config['CAS_AFTER_LOGOUT']
+
+    app.logger.debug('Redirecting to: {0}'.format(redirect_url))
+
+    resp = make_response(redirect(redirect_url))
+    resp.set_cookie('token', '', expires=0)
+
+    return resp
 
 
 @app.route('/scraper', methods=['GET', 'POST'])
-@login_required
+@requires_login
 def scrape():
     if not g.user.admin:
         abort(403)
     if request.method == 'GET':
         return render_template('scraper.html')
     payload = request.get_json()
-    Thread(target=scraper.scrape, args=(
-        payload['caches'], payload['face_book_cookie'],
-        payload['people_search_session_cookie'], payload['csrf_token'],
-        payload['yaleconnect_cookie'])).start()
+    scraper.scrape.apply_async(args=[payload['caches'], payload['face_book_cookie'], payload['people_search_session_cookie'], payload['csrf_token'], payload['yaleconnect_cookie']])
     return '', 200
 
 
 @app.route('/apidocs')
-@login_required
+@requires_login
 def apidocs():
     return render_template('apidocs.html', title='API')
 
 
 @app.route('/about')
-@login_required
+@requires_login
 def about():
     return render_template('about.html', title='About')
 
@@ -146,7 +244,7 @@ def hide_me():
 
 
 @app.route('/keys', methods=['GET'])
-@login_required
+@requires_login
 def get_keys():
     keys = Key.query.filter_by(user_id=g.user.id,
                                deleted=False).all()
@@ -154,7 +252,7 @@ def get_keys():
 
 
 @app.route('/keys', methods=['POST'])
-@login_required
+@requires_login
 def create_key():
     payload = request.get_json()
     key = g.user.create_key(payload['description'])
@@ -165,14 +263,14 @@ def create_key():
 
 """
 @app.route('/keys/<key_id>', methods=['POST'])
-@login_required
+@requires_login
 def update_key(key_id):
     pass
 """
 
 
 @app.route('/keys/<key_id>', methods=['DELETE'])
-@login_required
+@requires_login
 def delete_key(key_id):
     key = Key.query.get(key_id)
     if key.user_id != g.user.id:
@@ -182,25 +280,20 @@ def delete_key(key_id):
     return succ('Key deleted.')
 
 
-@app.route('/auth', methods=['POST'])
-def auth():
-    # TODO: merge with above function?
-    payload = request.get_json()
-    jsessionid = payload.get('jsessionid')
-    if not jsessionid:
+@app.route('/authorize', methods=['POST'])
+def api_authorize_cas():
+    ticket = request.args.get('ticket')
+    if not ticket:
+        print('Aborting due to missing ticket')
         abort(401)
-    valid = validate(jsessionid)
+    valid, username = validate(ticket)
     if not valid:
+        print('Aborting due to invalid ticket')
         abort(401)
-    # Validation sets the user for this session, so we can re-query
-    g.user = User.query.get(cas.username)
-    description = 'Mobile login'
-    key = Key.query.filter_by(id=g.user.id, description=description, internal=True)
-    if key is None:
-        key = g.user.create_key(description, internal=True)
-        db.session.add(key)
-        db.session.commit()
-    return jsonify({'token': key.token, 'expires_in': expires_in})
+    print('Logged in!')
+    g.user = User.query.get(username)
+    db.session.commit()
+    return to_json({'token': g.user.generate_token()})
 
 
 def get_years():
