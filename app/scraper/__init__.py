@@ -127,7 +127,7 @@ def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_t
 
             if face_book is not None and has_s3_credentials():
                 logger.info('Deleting unused images from S3.')
-                face_book.delete_unused_imgs(people)
+                face_book.delete_unused_images(people)
             logger.info('Done.')
         except Exception as e:
             logger.info('Encountered fatal error, terminating scraper:')
