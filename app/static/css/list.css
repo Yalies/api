@@ -2,6 +2,9 @@
 #list {
 	margin-top: 15px;
 }
+#list:empty {
+    display: none;
+}
 
 #list > div {
 	width: 3in;
