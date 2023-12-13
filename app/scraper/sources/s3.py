@@ -91,11 +91,11 @@ class ImageUploader:
         to_delete_objects = [{'Key': key} for key in to_delete]
 
         # delete_objects(...) will delete at most 1000 objects at a time
-        for i in range(0, len(to_delete), CHUNK_SIZE):
+        for i in range(0, len(to_delete), self.CHUNK_SIZE):
             self.s3.delete_objects(
                 Bucket=S3_BUCKET_NAME,
                 Delete={
-                    'Objects': to_delete_objects[i:i+CHUNK_SIZE],
+                    'Objects': to_delete_objects[i:i + self.CHUNK_SIZE],
                     'Quiet': True
                 })
 
