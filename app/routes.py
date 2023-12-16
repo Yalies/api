@@ -172,6 +172,7 @@ def login():
         g.user = User.query.get(username)
         if g.user is None:
             # TODO: this is duplicated from above. Decrease ick
+            is_first_user = User.query.count() == 0
             g.user = User(id=username,
                           registered_on=get_now(),
                           admin=is_first_user)
