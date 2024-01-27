@@ -30,6 +30,7 @@ def internal(error):
 
 
 @api_bp.route('/filters')
+@requires_login
 def api_filters():
     filters = {}
     for category in Person.__filterable__:
@@ -38,6 +39,7 @@ def api_filters():
 
 
 @api_bp.route('/students', methods=['POST'])
+@requires_login
 def api_students():
     try:
         criteria = request.get_json(force=True) or {}
@@ -53,6 +55,7 @@ def api_students():
 
 
 @api_bp.route('/people', methods=['POST'])
+@requires_login
 def api_people():
     try:
         criteria = request.get_json(force=True) or {}
@@ -63,6 +66,7 @@ def api_people():
 
 
 @api_bp.route('/groups', methods=['POST'])
+@requires_login
 def api_groups():
     try:
         criteria = request.get_json(force=True) or {}

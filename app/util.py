@@ -1,8 +1,18 @@
-from flask import jsonify
+from flask import jsonify, g
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
 import json
 import datetime
+from functools import wraps
+
+
+def requires_login(f):
+    @wraps(f)
+    def wrapper_requires_login(*args, **kwargs):
+        if g.user is None:
+            return fail('Missing or invalid authorization.', code=401)
+        return f(*args, **kwargs)
+    return wrapper_requires_login
 
 
 def succ(message, code=200):

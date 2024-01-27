@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request, redirect, url_for, jsonify, abort, g, session
 from app import app, db, scraper, cas
 from app.models import User, Person, Key
-from app.util import to_json, get_now, succ, fail
+from app.util import requires_login, to_json, get_now, succ, fail
 from .cas_validate import validate
 from sqlalchemy import distinct
 
@@ -11,7 +11,6 @@ from flask_cas.cas_urls import create_cas_validate_url
 
 import datetime
 import calendar
-from functools import wraps
 
 
 with open('app/scraper/res/majors_clean.txt') as f:
@@ -57,14 +56,6 @@ def store_user():
         else:
             print('Request made by unauthorized user.')
 
-
-def requires_login(f):
-    @wraps(f)
-    def wrapper_requires_login(*args, **kwargs):
-        if g.user is None:
-            return fail('Missing or invalid authorization.', code=401)
-        return f(*args, **kwargs)
-    return wrapper_requires_login
 
 
 @app.route('/')
