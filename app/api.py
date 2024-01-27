@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, g, abort
 from sqlalchemy import distinct
 import time
 from app import db, cas
-from app.util import to_json, fail, succ
+from app.util import to_json, fail, succ, requires_login
 from app.models import User, Person, Group
 
 
