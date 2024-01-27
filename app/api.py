@@ -16,7 +16,7 @@ def not_found(error):
 
 @api_bp.errorhandler(401)
 def unauthorized(error):
-    return fail('You\'re not authorized to perform this action.', 401)
+    return fail('Missing or invalid Authorization header. Please consult https://yalies.io/apidocs to obtain an API key.', 401)
 
 
 @api_bp.errorhandler(403)
