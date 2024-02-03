@@ -1,6 +1,6 @@
 # [👥 Yalies](https://yalies.io)
 
-A website and API for getting information on students at Yale College.
+> A website and API for getting information on students at Yale College.
 
 ![Screenshot](screenshot.png)
 
@@ -29,11 +29,9 @@ We are going to use `pyenv` to install multiple versions of Python on our machin
 brew install pyenv
 brew install pyenv-virtualenv
 ```
-Now, we must add pyenv to our PATH. PATH is a special bash variable that tells the shell what executables we can run. Open your bash profile with:
-```
-nano ~/.bash_profile
-```
-and add the following lines at the bottom:
+Now, we must add pyenv to our PATH. PATH is a special bash variable that tells the shell what executables we can run.
+
+If you're using zsh (the default for macOS nowadays), open `~/.zprofile`. in your favorite text editor If you're still using bash, edit `~/.bash_profile`. Add the following lines at the bottom:
 ```bash
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
@@ -127,12 +125,56 @@ sqlite3 app.db
 
 Our scraper crawls Yale's websites in order to obtain the data we provide. See documentation [here](app/scraper/README.md).
 
-## Developer practices
 
-To ensure the quality of our codebase, please follow these best practices. Refer to the [Git tutorial video](https://www.youtube.com/watch?v=yZo-aF1dqhs) for help.
+### Submitting changes
 
-- For each feature, make a new branch. Never commit on master. When your feature is ready, create a Pull Request.
-- Please assign one other developer, plus your Dev Team Lead, as reviewers on the PR. You will not be able to merge until the reviewers approve.
+Switch to a new branch to hold your changes:
+
+```sh
+git checkout -b changes_description
+```
+
+The name of the branch should be short and refer to what you’re planning to change.
+
+Next, make your code changes! Be sure to test them and make sure the app runs as you expect.
+Next, commit your code:
+
+```sh
+# To tell git to track all the files you changed
+git add -A
+# To label this set of changes:
+git commit -m "Describe your changes here"
+# Make sure to title your commit in the imperative tense, for example "Add new features” instead of "Added…", "Adding…", etc.
+```
+
+Next, upload your code to the repo. This won't affect master, only your feature branch.
+
+```sh
+git push -u origin your_branch_name
+```
+
+**NOTE:** If you make another change on this branch, you can just do `git push` (without additional flags) and it will automatically push to the last remote/branch you specified.
+
+Before you make a pull request, please make sure you have all the latest changes from master. Resolve all conflicts accordingly.
+```bash
+git merge master
+```
+
+Next, create a pull request (a request to merge your changes into the main repository) by going to the repository page on GitHub and clicking the green "Compare & Pull Request” button that appears.
+
+Title the pull request with a description of all included changes.
+
+In the description, write "Fixes #X” or "Resolve #X”, with X being an issue number, for each issue you're fixing in this PR. This will save time by telling GitHub to automatically close those issues once your changes are merged.
+
+On the right side under Reviewers, select one other team member, your team lead (Eric Yoon), and Erik Boesen. You'll need all three people to approve your changes before it can be merged.
+
+Congratulations! Your changes will be up for review. After they are merged, you'll need to check out back to master.
+
+```sh
+git checkout master
+```
+
+Repeat until all features are implemented and all bugs fixed! :slightly_smiling_face:
 
 ## License
 
