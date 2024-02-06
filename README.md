@@ -89,6 +89,11 @@ source .venv/bin/activate
 > source .venv/bin/activate.fish
 > ```
 
+> Or, for powershell:
+> ```powershell
+>Set-ExecutionPolicy Unrestricted -Scope Process
+>.venv\Scripts\activate     
+>```
 Now that you've activated your venv, the commands `python3` and `pip3` are replaced with a special pointer to your project directory.
 
 ### Install dependencies
@@ -113,6 +118,12 @@ To locally launch the application:
 FLASK_APP=app.py FLASK_ENV=development flask run
 ```
 
+> Or, for powershell:
+> ```powershell
+>$env:FLASK_APP="app.py"
+>$env:FLASK_ENV="development"
+>flask run    
+>```
 The app will subsequently be available at [localhost:5000](http://localhost:5000).
 
 When running locally, the app will use a non-hosted SQLite database, meaning that all database contents will be stored in `app.db`. If you wish to run SQL queries on this database, simply install sqlite (best obtained through Homebrew or other package manager), and run:
