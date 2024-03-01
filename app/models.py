@@ -199,6 +199,23 @@ class Person(SearchableMixin, db.Model):
             people = person_query.all()
         return people
 
+class PersonPersistent(db.Model):
+    __tablename__ = 'person_persistent'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
+
+    # socials
+    socials_instagram = db.Column(db.String)
+    socials_snapchat = db.Column(db.String)
+
+    # privacy
+    privacy_hide_image = db.Column(db.Boolean)
+    privacy_hide_email = db.Column(db.Boolean)
+    privacy_hide_room = db.Column(db.Boolean)
+    privacy_hide_phone = db.Column(db.Boolean)
+    privacy_hide_address = db.Column(db.Boolean)
+    privacy_hide_major = db.Column(db.Boolean)
+    privacy_hide_birthday = db.Column(db.Boolean)
 
 class Group(db.Model):
     __tablename__ = 'group'
