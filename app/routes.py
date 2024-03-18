@@ -268,16 +268,32 @@ def delete_key(key_id):
 @app.route('/edit', methods=['GET'])
 @requires_login
 def edit():
-    return render_template('edit.html')
+    if g.person is None:
+        return fail('Could not find person in the database.', 403)
+    person_persistent = g.person.get_persistent_data()
+
+    if person_persistent is None:
+        return render_template('edit.html')
+    return render_template(
+        'edit.html',
+        socials_instagram=person_persistent.socials_instagram,
+        socials_snapchat=person_persistent.socials_snapchat,
+        privacy_hide_image=person_persistent.privacy_hide_image,
+        privacy_hide_email=person_persistent.privacy_hide_email,
+        privacy_hide_room=person_persistent.privacy_hide_room,
+        privacy_hide_phone=person_persistent.privacy_hide_phone,
+        privacy_hide_address=person_persistent.privacy_hide_address,
+        privacy_hide_major=person_persistent.privacy_hide_major,
+        privacy_hide_birthday=person_persistent.privacy_hide_birthday
+    )
 
 @app.route('/edit', methods=['POST'])
 @requires_login
-# @forbidden_via_api
+@forbidden_via_api
 def edit_post():
     payload = request.get_json()
     if g.person is None:
         return fail('Could not find person in the database.', 403)
-    
     person_persistent = g.person.get_persistent_data()
     if person_persistent is None:
         person_persistent = PersonPersistent(person_id=g.person.id)

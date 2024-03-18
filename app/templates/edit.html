@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Edit Profile</h1>
+
+<h3>Socials</h3>
+<p>You can list your social media profiles here. This information will be accessible to other Yale students.</p>
+<div class="form-group">
+    <label for="socials_instagram">Instagram</label>
+    <input type="text" id="socials_instagram" placeholder="@handsomedanyale" value="{{ socials_instagram }}"></input>
+</div>
+<div class="form-group">
+    <label for="socials_snapchat">Snapchat</label>
+    <input type="text" id="socials_snapchat" placeholder="@handsomedanyale" value="{{ socials_snapchat }}"></input>
+</div>
+
+<h3>Privacy</h3>
+<p>You can choose to hide certain info on Yalies.io.</p>
+<p>
+    Important: even if you hide your info here, it will still be visible via official Yale websites.
+    See <a href="/faq">FAQ</a> for instructions on how to hide your information globally.
+</p>
+<div class="form-group">
+    <input type="checkbox" id="privacy_hide_image" {{ "checked" if privacy_hide_image }}></input>
+    <label for="privacy_hide_image">Hide Profile Picture</label>
+</div>
+<div class="form-group">
+    <input type="checkbox" id="privacy_hide_email" {{ "checked" if privacy_hide_email }}></input>
+    <label for="privacy_hide_email">Hide Email</label>
+</div>
+<div class="form-group">
+    <input type="checkbox" id="privacy_hide_room" {{ "checked" if privacy_hide_room }}></input>
+    <label for="privacy_hide_room">Hide Room</label>
+</div>
+<div class="form-group">
+    <input type="checkbox" id="privacy_hide_phone" {{ "checked" if privacy_hide_phone }}></input>
+    <label for="privacy_hide_phone">Hide Phone Number</label>
+</div>
+<div class="form-group">
+    <input type="checkbox" id="privacy_hide_address" {{ "checked" if privacy_hide_address }}></input>
+    <label for="privacy_hide_address">Hide Home Address</label>
+</div>
+<div class="form-group">
+    <input type="checkbox" id="privacy_hide_major" {{ "checked" if privacy_hide_major }}></input>
+    <label for="privacy_hide_major">Hide Major</label>
+</div>
+<div class="form-group">
+    <input type="checkbox" id="privacy_hide_birthday" {{ "checked" if privacy_hide_birthday }}></input>
+    <label for="privacy_hide_birthday">Hide Birthday</label>
+</div>
+
+<button id="submit">Save</button>
+
+<script src="/static/js/edit.js"></script>
+{% endblock %}
