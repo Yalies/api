@@ -216,7 +216,6 @@ class PersonPersistent(db.Model):
     privacy_hide_address = db.Column(db.Boolean)
     privacy_hide_major = db.Column(db.Boolean)
     privacy_hide_birthday = db.Column(db.Boolean)
-
 class Group(db.Model):
     __tablename__ = 'group'
     __searchable__ = (

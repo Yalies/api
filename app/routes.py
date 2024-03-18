@@ -237,6 +237,7 @@ def hide_me():
 
 @app.route('/keys', methods=['GET'])
 @requires_login
+@forbidden_via_api
 def get_keys():
     keys = Key.query.filter_by(user_id=g.user.id,
                                deleted=False).all()
@@ -245,6 +246,7 @@ def get_keys():
 
 @app.route('/keys', methods=['POST'])
 @requires_login
+@forbidden_via_api
 def create_key():
     payload = request.get_json()
     key = g.user.create_key(payload['description'])
@@ -252,17 +254,9 @@ def create_key():
     db.session.commit()
     return to_json(key)
 
-
-"""
-@app.route('/keys/<key_id>', methods=['POST'])
-@requires_login
-def update_key(key_id):
-    pass
-"""
-
-
 @app.route('/keys/<key_id>', methods=['DELETE'])
 @requires_login
+@forbidden_via_api
 def delete_key(key_id):
     key = Key.query.get(key_id)
     if key.user_id != g.user.id:
