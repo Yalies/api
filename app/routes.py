@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request, redirect, url_for, jsonify, abort, g, session
 from app import app, db, scraper, cas
 from app.models import User, Person, Key, PersonPersistent
-from app.util import requires_login, forbidden_via_api, to_json, get_now, succ, fail
+from app.util import requires_login, forbidden_via_api, to_json, get_now, succ, fail, PERSISTENT_FIELDS
 from .cas_validate import validate
 from sqlalchemy import distinct
 
@@ -299,17 +299,7 @@ def edit_post():
         person_persistent = PersonPersistent(person_id=g.person.id)
         db.session.add(person_persistent)
 
-    for key in [
-        'socials_instagram',
-        'socials_snapchat',
-        'privacy_hide_image',
-        'privacy_hide_email',
-        'privacy_hide_room',
-        'privacy_hide_phone',
-        'privacy_hide_address',
-        'privacy_hide_major',
-        'privacy_hide_birthday'
-    ]:
+    for key in PERSISTENT_FIELDS:
         if key in payload:
             setattr(person_persistent, key, payload[key])
 

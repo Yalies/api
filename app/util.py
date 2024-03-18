@@ -71,3 +71,15 @@ def to_json(model):
 
 def get_now():
     return int(datetime.datetime.utcnow().timestamp())
+
+PERSISTENT_FIELDS = [
+    'socials_instagram',
+    'socials_snapchat',
+    'privacy_hide_image',
+    'privacy_hide_email',
+    'privacy_hide_room',
+    'privacy_hide_phone',
+    'privacy_hide_address',
+    'privacy_hide_major',
+    'privacy_hide_birthday'
+]

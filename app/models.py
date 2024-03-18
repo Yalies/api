@@ -1,9 +1,11 @@
 from app import app, db
 from app.search import SearchableMixin
-from app.util import get_now
+from app.util import get_now, PERSISTENT_FIELDS
 import jwt
 import datetime
+from copy import copy
 from sqlalchemy.sql import collate
+from sqlalchemy.orm.session import make_transient
 
 
 leaderships = db.Table(
@@ -202,6 +204,27 @@ class Person(SearchableMixin, db.Model):
     def get_persistent_data(self):
         return PersonPersistent.query.filter_by(person_id=self.id).first()
 
+    @staticmethod
+    def search_respect_privacy_include_persistent(criteria):
+        '''
+        Performs a search, including persistent data.
+        - Persistent data, including privacy and social information, is returned.
+        - If a person's privacy settings hide a certain field, it will be omitted from the results.
+        - The returned objects will be expunged, and changes to them will not be committed.
+        '''
+        people = Person.search(criteria)
+        people_copy = []
+        for person in people:
+            person_copy = copy(person)
+            make_transient(person_copy)
+
+            persistent_data = person.get_persistent_data()
+            if persistent_data is not None:
+                for field in PERSISTENT_FIELDS:
+                    setattr(person_copy, field, getattr(persistent_data, field))
+            
+            people_copy.append(person_copy)
+        return people_copy
 class PersonPersistent(db.Model):
     __tablename__ = 'person_persistent'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
