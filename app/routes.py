@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request, redirect, url_for, jsonify, abort, g, session
 from app import app, db, scraper, cas
-from app.models import User, Person, Key
-from app.util import requires_login, to_json, get_now, succ, fail
+from app.models import User, Person, Key, PersonPersistent
+from app.util import requires_login, forbidden_via_api, to_json, get_now, succ, fail
 from .cas_validate import validate
 from sqlalchemy import distinct
 
@@ -25,12 +25,12 @@ def store_user():
         token_cookie = request.cookies.get('token')
         if token_cookie:
             g.user = User.from_token(token_cookie)
-            method_used = 'cookie'
+            g.method_used = 'cookie'
         authorization = request.headers.get('Authorization')
         if g.user is None and authorization:
             token = authorization.split(' ')[-1]
             g.user = User.from_token(token)
-            method_used = 'header'
+            g.method_used = 'header'
         if g.user is None and cas.username:
             g.user = User.query.get(cas.username)
             if not g.user:
@@ -41,14 +41,14 @@ def store_user():
                               registered_on=timestamp,
                               admin=is_first_user)
                 db.session.add(g.user)
-            method_used = 'CAS'
+            g.method_used = 'CAS'
         if g.user:
             g.person = Person.query.filter_by(netid=g.user.id, school_code='YC').first()
             if g.user.banned or (not g.person and not g.user.admin):
                 # TODO: give a more graceful error than just a 403
                 abort(403)
             try:
-                print(f'Authorized request by {g.person.first_name} {g.person.last_name} with {method_used} authentication.')
+                print(f'Authorized request by {g.person.first_name} {g.person.last_name} with {g.method_used} authentication.')
             except AttributeError:
                 print('Could not render name.')
             g.user.last_seen = timestamp
@@ -270,6 +270,21 @@ def delete_key(key_id):
     key.deleted = True
     db.session.commit()
     return succ('Key deleted.')
+
+@app.route('/edit', methods=['GET'])
+@requires_login
+def edit():
+    return render_template('edit.html')
+
+@app.route('/edit', methods=['POST'])
+@requires_login
+# @forbidden_via_api
+def edit_post():
+    payload = request.get_json()
+    if g.person is None:
+        return fail('Could not find person in the database.', 403)
+    print('Editing person! ', g.person.netid)
+    return succ('Person edited.')
 
 
 @app.route('/authorize', methods=['POST'])

@@ -15,6 +15,14 @@ def requires_login(f):
     return wrapper_requires_login
 
 
+def forbidden_via_api(f):
+    @wraps(f)
+    def wrapper_forbidden_via_api(*args, **kwargs):
+        if g.method_used == 'header':
+            return fail('This endpoint is not accessible via the API.', 403)
+        return f(*args, **kwargs)
+    return wrapper_forbidden_via_api
+
 def succ(message, code=200):
     return (
         jsonify({
