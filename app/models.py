@@ -199,6 +199,9 @@ class Person(SearchableMixin, db.Model):
             people = person_query.all()
         return people
 
+    def get_persistent_data(self):
+        return PersonPersistent.query.filter_by(person_id=self.id).first()
+
 class PersonPersistent(db.Model):
     __tablename__ = 'person_persistent'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

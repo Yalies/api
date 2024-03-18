@@ -277,9 +277,28 @@ def edit_post():
     payload = request.get_json()
     if g.person is None:
         return fail('Could not find person in the database.', 403)
-    print('Editing person! ', g.person.netid)
-    return succ('Person edited.')
+    
+    person_persistent = g.person.get_persistent_data()
+    if person_persistent is None:
+        person_persistent = PersonPersistent(person_id=g.person.id)
+        db.session.add(person_persistent)
 
+    for key in [
+        'socials_instagram',
+        'socials_snapchat',
+        'privacy_hide_image',
+        'privacy_hide_email',
+        'privacy_hide_room',
+        'privacy_hide_phone',
+        'privacy_hide_address',
+        'privacy_hide_major',
+        'privacy_hide_birthday'
+    ]:
+        if key in payload:
+            setattr(person_persistent, key, payload[key])
+
+    db.session.commit()
+    return succ('Person edited.')
 
 @app.route('/authorize', methods=['POST'])
 def api_authorize_cas():
