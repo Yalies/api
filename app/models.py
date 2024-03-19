@@ -1,6 +1,6 @@
 from app import app, db
 from app.search import SearchableMixin
-from app.util import get_now, PERSISTENT_FIELDS
+from app.util import get_now, PERSISTENT_FIELDS, scrub_hidden_data
 import jwt
 import datetime
 from copy import copy
@@ -223,8 +223,10 @@ class Person(SearchableMixin, db.Model):
                 for field in PERSISTENT_FIELDS:
                     setattr(person_copy, field, getattr(persistent_data, field))
             
+            scrub_hidden_data(person_copy)
             people_copy.append(person_copy)
         return people_copy
+
 class PersonPersistent(db.Model):
     __tablename__ = 'person_persistent'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

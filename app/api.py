@@ -50,7 +50,8 @@ def api_students():
     if not criteria['filters'].get('school_code'):
         criteria['filters']['school_code'] = []
     criteria['filters']['school_code'].append('YC')
-    students = Person.search(criteria) # TODO: Change this to respect privacy
+    students = Person.search_respect_privacy_include_persistent(criteria)
+    
     return to_json(students)
 
 
@@ -61,8 +62,8 @@ def api_people():
         criteria = request.get_json(force=True) or {}
     except:
         criteria = {}
-    people = Person.search(criteria)
-    # people = Person.search_respect_privacy_include_persistent(criteria)
+    people = Person.search_respect_privacy_include_persistent(criteria)
+
     return to_json(people)
 
 

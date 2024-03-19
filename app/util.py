@@ -1,5 +1,6 @@
 from flask import jsonify, g
 from sqlalchemy.ext.declarative import DeclarativeMeta
+from sqlalchemy import inspect
 
 import json
 import datetime
@@ -60,6 +61,13 @@ class ModelEncoder(json.JSONEncoder):
                         continue
 
                 fields[field] = val
+
+            # Also add any fields that are in PERSISTENT_FIELDS.
+            # TODO: Maybe a better way to do this that isn't hard coded?
+            for field in PERSISTENT_FIELDS:
+                if hasattr(obj, field):
+                    fields[field] = obj.__getattribute__(field)
+
             # a json-encodable dict
             return fields
 
@@ -83,3 +91,25 @@ PERSISTENT_FIELDS = [
     'privacy_hide_major',
     'privacy_hide_birthday'
 ]
+
+def scrub_hidden_data(person):
+    if hasattr(person, "privacy_hide_image") and getattr(person, "privacy_hide_image"):
+        setattr(person, "image", None)
+    if hasattr(person, "privacy_hide_email") and getattr(person, "privacy_hide_email"):
+        setattr(person, "email", None)
+    if hasattr(person, "privacy_hide_room") and getattr(person, "privacy_hide_room"):
+        setattr(person, "entryway", None)
+        setattr(person, "floor", None)
+        setattr(person, "suite", None)
+        setattr(person, "room", None)
+    if hasattr(person, "privacy_hide_phone") and getattr(person, "privacy_hide_phone"):
+        setattr(person, "phone", None)
+    if hasattr(person, "privacy_hide_address") and getattr(person, "privacy_hide_address"):
+        setattr(person, "address", None)
+    if hasattr(person, "privacy_hide_major") and getattr(person, "privacy_hide_major"):
+        setattr(person, "major", None)
+    if hasattr(person, "privacy_hide_birthday") and getattr(person, "privacy_hide_birthday"):
+        setattr(person, "birthday", None)
+        setattr(person, "birth_month", None)
+        setattr(person, "birth_day", None)
+    return person
