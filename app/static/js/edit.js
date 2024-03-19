@@ -1,6 +1,6 @@
 const FIELDS = [
     'socials_instagram',
-    'socials_snapchat',
+    // 'socials_snapchat',
     'privacy_hide_image',
     'privacy_hide_email',
     'privacy_hide_room',
@@ -40,8 +40,8 @@ submit.onclick = async (e) => {
     if(response.status === 200) {
         success.innerText = 'Your profile has been updated';
     } else {
+        console.error(await response.text());
         const json = await response.json();
-        console.error(json);
         error.innerText = json.message;
     }
 }

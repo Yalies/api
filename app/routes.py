@@ -292,8 +292,8 @@ def edit():
 @forbidden_via_api
 def edit_post():
     payload = request.get_json()
-    socials_instagram = payload["socials_instagram"]
-    socials_snapchat = payload["socials_snapchat"]
+    socials_instagram = payload["socials_instagram"] if hasattr(payload, "socials_instagram") else None
+    socials_snapchat = payload["socials_snapchat"] if hasattr(payload, "socials_snapchat") else None
     if (socials_instagram is not None) and (len(socials_instagram) != 0) and (not is_valid_instagram_username(payload["socials_instagram"])):
         return fail('Invalid Instagram username.', 400)
     if (socials_snapchat is not None) and (len(socials_snapchat) != 0) and (not is_valid_snapchat_username(payload["socials_snapchat"])):
