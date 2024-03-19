@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request, redirect, url_for, jsonify, abort, g, session
 from app import app, db, scraper, cas
 from app.models import User, Person, Key, PersonPersistent
-from app.util import requires_login, forbidden_via_api, to_json, get_now, succ, fail, PERSISTENT_FIELDS
+from app.util import requires_login, forbidden_via_api, to_json, get_now, succ, fail, PERSISTENT_FIELDS, is_valid_instagram_username, is_valid_snapchat_username
 from .cas_validate import validate
 from sqlalchemy import distinct
 
@@ -292,6 +292,13 @@ def edit():
 @forbidden_via_api
 def edit_post():
     payload = request.get_json()
+    socials_instagram = payload["socials_instagram"]
+    socials_snapchat = payload["socials_snapchat"]
+    if (socials_instagram is not None) and (len(socials_instagram) != 0) and (not is_valid_instagram_username(payload["socials_instagram"])):
+        return fail('Invalid Instagram username.', 400)
+    if (socials_snapchat is not None) and (len(socials_snapchat) != 0) and (not is_valid_snapchat_username(payload["socials_snapchat"])):
+        return fail('Invalid Snapchat username.', 400)
+
     if g.person is None:
         return fail('Could not find person in the database.', 403)
     person_persistent = g.person.get_persistent_data()

@@ -5,6 +5,7 @@ from sqlalchemy import inspect
 import json
 import datetime
 from functools import wraps
+import string
 
 
 def requires_login(f):
@@ -113,3 +114,17 @@ def scrub_hidden_data(person):
         setattr(person, "birth_month", None)
         setattr(person, "birth_day", None)
     return person
+
+INSTAGRAM_ALLOWED_CHARSET = set(string.ascii_letters + string.digits + '._')
+def is_valid_instagram_username(username):
+    return (
+        all(c in INSTAGRAM_ALLOWED_CHARSET for c in username) and
+        len(username) >= 1 and len(username) <= 30
+    )
+
+SNAPCHAT_ALLOWED_CHARSET = set(string.ascii_letters + string.digits + '._-')
+def is_valid_snapchat_username(username):
+    return (
+        all(c in SNAPCHAT_ALLOWED_CHARSET for c in username) and
+        len(username) >= 3 and len(username) <= 15
+    )

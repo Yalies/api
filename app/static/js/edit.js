@@ -11,7 +11,13 @@ const FIELDS = [
 ];
 
 const submit = document.getElementById('submit');
+const error = document.getElementById('error');
+const success = document.getElementById('success');
+
 submit.onclick = async (e) => {
+    error.innerText = '';
+    success.innerText = '';
+
     const data = {};
     for(const field of FIELDS) {
         const elem = document.getElementById(field);
@@ -29,10 +35,13 @@ submit.onclick = async (e) => {
         })
     } catch(e) {
         console.error(e);
+        error.innerText = 'An unexpected error has occurred.';
     }
     if(response.status === 200) {
-        window.location.reload();
+        success.innerText = 'Your profile has been updated';
     } else {
-        console.error(response);
+        const json = await response.json();
+        console.error(json);
+        error.innerText = json.message;
     }
 }
