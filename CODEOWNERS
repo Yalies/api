@@ -1,0 +1,4 @@
+# This CODEOWNERS file is intended to enforce a review by
+# Erik + the current Yalies team lead.
+
+*       @ErikBoesen @ericyoondotcom
