@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request, redirect, url_for, jsonify, abort, g, session
 from app import app, db, scraper, cas
-from app.models import User, Person, Key
-from app.util import requires_login, to_json, get_now, succ, fail
+from app.models import User, Person, Key, PersonPersistent
+from app.util import requires_login, forbidden_via_api, to_json, get_now, succ, fail, PERSISTENT_FIELDS, is_valid_instagram_username, is_valid_snapchat_username
 from .cas_validate import validate
 from sqlalchemy import distinct
 
@@ -25,12 +25,12 @@ def store_user():
         token_cookie = request.cookies.get('token')
         if token_cookie:
             g.user = User.from_token(token_cookie)
-            method_used = 'cookie'
+            g.method_used = 'cookie'
         authorization = request.headers.get('Authorization')
         if g.user is None and authorization:
             token = authorization.split(' ')[-1]
             g.user = User.from_token(token)
-            method_used = 'header'
+            g.method_used = 'header'
         if g.user is None and cas.username:
             g.user = User.query.get(cas.username)
             if not g.user:
@@ -41,14 +41,14 @@ def store_user():
                               registered_on=timestamp,
                               admin=is_first_user)
                 db.session.add(g.user)
-            method_used = 'CAS'
+            g.method_used = 'CAS'
         if g.user:
             g.person = Person.query.filter_by(netid=g.user.id, school_code='YC').first()
             if g.user.banned or (not g.person and not g.user.admin):
                 # TODO: give a more graceful error than just a 403
                 abort(403)
             try:
-                print(f'Authorized request by {g.person.first_name} {g.person.last_name} with {method_used} authentication.')
+                print(f'Authorized request by {g.person.first_name} {g.person.last_name} with {g.method_used} authentication.')
             except AttributeError:
                 print('Could not render name.')
             g.user.last_seen = timestamp
@@ -237,6 +237,7 @@ def hide_me():
 
 @app.route('/keys', methods=['GET'])
 @requires_login
+@forbidden_via_api
 def get_keys():
     keys = Key.query.filter_by(user_id=g.user.id,
                                deleted=False).all()
@@ -245,6 +246,7 @@ def get_keys():
 
 @app.route('/keys', methods=['POST'])
 @requires_login
+@forbidden_via_api
 def create_key():
     payload = request.get_json()
     key = g.user.create_key(payload['description'])
@@ -252,17 +254,9 @@ def create_key():
     db.session.commit()
     return to_json(key)
 
-
-"""
-@app.route('/keys/<key_id>', methods=['POST'])
-@requires_login
-def update_key(key_id):
-    pass
-"""
-
-
 @app.route('/keys/<key_id>', methods=['DELETE'])
 @requires_login
+@forbidden_via_api
 def delete_key(key_id):
     key = Key.query.get(key_id)
     if key.user_id != g.user.id:
@@ -271,6 +265,53 @@ def delete_key(key_id):
     db.session.commit()
     return succ('Key deleted.')
 
+@app.route('/edit', methods=['GET'])
+@requires_login
+def edit():
+    if g.person is None:
+        return fail('Could not find person in the database.', 403)
+    person_persistent = g.person.get_persistent_data()
+
+    if person_persistent is None:
+        return render_template('edit.html')
+    return render_template(
+        'edit.html',
+        socials_instagram=person_persistent.socials_instagram,
+        socials_snapchat=person_persistent.socials_snapchat,
+        privacy_hide_image=person_persistent.privacy_hide_image,
+        privacy_hide_email=person_persistent.privacy_hide_email,
+        privacy_hide_room=person_persistent.privacy_hide_room,
+        privacy_hide_phone=person_persistent.privacy_hide_phone,
+        privacy_hide_address=person_persistent.privacy_hide_address,
+        privacy_hide_major=person_persistent.privacy_hide_major,
+        privacy_hide_birthday=person_persistent.privacy_hide_birthday
+    )
+
+@app.route('/edit', methods=['POST'])
+@requires_login
+@forbidden_via_api
+def edit_post():
+    payload = request.get_json()
+    socials_instagram = payload["socials_instagram"] if hasattr(payload, "socials_instagram") else None
+    socials_snapchat = payload["socials_snapchat"] if hasattr(payload, "socials_snapchat") else None
+    if (socials_instagram is not None) and (len(socials_instagram) != 0) and (not is_valid_instagram_username(payload["socials_instagram"])):
+        return fail('Invalid Instagram username.', 400)
+    if (socials_snapchat is not None) and (len(socials_snapchat) != 0) and (not is_valid_snapchat_username(payload["socials_snapchat"])):
+        return fail('Invalid Snapchat username.', 400)
+
+    if g.person is None:
+        return fail('Could not find person in the database.', 403)
+    person_persistent = g.person.get_persistent_data()
+    if person_persistent is None:
+        person_persistent = PersonPersistent(person_id=g.person.id)
+        db.session.add(person_persistent)
+
+    for key in PERSISTENT_FIELDS:
+        if key in payload:
+            setattr(person_persistent, key, payload[key])
+
+    db.session.commit()
+    return succ('Person edited.')
 
 @app.route('/authorize', methods=['POST'])
 def api_authorize_cas():

@@ -505,6 +505,8 @@ function loadNextPage() {
 					addPill(pills, "major", "Major", "book", person);
 					addPill(pills, "birthday", "Birthday", "birthday-cake", person);
 					addPill(pills, "address", "Address", "home", person);
+					addPill(pills, "socials_instagram", "Instagram", "instagram", person);
+					addPill(pills, "socials_snapchat", "Snapchat", "snapchat", person);
 
 					// Append the pills container to the person container
 					personContainer.appendChild(pills);
