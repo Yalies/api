@@ -54,6 +54,7 @@ schoolYCCheckbox.checked = true;
 
 p.clearFilters.onclick = function () {
 	resetFilters();
+	p.query.value = "";
 	runSearch();
 };
 
