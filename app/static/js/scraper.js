@@ -2,10 +2,10 @@ let inputs = document.getElementsByTagName('textarea'),
     cacheCheckboxes = document.getElementsByClassName('cache'),
     submit = document.getElementById('submit');
 
-oninput = function() {
+function setSubmitEnabled() {
     let completed = true;
     for (let input of inputs) {
-        if (!Boolean(input.value)) {
+        if (!Boolean(input.value.trim())) {
             completed = false;
             break;
         }
@@ -13,11 +13,38 @@ oninput = function() {
     submit.disabled = !completed;
 }
 
+function saveInputsToURL() {
+    const params = new URLSearchParams();
+    for (let input of inputs) {
+        params.append(input.name, encodeURIComponent(input.value));
+    }
+    this.history.pushState({}, '', '?' + params.toString());
+}
+
+function loadInputsFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    console.log(inputs.length)
+    for (let input of inputs) {
+        input.value = decodeURIComponent(params.get(input.name));
+    }
+
+}
+
+document.oninput = function() {
+    setSubmitEnabled();
+    saveInputsToURL();
+}
+
+window.onload = function() {
+    loadInputsFromURL();
+    setSubmitEnabled();
+}
+
 submit.onclick = function() {
     console.log('Trying to start scraper.');
     let payload = {};
     for (let input of inputs) {
-        payload[input.name] = input.value;
+        payload[input.name] = input.value.trim();
     }
     let caches = {};
     for (let cacheCheckbox of cacheCheckboxes) {
