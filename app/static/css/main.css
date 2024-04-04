@@ -156,19 +156,6 @@ textarea {
 	display: none;
 }
 
-@media (max-width: 700px) {
-	body {
-		font-size: 16px;
-	}
-	nav {
-		float: none;
-		position: static;
-	}
-	.mobile-only {
-		display: block;
-	}
-}
-
 .search_wrapper {
 	width: 100%;
 	display: flex;
@@ -188,4 +175,37 @@ textarea {
 
 .row-icon {
 	padding-right: 3px;
+}
+
+.halved {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+.half {
+    width: 49%;
+}
+.half img {
+    width: 100%;
+}
+.splash-image {
+}
+@media (max-width: 700px) {
+	body {
+		font-size: 16px;
+	}
+	nav {
+		float: none;
+		position: static;
+	}
+	.mobile-only {
+		display: block;
+	}
+    .halved {
+        flex-direction: column;
+    }
+    .half {
+        width: 100%;
+    }
 }
