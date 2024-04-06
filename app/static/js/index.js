@@ -32,6 +32,12 @@ function collapseAllFilters() {
 	}
 }
 
+function setClearFiltersButtonEnabled() {
+	const areDefaultFiltersApplied = Array(p.allCheckboxes).every(checkbox => checkbox.checked);
+	console.log(areDefaultFiltersApplied);
+	p.clearFilters.disabled = areDefaultFiltersApplied;
+}
+
 function resetFilters() {
 	for (let filter of p.filters) {
 		filter.classList.add("collapsed");
@@ -43,6 +49,7 @@ function resetFilters() {
 	for (let checkbox of p.allCheckboxes) {
 		checkbox.checked = true;
 	}
+	setClearFiltersButtonEnabled();
 }
 resetFilters();
 
@@ -144,6 +151,7 @@ onchange = function (e) {
 				allCheckbox.checked = !anyChecked;
 			}
 		}
+		setClearFiltersButtonEnabled();
 		runSearch();
 	}
 };
