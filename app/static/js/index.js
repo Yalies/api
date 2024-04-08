@@ -52,6 +52,7 @@ function resetFilters() {
 	}
 	setClearFiltersButtonEnabled();
 }
+resetFilters();
 
 // ... (other controls)
 const schoolFilter = document.getElementById("school"), schoolAllCheckbox = document.querySelector('input[name="school-all"]'), schoolYCCheckbox = document.querySelector('input[name="Yale College"]');
