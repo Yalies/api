@@ -33,10 +33,11 @@ function collapseAllFilters() {
 }
 
 function setClearFiltersButtonEnabled() {
-	const areDefaultFiltersApplied = Array(p.allCheckboxes).every(checkbox => checkbox.checked);
-	console.log(areDefaultFiltersApplied);
+	const areDefaultFiltersApplied = Array.from(p.allCheckboxes).every(checkbox => checkbox.checked);
 	p.clearFilters.disabled = areDefaultFiltersApplied;
 }
+
+setClearFiltersButtonEnabled();
 
 function resetFilters() {
 	for (let filter of p.filters) {
@@ -51,7 +52,6 @@ function resetFilters() {
 	}
 	setClearFiltersButtonEnabled();
 }
-resetFilters();
 
 // ... (other controls)
 const schoolFilter = document.getElementById("school"), schoolAllCheckbox = document.querySelector('input[name="school-all"]'), schoolYCCheckbox = document.querySelector('input[name="Yale College"]');
