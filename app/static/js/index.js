@@ -510,12 +510,32 @@ function loadNextPage() {
 							pill.className = "pill";
 							pill.textContent = "NetID " + person.netid;
 							pills.appendChild(pill);
+
+							pill.onclick = function () {
+								navigator.clipboard.writeText(person.netid);
+								pill.style.width = pill.offsetWidth + "px";
+								pill.textContent = "Copied!";
+								setTimeout(() => {
+									pill.textContent = "NetID " + person.netid;
+									pill.style.width = "auto";
+								}, 1000);
+							}
 						}
 						if (person.upi) {
 							let pill = document.createElement("div");
 							pill.className = "pill";
 							pill.textContent = "UPI " + person.upi;
 							pills.appendChild(pill);
+
+							pill.onclick = function () {
+								navigator.clipboard.writeText(person.upi);
+								pill.style.width = pill.offsetWidth + "px";
+								pill.textContent = "Copied!";
+								setTimeout(() => {
+									pill.textContent = "NetID " + person.upi;
+									pill.style.width = "auto";
+								}, 1000);
+							}
 						}
 					}
 
