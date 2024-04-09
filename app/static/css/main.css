@@ -48,7 +48,7 @@ main {
 }
 
 header {
-	margin-bottom: 10px;
+	margin: 30px 0;
 }
 header img {
 	height: 46px;
@@ -176,20 +176,8 @@ textarea {
 .row-icon {
 	padding-right: 3px;
 }
-
-.halved {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
-}
-.half {
-    width: 49%;
-}
-.half img {
-    width: 100%;
-}
-.splash-image {
+.rails {
+	padding: 0px 10vw;
 }
 @media (max-width: 700px) {
 	body {
@@ -199,13 +187,13 @@ textarea {
 		float: none;
 		position: static;
 	}
+	header {
+		margin: 15px 0;
+	}
 	.mobile-only {
 		display: block;
 	}
-    .halved {
-        flex-direction: column;
-    }
-    .half {
-        width: 100%;
-    }
+	.rails {
+		padding: 0px 5vw;
+	}
 }
