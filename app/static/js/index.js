@@ -47,8 +47,6 @@ function setClearFiltersButtonEnabled() {
 	p.clearFilters.disabled = areDefaultFiltersApplied;
 }
 
-setClearFiltersButtonEnabled();
-
 function resetFilters() {
 	for (let filter of p.filters) {
 		filter.classList.add("collapsed");
@@ -69,6 +67,8 @@ const schoolFilter = document.getElementById("school"), schoolAllCheckbox = docu
 schoolFilter.classList.add("active");
 schoolAllCheckbox.checked = false;
 schoolYCCheckbox.checked = true;
+
+setClearFiltersButtonEnabled();
 
 p.clearFilters.onclick = function () {
 	resetFilters();
