@@ -19,12 +19,22 @@ let p = {
 //////////////
 // Controls //
 //////////////
-query.onkeyup = function (e) {
-	if (e.keyCode === 13) {
+p.query.onkeyup = function (e) {
+	if (e.key === "Enter") {
 		e.preventDefault();
 		p.submit.click();
 	}
 };
+
+document.onkeydown = function (e) {
+	// No-op if focus is not on the body (i.e. user is typing in a textbox)
+	if (e.target !== document.body) return;
+
+	if(e.key === "/") {
+		p.query.focus();
+		e.preventDefault();
+	}
+}
 
 function collapseAllFilters() {
 	for (let filter of p.filters) {
