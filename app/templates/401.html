@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% set unauthenticated = True %}
+
 {% block content %}
     <h1>You don't have access to this page.</h1>
     <p><a href="{{ url_for('index') }}">Home</a></p>
