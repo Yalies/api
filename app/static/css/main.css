@@ -177,7 +177,7 @@ textarea {
 	padding-right: 3px;
 }
 .rails {
-	padding: 0px 10vw;
+	padding: 0px 5vw;
 }
 @media (max-width: 700px) {
 	body {
@@ -194,6 +194,6 @@ textarea {
 		display: block;
 	}
 	.rails {
-		padding: 0px 5vw;
+		padding: 0px 2vw;
 	}
 }
