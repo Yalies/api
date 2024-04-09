@@ -22,7 +22,7 @@ body {
 }
 
 .content {
-	padding: 14px 14px;
+	padding: 14px;
 	font-size: 14px;
 }
 
@@ -48,7 +48,7 @@ main {
 }
 
 header {
-	margin: 30px 0;
+	margin-bottom: 10px;
 }
 header img {
 	height: 46px;
@@ -176,9 +176,6 @@ textarea {
 .row-icon {
 	padding-right: 3px;
 }
-.rails {
-	padding: 0px 5vw;
-}
 @media (max-width: 700px) {
 	body {
 		font-size: 16px;
@@ -187,13 +184,7 @@ textarea {
 		float: none;
 		position: static;
 	}
-	header {
-		margin: 15px 0;
-	}
 	.mobile-only {
 		display: block;
-	}
-	.rails {
-		padding: 0px 2vw;
 	}
 }
