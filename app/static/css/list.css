@@ -65,6 +65,8 @@
 	margin-top: 2px;
 	margin-right: 4px;
 	margin-bottom: 4px;
+	cursor: pointer;
+	text-align: center;
 }
 
 .pill_metadata {
