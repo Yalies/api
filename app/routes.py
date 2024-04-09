@@ -220,14 +220,13 @@ def apidocs():
 
 
 @app.route('/about')
-@requires_login
 def about():
-    return render_template('about.html', title='About')
+    return render_template('about.html', title='About', unauthenticated=(not g.user))
 
 
 @app.route('/faq')
 def faq():
-    return render_template('faq.html', title='FAQ')
+    return render_template('faq.html', title='FAQ', unauthenticated=(not g.user))
 
 
 @app.route('/hide_me')
