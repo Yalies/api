@@ -19,18 +19,35 @@ let p = {
 //////////////
 // Controls //
 //////////////
-query.onkeyup = function (e) {
-	if (e.keyCode === 13) {
+p.query.onkeyup = function (e) {
+	if (e.key === "Enter") {
 		e.preventDefault();
 		p.submit.click();
 	}
 };
+
+document.onkeydown = function (e) {
+	// No-op if focus is not on the body (i.e. user is typing in a textbox)
+	if (e.target !== document.body) return;
+
+	if(e.key === "/") {
+		p.query.focus();
+		e.preventDefault();
+	}
+}
 
 function collapseAllFilters() {
 	for (let filter of p.filters) {
 		filter.classList.add("collapsed");
 	}
 }
+
+function setClearFiltersButtonEnabled() {
+	const areDefaultFiltersApplied = Array.from(p.allCheckboxes).every(checkbox => checkbox.checked);
+	p.clearFilters.disabled = areDefaultFiltersApplied;
+}
+
+setClearFiltersButtonEnabled();
 
 function resetFilters() {
 	for (let filter of p.filters) {
@@ -43,6 +60,7 @@ function resetFilters() {
 	for (let checkbox of p.allCheckboxes) {
 		checkbox.checked = true;
 	}
+	setClearFiltersButtonEnabled();
 }
 resetFilters();
 
@@ -54,6 +72,7 @@ schoolYCCheckbox.checked = true;
 
 p.clearFilters.onclick = function () {
 	resetFilters();
+	p.query.value = "";
 	runSearch();
 };
 
@@ -143,6 +162,7 @@ onchange = function (e) {
 				allCheckbox.checked = !anyChecked;
 			}
 		}
+		setClearFiltersButtonEnabled();
 		runSearch();
 	}
 };
