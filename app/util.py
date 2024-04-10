@@ -1,6 +1,7 @@
 from flask import jsonify, g
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
+import re
 import json
 import datetime
 from functools import wraps
@@ -63,3 +64,6 @@ def to_json(model):
 
 def get_now():
     return int(datetime.datetime.utcnow().timestamp())
+
+netid_regex = re.compile(r'^[a-z]{2,}\d{1,4}$')
+upi_regex = re.compile(r'^\d{8}$')
