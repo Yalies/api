@@ -1,4 +1,5 @@
 from app import db, elasticsearch
+from app.util import upi_regex, netid_regex
 
 
 def add_to_index(index, model):
@@ -94,8 +95,12 @@ def query_index_exact(index, query):
 class SearchableMixin:
     @classmethod
     def query_search(cls, expression):
-        # ids = query_index_exact(cls.__tablename__, expression)
-        ids = query_index_fuzzy(cls.__tablename__, expression)
+        ids = []
+        if netid_regex.match(expression) or upi_regex.match(expression):
+            ids = query_index_exact(cls.__tablename__, expression)
+        else:
+            ids = query_index_fuzzy(cls.__tablename__, expression)
+
         if len(ids) == 0:
             return cls.query.filter_by(id=0)
         when = []
