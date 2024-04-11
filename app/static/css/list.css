@@ -36,7 +36,7 @@
 	width: 20px;
 }
 #list > div > div > p {
-	max-width: 80%;
+	max-width: 90%;
 }
 
 #list div.image {
@@ -78,6 +78,24 @@
 	margin-bottom: 4px;
 	margin-top: 2px;
 	margin-right: 4px;
+}
+
+.pill_metadata.birthday {
+	background: linear-gradient(-45deg,
+		hsl(0, 60%, 90%),
+		hsl(30, 60%, 90%),
+		hsl(60, 60%, 90%),
+		hsl(90, 60%, 90%),
+		hsl(120, 60%, 90%),
+		hsl(150, 60%, 90%),
+		hsl(190, 60%, 90%),
+		hsl(210, 60%, 90%),
+		hsl(240, 60%, 90%),
+		hsl(270, 60%, 90%),
+		hsl(300, 60%, 90%),
+		hsl(330, 60%, 90%),
+		hsl(360, 60%, 90%)
+	);
 }
 
 /* Rows */
