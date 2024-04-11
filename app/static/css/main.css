@@ -156,10 +156,14 @@ textarea {
 	display: none;
 }
 
-.search_wrapper {
+/* .search_wrapper {
 	width: 100%;
 	display: flex;
 	align-items: center;
+} */
+.search_wrapper {
+    display: flex;
+    align-items: center;
 }
 
 #query {
@@ -168,9 +172,16 @@ textarea {
 	max-width: 300px;
 }
 
-#control_bar {
+/* #control_bar {
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
+} */
+#control_bar {
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between;
+    align-items: center;
 }
 
 .row-icon {

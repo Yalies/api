@@ -6,8 +6,12 @@
 	padding: 10px 12px;
 }
 
-.filters {
+/* .filters {
 	display: inline;
+} */
+.filters {
+    /* Remove display: inline; */
+    margin-left: 10px;
 }
 
 .filter_container {
