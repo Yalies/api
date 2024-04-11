@@ -3,6 +3,7 @@ from app.search import SearchableMixin
 from app.util import get_now
 import jwt
 import datetime
+import pytz
 from sqlalchemy.sql import collate
 
 
@@ -208,7 +209,7 @@ class Person(SearchableMixin, db.Model):
 
     @staticmethod
     def query_today_birthday():
-        today = datetime.datetime.now()
+        today = datetime.datetime.now(pytz.timezone('America/New_York'))
         return Person.query.filter_by(birth_month=today.month, birth_day=today.day).all()
 
 class Group(db.Model):
