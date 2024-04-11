@@ -210,10 +210,15 @@ function runSearch() {
 			}
 		}
 	}
-	criteria = { boost_birthdays: true };
+	criteria = {};
 	query = p.query.value.trim();
-	if (query) criteria["query"] = query;
-	criteria["filters"] = filters;
+	if (query) criteria.query = query;
+	criteria.filters = filters;
+	const areDefaultFiltersApplied =
+		Object.keys(filters).length === 1 &&
+		filters.school.length === 1 &&
+		filters.school[0] === "Yale College";
+	if(!query && areDefaultFiltersApplied) criteria.boost_birthdays = true;
 	p.list.innerHTML = "";
 	pagesLoaded = 0;
 	pagesFinished = false;
