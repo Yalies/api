@@ -99,4 +99,4 @@ class ImageUploader:
                     'Quiet': True
                 })
 
-        logger.info('Deleted %d unused images.' % num_deleted)
+        logger.info('Deleted %d unused images.' % len(to_delete))
