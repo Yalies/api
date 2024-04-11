@@ -20,7 +20,7 @@ def remove_from_index(index, model):
 def query_index_fuzzy(index, query):
     if not elasticsearch:
         return [], 0
-    
+
     # Split query into parts assuming a space separates first and last name
     query_parts = query.split()
 
@@ -120,8 +120,7 @@ class SearchableMixin:
     @classmethod
     def after_commit(cls, session):
         for obj in session._changes['add']:
-            # TODO: we are currently not tracking non-undergrads to stay below free usage limits. When we start including everyone in the front end, we will need to change this.
-            if isinstance(obj, SearchableMixin) and (not obj.__tablename__ == 'person' or obj.school_code == 'YC'):
+            if isinstance(obj, SearchableMixin):
                 add_to_index(obj.__tablename__, obj)
         for obj in session._changes['update']:
             if isinstance(obj, SearchableMixin):
