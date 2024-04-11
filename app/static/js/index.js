@@ -210,7 +210,7 @@ function runSearch() {
 			}
 		}
 	}
-	criteria = {};
+	criteria = { boost_birthdays: true };
 	query = p.query.value.trim();
 	if (query) criteria["query"] = query;
 	criteria["filters"] = filters;
@@ -232,8 +232,9 @@ p.submit.onclick = function () {
  * @param {string} title - The title to be displayed in the pill.
  * @param {string} icon - The icon class for the pill.
  * @param {object} person - The person object containing the property.
+ * @param {boolean} birthdayHighlight - Indicates whether to highlight the pill for current birthdays.
  */
-function addPill(pillContainer, property, title, icon, person) {
+function addPill(pillContainer, property, title, icon, person, birthdayHighlight = false) {
 	// Get the value of the specified property from the person object
 	let value = person[property];
 
@@ -241,7 +242,7 @@ function addPill(pillContainer, property, title, icon, person) {
 	if (value) {
 		// Create a new div element for the pill
 		let pill = document.createElement("div");
-		pill.className = "pill_metadata";
+		pill.className = `pill_metadata ${birthdayHighlight && "birthday"}`;
 
 		// Create an icon element
 		let iconElement = document.createElement("i");
@@ -519,11 +520,15 @@ function loadNextPage() {
 						}
 					}
 
+					const todayIsBirthday = person.birthday &&
+						new Date().getMonth() === person.birth_month - 1 &&
+						new Date().getDate() === person.birth_day;
+
 					// Add metadata pills
 					addPill(pills, "pronouns", "Pronouns", "comments", person);
 					addPill(pills, "title", "Title", "tags", person);
 					addPill(pills, "major", "Major", "book", person);
-					addPill(pills, "birthday", "Birthday", "birthday-cake", person);
+					addPill(pills, "birthday", "Birthday", "birthday-cake", person, todayIsBirthday);
 					addPill(pills, "address", "Address", "home", person);
 
 					// Append the pills container to the person container

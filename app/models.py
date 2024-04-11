@@ -177,6 +177,8 @@ class Person(SearchableMixin, db.Model):
         filters = criteria.get('filters')
         page = criteria.get('page')
         page_size = criteria.get('page_size')
+        boost_birthdays = criteria.get('boost_birthdays')
+
         if query:
             person_query = Person.query_search(query)
         else:
@@ -197,8 +199,17 @@ class Person(SearchableMixin, db.Model):
             people = person_query.paginate(page=page, per_page=page_size or app.config['PAGE_SIZE']).items
         else:
             people = person_query.all()
+
+        if boost_birthdays and (not page or page == 1) and (not query):
+            birthday_people = Person.query_today_birthday()
+            people = birthday_people + people
+
         return people
 
+    @staticmethod
+    def query_today_birthday():
+        today = datetime.datetime.now()
+        return Person.query.filter_by(birth_month=today.month, birth_day=today.day).all()
 
 class Group(db.Model):
     __tablename__ = 'group'
