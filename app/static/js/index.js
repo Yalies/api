@@ -383,6 +383,16 @@ function createPronunciationButton(person) {
 	return button;
 }
 
+function copyPillValueToClipboard(value, originalText, pill) {
+	navigator.clipboard.writeText(value);
+	pill.style.width = pill.offsetWidth + "px";
+	pill.textContent = "Copied!";
+	setTimeout(() => {
+		pill.textContent = originalText;
+		pill.style.width = "auto";
+	}, 1000);
+}
+
 /**
  * Loads the next page of people's information if available.
  */
@@ -512,13 +522,7 @@ function loadNextPage() {
 							pills.appendChild(pill);
 
 							pill.onclick = function () {
-								navigator.clipboard.writeText(person.netid);
-								pill.style.width = pill.offsetWidth + "px";
-								pill.textContent = "Copied!";
-								setTimeout(() => {
-									pill.textContent = "NetID " + person.netid;
-									pill.style.width = "auto";
-								}, 1000);
+								copyPillValueToClipboard(person.netid, "NetID " + person.netid, pill);
 							}
 						}
 						if (person.upi) {
@@ -528,13 +532,7 @@ function loadNextPage() {
 							pills.appendChild(pill);
 
 							pill.onclick = function () {
-								navigator.clipboard.writeText(person.upi);
-								pill.style.width = pill.offsetWidth + "px";
-								pill.textContent = "Copied!";
-								setTimeout(() => {
-									pill.textContent = "NetID " + person.upi;
-									pill.style.width = "auto";
-								}, 1000);
+								copyPillValueToClipboard(person.upi, "UPI " + person.upi, pill);
 							}
 						}
 					}
