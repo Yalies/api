@@ -1,32 +1,27 @@
 .splash {
     display: flex;
-	justify-content: space-between;
+    flex-direction: column;
+	justify-content: center;
     align-items: center;
-    gap: 10vw;
     position: relative;
 }
 .about {
-    width: 61.8%; /* Golden ratio */
+    margin: 40px 0;
 }
-.img {
-    width: 38.2%;
-}
-.img img {
+.splash img {
     max-width: 100%;
     max-height: 100%;
 }
 .action {
-    margin-top: 15px;
+    margin-top: 5px;
 }
-@media (max-width: 700px) {
+@media (min-width: 700px) {
     .splash {
-        flex-direction: column;
-        gap: 7vh;
+        flex-direction: row;
+        gap: 5vw;
+        min-height: 85vh;
     }
-    .about {
-        width: 100%;
-    }
-    .img {
-        width: 100%;
+    .splash img {
+        width: 38.2%;
     }
 }
