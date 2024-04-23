@@ -57,7 +57,6 @@ def store_user():
             print('Request made by unauthorized user.')
 
 
-
 @app.route('/')
 def index():
     if not g.user:
@@ -133,7 +132,6 @@ def index():
     return render_template('index.html', colleges=colleges,
                            years=years, leave=leave, majors=majors,
                            birth_months=birth_months, birth_days=birth_days, options=options, filters=filters)
-
 
 
 def untuple(tuples):

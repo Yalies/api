@@ -212,6 +212,7 @@ class Person(SearchableMixin, db.Model):
         today = datetime.datetime.now(pytz.timezone('America/New_York'))
         return Person.query.filter_by(birth_month=today.month, birth_day=today.day).all()
 
+
 class Group(db.Model):
     __tablename__ = 'group'
     __searchable__ = (
