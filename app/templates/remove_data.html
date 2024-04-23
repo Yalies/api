@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/css/article.css">
+<link rel="stylesheet" href="/static/css/remove_data.css">
+{% endblock %}
+
+{% block content %}
+<article>
+    <h1>Remove My Data</h1>
+    <div id="slide_introduction" class="slide">
+        <p>Yalies.io sources its student data from the Yale Face Book and the Yale Directory.</p>
+        <p>You can use the Yale Face Book interactive website to prevent your information from being publicly available, both on Yale websites like the Face Book and on student-run websites like Yalies.io.</p>
+        <p>Click <b>Next</b> to start the process of removing your information.</p>
+        <button class="next_slide_button">Next</button>
+    </div>
+    <div id="slide_face_book_1" class="slide">
+        <ol>
+            <li>Go to the <a href="https://students.yale.edu/facebook">Yale Face Book</a>.</li>
+            <li>Sign in to the Face Book with CAS.</li>
+            <li>
+                Click <b>Edit</b> on the top of the page.
+                <img src="/static/images/faq/hide_edit_button.png" alt="Click edit button">
+            </li>
+        </ol>
+        <button class="next_slide_button">Next</button>
+    </div>
+    <div id="slide_face_book_2" class="slide">
+        <p>
+            On the Edit page, you'll see a number of "Yes" and "No" radio buttons, which each correspond to a
+            data point Yale provides. Select the "No" option for any data point that you don't wish
+            to be publicly accessible.
+        </p>
+        <p>
+            Please remember which data points you have chosen to hide.
+        </p>
+        <img src="/static/images/faq/hide_click_no.png" alt="Click No buttons">
+        <p>
+            Click the <b>Update</b> button to save changes.
+        </p>
+        <img src="/static/images/faq/hide_click_update.png" alt="Click Update button">
+        <button class="next_slide_button">Next</button>
+    </div>
+    <div id="slide_yalies" class="slide">
+        <p>
+            Your information has been hidden from the Face Book. To expedite the process of removal
+            from Yalies.io, choose what you have hidden below.
+        </p>
+        <p>
+            Please note: while the data deletion will be immediate, if you choose to re-enable a
+            data point in the future, it will not be displayed on Yalies.io until the next time data
+            is updated from the Face Book, which may take around a week.
+        </p>
+        <table id="removal_form">
+            <tr>
+                <th id="th_first">What to display:</th>
+                <th>Yes No</th>
+            </tr>
+            <tr>
+                <td><legend>ID Photo</legend></td>
+                <td>
+                    <label for="image_yes">Yes</label>
+                    <input type="radio" name="image" id="image_yes" value="Yes" checked>
+                    &nbsp;
+                    <label for="image_no">No</label>
+                    <input type="radio" name="image" id="image_no" value="No">
+                </td>
+            </tr>
+            <tr>
+                <td><legend>Email</legend></td>
+                <td>
+                    <label for="email_yes">Yes</label>
+                    <input type="radio" name="email" id="email_yes" value="Yes" checked>
+                    &nbsp;
+                    <label for="email_no">No</label>
+                    <input type="radio" name="email" id="email_no" value="No">
+                </td>
+            </tr>
+            <tr>
+                <td><legend>Room number</legend></td>
+                <td>
+                    <label for="room_yes">Yes</label>
+                    <input type="radio" name="room" id="room_yes" value="Yes" checked>
+                    &nbsp;
+                    <label for="room_no">No</label>
+                    <input type="radio" name="room" id="room_no" value="No">
+                </td>
+            </tr>
+            <tr>
+                <td><legend>Phone</legend></td>
+                <td>
+                    <label for="phone_yes">Yes</label>
+                    <input type="radio" name="phone" id="phone_yes" value="Yes" checked>
+                    &nbsp;
+                    <label for="phone_no">No</label>
+                    <input type="radio" name="phone" id="phone_no" value="No">
+                </td>
+            </tr>
+            <tr>
+                <td><legend>Home address</legend></td>
+                <td>
+                    <label for="address_yes">Yes</label>
+                    <input type="radio" name="address" id="address_yes" value="Yes" checked>
+                    &nbsp;
+                    <label for="address_no">No</label>
+                    <input type="radio" name="address" id="address_no" value="No">
+                </td>
+            </tr>
+            <tr>
+                <td><legend>Major</legend></td>
+                <td>
+                    <label for="major_yes">Yes</label>
+                    <input type="radio" name="major" id="major_yes" value="Yes" checked>
+                    &nbsp;
+                    <label for="major_no">No</label>
+                    <input type="radio" name="major" id="major_no" value="No">
+                </td>
+            </tr>
+            <tr>
+                <td><legend>Birthday</legend></td>
+                <td>
+                    <label for="birthday_yes">Yes</label>
+                    <input type="radio" name="birthday" id="birthday_yes" value="Yes" checked>
+                    &nbsp;
+                    <label for="birthday_no">No</label>
+                    <input type="radio" name="birthday" id="birthday_no" value="No">
+                </td>
+            </tr>
+        </table>
+        <button id="save" onclick="submitRemoveData()">Save</button>
+    </div>
+    <div id="slide_success" class="slide">
+        <p>Your information has been successfully removed from Yalies.io.</p>
+        <a href="/">
+            <button>Back to home</button>
+        </a>
+    </div>
+</article>
+<script src="/static/js/remove_data.js"></script>
+{% endblock %}

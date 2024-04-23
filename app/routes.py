@@ -211,6 +211,18 @@ def scrape():
     return '', 200
 
 
+@app.route('/removeme', methods=['GET', 'POST'])
+@requires_login
+def remove_data():
+    if request.method == 'GET':
+        return render_template('remove_data.html')
+    payload = request.get_json()
+    if g.person is None:
+        return fail('Could not find person in the database.', 403)
+    g.person.redact_data(payload)
+
+    return '', 200
+
 @app.route('/apidocs')
 @requires_login
 def apidocs():
