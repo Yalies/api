@@ -96,7 +96,9 @@ p {
 a {
 	color: inherit;
 }
-
+ol, ul {
+	list-style-position: inside;
+}
 label {
 	display: block;
 }
