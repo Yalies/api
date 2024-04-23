@@ -43,7 +43,7 @@ def api_filters():
 def api_students():
     try:
         criteria = request.get_json(force=True) or {}
-    except:
+    except Exception:
         criteria = {}
     if not criteria.get('filters'):
         criteria['filters'] = {}
@@ -59,7 +59,7 @@ def api_students():
 def api_people():
     try:
         criteria = request.get_json(force=True) or {}
-    except:
+    except Exception:
         criteria = {}
     people = Person.search(criteria)
     return to_json(people)
@@ -70,7 +70,7 @@ def api_people():
 def api_groups():
     try:
         criteria = request.get_json(force=True) or {}
-    except:
+    except Exception:
         criteria = {}
     groups = Group.search(criteria)
     return to_json(groups)
