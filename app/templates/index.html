@@ -1,8 +1,8 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% block head %}
 	<link rel="stylesheet" href="/static/css/popup.css" />
-{% endblock %} 
-{% block content %} 
+{% endblock %}
+{% block content %}
 {# Hack to fix strange onclick bubbling behavior on mobile Safari #}
 <div id="controls" onclick="void(0);">
 	<div id="control_bar">
@@ -16,12 +16,12 @@
 				<i class="fa fa-filter"></i>
 				Clear Filters
 			</button>
-			{% for category in filters %} 
-				{% for filter in filters[category] %} 
-					{% with name = filter, items = options[filter], header=filters[category][filter]['header'], default = filters[category][filter]['default'] %} 
-						{% include "_filter.html" %} 
-					{% endwith %} 
-				{% endfor %} 
+			{% for category in filters %}
+				{% for filter in filters[category] %}
+					{% with name = filter, items = options[filter], header=filters[category][filter]['header'], default = filters[category][filter]['default'] %}
+						{% include "_filter.html" %}
+					{% endwith %}
+				{% endfor %}
 			{% endfor %}
 			<button id="expand_filters">
 				<i class="fa fa-chevron-circle-down"></i>
@@ -30,6 +30,20 @@
 		</div>
 	</div>
 </div>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7724286756573875"
+     crossorigin="anonymous"></script>
+<!-- People feed -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7724286756573875"
+     data-ad-slot="7937471160"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 <div id="empty">
 	<i class="fa fa-exclamation-circle"></i>
 	No matching students found.
