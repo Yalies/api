@@ -21,6 +21,8 @@ let currentSlideIndex = 0;
 
 const save = document.getElementById("save");
 
+save.onclick = submitRemoveData;
+
 const showNextSlide = () => showSlide(currentSlideIndex + 1);
 
 function showSlide(slideIndex) {
@@ -52,7 +54,7 @@ async function submitRemoveData() {
 
     let result;
     try {
-        result = await fetch("/removeme", {
+        result = await fetch("/remove_data", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

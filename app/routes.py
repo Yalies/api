@@ -211,7 +211,7 @@ def scrape():
     return '', 200
 
 
-@app.route('/removeme', methods=['GET', 'POST'])
+@app.route('/remove_data', methods=['GET', 'POST'])
 @requires_login
 def remove_data():
     if request.method == 'GET':

@@ -172,22 +172,22 @@ class Person(SearchableMixin, db.Model):
     publications = db.Column(db.String)
 
     def redact_data(self, fields):
-        if not fields["image"]:
+        if not fields['image']:
             self.image = None
-        if not fields["email"]:
+        if not fields['email']:
             self.email = None
-        if not fields["room"]:
+        if not fields['room']:
             self.entryway = None
             self.floor = None
             self.suite = None
             self.room = None
-        if not fields["phone"]:
+        if not fields['phone']:
             self.phone = None
-        if not fields["address"]:
+        if not fields['address']:
             self.address = None
-        if not fields["major"]:
+        if not fields['major']:
             self.major = None
-        if not fields["birthday"]:
+        if not fields['birthday']:
             self.birthday = None
             self.birth_month = None
             self.birth_day = None

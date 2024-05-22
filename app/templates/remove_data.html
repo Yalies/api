@@ -9,8 +9,8 @@
 <article>
     <h1>Remove My Data</h1>
     <div id="slide_introduction" class="slide">
-        <p>Yalies.io sources its student data from the Yale Face Book and the Yale Directory.</p>
-        <p>You can use the Yale Face Book interactive website to prevent your information from being publicly available, both on Yale websites like the Face Book and on student-run websites like Yalies.io.</p>
+        <p>Yalies sources its student data from the Yale Face Book and the Yale Directory.</p>
+        <p>You can use the Yale Face Book interactive website to prevent your information from being publicly available, both on Yale websites like the Face Book and on student-run websites like Yalies.</p>
         <p>Click <b>Next</b> to start the process of removing your information.</p>
         <button class="next_slide_button">Next</button>
     </div>
@@ -44,16 +44,20 @@
     <div id="slide_yalies" class="slide">
         <p>
             Your information has been hidden from the Face Book. To expedite the process of removal
-            from Yalies.io, choose what you have hidden below.
+            from Yalies, choose what you have hidden below.
         </p>
         <p>
             Please note: while the data deletion will be immediate, if you choose to re-enable a
-            data point in the future, it will not be displayed on Yalies.io until the next time data
+            data point in the future, it will not be displayed on Yalies until the next time data
             is updated from the Face Book, which may take around a week.
+        </p>
+        <p>
+            If you did not complete the previous steps correctly, your data will reappear in Yalies
+            the next time data is updated from the Face Book.
         </p>
         <table id="removal_form">
             <tr>
-                <th id="th_first">What to display:</th>
+                <th>What to display:</th>
                 <th>Yes No</th>
             </tr>
             <tr>
@@ -127,10 +131,17 @@
                 </td>
             </tr>
         </table>
-        <button id="save" onclick="submitRemoveData()">Save</button>
+        <button id="save">Save</button>
     </div>
     <div id="slide_success" class="slide">
-        <p>Your information has been successfully removed from Yalies.io.</p>
+        <p>
+            Your information has been successfully removed from Yalies.
+        </p>
+        <p>
+            Please note: If your information reappears on Yalies, this means you did
+            not successfully edit your Face Book preferences. Return to this page
+            and follow the instructions carefully to remove your information.
+        </p>
         <a href="/">
             <button>Back to home</button>
         </a>
