@@ -9,18 +9,18 @@
 
 #removal_form label {
     /* Only show for screen readers */
-    border: 0 !important;
-    clip: rect(0, 0, 0, 0) !important;
-    height: 1px !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-    white-space: nowrap !important;
-    width: 1px !important;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    white-space: nowrap;
+    width: 1px;
 
     display: inline-block;
 }
 
-#th_first {
+th:first-child {
     padding-right: 20px;
 }
