@@ -188,15 +188,29 @@ git checkout master
 Repeat until all features are implemented and all bugs fixed! :slightly_smiling_face:
 
 ## Deployment
-### Useful Commands
-```
+### Useful commands
+```bash
 heroku redis:cli --app yalies
 ```
+
+#### Manually run database commands
+```bash
+heroku pg:psql -a yalies # Connect to PSQL
+\dt # List all table names
+\d+ person # List all columns in the person table
 ```
-heroku pg:psql -a yalies
+
+##### Delete someone's data
+```bash
+BEGIN TRANSACTION; # ALWAYS use transactions, in case you mess up!
+UPDATE person SET address=NULL WHERE netid='salovey123'; # For example, remove address
+SELECT address FROM person WHERE netid='salovey123'; # Check that it's NULL
+COMMIT TRANSACTION; # If everything looks good, commit the transaction
 ```
-```
-logs --app yalies -n 15000000
+
+#### Show logs
+```bash
+heroku logs --app yalies -n 15000000
 ```
 ## License
 
