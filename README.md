@@ -187,6 +187,17 @@ git checkout master
 
 Repeat until all features are implemented and all bugs fixed! :slightly_smiling_face:
 
+## Deployment
+### Useful Commands
+```
+heroku redis:cli --app yalies
+```
+```
+heroku pg:psql -a yalies
+```
+```
+logs --app yalies -n 15000000
+```
 ## License
 
 Licensed under the MIT license.
