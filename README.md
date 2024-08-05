@@ -203,8 +203,9 @@ heroku pg:psql -a yalies # Connect to PSQL
 ##### Delete someone's data
 ```bash
 BEGIN TRANSACTION; # ALWAYS use transactions, in case you mess up!
-UPDATE person SET address=NULL WHERE netid='salovey123'; # For example, remove address
-SELECT address FROM person WHERE netid='salovey123'; # Check that it's NULL
+UPDATE person SET address=NULL WHERE netid='emy8'; # For example, remove address
+SELECT address FROM person WHERE netid='emy8'; # Check that it's NULL
+SELECT address FROM person WHERE netid='awg32'; # Check that you didn't also wipe someone else's data
 COMMIT TRANSACTION; # If everything looks good, commit the transaction
 ```
 
