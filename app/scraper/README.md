@@ -24,3 +24,13 @@ Open the [Yale Face Book](https://students.yale.edu/facebook) and log in if nece
 
 ### Directory
 Open the [Yale Directory](https://directory.yale.edu) and log in if necessary. Perform a search, and in the developer tools, select the query to the `api` endpoint. You'll notice the `Cookie` is too long to be displayed without elipses, so right click and copy it elsewhere then extract only the `_people_search_session` value. Then, grab the `X-CSRF-Token` header value.
+
+## FAQ and common errors
+### Celery not picking up task
+- This is actually a case where Celery is trying to connect to Redis, but it takes too long, so no logs are output.
+
+
+### "Cannot connect to Redis"
+- Use `heroku redis:cli` and kill all clients
+- Restart server
+- Kill all Dynos
