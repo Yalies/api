@@ -1,9 +1,11 @@
-from flask import render_template, make_response, request, redirect, url_for, jsonify, abort, g, session
+
+from flask import url_for, render_template, make_response, request, redirect, url_for, jsonify, abort, g, session
 from app import app, db, scraper, cas
 from app.models import User, Person, Key
 from app.util import requires_login, to_json, get_now, succ, fail
 from .cas_validate import validate
 from sqlalchemy import distinct
+import urllib.parse
 
 from flask_cas.cas_urls import create_cas_login_url
 from flask_cas.cas_urls import create_cas_logout_url
@@ -172,6 +174,42 @@ def login():
 
     app.logger.debug('Redirecting to: {0}'.format(redirect_url))
 
+    resp = make_response(redirect(redirect_url))
+    if token is not None:
+        resp.set_cookie('token', token, max_age=365 * 60 * 60 * 24)
+    return resp
+
+# This code is not to be deployed to production.
+# It is only necessary to test the React rewrite.
+@app.route('/UNSAFE_login_3rd_party/')
+def login_3rd_party():
+    token = None
+    redirect_url_base = urllib.parse.unquote(request.args.get('redir'))
+
+    redirect_url = create_cas_login_url(
+        app.config['CAS_SERVER'],
+        app.config['CAS_LOGIN_ROUTE'],
+        url_for('.login_3rd_party', redir=request.args.get('redir'), _external=True))
+
+    if 'ticket' in request.args:
+        ticket = request.args['ticket']
+        valid, username = validate(ticket, service_url=
+            url_for('login_3rd_party', redir=request.args.get('redir'), origin=session.get('CAS_AFTER_LOGIN_SESSION_URL'), _external=True))
+        if not valid:
+            abort(401)
+        g.user = User.query.get(username)
+        if g.user is None:
+            # TODO: this is duplicated from above. Decrease ick
+            is_first_user = User.query.count() == 0
+            g.user = User(id=username,
+                          registered_on=get_now(),
+                          admin=is_first_user)
+            db.session.add(g.user)
+        db.session.commit()
+        token = g.user.generate_token()
+        redirect_url = redirect_url_base + "?token=" + token
+
+    print(redirect_url)
     resp = make_response(redirect(redirect_url))
     if token is not None:
         resp.set_cookie('token', token, max_age=365 * 60 * 60 * 24)
