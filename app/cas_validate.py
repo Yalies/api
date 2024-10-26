@@ -8,7 +8,7 @@ except ImportError:
     from urllib.request import urlopen
 
 
-def validate(ticket, service_url):
+def validate(ticket, service_url = None):
     """
     Will attempt to validate the ticket. If validation fails, then False
     is returned. If validation is successful, then True is returned
@@ -26,7 +26,7 @@ def validate(ticket, service_url):
         app.config['CAS_VALIDATE_ROUTE'],
         # Modified the next line
         flask.url_for('login', origin=flask.session.get('CAS_AFTER_LOGIN_SESSION_URL'), _external=True) if
-            not service_url else service_url,
+            service_url is None else service_url,
         ticket)
 
     xml_from_dict = {}
