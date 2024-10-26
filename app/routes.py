@@ -212,7 +212,7 @@ def login_3rd_party():
     print(redirect_url)
     resp = make_response(redirect(redirect_url))
     if token is not None:
-        resp.set_cookie('token', token, max_age=365 * 60 * 60 * 24)
+        resp.set_cookie('token', token, max_age=365 * 60 * 60 * 24, samesite=None)
     return resp
 
 
