@@ -22,19 +22,19 @@ def create_url(base, path=None, *query):
     key/value pair with a value that is None is ignored.
 
     Keyword arguments:
-    base -- The left most part of the url (ex. http://localhost:5000).
+    base -- The left most part of the url (ex. http://localhost:6565).
     path -- The path after the base (ex. /foo/bar).
     query -- A list of key value pairs (ex. [('key', 'value')]).
 
     Example usage:
     >>> create_url(
-    ...     'http://localhost:5000',
+    ...     'http://localhost:6565',
     ...     'foo/bar',
     ...     ('key1', 'value'),
     ...     ('key2', None),     # Will not include None
     ...     ('url', 'http://example.com'),
     ... )
-    'http://localhost:5000/foo/bar?key1=value&url=http%3A%2F%2Fexample.com'
+    'http://localhost:6565/foo/bar?key1=value&url=http%3A%2F%2Fexample.com'
     """
     url = base
     # Add the path to the url if it's not None.
@@ -53,7 +53,7 @@ def create_cas_login_url(cas_url, cas_route, service, renew=None, gateway=None):
     Keyword arguments:
     cas_url -- The url to the CAS (ex. http://sso.pdx.edu)
     cas_route -- The route where the CAS lives on server (ex. /cas)
-    service -- (ex.  http://localhost:5000/login)
+    service -- (ex.  http://localhost:6565/login)
     renew -- "true" or "false"
     gateway -- "true" or "false"
 
@@ -61,9 +61,9 @@ def create_cas_login_url(cas_url, cas_route, service, renew=None, gateway=None):
     >>> create_cas_login_url(
     ...     'http://sso.pdx.edu',
     ...     '/cas',
-    ...     'http://localhost:5000',
+    ...     'http://localhost:6565',
     ... )
-    'http://sso.pdx.edu/cas?service=http%3A%2F%2Flocalhost%3A5000'
+    'http://sso.pdx.edu/cas?service=http%3A%2F%2Flocalhost%3A6565'
     """
     return create_url(
         cas_url,
@@ -80,15 +80,15 @@ def create_cas_logout_url(cas_url, cas_route, service=None):
     Keyword arguments:
     cas_url -- The url to the CAS (ex. http://sso.pdx.edu)
     cas_route -- The route where the CAS lives on server (ex. /cas/logout)
-    url -- (ex.  http://localhost:5000/login)
+    url -- (ex.  http://localhost:6565/login)
 
     Example usage:
     >>> create_cas_logout_url(
     ...     'http://sso.pdx.edu',
     ...     '/cas/logout',
-    ...     'http://localhost:5000',
+    ...     'http://localhost:6565',
     ... )
-    'http://sso.pdx.edu/cas/logout?service=http%3A%2F%2Flocalhost%3A5000'
+    'http://sso.pdx.edu/cas/logout?service=http%3A%2F%2Flocalhost%3A6565'
     """
     return create_url(
         cas_url,
@@ -104,7 +104,7 @@ def create_cas_validate_url(cas_url, cas_route, service, ticket,
     Keyword arguments:
     cas_url -- The url to the CAS (ex. http://sso.pdx.edu)
     cas_route -- The route where the CAS lives on server (ex. /cas/serviceValidate)
-    service -- (ex.  http://localhost:5000/login)
+    service -- (ex.  http://localhost:6565/login)
     ticket -- (ex. 'ST-58274-x839euFek492ou832Eena7ee-cas')
     renew -- "true" or "false"
 
@@ -112,10 +112,10 @@ def create_cas_validate_url(cas_url, cas_route, service, ticket,
     >>> create_cas_validate_url(
     ...     'http://sso.pdx.edu',
     ...     '/cas/serviceValidate',
-    ...     'http://localhost:5000/login',
+    ...     'http://localhost:6565/login',
     ...     'ST-58274-x839euFek492ou832Eena7ee-cas'
     ... )
-    'http://sso.pdx.edu/cas/serviceValidate?service=http%3A%2F%2Flocalhost%3A5000%2Flogin&ticket=ST-58274-x839euFek492ou832Eena7ee-cas'
+    'http://sso.pdx.edu/cas/serviceValidate?service=http%3A%2F%2Flocalhost%3A6565%2Flogin&ticket=ST-58274-x839euFek492ou832Eena7ee-cas'
     """
     return create_url(
         cas_url,

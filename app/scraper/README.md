@@ -10,7 +10,7 @@ To run the scraper process locally (not necessary if you want to view the websit
 ```sh
 ./celery.sh
 ```
-In order to actually execute the scraper, visit [localhost:5000/scraper](http://localhost:5000/scraper) and fill in the fields. To retrieve the tokens you need, you'll want to use the developer tools ("inspect element") for your browser, specifically the Network tab, to view the headers on requests made to the Face Book and Directory. See below for more information on what headers to grab.
+In order to actually execute the scraper, visit [localhost:6565/scraper](http://localhost:6565/scraper) and fill in the fields. To retrieve the tokens you need, you'll want to use the developer tools ("inspect element") for your browser, specifically the Network tab, to view the headers on requests made to the Face Book and Directory. See below for more information on what headers to grab.
 
 ## Running the scraper on production
 Visit [yalies.io/scraper](https://yalies.io/scraper) to view the scraper interface. Obtain the relevant tokens as detailed below. Check off "Departmental" in the list of caches to use, unless you also want to scrape the departmental websites, which you probably don't as that process takes a while and those websites rarely update.
