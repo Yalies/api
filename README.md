@@ -115,8 +115,7 @@ python3 -m flask db upgrade
 To locally launch the application:
 
 ```sh
-export FLASK_RUN_PORT=6565  
-FLASK_APP=app.py FLASK_ENV=development flask run
+FLASK_RUN_PORT=6565 FLASK_APP=app.py FLASK_ENV=development flask run
 ```
 
 - On **PowerShell**:
@@ -125,7 +124,7 @@ FLASK_APP=app.py FLASK_ENV=development flask run
      $env:FLASK_ENV="development"
      flask run --port=6565
      ```
-     
+
 The app will subsequently be available at [localhost:6565](http://localhost:6565).
 
 When running locally, the app will use a non-hosted SQLite database, meaning that all database contents will be stored in `app.db`. If you wish to run SQL queries on this database, simply install sqlite (best obtained through Homebrew or other package manager), and run:
