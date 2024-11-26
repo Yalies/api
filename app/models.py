@@ -194,6 +194,15 @@ class Person(SearchableMixin, db.Model):
         db.session.commit()
 
     @staticmethod
+    def filter_query(filters, query):
+        for category in filters:
+            if category not in (Person.__filterable_identifiable__ + Person.__filterable__):
+                return None
+            if not isinstance(filters[category], list):
+                filters[category] = [filters[category]]
+            return query.filter(getattr(Person, category).in_(filters[category]))
+
+    @staticmethod
     def search(criteria):
         person_query = Person.query
         query = criteria.get('query')
@@ -201,6 +210,7 @@ class Person(SearchableMixin, db.Model):
         page = criteria.get('page')
         page_size = criteria.get('page_size')
         boost_birthdays = criteria.get('boost_birthdays')
+        people = []
 
         if query:
             person_query = Person.query_search(query)
@@ -212,12 +222,7 @@ class Person(SearchableMixin, db.Model):
                 Person.first_name,
             )
         if filters:
-            for category in filters:
-                if category not in (Person.__filterable_identifiable__ + Person.__filterable__):
-                    return None
-                if not isinstance(filters[category], list):
-                    filters[category] = [filters[category]]
-                person_query = person_query.filter(getattr(Person, category).in_(filters[category]))
+            person_query = Person.filter_query(filters, person_query)
         if page:
             people = person_query.paginate(page=page, per_page=page_size or app.config['PAGE_SIZE']).items
         else:
@@ -227,12 +232,30 @@ class Person(SearchableMixin, db.Model):
             birthday_people = Person.query_today_birthday()
             people = birthday_people + people
 
+        if query and len(query) == 2 and (not page or page == 1):
+            initials_people = Person.query_by_initials(query, filters)
+            people = initials_people + people
+
         return people
 
     @staticmethod
     def query_today_birthday():
         today = datetime.datetime.now(pytz.timezone('America/New_York'))
         return Person.query.filter_by(birth_month=today.month, birth_day=today.day).all()
+
+    @staticmethod
+    def query_by_initials(initials, filters):
+        if len(initials) != 2:
+            return None
+        first_name_initial = initials[0]
+        last_name_initial = initials[1]
+        query = Person.query.filter(
+            Person.first_name.ilike(f"{first_name_initial}%"),
+            Person.last_name.ilike(f"{last_name_initial}%"),
+        )
+        if filters:
+            query = Person.filter_query(filters, query)
+        return query.all()
 
 
 class Group(db.Model):

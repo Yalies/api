@@ -223,6 +223,7 @@ def remove_data():
 
     return '', 200
 
+
 @app.route('/apidocs')
 @requires_login
 def apidocs():
