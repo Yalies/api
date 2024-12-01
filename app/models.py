@@ -200,7 +200,8 @@ class Person(SearchableMixin, db.Model):
                 return None
             if not isinstance(filters[category], list):
                 filters[category] = [filters[category]]
-            return query.filter(getattr(Person, category).in_(filters[category]))
+            query = query.filter(getattr(Person, category).in_(filters[category]))
+        return query
 
     @staticmethod
     def search(criteria):

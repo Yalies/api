@@ -45,23 +45,28 @@ def scrape_face_book_directory_name_coach(face_book, directory, name_coach):
 @celery.task
 def scrape(caches_active, face_book_cookie, people_search_session_cookie, csrf_token, yaleconnect_cookie):
     logger.info('Scraper kicking off.')
-    # Fix missing ElasticSearch index
-    """
-    logger.info('Loading people.')
-    page = 0
-    page_size = 1000
-    while True:
-        people = Person.query.paginate(page, page_size, False).items
-        logger.info('Loaded people.')
-        for person in people:
-            logger.info(person.netid)
-            add_to_index('person', person)
-        if len(people) < page_size:
-            break
-        page += 1
-    return
-    """
+    
+    
     with app.app_context():
+
+        # Fix missing ElasticSearch index
+        """
+        logger.info('Loading people.')
+        page = 0
+        page_size = 100
+        while True:
+            people = Person.query.paginate(page=page, per_page=page_size, error_out=False).items
+            logger.info('Loaded people.')
+
+            for person in people:
+                logger.info(person.netid)
+                add_to_index('person', person)
+
+            if len(people) < page_size:
+                break
+            page += 1
+        return
+        """
 
         try:
             caches_active = {

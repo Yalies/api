@@ -8,6 +8,10 @@ def add_to_index(index, model):
     payload = {}
     for field in model.__searchable__:
         payload[field] = getattr(model, field)
+
+    if not elasticsearch.indices.exists(index=index):
+        elasticsearch.indices.create(index=index)
+    
     elasticsearch.index(index=index, id=model.id, body=payload)
 
 

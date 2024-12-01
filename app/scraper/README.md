@@ -24,3 +24,11 @@ Open the [Yale Face Book](https://students.yale.edu/facebook) and log in if nece
 
 ### Directory
 Open the [Yale Directory](https://directory.yale.edu) and log in if necessary. Perform a search, and in the developer tools, select the query to the `api` endpoint. You'll notice the `Cookie` is too long to be displayed without elipses, so right click and copy it elsewhere then extract only the `_people_search_session` value. Then, grab the `X-CSRF-Token` header value.
+
+## Common Issues
+- `python objc[24386]: +[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called`
+    - Set the environment variable `OBJC_DISABLE_INITIALIZE_FORK_SAFETY` to `YES` (this is a Mac High Sierra workaround)
+- "the client noticed that the server is not Elasticsearch and we do not support this unknown product"
+    - You have the wrong version of Elasticsearch installed, uninstall Elasticsearch with Pip and reinstall requirements.txt
+- "`np.float_` was removed in the NumPy 2.0 release. Use `np.float64` instead"
+    - `pip3 install "numpy<2"`
