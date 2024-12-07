@@ -35,6 +35,10 @@ body {
 	font-size: 13px;
 }
 
+.banner .fa {
+	margin: 0 7px;
+}
+
 @media (max-width: 700px) {
 	.content {
 		font-size: 15px;

@@ -10,14 +10,23 @@
     align-items: center;
 }
 .popup .content {
-    max-width: 4in;
+    max-width: 6in;
     max-height: 90%;
-    overflow: scroll;
+    overflow: auto;
     margin: 10px;
     padding: 15px 20px 20px;
     background: white;
     border-radius: 30px;
 }
-.popup button {
+.popup .buttons {
     margin-top: 5px;
+}
+.popup .buttons button {
+    margin-top: 5px;
+}
+.popup p {
+    margin: 15px 0;
+}
+.popup img {
+    width: 100%;
 }
