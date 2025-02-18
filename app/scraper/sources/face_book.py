@@ -50,31 +50,28 @@ class FaceBook(Source):
 
     def get_html(self, cookie):
         filename = 'page.html'
-        if not os.path.exists(filename):
-            logger.info('Page not cached, fetching.')
-            requests.get('https://students.yale.edu/facebook/ChangeCollege',
-                         params={
-                             'newOrg': 'Yale College'
-                         },
-                         headers={
-                             'Cookie': cookie,
-                         })
-            r = requests.get('https://students.yale.edu/facebook/PhotoPageNew',
-                             params={
-                                 'currentIndex': -1,
-                                 'numberToGet': -1,
-                             },
-                             headers={
-                                 'Cookie': cookie,
-                             })
-            html = r.text
-            with open(filename, 'w') as f:
-                f.write(html)
-            logger.info('Done fetching page.')
-        else:
-            logger.info('Using cached page.')
-            with open(filename, 'r') as f:
-                html = f.read()
+
+        logger.info('Fetching Face Book HTML...')
+        requests.get('https://students.yale.edu/facebook/ChangeCollege',
+                        params={
+                            'newOrg': 'Yale College'
+                        },
+                        headers={
+                            'Cookie': cookie,
+                        })
+        r = requests.get('https://students.yale.edu/facebook/PhotoPageNew',
+                            params={
+                                'currentIndex': -1,
+                                'numberToGet': -1,
+                            },
+                            headers={
+                                'Cookie': cookie,
+                            })
+        html = r.text
+        with open(filename, 'w') as f:
+            f.write(html)
+        logger.info('Done fetching page.')
+
         return html
 
     def get_tree(self, html):
